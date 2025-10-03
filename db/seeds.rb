@@ -7,3 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+# db/seeds.rb
+puts "Seeding utenti..."
+
+User.find_or_create_by!(email_address: "mario@mario.it") do |u|
+  u.password = "123456"
+  u.superadmin = true
+end
+
+puts "Utente superadmin creato: mario@mario.it / 123456"

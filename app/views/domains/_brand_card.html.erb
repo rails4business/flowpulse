@@ -1,0 +1,5 @@
+<!-- app/views/domains/_brand_card.html.erb -->
+<%= link_to brand_path(item), class: "card" do %>
+  <h3><%= item.display_name %></h3>
+  <p><%= item.description.to_s %></p>
+<% end %>

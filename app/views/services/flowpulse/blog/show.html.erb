@@ -1,0 +1,10 @@
+<article class="prose max-w-none">
+  <h1><%= @post.title %></h1>
+  <% if @post.cover_url.present? %>
+    <img src="<%= @post.cover_url %>" alt="" class="rounded border mb-4">
+  <% end %>
+  <%= raw(@post.try(:body_html) || simple_format(@post.body.to_s)) %>
+  <% if @post.video_url.present? %>
+    <p class="mt-3"><a class="underline" href="<%= @post.video_url %>" target="_blank" rel="noopener">Guarda il video</a></p>
+  <% end %>
+</article>

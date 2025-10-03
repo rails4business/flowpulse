@@ -1,0 +1,5 @@
+<!-- app/views/domains/_service_card.html.erb -->
+<%= link_to service_path(item.key), class: "card" do %>
+  <h3><%= item.title.presence || item.key %></h3>
+  <p><%= item.description %></p>
+<% end %>

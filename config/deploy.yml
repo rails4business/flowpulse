@@ -5,7 +5,7 @@ service: flowpulse
 
 
 # Name of the container image.
-image: ghcr.io/marcobeffa/flowpulse
+image: ghcr.io/rails4business/flowpulse
 
 # Deploy to these servers.
 servers:

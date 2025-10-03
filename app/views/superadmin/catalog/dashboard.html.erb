@@ -1,0 +1,19 @@
+<!-- app/views/superadmin/catalog/dashboard.html.erb -->
+<h1>Superadmin / Catalog</h1>
+<p>Totale: <%= @stats[:total] %></p>
+<ul>
+  <% @stats[:by_state].each { |k,v| %>
+  <li><%= k %>: <%= v %></li>
+  <% } %>
+</ul>
+<ul>
+  <% @stats[:by_service].each { |k,v| %>
+  <li><%= k %>: <%= v %></li>
+  <% } %>
+</ul>
+<%= button_to "Import all",      superadmin_catalog_import_path,      method: :post %>
+<%= button_to "Import changed",  superadmin_catalog_import_changed_path, method: :post %>
+<%= button_to "Rebuild (truncate+import)", superadmin_catalog_rebuild_path, method: :post,
+      data: { turbo_confirm: "Sei sicuro?" } %>
+in base al dominio ad esempio se è posturacorretta.org  è brands ho il dominio che punta alle  pagine con il routes e controlle 
+- ma se ho un services con il subdomain.domain/params(:folder)/params(:key)/params(slug:)  o flowpulse.posturacorretta.org/ più i params come metto il brands attivo e il services attivo (se c'è la :key e se no tutti i services del subdomains flowpulse ) e poi nel caso come scelgo il catalog_items  attivo se ho il params slug? oppure se non c'è slug e c'è :folder la cartella che punta o la start_folder con domain dove vedo le sotto cartelle o i file yml? domain il fattto è che Current.seevice non può esserci perchè il subdomain rappresenta più services che possono essere atttivi sul domains e che hanno uno slug perciò Current.service sarà dato da subdomain.domain/ params :key che è opzionale, 

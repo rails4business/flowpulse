@@ -1,0 +1,44 @@
+<h1 class="text-xl font-semibold mb-3">Online Courses — <%= @brand.host %></h1>
+<nav class="mb-3 text-sm">
+  <% @breadcrumb.each_with_index do |bc, i| %>
+    <% if bc[:path].present? %>
+      <%= link_to bc[:name], bc[:path] %><%= " / " unless i == @breadcrumb.size - 1 && @breadcrumb.last[:path].nil? %>
+    <% else %>
+      <span><%= bc[:name] %></span>
+    <% end %>
+  <% end %>
+</nav>
+<ul class="flex gap-2 mb-4">
+  <% @services_tabs.each do |svc| %>
+    <li>
+      <%= link_to svc.key,
+        (svc.key == "onlinecourses" ? flowpulse_onlinecourses_index_path : service_index_path(key: svc.key)),
+        class: "px-3 py-1 rounded #{'bg-blue-600 text-white' if svc.key == @service_key}" %>
+    </li>
+  <% end %>
+</ul>
+<ul class="flex flex-wrap gap-2 mb-4">
+  <% @child_folders.each do |cf| %>
+    <li>
+      <%= link_to cf,
+        flowpulse_onlinecourses_folder_path(folder_path: [@folder_path, cf].reject(&:blank?).join("/")),
+        class: "px-3 py-1 rounded border" %>
+    </li>
+  <% end %>
+</ul>
+<section class="space-y-2">
+  <% @items.each do |it| %>
+    <article class="border rounded p-3">
+      <h3 class="font-semibold">
+        <%= link_to (it.title.presence || it.slug),
+          flowpulse_onlinecourses_item_in_folder_path(folder_path: it.folders_path, slug: it.slug) %>
+      </h3>
+      <% if it.summary.present? %>
+        <p class="text-sm opacity-80"><%= it.summary %></p>
+      <% end %>
+    </article>
+  <% end %>
+  <% if @items.blank? %>
+    <p class="italic opacity-70">Nessun corso in questa cartella.</p>
+  <% end %>
+</section>

@@ -1,0 +1,13 @@
+<!-- app/views/domains/index.html.erb -->
+<nav class="tabs">
+  <%= link_to "Brands",   brands_path,   class: (brands? ? "active" : "") %>
+  <%= link_to "Services", services_path, class: (brands? ? "" : "active") %>
+</nav>
+<h1><%= brands? ? "Brands" : "Services" %></h1>
+<div class="grid">
+  <% if brands? %>
+    <%= render partial: "brand_card",   collection: @items, as: :item %>
+  <% else %>
+    <%= render partial: "service_card", collection: @items, as: :item %>
+  <% end %>
+</div>

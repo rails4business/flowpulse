@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  brand_slug: MyString
+  folders_path: MyString
+  service_key: MyString
+  slug: MyString
+  title: MyString
+  summary: MyText
+  tags: MyText
+  state: MyString
+  source_path: MyString
+  checksum: MyString
+  version: MyString
+  published_at: 2025-09-28 18:27:10
+  data: 
+  tsv: 
+
+two:
+  brand_slug: MyString
+  folders_path: MyString
+  service_key: MyString
+  slug: MyString
+  title: MyString
+  summary: MyText
+  tags: MyText
+  state: MyString
+  source_path: MyString
+  checksum: MyString
+  version: MyString
+  published_at: 2025-09-28 18:27:10
+  data: 
+  tsv: 

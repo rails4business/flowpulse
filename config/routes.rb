@@ -1,4 +1,19 @@
 Rails.application.routes.draw do
+  resources :posts
+  resource :session
+  resources :passwords, param: :token
+  root "brands/flowpulse#home"
+
+  draw :subdomains
+  draw :services
+  draw :brands
+  draw :domains
+  draw :superadmin
+
+
+  resources :leads
+
+
   get "pages/home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -12,5 +27,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  root "pages#home"
 end

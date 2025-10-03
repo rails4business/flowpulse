@@ -1,0 +1,20 @@
+<!-- app/views/services/hub/choose.html.erb -->
+<section class="container">
+  <h1><%= Current.brand.display_name %> — servizi</h1>
+  <% if @folder_nav.present? %>
+    <nav class="folders">
+      <% @folder_nav.each do |folder| %>
+        <span class="chip"><%= folder %></span>
+      <% end %>
+    </nav>
+  <% end %>
+  <div class="grid services-cards">
+    <% @services.each do |svc| %>
+      <div class="card">
+        <h3><%= svc.display_name %></h3>
+        <p><%= svc.description %></p>
+        <%= link_to "Apri catalogo", service_catalog_path(key: svc.key), class: "btn" %>
+      </div>
+    <% end %>
+  </div>
+</section>

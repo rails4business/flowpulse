@@ -1,0 +1,56 @@
+<nav class="mb-3 text-sm">
+  <% @breadcrumb.each_with_index do |bc, i| %>
+    <% if bc[:path].present? %>
+      <%= link_to bc[:name], bc[:path] %><%=' / ' unless i == @breadcrumb.size - 1 && @breadcrumb.last[:path].nil? %>
+    <% else %>
+      <span><%= bc[:name] %></span>
+    <% end %>
+  <% end %>
+</nav>
+<div class="mb-4">
+  <!-- TAB Servizi -->
+  <ul class="flex gap-2">
+    <% @services_tabs.each do |svc| %>
+      <li>
+        <%= link_to svc.key,
+          service_index_path(key: svc.key),
+          class: "px-3 py-1 rounded #{'bg-blue-600 text-white' if svc.key == @service_key}" %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to "tutti", service_folder_path(key: @service_key, folder_path: @folder_path), class: "px-3 py-1" %>
+    </li>
+  </ul>
+</div>
+<div class="mb-4">
+  <!-- TAB Cartelle figlie -->
+  <ul class="flex flex-wrap gap-2">
+    <% @child_folders.each do |cf| %>
+      <li>
+        <%= link_to cf,
+          service_folder_path(key: @service_key, folder_path: [@folder_path, cf].reject(&:blank?).join("/")),
+          class: "px-3 py-1 rounded border" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+<section class="space-y-2">
+  <% @items.each do |it| %>
+    <article class="border rounded p-3">
+      <header class="font-semibold">
+        <%= link_to (it.title.presence || it.slug),
+          service_item_path(key: @service_key, folder_path: it.folders_path, slug: it.slug) %>
+      </header>
+      <% if it.summary.present? %>
+        <p class="text-sm opacity-80"><%= it.summary %></p>
+      <% end %>
+      <div class="text-xs opacity-70">
+        <code>data_source:<%= @ctx.data_source_for(@service_key) %></code>
+        <span class="ml-2"><code>draw:subdomain</code> <code>draw:services</code></span>
+      </div>
+    </article>
+  <% end %>
+  <% if @items.blank? %>
+    <p class="italic opacity-70">Nessun contenuto in questa cartella.</p>
+  <% end %>
+</section>

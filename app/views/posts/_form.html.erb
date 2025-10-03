@@ -1,0 +1,79 @@
+<%= form_with(model: post, class: "contents") do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <ul class="list-disc ml-6">
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="my-5">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:user_id].none?, "border-red-400 focus:outline-red-600": post.errors[:user_id].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:title].none?, "border-red-400 focus:outline-red-600": post.errors[:title].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :description %>
+    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:description].none?, "border-red-400 focus:outline-red-600": post.errors[:description].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :cover_url %>
+    <%= form.text_field :cover_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:cover_url].none?, "border-red-400 focus:outline-red-600": post.errors[:cover_url].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :video_url %>
+    <%= form.text_field :video_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:video_url].none?, "border-red-400 focus:outline-red-600": post.errors[:video_url].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :body %>
+    <%= form.textarea :body, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:body].none?, "border-red-400 focus:outline-red-600": post.errors[:body].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :published_at %>
+    <%= form.datetime_field :published_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:published_at].none?, "border-red-400 focus:outline-red-600": post.errors[:published_at].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :visibility, "Visibilità" %>
+    <%= form.select :visibility,
+        options_for_select([["Pubblica", "pub"], ["Privata", "priv"], ["Solo iscritti", "subscribe"]], form.object.visibility),
+        {}, class: "block w-full border rounded px-3 py-2 mt-2" %>
+  </div>
+  <div class="my-5">
+    <%= form.label :state, "Stato" %>
+    <%= form.select :state,
+        options_for_select([["Bozza", "draft"], ["Revisione", "review"], ["Pubblicato", "published"], ["Archiviato", "archived"]], form.object.state),
+        {}, class: "block w-full border rounded px-3 py-2 mt-2" %>
+  </div>
+  <div class="my-5">
+    <%= form.label :slug %>
+    <%= form.text_field :slug, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:slug].none?, "border-red-400 focus:outline-red-600": post.errors[:slug].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :folder_path %>
+    <%= form.text_field :folder_path, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:folder_path].none?, "border-red-400 focus:outline-red-600": post.errors[:folder_path].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :subdomain %>
+    <%= form.text_field :subdomain, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:subdomain].none?, "border-red-400 focus:outline-red-600": post.errors[:subdomain].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :service_key %>
+    <%= form.text_field :service_key, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:service_key].none?, "border-red-400 focus:outline-red-600": post.errors[:service_key].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :position %>
+    <%= form.number_field :position, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:position].none?, "border-red-400 focus:outline-red-600": post.errors[:position].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :tags %>
+    <%= form.text_field :tags, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:tags].none?, "border-red-400 focus:outline-red-600": post.errors[:tags].any?}] %>
+  </div>
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

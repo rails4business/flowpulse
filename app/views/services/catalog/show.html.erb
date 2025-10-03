@@ -1,0 +1,16 @@
+<!-- app/views/services/catalog/show.html.erb -->
+<section class="container">
+  <h1><%= @service_key.humanize %> — <%= Current.brand.display_name %></h1>
+  <% if @items.any? %>
+    <ul class="catalog-list">
+      <% @items.each do |ci| %>
+        <li>
+          <strong><%= ci.title.presence || ci.slug.humanize %></strong>
+          <div class="muted"><%= ci.folders_path %> · <%= ci.key_version %></div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="muted">Nessun contenuto per questo servizio.</p>
+  <% end %>
+</section>

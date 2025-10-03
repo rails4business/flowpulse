@@ -1,0 +1,27 @@
+<!-- app/views/domains/show.html.erb -->
+<div class="container">
+  <% heading = if brands?
+                  @item.respond_to?(:display_name) ? @item.display_name : (@item.controller_slug.titleize.presence || @item.host)
+                else
+                  @item.title.presence || @item.key
+                end %>
+  <h1><%= heading %></h1>
+  <% if brands? %>
+    <%= render "brand_header", item: @item %>
+  <% else %>
+    <%= render "service_header", item: @item %>
+  <% end %>
+  <h2>Contenuti</h2>
+  <% if @catalog_items.any? %>
+    <ul class="catalog-list">
+      <% @catalog_items.order(position: :asc, slug: :asc).each do |ci| %>
+        <li>
+          <strong><%= ci.title.presence || ci.slug.humanize %></strong>
+          <div class="muted"><%= ci.folders_path %> · <%= ci.service_key %></div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="muted">Nessun contenuto collegato.</p>
+  <% end %>
+</div>

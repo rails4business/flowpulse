@@ -1,0 +1,7 @@
+<!-- app/views/domains/_brand_header.html.erb -->
+<div class="muted">
+  <%= item["host"] || item["domain"] %>
+  <% if item["aliases"].present? %>
+    · alias: <%= Array(item["aliases"]).join(", ") %>
+  <% end %>
+</div>

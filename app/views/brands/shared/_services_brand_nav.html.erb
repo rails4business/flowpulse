@@ -1,0 +1,17 @@
+<%# app/views/brands/shared/_services_brand_nav.html.erb %>
+<%# Variabili attese: service_key (es. "blog"), folder_path (opzionale), slug (opzionale), opts (opzionale) %>
+<%# Link all'index del service (cartella di default del brand se non passi folder_path) %>
+<%# expects: service_key, folder_path (opt), slug (opt) %>
+<%= link_to "Apri #{service_key}",
+            service_index_path(key: service_key),
+            class: "px-3 py-1 rounded border" %>
+<% if defined?(folder_path) && folder_path.present? %>
+  <%= link_to "Vai a #{folder_path}",
+              service_folder_path(key: service_key, folder_path: folder_path),
+              class: "px-3 py-1 rounded border" %>
+<% end %>
+<% if defined?(slug) && slug.present? && defined?(folder_path) && folder_path.present? %>
+  <%= link_to "Apri item",
+              service_item_path(key: service_key, folder_path: folder_path, slug: slug),
+              class: "px-3 py-1 rounded border" %>
+<% end %>

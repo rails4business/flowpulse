@@ -1,0 +1,17 @@
+<nav class="mb-3 text-sm">
+  <% @breadcrumb.each_with_index do |bc, i| %>
+    <% if bc[:path].present? %>
+      <%= link_to bc[:name], bc[:path] %> /
+    <% else %>
+      <span><%= bc[:name] %></span>
+    <% end %>
+  <% end %>
+</nav>
+<article class="prose max-w-none">
+  <h1><%= @item.title || @item.slug %></h1>
+  <% if @item.summary.present? %>
+    <p><%= @item.summary %></p>
+  <% end %>
+  <!-- Se vuoi rendere il corpo YAML o HTML in futuro -->
+  <%#= raw @item.rendered_html %>
+</article>

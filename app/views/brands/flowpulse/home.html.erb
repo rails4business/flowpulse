@@ -1,0 +1,17 @@
+<%#= render "brands/shared/services_brand_nav", locals: { service_key: "blog", folder_path: nil, slug: nil } %>
+Current: <%= Current.user %>
+<%= current_user %>
+<% if current_user %>
+  <%= link_to "Esci", session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Vuoi uscire?" }, class: "btn btn-danger" %>
+<% end %>
+<div class="block">
+  <nav class="flex gap-4">
+    <%#= link_to "Brand",   brands_path %>
+    <%#= link_to "Servizi", services_path %>
+  </nav>
+  <% seo = Current.brand&.seo || {} %>
+  <section class="container">
+    <h1><%= seo["title"].presence || "Home" %></h1>
+    <p><%= seo["description"].to_s %></p>
+  </section>
+</div>

@@ -1,0 +1,15 @@
+<section class="container mx-auto p-6">
+  <h1 class="text-2xl font-semibold mb-4"><%= @key %></h1>
+  <% if @folders.blank? %>
+    <p class="text-gray-500">Nessuna cartella disponibile.</p>
+  <% else %>
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <% @folders.each do |f| %>
+        <li class="rounded-xl border p-4 bg-white">
+          <h2 class="font-semibold"><%= f %></h2>
+          <%= link_to "Apri", service_catalog_path(key: @key, folder: f), class: "text-blue-600 hover:underline text-sm" %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>
