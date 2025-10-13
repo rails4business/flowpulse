@@ -1,0 +1,345 @@
+<div class="min-h-screen bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100">
+  <!-- SVG SPRITE: Flowpulse logo variants -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+    <defs>
+      <!-- 3-pillar gradient: Salute (emerald) → Lavoro (rose) → Formazione (indigo) -->
+      <linearGradient id="fp-gradient" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#10b981"/>
+        <stop offset="50%" stop-color="#f43f5e"/>
+        <stop offset="100%" stop-color="#6366f1"/>
+      </linearGradient>
+      <linearGradient id="fp-gradient-dark" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#34d399"/>
+        <stop offset="50%" stop-color="#fb7185"/>
+        <stop offset="100%" stop-color="#818cf8"/>
+      </linearGradient>
+    </defs>
+    <!-- Horizontal wordmark -->
+    <symbol id="logo-flowpulse-horizontal" viewBox="0 0 320 80">
+      <g fill="none" fill-rule="evenodd">
+        <!-- Pulse line -->
+        <path d="M10 56 L58 56 L70 34 L84 66 L100 20 L116 56 L155 56" stroke="url(#fp-gradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Wordmark -->
+        <g fill="currentColor">
+          <text x="165" y="58" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-weight="800" font-size="34">Flowpulse</text>
+        </g>
+      </g>
+    </symbol>
+    <!-- Stacked logo (square) -->
+    <symbol id="logo-flowpulse-stacked" viewBox="0 0 200 200">
+      <rect x="0" y="0" width="200" height="200" rx="24" fill="white"/>
+      <path d="M20 120 L60 120 L75 90 L95 135 L115 70 L135 120 L180 120" stroke="url(#fp-gradient)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <text x="20" y="170" font-family="ui-sans-serif, system-ui" font-weight="800" font-size="28" fill="#111827">Flowpulse</text>
+    </symbol>
+    <!-- Mark-only (for favicon) -->
+    <symbol id="logo-flowpulse-mark" viewBox="0 0 64 64">
+      <rect x="0" y="0" width="64" height="64" rx="12" fill="white"/>
+      <path d="M6 40 L20 40 L24 30 L30 46 L36 22 L42 40 L58 40" stroke="url(#fp-gradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </symbol>
+  </svg>
+  <!-- HERO -->
+  <header class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-yellow-100 via-white to-transparent dark:from-yellow-900/10"></div>
+    <div class="relative max-w-7xl mx-auto px-4 py-16">
+      <div class="flex flex-col gap-6 md:gap-8 md:flex-row md:items-center">
+        <div class="md:w-2/3">
+          <span class="badge bg-yellow-50 text-yellow-800 border-yellow-200">Flowpulse</span>
+          <h1 class="mt-3 text-4xl md:text-5xl font-extrabold tracking-tight">Ricostruisci il tuo mondo</h1>
+          <p class="mt-4 text-lg text-gray-800 dark:text-slate-300 max-w-2xl">
+            Siamo convinti che il mondo che tutti vediamo, dipende dalle persone che lo abitano. Il mondo oggettivo che abbiamo in comune con chi ti sta intorno
+            sia sorretto dall'insieme di tutti i mondi soggettivi. Ogni persona costruisce il proprio mondo
+            soggettivo decidendo come impiegare la propria energia, le proprie percezioni, le proprie emozioni,
+            i propri pensieri e le proprie parole, e le storie con cui racconta i fatti delle cose.
+          </p>
+          <p class="mt-3 text-base text-gray-700 dark:text-slate-300 max-w-2xl">
+            Le decisioni che prende per interagire con il mondo in comune creano abitudini, che poi determinano
+            l'ambiente circostante e i gruppi che si creano e che modificano l'ambiente. Ogni persona, in questo senso,
+            è creatore del mondo. E anche ora stai creando: le tue pulsazioni, i tuoi battiti, i tuoi respiri creano flussi, circolazione.
+            Per questo nasce <strong>Flowpulse</strong>: un'accademia formata da <strong>progetti</strong>, <strong>brand</strong> e <strong>servizi</strong>,
+            che ti aiutano a «rigenerare il tuo mondo e il mondo oggettivo che ci sta intorno». Tre sono i fondamenti per fare questo:
+            <span class="text-emerald-700 dark:text-emerald-300 font-semibold">la salute</span>,
+            <span class="text-rose-700 dark:text-rose-300 font-semibold">il lavoro</span>
+            e <span class="text-indigo-700 dark:text-indigo-300 font-semibold">la formazione</span> — e solo qui ci sarebbe da parlare per ore…
+            ma noi pensiamo che l'esperienza valga più di mille parole. <strong>Benvenuto!</strong>
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="#pilastri" class="px-5 py-3 rounded-lg bg-gray-900 text-white hover:bg-black dark:bg-white dark:text-slate-900">Scopri i 3 pilastri</a>
+            <a href="#services" class="px-5 py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 dark:bg-slate-900 dark:border-slate-700">Vedi i servizi</a>
+          </div>
+        </div>
+        <div class="md:w-1/3">
+          <!-- Flowpulse logo orizzontale (inline SVG) -->
+          <svg viewBox="0 0 720 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowpulse - Salute Lavoro Formazione" class="w-full h-auto rounded-xl border border-gray-200 dark:border-slate-800 bg-white p-6">
+            <defs>
+              <linearGradient id="gradBrand" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%"  stop-color="#F5B800"/>
+                <stop offset="100%" stop-color="#111827"/>
+              </linearGradient>
+              <linearGradient id="gradPulse" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%"   stop-color="#10B981"/>
+                <stop offset="50%"  stop-color="#F43F5E"/>
+                <stop offset="100%" stop-color="#6366F1"/>
+              </linearGradient>
+              <filter id="softShadow" x="-20%" y="-40%" width="140%" height="200%">
+                <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.10"/>
+              </filter>
+            </defs>
+            <rect x="10" y="10" width="160" height="160" rx="20" fill="none" stroke="url(#gradBrand)" stroke-width="2"/>
+            <path d="M30 120 L60 120 L78 85 L98 140 L118 70 L138 120 L170 120" stroke="url(#gradPulse)" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#softShadow)"/>
+            <circle cx="58"  cy="48" r="5.5" fill="#10B981"/>
+            <circle cx="98"  cy="38" r="5.5" fill="#F43F5E"/>
+            <circle cx="138" cy="48" r="5.5" fill="#6366F1"/>
+            <g transform="translate(200, 0)">
+              <text x="0" y="95" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji" font-size="64" font-weight="800" fill="#111827" letter-spacing="0.5">Flowpulse</text>
+              <text x="2" y="135" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" font-size="18" font-weight="500" fill="#6B7280">Salute · Lavoro · Formazione</text>
+              <path d="M248 108 C 300 108, 332 108, 372 108" stroke="url(#gradPulse)" stroke-width="6" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <!-- 3 PILASTRI -->
+    <section id="pilastri" class="max-w-7xl mx-auto px-4 py-12">
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
+          <h3 class="font-semibold">Salute</h3>
+          <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">Prevenzione, postura, movimento e gestione del dolore. Valutazioni e programmi guidati.</p>
+        </div>
+        <div class="rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
+          <h3 class="font-semibold">Lavoro</h3>
+          <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">Organizzazione, processi, strumenti. Dalle routine personali ai flussi per l'impresa.</p>
+        </div>
+        <div class="rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
+          <h3 class="font-semibold">Formazione</h3>
+          <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">Percorsi e contenuti per evolvere abilità e consapevolezza, con docenti e auto‑apprendimento.</p>
+        </div>
+      </div>
+    </section>
+    <!-- BRAND PER PILASTRO -->
+    <section class="max-w-7xl mx-auto px-4 py-4 space-y-10">
+      <div>
+        <div class="rounded-xl p-4 bg-gradient-to-r from-emerald-50 via-white to-transparent border border-emerald-100 dark:from-emerald-900/10 dark:border-emerald-900/30">
+          <h2 class="text-2xl font-bold text-emerald-800 dark:text-emerald-300">Area -Salute</h2>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-300/80 mt-1">Prevenzione, postura, movimento, gestione del dolore.</p>
+        </div>
+        <div id="brands-salute" class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+      <div>
+        <div class="rounded-xl p-4 bg-gradient-to-r from-rose-50 via-white to-transparent border border-rose-100 dark:from-rose-900/10 dark:border-rose-900/30">
+          <h2 class="text-2xl font-bold text-rose-800 dark:text-rose-300">Area -Lavoro</h2>
+          <p class="text-sm text-rose-700/80 dark:text-rose-300/80 mt-1">Routine, priorità, strumenti e processi per lavorare meglio.</p>
+        </div>
+        <div id="brands-lavoro" class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+      <div>
+        <div class="rounded-xl p-4 bg-gradient-to-r from-indigo-50 via-white to-transparent border border-indigo-100 dark:from-indigo-900/10 dark:border-indigo-900/30">
+          <h2 class="text-2xl font-bold text-indigo-800 dark:text-indigo-300">Area -Formazione</h2>
+          <p class="text-sm text-indigo-700/80 dark:text-indigo-300/80 mt-1">Percorsi guidati e auto‑apprendimento per crescere nel tempo.</p>
+        </div>
+        <div id="brands-formazione" class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+    <!-- SERVIZI TRASVERSALI -->
+    <section id="services" class="max-w-7xl mx-auto px-4 py-12">
+      <div class="rounded-xl p-4 bg-gradient-to-r from-slate-50 via-white to-transparent border border-slate-100 dark:from-slate-800/40 dark:border-slate-800">
+        <h2 class="text-2xl font-bold">Servizi dell'accademia</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Strumenti trasversali: corsi, valutazioni e contenuti.</p>
+      </div>
+      <div id="services-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </section>
+    <!-- CTA FINALE -->
+    <!-- MANIFESTO -->
+    <section id="manifesto" class="max-w-7xl mx-auto px-4 py-14">
+      <div class="rounded-2xl border border-amber-100 dark:border-amber-900/30 bg-gradient-to-br from-amber-50 via-white to-transparent dark:from-amber-900/10 p-6 md:p-8">
+        <h2 class="text-2xl font-bold mb-3">Manifesto</h2>
+        <div class="prose prose-slate max-w-none dark:prose-invert">
+          <p>Il mondo che condividiamo è sostenuto dai mondi interiori di ciascuno. Ogni persona costruisce il proprio mondo soggettivo decidendo come usare la propria energia, come dare senso alle percezioni, come orientare emozioni e pensieri, quali parole scegliere e quali storie raccontare.</p>
+          <p>Le decisioni con cui entriamo in relazione con il mondo comune creano abitudini; le abitudini generano ambienti e comunità; gli ambienti cambiano il mondo. Ognuno, così, è co-creatore del reale. Anche ora: i tuoi battiti, i tuoi respiri, le tue pulsazioni mettono in moto flussi.</p>
+          <p><strong>Flowpulse</strong> nasce per questo: un’accademia composta da <strong>progetti</strong>, <strong>brand</strong> e <strong>servizi</strong> che ti accompagna a <strong>rigenerare il tuo mondo</strong> — e, insieme, il mondo che condividiamo.</p>
+          <p>I tre fondamenti su cui agiamo sono <strong>Salute</strong>, <strong>Lavoro</strong> e <strong>Formazione</strong>. Su ognuno potremmo parlare per ore, ma crediamo che l’esperienza valga più di mille parole. <strong>Benvenuto.</strong></p>
+        </div>
+      </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-4 pb-16">
+      <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <h3 class="text-xl font-semibold">Inizia dal tuo obiettivo</h3>
+          <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">Scegli un brand o una valutazione e costruisci il tuo percorso.</p>
+        </div>
+        <div class="flex gap-3">
+          <a href="#pilastri" class="px-5 py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 dark:bg-slate-900 dark:border-slate-700">Esplora i pilastri</a>
+          <a href="#services" class="px-5 py-3 rounded-lg bg-gray-900 text-white hover:bg-black dark:bg-white dark:text-slate-900">Vai ai servizi</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- JSON UNICO (brand + services) -->
+  <script id="config-json" type="application/json">
+    {
+     "services": [
+       {
+         "key": "onlinecourses",
+         "title": "Corsi Online",
+         "description": "Catalogo corsi online",
+         "image_url": "https://images.pexels.com/photos/29284337/pexels-photo-29284337.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "visible": true
+       },
+       {
+         "key": "questionnaire",
+         "title": "Questionari e Valutazioni",
+         "description": "Le tue valutazioni",
+         "image_url": "https://images.pexels.com/photos/8293635/pexels-photo-8293635.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "visible": true
+       },
+       {
+         "key": "teaching",
+         "title": "Corsi con insegnanti",
+         "description": "Impara e certifica",
+         "image_url": "https://images.pexels.com/photos/34221175/pexels-photo-34221175.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "visible": true
+       },
+       {
+         "key": "blog",
+         "title": "Accademia",
+         "description": "I tuoi contenuti",
+         "image_url": "https://images.pexels.com/photos/29614952/pexels-photo-29614952.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "visible": true
+       }
+     ],
+     "brands": [
+       {
+         "host": "posturacorretta.org",
+         "title": "PosturaCorretta",
+         "description": "Prevenzione e movimento",
+         "image_url": "https://images.pexels.com/photos/8436428/pexels-photo-8436428.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "https://posturacorretta.org",
+         "category": "salute",
+         "visible": true
+       },
+       {
+         "host": "stopaldolore.org",
+         "title": "Stop al Dolore",
+         "description": "Linee guida e strumenti per il dolore",
+         "image_url": "https://images.pexels.com/photos/20860586/pexels-photo-20860586.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/stopaldolore#home",
+         "category": "salute",
+         "visible": false
+       },
+       {
+         "host": "benessereintegrato.it",
+         "title": "Benessere Integrato",
+         "description": "Percorsi concreti di prevenzione",
+         "image_url": "https://images.pexels.com/photos/4443433/pexels-photo-4443433.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/benessereintegrato#home",
+         "category": "salute",
+         "visible": false
+       },
+
+       {
+         "host": "generaimpresa.it",
+         "title": "GeneraImpresa",
+         "description": "Strumenti e processi per fare impresa",
+         "image_url": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/generaimpresa#home",
+         "category": "lavoro",
+         "visible": false
+       },
+       {
+         "host": "1impegno.it",
+         "title": "1Impegno",
+         "description": "Pianifica e realizza: calendar, focus, routine",
+         "image_url": "https://images.pexels.com/photos/29509461/pexels-photo-29509461.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/impegno#home",
+         "category": "lavoro",
+         "visible": false
+       },
+       {
+         "host": "rails4b.com",
+         "title": "Rails4B",
+         "description": "Toolkit e guide per imprenditori che usano Rails",
+         "image_url": "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/rails4b#home",
+         "category": "lavoro",
+         "visible": false
+       },
+
+       {
+         "host": "ilgiardinodelcorpo.it",
+         "title": "Il Giardino del Corpo",
+         "description": "Evoluzione armonica tra corpo e coscienza",
+         "image_url": "https://images.pexels.com/photos/7363318/pexels-photo-7363318.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/ilgiardinodelcorpo#home",
+         "category": "formazione",
+         "visible": false
+       },
+       {
+         "host": "flowpulse.net",
+         "title": "Flowpulse Corso coscienza ",
+         "description": "Accademia salute, lavoro e crescita",
+         "image_url": "https://images.pexels.com/photos/30547572/pexels-photo-30547572.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/flowpulse#home",
+         "category": "formazione",
+         "visible": false
+       },
+       {
+         "host": "markpostura.com",
+         "title": "Mark Postura",
+         "description": "Progetti e visione personali",
+         "image_url": "https://images.pexels.com/photos/29509435/pexels-photo-29509435.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop",
+         "url": "domains/markpostura#home",
+         "category": "formazione",
+         "visible": false
+       }
+     ]
+          }
+  </script>
+  <script>
+    const $ = (s, r=document)=>r.querySelector(s);
+    const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+    const data = JSON.parse(document.getElementById('config-json').textContent);
+
+    function cardService(s){
+      return `
+      <article class="card rounded-xl border border-gray-200 bg-white dark:bg-slate-900 overflow-hidden transition-all">
+        ${s.image_url ? `<img src="${s.image_url}" alt="${s.title}" class="w-full aspect-[16/9] object-cover bg-gray-100"/>` : ''}
+        <div class="p-4 space-y-2">
+          <h3 class="font-semibold">${s.title}</h3>
+          <p class="text-sm text-gray-600 dark:text-slate-400">${s.description||''}</p>
+        </div>
+      </article>`;
+    }
+
+    function cardBrand(b){
+      return `
+      <a href="${b.url||'#'}" class="block card rounded-xl border border-gray-200 bg-white dark:bg-slate-900 overflow-hidden transition-all">
+        ${b.image_url ? `<img src="${b.image_url}" alt="${b.title}" class="w-full aspect-[16/9] object-cover bg-gray-100"/>` : ''}
+        <div class="p-4 space-y-2">
+          <h3 class="font-semibold">${b.title}</h3>
+          <p class="text-sm text-gray-600 dark:text-slate-400">${b.description||''}</p>
+        </div>
+      </a>`;
+    }
+
+    function render(){
+      // services (tutti i visibili)
+      const sWrap = document.getElementById('services-grid');
+      sWrap.innerHTML = (data.services||[]).filter(x=>x.visible).map(cardService).join('');
+
+      // brand per categoria
+      const sections = {
+        salute: document.getElementById('brands-salute'),
+        lavoro: document.getElementById('brands-lavoro'),
+        formazione: document.getElementById('brands-formazione')
+      };
+      const brands = (data.brands||[]).filter(x=>x.visible);
+      Object.entries(sections).forEach(([cat,el]) => {
+        const list = brands.filter(b => (b.category||'').toLowerCase()===cat);
+        el.innerHTML = list.map(cardBrand).join('') || `<p class="text-sm text-gray-600 dark:text-slate-400">Nessun brand in questa sezione.</p>`;
+      });
+    }
+
+    render();
+  </script>
+</div>

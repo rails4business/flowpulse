@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :passwords, param: :token
+  constraints AuthenticatedConstraint.new do
+    root "dashboard#home", as: :authenticated_root
+  end
+  root "pages#home", as: :unauthenticated_root
+  get "dashboard/home"
+  get "dashboard/superadmin"
+  get "pages/home"
+  get "pages/about"
+  get "pages/contact"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

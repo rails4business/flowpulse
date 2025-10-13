@@ -1,0 +1,8 @@
+<!-- Ciao Flowpulse
+<%#= link_to "Accedi", new_session_path, class: "btn" %>-->
+<% folder = request.host %>
+<% begin %>
+  <%= render "#{folder}/home" %>
+  <% rescue ActionView::MissingTemplate %>
+  <%= render "pages/flowpulse/home" %>
+<% end %>
