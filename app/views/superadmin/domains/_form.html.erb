@@ -1,0 +1,79 @@
+<%= form_with(model: [:superadmin, domain], class: "contents") do |form| %>
+  <% if domain.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(domain.errors.count, "error") %> prohibited this domain from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% domain.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+
+  <div class="my-5">
+    <%= form.label :host %>
+    <%= form.text_field :host, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": domain.errors[:host].none?, "border-red-400 focus:outline-red-600": domain.errors[:host].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :language %>
+    <%= form.text_field :language,
+          list: "languages",
+          placeholder: "es. it, en, fr…",
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                  {"border-gray-400 focus:outline-blue-600": domain.errors[:language].none?,
+                  "border-red-400 focus:outline-red-600": domain.errors[:language].any?}] %>
+
+    <datalist id="languages">
+      <% %w[it en fr de es pt nl sv no da fi pl cs sk sl hu ro bg el ru tr ar he hi zh ja ko].each do |code| %>
+        <option value="<%= code %>"></option>
+      <% end %>
+    </datalist>
+  </div>
+
+
+  <div class="my-5">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": domain.errors[:title].none?, "border-red-400 focus:outline-red-600": domain.errors[:title].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :description %>
+    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": domain.errors[:description].none?, "border-red-400 focus:outline-red-600": domain.errors[:description].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :favicon_url %>
+    <%= form.text_field :favicon_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": domain.errors[:favicon_url].none?, "border-red-400 focus:outline-red-600": domain.errors[:favicon_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :square_logo_url %>
+    <%= form.text_field :square_logo_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": domain.errors[:square_logo_url].none?, "border-red-400 focus:outline-red-600": domain.errors[:square_logo_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :horizontal_logo_url %>
+    <%= form.text_field :horizontal_logo_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": domain.errors[:horizontal_logo_url].none?, "border-red-400 focus:outline-red-600": domain.errors[:horizontal_logo_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :provider %>
+    <%= form.text_field :provider, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": domain.errors[:provider].none?, "border-red-400 focus:outline-red-600": domain.errors[:provider].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :taxbranch_id, "Taxbranch" %>
+    <%= form.collection_select :taxbranch_id, @taxbranches, :id, :slug_label,
+      { include_blank: "— Seleziona un taxbranch —" },
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              {"border-gray-400 focus:outline-blue-600": domain.errors[:taxbranch_id].none?,
+               "border-red-400 focus:outline-red-600": domain.errors[:taxbranch_id].any?}] %>
+ 
+  </div>
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

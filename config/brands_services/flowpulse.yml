@@ -1,0 +1,97 @@
+services:
+  - key: onlinecourses
+    title: "Corsi Online"
+    description: "Catalogo corsi online"
+    image_url: "https://images.pexels.com/photos/29284337/pexels-photo-29284337.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    visible: false
+
+  - key: questionnaire
+    title: "Questionari e Valutazioni"
+    description: "Le tue valutazioni"
+    image_url: "https://images.pexels.com/photos/8293635/pexels-photo-8293635.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    visible: false
+
+  - key: teaching
+    title: "Corsi con insegnanti"
+    description: "Impara e certifica"
+    image_url: "https://images.pexels.com/photos/34221175/pexels-photo-34221175.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    visible: true
+
+  - key: blog
+    title: "Accademia - Taxonomy albero - Mappa produzione - Percorsi"
+    description: "I tuoi contenuti"
+    image_url: "https://images.pexels.com/photos/29614952/pexels-photo-29614952.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    visible: false
+
+brands:
+  - host: "posturacorretta.org"
+    title: "PosturaCorretta"
+    description: "Prevenzione e movimento"
+    image_url: "https://images.pexels.com/photos/8436428/pexels-photo-8436428.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "https://posturacorretta.org"
+    category: "salute"
+    visible: true
+
+  - host: "stopaldolore.org"
+    title: "Stop al Dolore"
+    description: "Linee guida e strumenti per il dolore"
+    image_url: "https://images.pexels.com/photos/20860586/pexels-photo-20860586.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/stopaldolore#home"
+    category: "salute"
+    visible: false
+
+  - host: "benessereintegrato.it"
+    title: "Benessere Integrato"
+    description: "Percorsi concreti di prevenzione"
+    image_url: "https://images.pexels.com/photos/4443433/pexels-photo-4443433.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/benessereintegrato#home"
+    category: "salute"
+    visible: false
+
+  - host: "generaimpresa.it"
+    title: "GeneraImpresa"
+    description: "Strumenti e processi per fare impresa"
+    image_url: "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/generaimpresa#home"
+    category: "lavoro"
+    visible: false
+
+  - host: "1impegno.it"
+    title: "1Impegno"
+    description: "Pianifica e realizza: calendar, focus, routine"
+    image_url: "https://images.pexels.com/photos/29509461/pexels-photo-29509461.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/impegno#home"
+    category: "lavoro"
+    visible: false
+
+  - host: "rails4b.com"
+    title: "Rails4B"
+    description: "Toolkit e guide per imprenditori che usano Rails"
+    image_url: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/rails4b#home"
+    category: "lavoro"
+    visible: false
+
+  - host: "ilgiardinodelcorpo.it"
+    title: "Il Giardino del Corpo"
+    description: "Evoluzione armonica tra corpo e coscienza"
+    image_url: "https://images.pexels.com/photos/7363318/pexels-photo-7363318.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/ilgiardinodelcorpo#home"
+    category: "formazione"
+    visible: false
+
+  - host: "flowpulse.net"
+    title: "Flowpulse Corso coscienza"
+    description: "Accademia salute, lavoro e crescita"
+    image_url: "https://images.pexels.com/photos/30547572/pexels-photo-30547572.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/flowpulse#home"
+    category: "formazione"
+    visible: false
+
+  - host: "markpostura.com"
+    title: "Mark Postura"
+    description: "Progetti e visione personali"
+    image_url: "https://images.pexels.com/photos/29509435/pexels-photo-29509435.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
+    url: "domains/markpostura#home"
+    category: "formazione"
+    visible: false

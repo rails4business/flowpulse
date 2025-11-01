@@ -63,3 +63,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+
+gem "ancestry"
+gem "acts_as_list"

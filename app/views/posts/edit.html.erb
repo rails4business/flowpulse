@@ -1,0 +1,19 @@
+<% content_for :title, "Editing post" %>
+
+<% content_for :aside do %>
+  <%= render "posts/index" %>
+<% end %>
+<div class="container">
+  <article class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+    <div class="p-6 md:p-8 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-xl font-bold">Modifica: <%= @post.title.presence || "(Senza titolo)" %></h2>
+      <p class="text-sm text-gray-500 mt-1">Salva per aggiornare lo show senza ricaricare la pagina.</p>
+    </div>
+    <div class="p-6 md:p-8">
+      <%= render "form", post: @post %>
+      <div class="mt-4 flex items-center gap-2">
+        <%= link_to "↩︎ Annulla", post_path(@post, q: params[:q]), data: { turbo_frame: "post" }, class: "px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-sm" %>
+      </div>
+    </div>
+  </article>
+</div>

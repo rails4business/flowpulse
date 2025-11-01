@@ -1,0 +1,102 @@
+<%= form_with(model: taxbranch, local: true, class: "space-y-6") do |f| %>
+  <% if taxbranch.errors.any? %>
+    <div class="rounded-md border border-red-200 bg-red-50 p-4 text-red-800">
+      <p class="font-semibold mb-2">⚠️ Ci sono <%= pluralize(taxbranch.errors.count, "errore") %> nel form:</p>
+      <ul class="list-disc pl-5 space-y-0.5">
+        <% taxbranch.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
+  <!-- Metadati e posizionamento -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div>
+      <%= f.label :lead_id, "Lead ID", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :lead_id,
+            class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:lead_id].any?}" %>
+      <% taxbranch.errors.full_messages_for(:lead_id).each do |m| %>
+        <p class="mt-1 text-xs text-red-600"><%= m %></p>
+      <% end %>
+    </div>
+
+    <div>
+      <%= f.label :position, "Posizione", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.number_field :position,
+            class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:position].any?}" %>
+      <% taxbranch.errors.full_messages_for(:position).each do |m| %>
+        <p class="mt-1 text-xs text-red-600"><%= m %></p>
+      <% end %>
+    </div>
+
+    <div>
+      <%= f.label :parent_id, "ID Padre", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :parent_id, value: taxbranch.parent_id,
+            class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:parent_id].any?}" %>
+      <% taxbranch.errors.full_messages_for(:parent_id).each do |m| %>
+        <p class="mt-1 text-xs text-red-600"><%= m %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Descrizione -->
+  <div>
+    <%= f.label :description, "Descrizione", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :description,
+          placeholder: "Testo descrittivo...",
+          class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:description].any?}" %>
+    <% taxbranch.errors.full_messages_for(:description).each do |m| %>
+      <p class="mt-1 text-xs text-red-600"><%= m %></p>
+    <% end %>
+  </div>
+
+  <!-- Slug builder (con Stimulus) -->
+  <div class="space-y-4" data-controller="taxbranch-slug">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div>
+        <%= f.label :slug_category, "Categoria slug", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :slug_category,
+              Taxbranch.category_options,
+              { include_blank: "—" },
+              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug_category].any?}",
+              data: { "taxbranch-slug-target": "category", action: "change->taxbranch-slug#update" } %>
+        <% taxbranch.errors.full_messages_for(:slug_category).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :slug_label, "Etichetta slug", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :slug_label,
+              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug_label].any?}",
+              data: { "taxbranch-slug-target": "label", action: "input->taxbranch-slug#update" } %>
+        <% taxbranch.errors.full_messages_for(:slug_label).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :slug, "Slug (auto)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :slug,
+              placeholder: "generato da categoria + etichetta o nome",
+              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug].any?}",
+              data: { "taxbranch-slug-target": "slug" } %>
+        <% taxbranch.errors.full_messages_for(:slug).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+        <!-- Metti readonly: true se vuoi bloccarne l’edit manuale -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Ancestry -->
+  <%= f.hidden_field :ancestry, value: taxbranch.ancestry %>
+
+  <!-- Submit -->
+  <div class="flex justify-end">
+    <%= f.submit "💾 Salva",
+          class: "inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-white font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
+  </div>
+<% end %>

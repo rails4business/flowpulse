@@ -1,0 +1,21 @@
+
+<%# app/views/posts/index.html.erb %>
+<% content_for :title, "📊 Dashboard Post" %>
+
+<% content_for :aside do %>
+  <%= render "dashboard/aside_menu"  %>
+<% end %>
+<!-- app/views/posts/index.html.erb (toolbar) -->
+
+
+<% content_for :nav do %>
+<div class="sticky top-16 z-20 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60  overflow-x-auto">
+  <%= render "posts/filter_bar", params_hash: (@params || params) %>
+</div>
+<% end %>
+<% content_for :subnav_application do %>
+<% end %>
+
+<div class="mx-auto max-w-7xl px-4 py-2 md:py-4 ">
+  <%= render "posts/table", posts: @posts, params_hash: (@params || params) %>
+</div>

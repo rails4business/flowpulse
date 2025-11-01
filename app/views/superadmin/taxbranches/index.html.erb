@@ -1,0 +1,45 @@
+<% content_for :title, "Taxbranches" %>
+
+<h1 class="text-2xl font-bold mb-4">Tassonomie principali</h1>
+
+<div class="space-y-2">
+  <% @taxbranches.each do |branch| %>
+    <div class="border p-3 rounded hover:bg-slate-50 flex justify-between items-center">
+      <%= link_to branch.slug, superadmin_taxbranch_path(branch), class: "text-blue-600 font-medium" %>
+      <div class="flex gap-2 text-sm text-gray-500">
+        
+        <% if params[:children_id] %>
+         <b class="text-xl">
+           <%= link_to "+ padre", addparent_taxbranch_path(branch, children_id: params[:children_id]),
+            data: { turbo_method: :patch },
+            method: :patch,
+            class: "hover:text-slate-700", title: "Aggiungi come padre" %>
+            
+             </b>
+
+        <% else %>
+        
+                <%= link_to "➡️ Apri", superadmin_taxbranch_path(branch), class: "hover:text-blue-600" %>
+               <% end %>
+              <div class="flex items-center gap-2">
+      
+
+  <%= link_to "✏️ Modifica", edit_superadmin_taxbranch_path(branch),
+      class: "text-sm text-blue-700 hover:underline" %>
+
+  
+  <%= button_to "🗑️ Elimina",
+      superadmin_taxbranch_path(branch),
+      method: :delete,
+      form: { data: { turbo_confirm: "Eliminare “#{branch.slug_label}” e le sue sottocategorie?" } },
+      class: "text-sm text-red-700 hover:underline" %>
+</div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-6">
+  <%= link_to "➕ Nuova categoria radice", new_superadmin_taxbranch_path, class: "inline-block bg-blue-600 text-white px-4 py-2 rounded" %>
+</div>
+

@@ -1,4 +1,7 @@
-<div>
-  <h1 class="font-bold text-4xl">Dashboard#home</h1>
-  <p>Find me in app/views/dashboard/home.html.erb</p>
-</div>
+<% content_for :title, "📊 Dashboard Post" %>
+
+
+
+<% content_for :aside do %>
+  <%= render "dashboard/aside_menu"  %>
+<% end %>

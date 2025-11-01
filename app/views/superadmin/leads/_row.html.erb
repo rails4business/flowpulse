@@ -1,0 +1,28 @@
+<!-- app/views/leads/_row.html.erb -->
+<tr id="lead_row_<%= lead.id %>" data-lead-id="<%= lead.id %>">
+  <td class="p-3 text-slate-500"><%= l(lead.created_at, format: :short) %></td>
+  <td class="p-3 font-medium"><%= lead.username %></td>
+  <td class="p-3"><%= lead.email %></td>
+  <td class="p-3 text-slate-600"><%= lead.referral_lead_id || "—" %></td>
+  <td class="p-3">
+    <% if lead.user&.pending? %>
+      <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">pending</span>
+    <% else %>
+      <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">approved</span>
+    <% end %>
+  </td>
+  <td class="p-3 text-right">
+    <% if lead.user&.pending? && policy(lead).approve? %>
+      <button
+        class="inline-flex items-center px-3 py-1.5 rounded-lg border bg-white hover:bg-slate-50 text-slate-700"
+        data-controller="approve"
+        data-approve-url-value="<%= approve_lead_path(lead, format: :json) %>"
+        data-action="click->approve#go"
+        data-approve-target="button">
+        Approva
+      </button>
+    <% else %>
+      <span class="text-slate-400 text-sm">—</span>
+    <% end %>
+  </td>
+</tr>

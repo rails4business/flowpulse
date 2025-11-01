@@ -1,8 +1,26 @@
-<!-- Ciao Flowpulse
-<%#= link_to "Accedi", new_session_path, class: "btn" %>-->
-<% folder = request.host %>
-<% begin %>
-  <%= render "#{folder}/home" %>
-  <% rescue ActionView::MissingTemplate %>
-  <%= render "pages/flowpulse/home" %>
-<% end %>
+<%= render 'shared/nav_partial' %>
+
+<!-- Da sistemare la nav e vedere di filtrare per etichette o creare i gate con i posts per i vari formati! 
+E poi vedere come creare il percorso con gli eventi e il resto -->
+
+<!-- app/views/pages/home.html.erb -->
+<div class="max-w-6xl mx-auto p-6">
+  <header class="mb-6">
+    <h1 class="text-3xl font-bold">
+      <%= Current.domain&.title.presence || @taxbranch.slug_label %>
+    </h1>
+    <% if (desc = Current.domain&.description).present? %>
+      <p class="text-slate-600 mt-2"><%= desc %></p>
+    <% end %>
+  </header>
+
+  <% if @children.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @children.each do |child| %>
+        <%= render "pages/child_card", child: child %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-slate-500">Non ci sono elementi.</p>
+  <% end %>
+</div>

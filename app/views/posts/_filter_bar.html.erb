@@ -1,0 +1,182 @@
+<%# app/views/posts/_filter_bar.html.erb %>
+<% params_hash = local_assigns[:params_hash] || params %>
+<% safe_params =
+     if params_hash.respond_to?(:to_unsafe_h) then params_hash.to_unsafe_h
+     elsif params_hash.respond_to?(:to_h)      then params_hash.to_h
+     else params_hash || {}
+     end %>
+
+<%
+  scope_labels = { "all"=>"Tutti", "published"=>"Pubblicati", "updated"=>"Bozze" }
+  current_scope = (safe_params["scope"].presence || "all")
+  current_scope_label = scope_labels[current_scope] || "Tutti"
+
+  period_labels = { "last7"=>"7gg", "last30"=>"1 mese", "year"=>"1 anno", "custom"=>"Data" }
+  current_preset = (safe_params["preset"].presence || "last7")
+  current_period_label = safe_params["date"].present? ? "Data" : (period_labels[current_preset] || "7gg")
+%>
+
+<!-- DESKTOP (md+): inline, super-compatto -->
+<div class="hidden md:flex items-center gap-2">
+  <%= form_with url: posts_path, method: :get, local: true,
+        class: "flex items-center gap-1 text-xs" do %>
+
+    <%= link_to "➕ ", new_post_path,
+      class: "inline-flex items-center h-8 px-3 rounded border border-slate-300 bg-white hover:bg-slate-50 whitespace-nowrap" %>
+
+    <!-- Scope -->
+    <details class="relative">
+      <summary class="list-none cursor-pointer inline-flex items-center h-8 px-3 rounded border border-slate-300 bg-white hover:bg-slate-50 gap-1">
+        <span></span><span class="font-semibold"><%= current_scope_label %></span><span aria-hidden>▾</span>
+      </summary>
+      <div class="absolute right-0 mt-1 z-30 w-40 bg-white border border-slate-200 rounded-md shadow p-1">
+        <% [["Tutti","all"],["Pubblicati","published"],["Bozze","updated"]].each do |label, value| %>
+          <%= link_to label,
+              url_for(safe_params.merge("scope" => value, "page" => nil)),
+              class: "block px-2.5 py-1 text-xs rounded hover:bg-slate-50 #{'font-semibold text-blue-700' if current_scope == value}" %>
+        <% end %>
+      </div>
+    </details>
+
+    <!-- Periodo -->
+    <details class="relative">
+      <summary class="list-none cursor-pointer inline-flex items-center h-8 px-3 rounded border border-slate-300 bg-white hover:bg-slate-50 gap-1 whitespace-nowrap">
+        <span></span><span class="font-semibold"><%= current_period_label %></span><span aria-hidden>▾</span>
+      </summary>
+      <div class="absolute right-0 mt-1 z-30 min-w-48 bg-white border border-slate-200 rounded-md shadow p-1">
+        <% [["7gg","last7"],["1 mese","last30"],["1 anno","year"]].each do |label, value| %>
+          <%= link_to label,
+              url_for(safe_params.merge("preset" => value, "date" => nil, "page" => nil)),
+              class: "block px-2.5 py-1 text-xs rounded hover:bg-slate-50 #{'font-semibold text-blue-700' if (safe_params['date'].blank? && current_preset == value)}" %>
+        <% end %>
+      </div>
+    </details>
+
+    <!-- Data singola -->
+    <div class="flex items-center gap-1">
+      <%= date_field_tag :date, safe_params["date"],
+            class: "h-8 rounded border border-slate-300 px-2 text-xs bg-white",
+            onchange: "this.form.submit()" %>
+      <% if safe_params["date"].present? %>
+        <input type="hidden" name="preset" value="">
+      <% end %>
+    </div>
+
+    <!-- Search -->
+    <%= text_field_tag :q, safe_params["q"],
+      placeholder: "🔍 Cerca…",
+      class: "h-8 rounded border border-slate-300 px-3 text-xs bg-white w-40" %>
+
+    <%= submit_tag "Filtra",
+      class: "inline-flex items-center h-8 px-3 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold whitespace-nowrap" %>
+
+    <% if (safe_params.except("controller","action")).present? %>
+      <%= link_to "✕", posts_path,
+        class: "inline-flex items-center h-8 px-3 rounded bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold whitespace-nowrap" %>
+    <% end %>
+
+    <%= hidden_field_tag :sort,  safe_params["sort"]  if safe_params["sort"].present? %>
+    <%= hidden_field_tag :order, safe_params["order"] if safe_params["order"].present? %>
+  <% end %>
+
+  <!-- Export / Import compatti -->
+  <div class="flex items-center gap-1 text-xs">
+    <%= link_to "JSON", export_posts_path(format: :json),
+        class: "inline-flex items-center h-8 px-2 rounded border border-slate-300 bg-white hover:bg-slate-50" %>
+    <%= link_to "CSV", export_posts_path(format: :csv),
+        class: "inline-flex items-center h-8 px-2 rounded border border-slate-300 bg-white hover:bg-slate-50" %>
+
+    <%= form_with url: import_posts_path, method: :post, multipart: true, data: { turbo: false },
+          class: "flex items-center gap-1" do |f| %>
+      <%= f.file_field :file,
+            name: :file,
+            accept: ".json,.csv",
+            required: true,
+            class: "text-xs file:h-8 file:px-2 file:rounded file:border file:border-slate-300 file:bg-white file:hover:bg-slate-50" %>
+      <%= f.submit "Importa",
+            class: "inline-flex items-center h-8 px-2 rounded border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer" %>
+    <% end %>
+  </div>
+</div>
+
+<!-- MOBILE: un solo pulsante che apre il pannello filtri -->
+<div class="md:hidden">
+  <details class="relative">
+    <summary class="list-none cursor-pointer inline-flex items-center h-8 px-3 rounded border border-slate-300 bg-white text-xs gap-2">
+      🔧 Filtri
+      <span aria-hidden>▾</span>
+    </summary>
+
+    <div class="absolute right-0 mt-1 z-40 w-[92vw] max-w-sm bg-white border border-slate-200 rounded-md shadow p-3">
+      <%= form_with url: posts_path, method: :get, local: true,
+            class: "flex flex-col gap-2 text-xs" do %>
+
+        <div class="flex justify-between gap-2">
+          <%= link_to "➕ Nuovo", new_post_path,
+            class: "inline-flex items-center h-8 px-3 rounded border border-slate-300 bg-white hover:bg-slate-50" %>
+          <% if (safe_params.except("controller","action")).present? %>
+            <%= link_to "Azzera", posts_path,
+              class: "inline-flex items-center h-8 px-3 rounded bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold" %>
+          <% end %>
+        </div>
+
+        <!-- Scope -->
+        <div class="flex items-center gap-2">
+          <span class="text-slate-600">Scope</span>
+          <div class="ml-auto">
+            <% [["Tutti","all"],["Pubblicati","published"],["Bozze","updated"]].each do |label, value| %>
+              <%= link_to label,
+                  url_for(safe_params.merge("scope" => value, "page" => nil)),
+                  class: "inline-block px-2 py-1 rounded border text-xs mr-1 mb-1 #{ current_scope==value ? 'border-blue-500 text-blue-700' : 'border-slate-300'}" %>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Periodo -->
+        <div class="flex items-center gap-2">
+          <span class="text-slate-600">Periodo</span>
+          <div class="ml-auto">
+            <% [["7gg","last7"],["1 mese","last30"],["1 anno","year"]].each do |label, value| %>
+              <%= link_to label,
+                  url_for(safe_params.merge("preset" => value, "date" => nil, "page" => nil)),
+                  class: "inline-block px-2 py-1 rounded border text-xs mr-1 mb-1 #{ (safe_params['date'].blank? && current_preset==value) ? 'border-blue-500 text-blue-700' : 'border-slate-300'}" %>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Data -->
+        <%= date_field_tag :date, safe_params["date"],
+              class: "h-8 rounded border border-slate-300 px-2 bg-white",
+              onchange: "this.form.submit()" %>
+        <% if safe_params["date"].present? %>
+          <input type="hidden" name="preset" value="">
+        <% end %>
+
+        <!-- Search -->
+        <%= text_field_tag :q, safe_params["q"],
+              placeholder: "🔍 Cerca…",
+              class: "h-8 rounded border border-slate-300 px-3 bg-white w-full" %>
+
+        <div class="flex items-center justify-between pt-1">
+          <%= submit_tag "Filtra",
+            class: "inline-flex items-center h-8 px-3 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold" %>
+
+          <div class="flex items-center gap-1">
+            <%= link_to "JSON", export_posts_path(format: :json),
+                class: "inline-flex items-center h-8 px-2 rounded border border-slate-300 bg-white hover:bg-slate-50" %>
+            <%= link_to "CSV", export_posts_path(format: :csv),
+                class: "inline-flex items-center h-8 px-2 rounded border border-slate-300 bg-white hover:bg-slate-50" %>
+            <%= form_with url: import_posts_path, method: :post, multipart: true, data: { turbo: false },
+                  class: "inline-flex items-center gap-1" do |f| %>
+              <%= f.file_field :file,
+                    name: :file, accept: ".json,.csv", required: true,
+                    class: "text-xs file:h-8 file:px-2 file:rounded file:border file:border-slate-300 file:bg-white" %>
+              <%= f.submit "Importa",
+                    class: "inline-flex items-center h-8 px-2 rounded border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </details>
+</div>

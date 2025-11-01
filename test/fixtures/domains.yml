@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  host: MyString
+  language: MyString
+  title: MyString
+  description: MyText
+  favicon_url: MyString
+  square_logo_url: MyString
+  horizontal_logo_url: MyString
+  provider: MyString
+  taxbranch: one
+
+two:
+  host: MyString
+  language: MyString
+  title: MyString
+  description: MyText
+  favicon_url: MyString
+  square_logo_url: MyString
+  horizontal_logo_url: MyString
+  provider: MyString
+  taxbranch: two

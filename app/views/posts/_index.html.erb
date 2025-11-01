@@ -1,0 +1,41 @@
+
+ 
+    <% grouped = @posts.group_by { |p| (p.published_at || p.created_at).in_time_zone.to_date.beginning_of_month } %>
+
+    <div>
+      <%= link_to "📚 Torna ai post", posts_path,
+      class: "px-4 py-2 rounded-md  hover:bg-slate-200 font-medium" %>
+
+      <% grouped.sort_by { |month, _| month }.reverse.each do |month, items| %>
+        <details class="group  border-slate-200 dark:border-slate-700 py-2" <%= 'open' if month == grouped.keys.max %>>
+          <summary class="flex cursor-pointer list-none items-center justify-between py-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <span><%= l(month, format: "%B %Y") %></span>
+            <span class="text-xs text-slate-400"><%= items.size %></span>
+          </summary>
+
+          <ul class="mt-1 space-y-0.5">
+            <% items.sort_by { |p| -(p.published_at || p.created_at).to_i }.each do |p| %>
+              <% ref_time = (p.published_at || p.created_at).in_time_zone %>
+              <% active = (p.id == @post.id) %>
+              <li>
+                <%= link_to post_path(p),
+                    class: "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50 dark:hover:bg-gray-700 " \
+                           "#{ active ? 'font-semibold text-slate-900 dark:text-white bg-slate-50 dark:bg-gray-700 ring-1 ring-slate-200 dark:ring-gray-600' : 'text-slate-700 dark:text-slate-200'}" do %>
+
+                  <!-- Giorno (numero) -->
+                  <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white text-[12px] font-semibold text-slate-700 dark:border-gray-600 dark:bg-gray-800 dark:text-slate-200">
+                    <%= ref_time.strftime("%d") %>
+                  </span>
+
+                  <!-- Titolo -->
+                  <span class="truncate"><%= p.title.presence || "(Senza titolo)" %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </details>
+      <% end %>
+    </div>
+
+
+

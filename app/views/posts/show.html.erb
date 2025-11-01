@@ -1,0 +1,119 @@
+<% content_for :title, @post.title %>
+
+<% content_for :aside do %>
+  <%= render "posts/index" %>
+<% end %>
+
+<div class="md:w-2/3 w-full mx-auto px-4 py-6 space-y-6">
+  <!-- app/views/posts/show.html.erb (azioni singolo) -->
+<div class="flex items-center gap-2 flex-wrap mt-4">
+  <%= link_to "⬇︎ JSON", export_post_path(@post, format: :json), class: "px-3 py-2 rounded-lg border bg-white" %>
+  <%= link_to "⬇︎ CSV",  export_post_path(@post, format: :csv),  class: "px-3 py-2 rounded-lg border bg-white" %>
+  <%= link_to "⬇︎ Markdown", export_post_path(@post, format: :md), class: "px-3 py-2 rounded-lg border bg-white" %>
+</div>
+  <% if notice.present? %>
+    <!--p id="notice" class="py-2 px-3 bg-green-50 text-green-700 border border-green-200 rounded-md font-medium">
+      <%#= notice %>
+    </p-->
+  <% end %>
+
+  <!-- Card informazioni principali -->
+  <div class="bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden">
+    <% if @post.img_square_url.present? %>
+      <%= image_tag @post.img_square_url,
+        alt: @post.title,
+        class: "w-full h-64 object-cover" %>
+    <% end %>
+
+    <div class="p-6">
+      <h1 class="text-3xl font-bold text-slate-900 mb-2"><%= @post.title %></h1>
+
+      <% if @post.description.present? %>
+        <p class="text-slate-600 text-lg mb-3"><%= @post.description %></p>
+      <% end %>
+
+      <% if @post.published_at.present? %>
+        <p class="text-sm text-slate-500">
+          📅 Pubblicato il <%= l(@post.published_at, format: :long) %>
+        </p>
+      <% else %>
+        <p class="text-sm text-yellow-600 font-medium">📝 Bozza</p>
+      <% end %>
+    </div>
+  </div>
+
+  
+
+  <!-- Azioni -->
+  <div class="flex flex-wrap gap-3">
+    <%= link_to "✏️ Modifica", edit_post_path(@post),
+      class: "px-4 py-2 rounded-md bg-slate-100 hover:bg-slate-200 font-medium" %>
+
+    
+    <%= button_to "🗑️ Elimina", @post, method: :delete,
+      form_class: "inline-block",
+      class: "px-4 py-2 rounded-md bg-red-600 hover:bg-red-500 text-white font-medium",
+      data: { turbo_confirm: "Sei sicuro di voler eliminare questo post?" } %>
+  </div>
+</div>
+
+
+
+<section class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
+  <div class="px-4 mx-auto max-w-screen-xl">
+    <article class="mx-auto w-full max-w-3xl">
+
+      <!-- Header autore/meta -->
+      <header class="mb-6 not-format">
+        <address class="flex items-center not-italic">
+          <div class="inline-flex items-center text-sm text-gray-900 dark:text-white">
+            <%# avatar placeholder, puoi sostituire con ActiveStorage %>
+            <img class="mr-4 w-12 h-12 rounded-full border border-slate-200 dark:border-slate-700"
+                 src="https://api.dicebear.com/9.x/initials/svg?seed=<%= CGI.escape(@post.user&.email_address.to_s) %>"
+                 alt="<%= @post.user&.email_address || 'Author' %>">
+            <div>
+              <div class="text-base font-bold">
+                <%#= @post.user&.username || @post.user&.email_address || "Autore" %>
+              </div>
+              <div class="text-sm text-gray-500 dark:text-gray-400">
+                <% if @post.published_at.present? %>
+                  Pubblicato
+                  <time datetime="<%= @post.published_at.iso8601 %>"><%= l(@post.published_at, format: :long) %></time>
+                <% else %>
+                  Bozza · Aggiornato
+                  <time datetime="<%= @post.updated_at.iso8601 %>"><%= l(@post.updated_at, format: :long) %></time>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </address>
+
+        <h1 class="mt-4 text-3xl lg:text-4xl font-extrabold leading-tight text-gray-900 dark:text-white">
+          <%= @post.title %>
+        </h1>
+
+        <% if @post.description.present? %>
+          <p class="mt-2 text-gray-600 dark:text-gray-300">
+            <%= @post.description %>
+          </p>
+        <% end %>
+      </header>
+
+      <!-- Corpo articolo con skin tipografica -->
+      
+      <div class="format format-blue dark:format-invert">
+        <!-- Corpo articolo formattato per blog -->
+        <div class="lexxy-content">
+          <%= @post.body %>
+        </div>
+      </div>
+
+      <!-- (opzionale) footer/meta -->
+      <footer class="mt-10 text-sm text-slate-500 dark:text-slate-400">
+        <div>Slug: /<%= @post.slug %></div>
+        <div>Creato: <%= l(@post.created_at, format: :long) %></div>
+      </footer>
+    </article>
+  </div>
+</section>
+

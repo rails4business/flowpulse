@@ -4,4 +4,7 @@ class DashboardController < ApplicationController
 
   def superadmin
   end
+
+  def liste
+  end
 end

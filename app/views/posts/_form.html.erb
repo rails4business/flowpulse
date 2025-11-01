@@ -1,0 +1,83 @@
+<%= form_with(model: post, class: "contents") do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="flex flex-col md:flex-row gap-6">
+  <div class="my-5">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:user_id].none?, "border-red-400 focus:outline-red-600": post.errors[:user_id].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :published_at %>
+    <%= form.datetime_field :published_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:published_at].none?, "border-red-400 focus:outline-red-600": post.errors[:published_at].any?}] %>
+  </div>
+  <div class="my-5">
+    <%= form.label :group_id %>
+    <%= form.text_field :group_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:group_id].none?, "border-red-400 focus:outline-red-600": post.errors[:group_id].any?}] %>
+  </div>
+
+</div>
+
+<div class="flex flex-col md:flex-row gap-6">
+  <div class="my-5">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:title].none?, "border-red-400 focus:outline-red-600": post.errors[:title].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :slug %>
+    <%= form.text_field :slug, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:slug].none?, "border-red-400 focus:outline-red-600": post.errors[:slug].any?}] %>
+  </div>
+   <div class="my-5">
+    <%= form.label :meta %>
+    <%= form.text_field :meta, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:meta].none?, "border-red-400 focus:outline-red-600": post.errors[:meta].any?}] %>
+  </div>
+</div>
+  <div class="my-5">
+    <%= form.label :description %>
+    <%= form.text_field :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:description].none?, "border-red-400 focus:outline-red-600": post.errors[:description].any?}] %>
+  </div>
+<div class="flex flex-col md:flex-row gap-6">
+  <div class="my-5">
+    <%= form.label :img_square_url %>
+    <%= form.text_field :img_square_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:img_square_url].none?, "border-red-400 focus:outline-red-600": post.errors[:img_square_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :img_vertical_url %>
+    <%= form.text_field :img_vertical_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:img_vertical_url].none?, "border-red-400 focus:outline-red-600": post.errors[:img_vertical_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :img_orizontal_url %>
+    <%= form.text_field :img_orizontal_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:img_orizontal_url].none?, "border-red-400 focus:outline-red-600": post.errors[:img_orizontal_url].any?}] %>
+  </div>
+</div>
+ <!-- 👈 wrapper di scopo -->
+
+
+  <%= form.rich_text_area :body %>
+
+
+
+  
+
+
+
+
+  
+ 
+
+  <div class=" mt-4">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>
