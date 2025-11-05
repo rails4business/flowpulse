@@ -1,42 +1,63 @@
+<!-- Tabs azioni -->
+<div class="border-b border-slate-200 mb-4">
+  <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+    <% tabs = [
+      ["📄 Show", superadmin_taxbranch_path(@taxbranch)],
+      ["🌐 Mappa di posizionamento", positioning_superadmin_taxbranch_path(@taxbranch)],
+      ["📝 Post", new_post_path(taxbranch_id: @taxbranch.id)],
+      ["＋ Aggiungi concetto", superadmin_taxbranch_tag_positionings_path(@taxbranch)]
+    ] %>
+
+    <% tabs.each do |label, path| %>
+      <%= link_to label, path,
+        class: class_names(
+          "whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium",
+          current_page?(path) ?
+            "border-blue-500 text-blue-600" :
+            "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700"
+        )
+      %>
+    <% end %>
+  </nav>
+</div>
+
 <!-- Breadcrumb + Title + Actions -->
 <div class="mb-4 flex items-start justify-between gap-3">
   <div class="flex-1 min-w-0">
     <nav class="text-sm text-slate-600">
-      <%= taxbranch_breadcrumb(@taxbranch) %>
+      <%= taxbranch_breadcrumb(@taxbranch, admin: true) %>
     </nav>
     <h1 class="text-xl font-bold mt-1">
       <%= taxbranch_label(@taxbranch) %>
     </h1>
-    <!-- Esempio dentro _node.html.erb, accanto al titolo/link del nodo -->
-<div class="flex items-center gap-2">
- 
+    <p> <%= link_to @taxbranch.post.title, @taxbranch.post %></p>
 
-  <%= link_to "✏️ Modifica", edit_taxbranch_path(@taxbranch),
-      class: "text-sm text-blue-700 hover:underline" %>
+    <div class="flex items-center gap-2 mt-2">
+      <%= link_to "✏️ Modifica", edit_superadmin_taxbranch_path(@taxbranch),
+          class: "text-sm text-blue-700 hover:underline" %>
 
-  <%= link_to "＋ Figlio", new_superadmin_taxbranch_path(parent_id: @taxbranch.id),
-      class: "text-sm text-green-700 hover:underline" %>
+      <%= link_to "＋ Figlio", new_superadmin_taxbranch_path(parent_id: @taxbranch.id),
+          class: "text-sm text-green-700 hover:underline" %>
 
-  <%= button_to "🗑️ Elimina",
-      superadmin_taxbranch_path(@taxbranch),
-      method: :delete,
-      form: { data: { turbo_confirm: "Eliminare “#{@taxbranch.slug_label}” e le sue sottocategorie?" } },
-      class: "text-sm text-red-700 hover:underline" %>
-</div>
+      <%= button_to "🗑️ Elimina",
+          superadmin_taxbranch_path(@taxbranch),
+          method: :delete,
+          form: { data: { turbo_confirm: "Eliminare “#{@taxbranch.slug_label}” e le sue sottocategorie?" } },
+          class: "text-sm text-red-700 hover:underline" %>
+    </div>
   </div>
 
   <div class="shrink-0 flex items-center gap-2">
-    <%# Mostra il pulsante "Aggiungi padre (radice)" solo alla radice %>
     <% if @taxbranch.parent.nil? %>
       <%= link_to "＋ associa a padre", superadmin_taxbranches_path(children_id: @taxbranch.id),
           class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
-       <%= link_to "＋ crea padre", new_superadmin_taxbranch_path(children_id: @taxbranch.id),
+      <%= link_to "＋ crea padre", new_superadmin_taxbranch_path(children_id: @taxbranch.id),
           class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
-
     <% end %>
   </div>
 </div>
 
+<!-- Sottocategorie -->
 <% children = @taxbranch.children.ordered %>
 <% if children.any? %>
   <ul class="space-y-2">
@@ -46,11 +67,12 @@
   <p class="text-gray-500 italic">Nessuna sottocategoria.</p>
 <% end %>
 
-
-
 <div class="mt-6">
-  <%# Link di risalita unico, coerente con il breadcrumb %>
   <%= link_to "⬅️ Torna su",
               (@taxbranch.parent ? superadmin_taxbranch_path(@taxbranch.parent) : superadmin_taxbranches_path),
               class: "text-gray-600 hover:underline" %>
 </div>
+
+
+
+<%= render 'posts/form', post: @post %>

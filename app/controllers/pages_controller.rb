@@ -14,15 +14,19 @@ class PagesController < ApplicationController
   # app/controllers/pages_controller.rb
 
   def home
+    # 1️⃣ trova la radice del dominio corrente o la prima tassonomia principale
     @taxbranch = Current.taxbranch || Taxbranch.where(ancestry: nil).ordered.first
     return render file: Rails.root.join("public/404.html"), status: :not_found, layout: false unless @taxbranch
 
-    # figli diretti da mostrare in home
-    @children = @taxbranch.children.ordered
+    # 2️⃣ figli diretti da mostrare in home
+    @children  = @taxbranch.children.ordered
 
-    # Esempio: cache per host + taxbranch
+    # 3️⃣ voci della navbar (solo figli con home_nav:true)
+    @nav_items = @taxbranch.children.home_nav
+
+    # 4️⃣ (opzionale) caching per dominio + taxbranch
     # cache_key = ["home", Current.domain&.host, @taxbranch.cache_key_with_version]
-    # Rails.cache.fetch(cache_key, expires_in: 10.minutes) { @children.to_a }
+    # @children = Rails.cache.fetch(cache_key, expires_in: 10.minutes) { @children.to_a }
   end
 
   # def home

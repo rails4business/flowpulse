@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_01_064911) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_03_120702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_064911) do
     t.datetime "updated_at", null: false
     t.index ["host"], name: "index_domains_on_host", unique: true
     t.index ["taxbranch_id"], name: "index_domains_on_taxbranch_id"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "leads", force: :cascade do |t|
@@ -51,6 +62,30 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_064911) do
     t.index ["username"], name: "index_leads_on_username", unique: true
   end
 
+  create_table "posts", force: :cascade do |t|
+    t.bigint "lead_id", null: false
+    t.string "title"
+    t.string "slug"
+    t.text "description"
+    t.string "thumb_url"
+    t.string "cover_url"
+    t.string "banner_url"
+    t.text "content"
+    t.datetime "scheduled_at"
+    t.datetime "published_at"
+    t.integer "taxbranch_id"
+    t.integer "status", default: 0
+    t.jsonb "meta", default: {}
+    t.string "url_media_contet"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lead_id"], name: "index_posts_on_lead_id"
+    t.index ["meta"], name: "index_posts_on_meta", using: :gin
+    t.index ["published_at"], name: "index_posts_on_published_at"
+    t.index ["slug"], name: "index_posts_on_slug", unique: true
+    t.index ["taxbranch_id"], name: "index_posts_on_taxbranch_id", unique: true
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"
@@ -58,6 +93,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_064911) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "tag_positionings", force: :cascade do |t|
+    t.bigint "lead_id", null: false
+    t.bigint "taxbranch_id", null: false
+    t.string "name", null: false
+    t.string "category", null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lead_id"], name: "index_tag_positionings_on_lead_id"
+    t.index ["metadata"], name: "index_tag_positionings_on_metadata", using: :gin
+    t.index ["taxbranch_id", "category", "name"], name: "index_tag_positionings_on_taxbranch_id_and_category_and_name", unique: true
+    t.index ["taxbranch_id", "category"], name: "index_tag_positionings_on_taxbranch_id_and_category"
+    t.index ["taxbranch_id"], name: "index_tag_positionings_on_taxbranch_id"
   end
 
   create_table "taxbranches", force: :cascade do |t|
@@ -71,7 +121,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_064911) do
     t.jsonb "meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "positioning_tag_public", default: false, null: false
+    t.boolean "home_nav", default: false
+    t.index ["home_nav"], name: "index_taxbranches_on_home_nav"
     t.index ["lead_id"], name: "index_taxbranches_on_lead_id"
+    t.index ["positioning_tag_public"], name: "index_taxbranches_on_positioning_tag_public"
     t.index ["slug"], name: "index_taxbranches_on_slug", unique: true
     t.index ["slug_category", "slug_label", "slug"], name: "index_taxbranches_on_cat_label_slug_unique", unique: true
   end
@@ -95,7 +149,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_064911) do
 
   add_foreign_key "domains", "taxbranches"
   add_foreign_key "leads", "users"
+  add_foreign_key "posts", "leads"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tag_positionings", "leads"
+  add_foreign_key "tag_positionings", "taxbranches"
   add_foreign_key "taxbranches", "leads"
   add_foreign_key "users", "leads"
   add_foreign_key "users", "leads", column: "approved_by_lead_id"

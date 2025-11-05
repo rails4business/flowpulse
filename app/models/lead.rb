@@ -2,7 +2,8 @@
 class Lead < ApplicationRecord
   has_one :user
   has_many :taxbranches
-
+  has_many :posts, dependent: :destroy
+  has_many :tag_positionings, dependent: :destroy
 
 
   belongs_to :parent,        class_name: "Lead", optional: true

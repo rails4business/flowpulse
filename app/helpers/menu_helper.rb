@@ -5,8 +5,10 @@ module MenuHelper
       { icon: "🏠", label: "Home",         path: dashboard_home_path },
       { icon: "🌳", label: "Taxbranch",    path: superadmin_taxbranches_path },
        { icon: "🌐", label: "Domain",    path: superadmin_domains_path },
-      # { icon: "🏷️", label: "BrandProfile", path: brand_profiles_path },
-      # { icon: "📊", label: "Post",         path: posts_path },
+       # { icon: "🏷️", label: "BrandProfile", path: brand_profiles_path },
+       { icon: "📊", label: "Post",         path: posts_path },
+
+
       { icon: "🖥️", label: "Front Office",         path: superadmin_leads_path },
       { icon: "🏭", label: "Operazioni",         path: superadmin_leads_path },
        { icon: "👥", label: "Journey ruoli",         path: superadmin_leads_path },

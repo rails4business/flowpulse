@@ -1,10 +1,22 @@
 # app/models/taxbranch.rb
+#
+#
 class Taxbranch < ApplicationRecord
   has_ancestry
   acts_as_list scope: [ :ancestry ]
-  belongs_to :lead, optional: true
 
-  CATEGORIES = %w[brand percorso corso capitolo lezione ruolo tag].freeze
+
+  belongs_to :lead, optional: true
+  has_many :tag_positionings, dependent: :destroy
+  has_one :post, dependent: :destroy
+
+  has_one :domain
+  accepts_nested_attributes_for :post
+
+
+
+
+  CATEGORIES = %w[brand percorso corso capitolo lezione ruolo tag blog_creators post_blog].freeze
 
   validates :slug_category, inclusion: { in: CATEGORIES }
   validates :slug_label,    presence: true
@@ -14,10 +26,30 @@ class Taxbranch < ApplicationRecord
 
   scope :roots,   -> { where(ancestry: nil).order(:position, :slug_label) }
   scope :ordered, -> { order(:position, :slug_label) }
-
+  scope :home_nav, -> { where(home_nav: true).ordered }
+  scope :positioning_on, -> { where(positioning_tag_public: true) }
 
   def self.category_options
     CATEGORIES.map { |c| [ c.humanize, c ] }
+  end
+
+
+  def has_post?
+    post.present?
+  end
+
+  def display_label
+    slug_label.presence || slug.to_s.titleize
+  end
+
+  def positioning_items
+    counts = tag_positionings.group(:name, :category).count
+    counts.map { |(name, cat), n| { text: name, count: n, cat: cat } }
+  end
+
+
+  def has_public_post?
+    post&.published?
   end
 
   private

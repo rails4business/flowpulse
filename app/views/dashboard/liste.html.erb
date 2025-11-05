@@ -18,7 +18,14 @@
   <div class="grid md:grid-cols-2 gap-4">
     <!-- OBIETTIVI (a gruppi) -->
     <section class="border rounded card">
-      <div class="px-4 py-3 border-b font-medium">🗓️ Obiettivi</div>
+      <div class="px-4 py-3 border-b font-medium flex items-center justify-between">
+        <span>🗓️ Obiettivi</span>
+        <!-- Aggiungi nuovo gruppo -->
+        <div class="flex items-center gap-2">
+          <input id="newGoalGroupInput" class="border rounded px-2 py-1 text-sm" placeholder="Nuovo gruppo (es. 📺 Contenuti)"/>
+          <button class="btn" onclick="addGoalGroup()">+ Gruppo</button>
+        </div>
+      </div>
       <div class="p-4" id="goals"></div>
     </section>
 
@@ -55,7 +62,15 @@
 </div>
 
 <script>
-  const K = { objectives:'weekplanner:objectives', projects:'weekplanner:projects', services:'weekplanner:services', routines:'weekplanner:routines', slotTypes:'weekplanner:slot_types', templates:'weekplanner:slot_templates' };
+  const K = {
+    objectives:'weekplanner:objectives',
+    objectivesNames:'weekplanner:objectives_names', // <-- Nomi visuali gruppi
+    projects:'weekplanner:projects',
+    services:'weekplanner:services',
+    routines:'weekplanner:routines',
+    slotTypes:'weekplanner:slot_types',
+    templates:'weekplanner:slot_templates'
+  };
 
   // ======= Default seed =======
   const DEFAULT_OBJECTIVES = {
@@ -102,6 +117,19 @@
     ]
   };
 
+  // Mappa nomi display per i gruppi (separata per permettere rinomina senza toccare le chiavi)
+  const DEFAULT_OBJECTIVES_NAMES = {
+    routine:'🧠 Routine e organizzazione',
+    servizi_contenuti:'🌐 Servizi e contenuti',
+    contabilita:'💰 Contabilità',
+    calendario:'📅 Calendario Nov–Dic',
+    spostamenti:'🚗 Spostamenti e sopralluoghi',
+    corsi:'🎓 Corsi e materiali',
+    taxonomy:'🧩 Taxonomia',
+    appuntamenti:'💌 Posticipare appuntamenti',
+    festeggiamenti:'🏡 Ponna Festeggiare'
+  };
+
   const DEFAULT_PROJECTS  = [
     {id:'p1',name:'Igiene Posturale — corso online'},
     {id:'p2',name:'PosturaCorretta alla scrivania'},
@@ -143,27 +171,91 @@
     }
   ];
 
+  // ===== LocalStorage utils =====
   function load(k,fb){ const raw=localStorage.getItem(k); try{return raw?JSON.parse(raw):fb}catch{return fb} }
   function save(k,v){ localStorage.setItem(k, JSON.stringify(v)) }
 
+  // Stato
   let objectives = load(K.objectives, structuredClone(DEFAULT_OBJECTIVES));
+  let objectivesNames = load(K.objectivesNames, structuredClone(DEFAULT_OBJECTIVES_NAMES));
   let projects   = load(K.projects,   structuredClone(DEFAULT_PROJECTS));
   let services   = load(K.services,   structuredClone(DEFAULT_SERVICES));
   let routines   = load(K.routines,   structuredClone(DEFAULT_ROUTINES));
   let slotTypes  = load(K.slotTypes,  structuredClone(DEFAULT_SLOT_TYPES));
   let templates  = load(K.templates,  structuredClone(DEFAULT_TEMPLATES));
 
-  // ===== Render helpers =====
+  // ===== Helpers DOM =====
   function el(tag, attrs={}, html=''){ const e=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v)); e.innerHTML=html; return e }
   function mount(id, node){ const c=document.getElementById(id); c.innerHTML=''; c.appendChild(node) }
+  const slugify = (s)=> s.toLowerCase().trim().replace(/[^\p{L}\p{N}]+/gu,'_').replace(/^_+|_+$/g,'') || 'gruppo';
+
+  // ===== Obiettivi: gestione gruppi =====
+  function addGoalGroup(){
+    const inp = document.getElementById('newGoalGroupInput');
+    const label = (inp.value || '').trim();
+    if(!label) return;
+    let key = slugify(label);
+    // gestisci collisioni chiave
+    let i=1, base=key;
+    while(objectives[key]){ key = `${base}_${i++}` }
+    objectives[key] = [];
+    objectivesNames[key] = label;
+    save(K.objectives, objectives);
+    save(K.objectivesNames, objectivesNames);
+    inp.value='';
+    renderGoals();
+  }
+
+  function renameGoalGroup(key){
+    const current = objectivesNames[key] || key;
+    const next = prompt('Rinomina gruppo obiettivi:', current);
+    if(next && next.trim()){
+      objectivesNames[key] = next.trim();
+      save(K.objectivesNames, objectivesNames);
+      renderGoals();
+    }
+  }
+
+  function deleteGoalGroup(key){
+    if(!confirm('Eliminare questo gruppo e tutti i suoi sotto-obiettivi?')) return;
+    delete objectives[key];
+    delete objectivesNames[key];
+    save(K.objectives, objectives);
+    save(K.objectivesNames, objectivesNames);
+    renderGoals();
+  }
 
   // === OBIETTIVI (a gruppi) ===
   function renderGoals(){
-    const mapNames={ routine:'🧠 Routine e organizzazione', servizi_contenuti:'🌐 Servizi e contenuti', contabilita:'💰 Contabilità', calendario:'📅 Calendario Nov–Dic', spostamenti:'🚗 Spostamenti e sopralluoghi', corsi:'🎓 Corsi e materiali', taxonomy:'🧩 Taxonomia', appuntamenti:'💌 Posticipare appuntamenti', festeggiamenti:'🏡 Ponna Festeggiare' };
+    // garantisci che i gruppi presenti in objectives abbiano un nome visuale
+    Object.keys(objectives).forEach(k=>{
+      if(!objectivesNames[k]) objectivesNames[k]=k;
+    });
+    save(K.objectivesNames, objectivesNames);
+
     const wrap = el('div');
-    Object.entries(objectives).forEach(([k,arr])=>{
+
+    // Ordina per nome visuale
+    const entries = Object.entries(objectives).sort((a,b)=>{
+      const an = (objectivesNames[a[0]]||a[0]).toLowerCase();
+      const bn = (objectivesNames[b[0]]||b[0]).toLowerCase();
+      return an.localeCompare(bn);
+    });
+
+    entries.forEach(([k,arr])=>{
       const box = el('div', {class:'mb-4 border rounded p-3'});
-      box.append(el('div', {class:'font-medium mb-2'}, mapNames[k]||k));
+      // header con rename/elimina
+      const head = el('div',{class:'flex items-center justify-between mb-2'});
+      const title = el('div',{class:'font-medium'}, objectivesNames[k]||k);
+      const actions = el('div',{class:'flex items-center gap-2'});
+      const btnRename = el('button',{class:'btn'},'✏️ Rinomina');
+      btnRename.onclick = ()=> renameGoalGroup(k);
+      const btnDel = el('button',{class:'btn text-red-600'},'🗑️ Elimina');
+      btnDel.onclick = ()=> deleteGoalGroup(k);
+      actions.append(btnRename, btnDel);
+      head.append(title, actions);
+      box.append(head);
+
       const ul = el('ul', {class:'space-y-1'});
       arr.forEach((t,i)=>{
         const li = el('li', {class:'flex items-center gap-2'});
@@ -174,12 +266,13 @@
         li.append(del); ul.append(li);
       });
       const addRow = el('div', {class:'mt-2 flex gap-2'});
-      const inp = el('input',{class:'w-full border rounded px-2 py-1 text-sm',placeholder:'Aggiungi obiettivo...'});
+      const inp = el('input',{class:'w-full border rounded px-2 py-1 text-sm',placeholder:'Aggiungi sotto-obiettivo...'});
       const add = el('button',{class:'btn'},'+ Aggiungi');
       add.onclick=()=>{ const v=inp.value.trim(); if(!v) return; arr.push(v); inp.value=''; save(K.objectives, objectives); renderGoals() };
       addRow.append(inp, add);
       box.append(ul, addRow); wrap.append(box);
     });
+
     mount('goals', wrap);
   }
 

@@ -67,3 +67,6 @@ end
 
 gem "ancestry"
 gem "acts_as_list"
+gem "friendly_id", "~> 5.5.0"
+
+gem "kaminari", "~> 1.2"

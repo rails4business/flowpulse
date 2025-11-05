@@ -82,11 +82,13 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  config.hosts += %w[
-    flowpulse.net
-    posturacorretta.org
-    igieneposturale.it
-  ]
+  # config.hosts += %w[
+  #   flowpulse.net
+  #   posturacorretta.org
+  #   igieneposturale.it
+  # ]
+
+  config.host_authorization = { exclude: ->(request) { Domain.exists?(host: request.host) } }
 
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com

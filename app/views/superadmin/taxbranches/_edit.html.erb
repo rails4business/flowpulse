@@ -1,4 +1,4 @@
-<%= form_with(model: taxbranch, class: "space-y-4") do |f| %>
+<%= form_with(model: [:superadmin, taxbranch], class: "space-y-4") do |f| %>
   <% if taxbranch.errors.any? %>
     <div class="border border-red-300 bg-red-50 text-red-700 p-3 rounded">
       <p class="font-semibold mb-1">⚠️ Errori nel form:</p>

@@ -4,7 +4,7 @@ module Superadmin
  before_action :set_taxbranch, only: %i[
   show edit update destroy
   move_down move_up move_right move_left
-  addparent
+  addparent positioning
 ]
 
   # GET /taxbranches or /taxbranches.json
@@ -19,6 +19,10 @@ module Superadmin
   # GET /taxbranches/1 or /taxbranches/1.json
   def show
      @children = @taxbranch.children.ordered
+
+
+    @post = @taxbranch.post || @taxbranch.build_post
+     @post.lead = Current.user.lead
   end
 
   # GET /taxbranches/new
@@ -59,7 +63,7 @@ module Superadmin
       end
     end
 
-    redirect_to(@taxbranch.parent || superadmin_taxbranches_path, notice: "Creato.", status: :see_other)
+    redirect_to([ :superadmin, @taxbranch.parent ] || superadmin_taxbranches_path, notice: "Creato.", status: :see_other)
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
@@ -68,7 +72,7 @@ module Superadmin
 
 def update
   if @taxbranch.update(taxbranch_params)
-    redirect_to(@taxbranch.parent || superadmin_taxbranches_path, notice: "Taxbranch aggiornata.", status: :see_other) # 303
+    redirect_to([ :superadmin, @taxbranch.parent ]  || superadmin_taxbranches_path, notice: "Taxbranch aggiornata.", status: :see_other) # 303
   else
     render :edit, status: :unprocessable_entity
   end
@@ -111,15 +115,30 @@ end
     redirect_back fallback_location: superadmin_taxbranches_path
   end
 
+  def positioning
+    rows = @taxbranch.tag_positionings
+    counts = rows.group(:name, :category).count
+    @items = counts.map { |(name, cat), n| { text: name, count: n, cat: cat } }
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_taxbranch
-      @taxbranch = Taxbranch.find(params.expect(:id))
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_taxbranch
+    @taxbranch =
+      if defined?(Taxbranch.friendly)
+        Taxbranch.friendly.find(params[:id])
+      else
+        Taxbranch.find_by(id: params[:id]) || Taxbranch.find_by(slug: params[:id])
+      end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to superadmin_taxbranches_path, alert: "Taxbranch non trovato."
+  end
+
+
 
     # Only allow a list of trusted parameters through.
     def taxbranch_params
-      params.expect(taxbranch: [ :lead_id, :description, :slug, :slug_category, :slug_label, :ancestry, :position, :meta, :parent_id ])
+      params.expect(taxbranch: [ :lead_id, :description, :slug, :slug_category, :slug_label, :ancestry, :position, :meta, :parent_id, :home_nav, :positioning_tag_public ])
     end
   end
 end
