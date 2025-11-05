@@ -8,7 +8,10 @@ class Taxbranch < ApplicationRecord
 
   belongs_to :lead, optional: true
   has_many :tag_positionings, dependent: :destroy
-  has_one :post, dependent: :destroy
+
+
+    has_one :post, inverse_of: :taxbranch, dependent: :destroy
+
 
   has_one :domain
   accepts_nested_attributes_for :post

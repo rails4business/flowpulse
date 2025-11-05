@@ -2,8 +2,9 @@ class Post < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_or_title, use: :slugged
 
-  belongs_to :lead, optional: true
-  belongs_to :taxbranch, optional: true
+  belongs_to :taxbranch, inverse_of: :post
+  belongs_to :lead,      inverse_of: :posts
+
 
   enum :status, { draft: 0, published: 1, archived: 2 }
 

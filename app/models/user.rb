@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
 
-  belongs_to :lead, optional: true
+  has_one :lead, inverse_of: :user, dependent: :nullify
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   enum :state_registration, { pending: 0, approved: 1 }, default: :pending
