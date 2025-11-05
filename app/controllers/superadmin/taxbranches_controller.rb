@@ -9,11 +9,15 @@ module Superadmin
 
   # GET /taxbranches or /taxbranches.json
   def index
-    if  params[:children_id]
-      @taxbranches = Current.user.lead.taxbranches.where(ancestry: [ nil, "" ]).where.not(id: params[:children_id]).ordered
-    else
-      @taxbranches = Current.user.lead.taxbranches.where(ancestry: [ nil, "" ]).ordered
-    end
+      scope =
+      if Current.user&.superadmin?
+        Taxbranch.all
+      else
+        # se per qualche motivo arrivi qui senza lead → nessun record
+        Current.user&.lead&.taxbranches || Taxbranch.none
+      end
+
+    @taxbranches = scope.where(ancestry: [ nil, "" ]).ordered
   end
 
   # GET /taxbranches/1 or /taxbranches/1.json
