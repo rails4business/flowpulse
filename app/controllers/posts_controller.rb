@@ -1,9 +1,10 @@
 class PostsController < ApplicationController
-  allow_unauthenticated_access only: %i[ index show ]
-  before_action :set_post, only: %i[ show edit update destroy ]
-  before_action :set_superadmin, except: %i[ index show  ]
+  allow_unauthenticated_access only: %i[  show ]
+  before_action :set_post, only: %i[  edit update destroy index]
+  before_action :set_post_public,  only: %i[  show ]
+  before_action :set_superadmin, except: %i[  show  ]
   helper_method :sort_column, :sort_direction
-  layout "application", except: %i[ index show  ]
+  layout "application", except: %i[  show  ]
   # GET /posts or /posts.json
   def index
   @taxbranches = Taxbranch.order(:slug_label)
@@ -121,18 +122,47 @@ end
   private
    # Use callbacks to share common setup or constraints between actions.
    def set_post
-    if params[:id].present?
-      @post = Post.friendly.find(params[:id])
-    elsif Current.respond_to?(:taxbranch) && Current.taxbranch.present?
-      # se sei in sviluppo locale (localhost)
-      if Rails.env.development? || request.host.include?("localhost")
-        @post = Current.taxbranch.post || Post.first
-      end
+  return unless params[:id].present?
+  @post = Post.friendly.find(params[:id])
+end
+
+   def set_post_public
+  # 1) Se arriva un ID esplicito → carichiamo solo se pubblicato
+  if params[:id].present?
+    @post = Post.friendly.find(params[:id])
+    unless @post&.published_at.present? || @post&.status == "published"
+      redirect_to posts_path, alert: "Il post non è pubblicato." and return
+    end
+    return
+  end
+
+  # 2) Nessun ID: usa il post del taxbranch del dominio (solo se pubblicato)
+  tb = Current.respond_to?(:taxbranch) ? Current.taxbranch : nil
+
+  if tb
+    # post "di casa" del taxbranch corrente
+    if tb.post&.published_at.present? || tb.post&.status == "published"
+      @post = tb.post
     else
-      # fallback assoluto, utile se mancano entrambe le condizioni
-      @post = Post.first
+      # primo pubblicato tra i figli (il più recente)
+      @post = tb.children
+                .joins(:post)
+                .merge(Post.where.not(published_at: nil))
+                .order("posts.published_at DESC")
+                .first&.post
     end
   end
+
+  # 3) Fallback di sito: ultimo pubblicato globale (se proprio non c’è nulla nel ramo)
+  @post ||= Post.where.not(published_at: nil).order(published_at: :desc).first
+
+  # 4) Se ancora nil → nessun pubblicato
+  if @post.nil?
+    redirect_to posts_path, alert: "Nessun post pubblicato disponibile." and return
+  end
+end
+
+
 
     # Only allow a list of trusted parameters through.
     def post_params

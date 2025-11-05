@@ -77,3 +77,19 @@ if Rails.env.development? || Rails.env.test?
 end
 
 puts "== Done =="
+
+puts "== Seed: default home post =="
+
+root = Taxbranch.find_by!(slug: "root")
+lead = Lead.find_by!(user: User.find_by!(email_address: ENV.fetch("SEED_SUPERADMIN_EMAIL", "mario@mario.it")))
+
+Post.find_or_create_by!(taxbranch_id: root.id) do |p|
+  p.lead_id      = lead.id
+  p.title        = "Benvenuto su Flowpulse"
+  p.slug         = "home"
+  p.description  = "Post iniziale collegato al taxbranch root."
+  p.content      = "<p>Pagina iniziale di default. Modifica liberamente.</p>"
+  p.published_at = Time.current
+  p.status       = "published" rescue nil
+end
+puts "✅ Default home post creato/già esistente"
