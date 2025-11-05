@@ -1,11 +1,11 @@
 module Superadmin
   class TaxbranchesController < ApplicationController
     include RequireSuperadmin
- before_action :set_taxbranch, only: %i[
-  show edit update destroy
-  move_down move_up move_right move_left
-  addparent positioning
-]
+    before_action :set_taxbranch, only: %i[
+      show edit update destroy
+      move_down move_up move_right move_left
+      addparent positioning
+    ]
 
   # GET /taxbranches or /taxbranches.json
   def index
