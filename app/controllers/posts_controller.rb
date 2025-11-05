@@ -6,32 +6,51 @@ class PostsController < ApplicationController
   layout "application", except: %i[ index show  ]
   # GET /posts or /posts.json
   def index
-    @taxbranches = Taxbranch.order(:slug_label) # <-- qui
+  @taxbranches = Taxbranch.order(:slug_label)
 
-    scope = Post.includes(:taxbranch, :lead)
-    scope = scope.where(taxbranch_id: params[:taxbranch_id]) if params[:taxbranch_id].present?
-    scope = scope.where(status: params[:status])             if params[:status].present?
+  scope = Post.includes(:taxbranch, :lead)
+  scope = scope.where(taxbranch_id: params[:taxbranch_id]) if params[:taxbranch_id].present?
+  scope = scope.where(status: params[:status])             if params[:status].present?
 
-    if params[:after].present?
-      from = Time.zone.parse(params[:after]) rescue nil
-      scope = scope.where("published_at >= ?", from) if from
-    end
-    if params[:before].present?
-      to = Time.zone.parse(params[:before]) rescue nil
-      scope = scope.where("published_at <= ?", to) if to
-    end
-
-    if sort_column == "tax"
-      scope = scope.left_joins(:taxbranch).order(Arel.sql(
-        "COALESCE(taxbranches.slug_label, taxbranches.slug) #{sort_direction.upcase} NULLS LAST"
-      ))
-    else
-      scope = scope.order(Arel.sql("#{sort_column} #{sort_direction.upcase}"))
-    end
-
-    scope = scope.order(id: :desc)
-    @posts = scope.page(params[:page]).per(20)
+  if params[:after].present?
+    from = Time.zone.parse(params[:after]) rescue nil
+    scope = scope.where("published_at >= ?", from) if from
   end
+  if params[:before].present?
+    to = Time.zone.parse(params[:before]) rescue nil
+    scope = scope.where("published_at <= ?", to) if to
+  end
+
+  # ------ ORDINAMENTO SICURO (niente stringhe SQL interpolate) ------
+  p  = Post.arel_table
+  tb = Taxbranch.arel_table
+  dir = (sort_direction == "asc" ? :asc : :desc)
+
+  if sort_column == "tax"
+    # COALESCE(taxbranches.slug_label, taxbranches.slug) con NULLS LAST senza stringhe
+    coalesce = Arel::Nodes::NamedFunction.new("COALESCE", [ tb[:slug_label], tb[:slug] ])
+    # Primo criterio: sposta i NULL in fondo → CASE WHEN COALESCE(...) IS NULL THEN 1 ELSE 0 END ASC
+    nulls_last_flag = Arel::Nodes::Case.new(coalesce).when(nil).then(1).else(0)
+
+    scope = scope.left_joins(:taxbranch)
+                 .order(nulls_last_flag.asc)
+                 .order(dir == :asc ? coalesce.asc : coalesce.desc)
+  else
+    # Mappa di colonne consentite
+    allowed = {
+      "title"        => p[:title],
+      "status"       => p[:status],
+      "published_at" => p[:published_at],
+      "created_at"   => p[:created_at]
+    }
+    col = allowed[sort_column] || p[:published_at]
+    scope = scope.order(dir == :asc ? col.asc : col.desc)
+  end
+  # ---------------------------------------------------------------
+
+  scope = scope.order(id: :desc)
+  @posts = scope.page(params[:page]).per(20)
+end
 
 
   # GET /posts/1 or /posts/1.json
