@@ -13,7 +13,7 @@ class Taxbranch < ApplicationRecord
     has_one :post, inverse_of: :taxbranch, dependent: :destroy
 
 
-  has_one :domain
+  has_many :domain
   accepts_nested_attributes_for :post
 
 

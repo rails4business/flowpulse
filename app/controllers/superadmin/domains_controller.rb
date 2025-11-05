@@ -15,7 +15,7 @@ module Superadmin
 
   # GET /domains/new
   def new
-    @domain = Domain.new
+   @domain = Domain.new
    @taxbranches = Current.user&.lead&.taxbranches&.ordered || Taxbranch.none
   end
 
