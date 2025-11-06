@@ -32,7 +32,7 @@
         <% elsif node.slug_category == "brand" %>
          <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
    
-          <%= link_to "＋ Aggiungi dominio",
+          <%= link_to "＋ dominio",
                       new_superadmin_domain_path(taxbranch_id: node.id),
                       class: "text-green-600 hover:underline" %>
                        </span>
@@ -44,50 +44,40 @@
       <%= node.slug_category.presence || "—" %>
     </span>
     <!-- Etichetta -->
-    <%= link_to node.slug_label,
+    <%= link_to "id: #{node.id} - #{node.slug_label}",
                 superadmin_taxbranch_path(node),
-                class: "text-slate-800 font-medium truncate hover:underline" %>
+                class: "text-sm text-slate-800 font-medium truncate hover:underline" %>
 
    
 
     <!-- Link al post associato (se esiste) -->
-    <% if node.post.present? %>
-      <% published =
-           if node.post.respond_to?(:status_published?)
-             node.post.status_published?
-           elsif node.post.respond_to?(:published?)
-             node.post.published?
-           else
-             node.post.published_at.present?
-           end %>
+    <% if node&.post.nil? %>
+      <%= link_to "📝",
+                  superadmin_taxbranch_path(taxbranch_id: node.id),
+                  title: "Crea post per questo nodo",
+                  class: "text-slate-400 hover:text-blue-600" %>
 
-      <% if published %>
-        <%= link_to "📄",
+      <% else %>
+      
+      <% if node&.post&.id? %>
+        
+     
+      
+              <%= link_to "📄",
                     post_path(node.post),
                     title: "Vedi post pubblicato",
                     class: "text-emerald-600 hover:text-emerald-700" %>
-      <% else %>
-        <%= link_to "📝",
-                    edit_post_path(node.post),
-                    title: "Modifica bozza del post",
-                    class: "text-amber-600 hover:text-amber-700" %>
-      <% end %>
-    <% else %>
-      <%= link_to "➕",
-                  new_post_path(taxbranch_id: node.id),
-                  title: "Crea post per questo nodo",
-                  class: "text-slate-400 hover:text-blue-600" %>
+      
+      
+      
+         
+    <% end %>
+          
     <% end %>
 
     <!-- Metadati -->
-    <span class="text-xs text-slate-500 truncate">
-      (<%= node.slug %>)
-    </span>
+   
 
-    <% if node.description.present? %>
-      <span class="text-slate-400">—</span>
-      <span class="text-xs text-slate-500 truncate"><%= node.description %></span>
-    <% end %>
   </div>
 
   <!-- Azioni -->
@@ -99,7 +89,7 @@
           class: "hover:text-blue-600", title: "Modifica categoria" %>
     <%= link_to "＋ Figlio",
               new_superadmin_taxbranch_path(parent_id: node.id),
-              class: "hover:text-green-700", title: "Aggiungi figlio" %>
+              class: "hover:text-green-700", title: "+ figlio" %>
 
     <%= link_to "🗑️", superadmin_taxbranch_path(node),
           data:  { turbo_method: :delete, turbo_confirm: "Sicuro di eliminare questo ramo?" },

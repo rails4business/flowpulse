@@ -24,15 +24,10 @@ module Superadmin
      @children = @taxbranch.children.ordered
 
 
-     @post = @taxbranch.post || @taxbranch.build_post(lead: Current.user&.lead)
-
-    # mode: "show" | "edit" | "new"
-    @mode =
-      if params[:mode].in?(%w[show edit new])
-        params[:mode]
-      else
-        @post.persisted? ? "show" : "new"
-      end
+     @post_show = @taxbranch.post
+     if @post_show.nil?
+       @new_post == @taxbranch.build_post(lead: Current.user&.lead)
+     end
   end
 
   # GET /taxbranches/new
