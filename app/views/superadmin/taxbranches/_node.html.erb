@@ -1,6 +1,6 @@
 <!-- app/views/superadmin/taxbranches/_node.html.erb -->
 <li
-  class="flex items-center justify-between border border-slate-200 rounded-md px-2 py-1.5 bg-white shadow-sm mb-1"
+  class="flex items-center justify-between border border-slate-200 rounded-md px-2 py-1.5 shadow-sm mb-1 <%= "bg-red-100" if node.id == @taxbranch.id %>  "
   style="margin-left: <%= node.depth * 12 %>px"
 >
   <!-- Info principale -->
@@ -15,8 +15,9 @@
         <%= link_to dom.host,
                     superadmin_domains_path(taxbranch_id: node.id),
                     class: "text-blue-600 hover:underline" %>
-   </span>
+        </span>
       <% else %>
+ 
         <%# tenta eredità risalendo l'ancestry (metodo sul modello) %>
         <% src = node.effective_domain_taxbranch %>
 
@@ -29,13 +30,14 @@
           </span>
    
     
-        <% elsif node.slug_category == "brand" %>
+        <% else node.slug_category == "brand" %>
          <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
    
           <%= link_to "＋ dominio",
                       new_superadmin_domain_path(taxbranch_id: node.id),
                       class: "text-green-600 hover:underline" %>
                        </span>
+        
         <% end %>
       <% end %>
     

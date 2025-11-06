@@ -24,10 +24,7 @@ module Superadmin
      @children = @taxbranch.children.ordered
 
 
-     @post_show = @taxbranch.post
-     if @post_show.nil?
-       @new_post == @taxbranch.build_post(lead: Current.user&.lead)
-     end
+      @post   = @taxbranch.post || @taxbranch.build_post(lead: Current.user&.lead)
   end
 
   # GET /taxbranches/new

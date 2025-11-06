@@ -81,87 +81,80 @@ end
   def edit
   end
 
-  # POST /posts or /posts.json
   def create
     @post = Current.user.lead.posts.build(post_params)
-    @post.lead = Current.user.lead
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to superadmin_taxbranch_path(@post.taxbranch), notice: "Post was successfully created." }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
+    if @post.save
+      redirect_to [ :superadmin, @post.taxbranch ], notice: "Post creato.", status: :see_other
+    else
+      # Rendi di nuovo la show del taxbranch con il form e gli errori
+      @taxbranch = @post.taxbranch
+      @children  = @taxbranch.children.ordered.includes(:domains)
+      render "superadmin/taxbranches/show", status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /posts/1 or /posts/1.json
   def update
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to superadmin_taxbranch_path(@post.taxbranch), notice: "Post was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
+    if @post.update(post_params)
+      redirect_to [ :superadmin, @post.taxbranch ], notice: "Post aggiornato.", status: :see_other
+    else
+      @taxbranch = @post.taxbranch
+      @children  = @taxbranch.children.ordered.includes(:domains)
+      render "superadmin/taxbranches/show", status: :unprocessable_entity
     end
   end
+
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
-    @post.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to posts_path, notice: "Post was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+      tb = @post.taxbranch
+      @post.destroy!
+      redirect_to [ :superadmin, tb ], notice: "Post eliminato.", status: :see_other
   end
+
 
   private
-   # Use callbacks to share common setup or constraints between actions.
-   def set_post
-  return unless params[:id].present?
-  @post = Post.friendly.find(params[:id])
-end
-
-   def set_post_public
-  # 1) Se arriva un ID esplicito → carichiamo solo se pubblicato
-  if params[:id].present?
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    return unless params[:id].present?
     @post = Post.friendly.find(params[:id])
-    unless @post&.published_at.present? || @post&.status == "published"
-      redirect_to posts_path, alert: "Il post non è pubblicato." and return
+  end
+
+  def set_post_public
+      # 1) Se arriva un ID esplicito → carichiamo solo se pubblicato
+      if params[:id].present?
+        @post = Post.friendly.find(params[:id])
+        unless @post&.published_at.present? || @post&.status == "published"
+          redirect_to posts_path, alert: "Il post non è pubblicato." and return
+        end
+        return
+      end
+
+      # 2) Nessun ID: usa il post del taxbranch del dominio (solo se pubblicato)
+      tb = Current.respond_to?(:taxbranch) ? Current.taxbranch : nil
+
+      if tb
+        # post "di casa" del taxbranch corrente
+        if tb.post&.published_at.present? || tb.post&.status == "published"
+          @post = tb.post
+        else
+          # primo pubblicato tra i figli (il più recente)
+          @post = tb.children
+                    .joins(:post)
+                    .merge(Post.where.not(published_at: nil))
+                    .order("posts.published_at DESC")
+                    .first&.post
+        end
+      end
+
+      # 3) Fallback di sito: ultimo pubblicato globale (se proprio non c’è nulla nel ramo)
+      @post ||= Post.where.not(published_at: nil).order(published_at: :desc).first
+
+      # 4) Se ancora nil → nessun pubblicato
+      if @post.nil?
+        redirect_to posts_path, alert: "Nessun post pubblicato disponibile." and return
+      end
     end
-    return
-  end
-
-  # 2) Nessun ID: usa il post del taxbranch del dominio (solo se pubblicato)
-  tb = Current.respond_to?(:taxbranch) ? Current.taxbranch : nil
-
-  if tb
-    # post "di casa" del taxbranch corrente
-    if tb.post&.published_at.present? || tb.post&.status == "published"
-      @post = tb.post
-    else
-      # primo pubblicato tra i figli (il più recente)
-      @post = tb.children
-                .joins(:post)
-                .merge(Post.where.not(published_at: nil))
-                .order("posts.published_at DESC")
-                .first&.post
-    end
-  end
-
-  # 3) Fallback di sito: ultimo pubblicato globale (se proprio non c’è nulla nel ramo)
-  @post ||= Post.where.not(published_at: nil).order(published_at: :desc).first
-
-  # 4) Se ancora nil → nessun pubblicato
-  if @post.nil?
-    redirect_to posts_path, alert: "Nessun post pubblicato disponibile." and return
-  end
-end
 
 
 

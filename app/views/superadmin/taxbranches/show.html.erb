@@ -1,3 +1,4 @@
+<!-- app/views/superadmin/taxbranches/show.html.erb -->
 <!-- Tabs azioni -->
 <div class="border-b border-slate-200 mb-4">
   <nav class="-mb-px flex space-x-6" aria-label="Tabs">
@@ -47,16 +48,10 @@ Lead: <%= Current.user&.lead&.id %>
 
 
 
+<div class="container  mt-6 mx-auto px-4 sm:px-6 lg:px-8">
+  <h2 class="text-2xl font-bold mb-4">Post associato</h2>
 
 <%# Render in base alla modalità %>
-<% case @mode %>
-<% when "show" %>
-  <% if @post.persisted? %>
-    <%= render "posts/show", post: @post %>
-  <% else %>
-    <p class="text-slate-500 italic mt-2">Non c’è ancora un post per questa categoria.</p>
-  <% end %>
-
-<% when "edit", "new" %>
-  <%= render "posts/form", post: @post %>
-<% end %>
+<a id="post-form"></a>
+<%= render "posts/form", post: @post, taxbranch: @taxbranch %>
+</div>

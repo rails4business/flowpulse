@@ -25,22 +25,40 @@
         <% end %>
 
         <article class="border-l-4 border-slate-300 pl-6 py-3 hover:border-slate-500 transition">
-          <%= link_to post, class: "block group" do %>
-            <div class="flex flex-col gap-1">
-              <span class="text-sm font-medium text-slate-500 group-hover:text-slate-700">
-                <%= l(post.published_at, format: :short) %>
-              </span>
-              <h3 class="text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition">
-                <%= post.title %>
-              </h3>
-              <% if post.description.present? %>
-                <p class="text-slate-600 group-hover:text-slate-800 transition">
-                  <%= post.description %>
-                </p>
-              <% end %>
-            </div>
-          <% end %>
-        </article>
+  <%# ===== URL stile /YYYY/MM/DD/slug/ (slug casuale se manca) ===== %>
+  <% date = (post.published_at || post.created_at || Time.current) %>
+  <% yyyy, mm, dd = date.strftime('%Y'), date.strftime('%m'), date.strftime('%d') %>
+  <% slug = post.try(:slug).presence || post.title.to_s.parameterize %>
+  <% slug = SecureRandom.alphanumeric(8).downcase if slug.blank? %>
+  <% url_base = "https://www.markpostura.it" %>
+  <% url_path = "/#{yyyy}/#{mm}/#{dd}/#{slug}/" %>
+  <% pretty_url = "#{url_base}#{url_path}" %>
+  <%# =============================================================== %>
+
+  <%= link_to post, class: "block group" do %>
+    <div class="flex flex-col gap-1">
+      <span class="text-sm font-medium text-slate-500 group-hover:text-slate-700">
+        <%= l(post.published_at, format: :short) %>
+      </span>
+
+      <h3 class="text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition">
+        <%= post.title %>
+      </h3>
+
+      <%# riga URL in stile Filippo Valsorda %>
+      <span class="text-sm font-mono text-slate-500 break-all">
+        <%= pretty_url %>
+      </span>
+
+      <% if post.description.present? %>
+        <p class="text-slate-600 group-hover:text-slate-800 transition">
+          <%= post.description %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+</article>
+
       <% end %>
     </div>
 

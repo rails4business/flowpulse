@@ -1,112 +1,92 @@
-<%= form_with(model: post, class: "contents") do |form| %>
+<%= form_with(model: post, class: "space-y-4") do |form| %>
   <% if post.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
+    <div id="error_explanation" class="bg-red-50 text-red-600 px-3 py-2 rounded-md">
+      <h2><%= pluralize(post.errors.count, "errore") %> impediscono il salvataggio:</h2>
       <ul class="list-disc ml-6">
-        <% post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% post.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :lead_id %>
-    <%= form.text_field :lead_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:lead_id].none?, "border-red-400 focus:outline-red-600": post.errors[:lead_id].any?}] %>
-  </div>
+  <%# ——— hidden di contesto ——— %>
+  <%= form.hidden_field :lead_id, value: (post.lead_id || Current.user&.lead&.id) %>
+  <%= form.hidden_field :taxbranch_id, value: (taxbranch || post.taxbranch)&.id %>
 
-  <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:title].none?, "border-red-400 focus:outline-red-600": post.errors[:title].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :slug %>
-    <%= form.text_field :slug, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:slug].none?, "border-red-400 focus:outline-red-600": post.errors[:slug].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:description].none?, "border-red-400 focus:outline-red-600": post.errors[:description].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :thumb_url %>
-    <%= form.text_field :thumb_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:thumb_url].none?, "border-red-400 focus:outline-red-600": post.errors[:thumb_url].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :cover_url %>
-    <%= form.text_field :cover_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:cover_url].none?, "border-red-400 focus:outline-red-600": post.errors[:cover_url].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :banner_url %>
-    <%= form.text_field :banner_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:banner_url].none?, "border-red-400 focus:outline-red-600": post.errors[:banner_url].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :url_media_contet %>
-    <%= form.text_field :url_media_contet, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:banner_url].none?, "border-red-400 focus:outline-red-600": post.errors[:banner_url].any?}] %>
-  </div>
-  
-  
-  <div class="my-5">
-    <%= form.label :content %>
-    <%= form.textarea :content, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:content].none?, "border-red-400 focus:outline-red-600": post.errors[:content].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :published_at %>
-    <%= form.datetime_field :published_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:published_at].none?, "border-red-400 focus:outline-red-600": post.errors[:published_at].any?}] %>
-  </div>
-
-<div class="my-5">
-  <%= form.label :taxbranch_id, "Taxonomy", class: "block text-sm font-medium text-slate-700" %>
-
-
-<% if  params[:taxbranch_id] %>
-  <%= form.hidden_field :taxbranch_id, value: params[:taxbranch_id] %>
-
-  <p class="text-sm text-slate-600 mt-2">
-    Categoria collegata: 
-    <strong><%= Taxbranch.find(params[:taxbranch_id]).slug_label %></strong>
-  </p>
-<% else %>
-
-  <%= form.collection_select :taxbranch_id,
-        Taxbranch.order(:slug_label),  # puoi anche filtrare .blogs o .courses
-        :id, :slug_label,
-        { include_blank: "Seleziona categoria" },
-        class: [
-          "block w-full mt-2 rounded-md border px-3 py-2 shadow-sm focus:ring-2",
-          post.errors[:taxbranch_id].any? ?
-            "border-red-400 focus:ring-red-600" :
-            "border-gray-300 focus:ring-blue-600"
-        ]
-  %>
-<% end %>
-  <% if post.errors[:taxbranch_id].any? %>
-    <p class="mt-1 text-sm text-red-600"><%= post.errors[:taxbranch_id].first %></p>
+  <% if (tb = (taxbranch || post.taxbranch)) %>
+    <p class="text-sm text-slate-600">
+      Categoria collegata:
+      <strong><%= tb.slug_label %></strong>
+    </p>
   <% end %>
-</div>
 
-
-  <div class="my-5">
-    <%= form.label :status %>
-   <%= form.select :status,
-        Post.statuses.keys.map { |s| [s.titleize, s] },
-        {},
-        class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+  <div>
+    <%= form.label :title, "Titolo", class: "block text-sm font-medium" %>
+    <%= form.text_field :title, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :meta %>
-    <%= form.text_field :meta, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": post.errors[:meta].none?, "border-red-400 focus:outline-red-600": post.errors[:meta].any?}] %>
+  <div>
+    <%= form.label :slug, class: "block text-sm font-medium" %>
+    <%= form.text_field :slug, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
   </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div>
+    <%= form.label :description, "Descrizione", class: "block text-sm font-medium" %>
+    <%= form.text_area :description, rows: 3, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div>
+      <%= form.label :thumb_url, "Thumb URL", class: "block text-sm font-medium" %>
+      <%= form.text_field :thumb_url, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :cover_url, "Cover URL", class: "block text-sm font-medium" %>
+      <%= form.text_field :cover_url, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :banner_url, "Banner URL", class: "block text-sm font-medium" %>
+      <%= form.text_field :banner_url, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :url_media_contet, "Media URL", class: "block text-sm font-medium" %>
+    <%= form.text_field :url_media_contet, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+    <%# Se rinomini a :url_media_content, ricorda di aggiornare migrazione, model e strong params %>
+  </div>
+
+  <div>
+    <%= form.label :content, "Contenuto", class: "block text-sm font-medium" %>
+    <%= form.text_area :content, rows: 8, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <%= form.label :published_at, "Pubblicato il", class: "block text-sm font-medium" %>
+      <%= form.datetime_field :published_at, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :status, "Stato", class: "block text-sm font-medium" %>
+      <%= form.select :status,
+            Post.statuses.keys.map { |s| [s.titleize, s] },
+            {},
+            class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :meta, "Meta (JSON / testo)", class: "block text-sm font-medium" %>
+    <%= form.text_area :meta, rows: 3, class: "mt-1 block w-full rounded-md border px-3 py-2" %>
+  </div>
+
+  <div class="flex gap-2">
+    <%= form.submit (post.persisted? ? "Aggiorna" : "Crea"),
+        class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium" %>
+
+    <%= link_to "Annulla",
+        [:superadmin, (taxbranch || post.taxbranch)],
+        class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium" %>
   </div>
 <% end %>
