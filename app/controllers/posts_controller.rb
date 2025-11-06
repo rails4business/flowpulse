@@ -58,6 +58,7 @@ end
   def show
     @taxbranch = @post.taxbranch
 
+    @posts = @taxbranch.lead.posts.published.order(published_at: :desc).page(params[:page]).per(20)
 
     # 2️⃣ figli diretti da mostrare in home
     @children  = @taxbranch.children.ordered
