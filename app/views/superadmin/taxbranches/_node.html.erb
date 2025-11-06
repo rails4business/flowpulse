@@ -5,16 +5,50 @@
 >
   <!-- Info principale -->
   <div class="flex items-center gap-2 flex-1 min-w-0">
+     <!-- Badge categoria -->
+      
+     <% dom = node.domains.first %>
 
+      <% if dom %>
+      <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+      
+        <%= link_to dom.host,
+                    superadmin_domains_path(taxbranch_id: node.id),
+                    class: "text-blue-600 hover:underline" %>
+   </span>
+      <% else %>
+        <%# tenta eredità risalendo l'ancestry (metodo sul modello) %>
+        <% src = node.effective_domain_taxbranch %>
+
+        <% if src.present? %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+            
+            <%= link_to src.display_label,
+                        superadmin_domains_path(taxbranch_id: src.id),
+                        class: "underline" %>
+          </span>
+   
+    
+        <% elsif node.slug_category == "brand" %>
+         <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+   
+          <%= link_to "＋ Aggiungi dominio",
+                      new_superadmin_domain_path(taxbranch_id: node.id),
+                      class: "text-green-600 hover:underline" %>
+                       </span>
+        <% end %>
+      <% end %>
+    
+ 
+    <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+      <%= node.slug_category.presence || "—" %>
+    </span>
     <!-- Etichetta -->
     <%= link_to node.slug_label,
                 superadmin_taxbranch_path(node),
                 class: "text-slate-800 font-medium truncate hover:underline" %>
 
-    <!-- Badge categoria -->
-    <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-      <%= node.slug_category.presence || "—" %>
-    </span>
+   
 
     <!-- Link al post associato (se esiste) -->
     <% if node.post.present? %>
@@ -91,7 +125,7 @@
     <% end %>
 
     <!-- Outdent/Indent livello -->
-    <% if node.parent.present? %>
+    <% if node.parent.present?  %>
       <%= link_to "⬅️", move_left_superadmin_taxbranch_path(node),
             data: { turbo_method: :patch },
             class: "hover:text-slate-700", title: "Sposta a sinistra (outdent)" %>

@@ -56,13 +56,7 @@
     </div>
   </div>
 
-  <div class="shrink-0 flex items-center gap-2">
-    <% if @taxbranch.parent.nil? %>
-      <%= link_to "＋ associa a padre", superadmin_taxbranches_path(children_id: @taxbranch.id),
-          class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
-      <%= link_to "＋ crea padre", new_superadmin_taxbranch_path(children_id: @taxbranch.id),
-          class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
-    <% end %>
+  
   </div>
 </div>
 

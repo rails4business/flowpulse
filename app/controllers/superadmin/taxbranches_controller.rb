@@ -4,7 +4,6 @@ module Superadmin
     before_action :set_taxbranch, only: %i[
       show edit update destroy
       move_down move_up move_right move_left
-      addparent positioning
     ]
 
   # GET /taxbranches or /taxbranches.json
@@ -48,10 +47,6 @@ module Superadmin
   def edit
   end
 
-  def addparent
-    Taxbranch.find(params[:children_id]).update(parent_id: @taxbranch.id)
-    redirect_to @taxbranch
-  end
 
   # POST /taxbranches or /taxbranches.json
   def create
@@ -61,18 +56,9 @@ module Superadmin
     # fallback dal query string se non inviato nel form
     @taxbranch.parent_id ||= params[:parent_id].presence
 
-    children_id = params[:children_id].presence
 
     Taxbranch.transaction do
       @taxbranch.save!
-
-      if children_id
-        child = scope.find(children_id)
-        # opzionale: evita edge cases
-        raise ActiveRecord::RecordInvalid, @taxbranch if child.id == @taxbranch.id
-
-        child.update!(parent_id: @taxbranch.id)
-      end
     end
 
     redirect_to(superadmin_taxbranches_path(@taxbranch.parent)  || superadmin_taxbranches_path, notice: "Creato.", status: :see_other)

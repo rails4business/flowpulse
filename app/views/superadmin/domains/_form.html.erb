@@ -66,12 +66,18 @@
 
   <div class="my-5">
     <%= form.label :taxbranch_id, "Taxbranch" %>
-    <%= form.collection_select :taxbranch_id, @taxbranches, :id, :slug_label,
-      { include_blank: "— Seleziona un taxbranch —" },
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-              {"border-gray-400 focus:outline-blue-600": domain.errors[:taxbranch_id].none?,
-               "border-red-400 focus:outline-red-600": domain.errors[:taxbranch_id].any?}] %>
- 
+    
+    <% if params[:taxbranch_id] %>
+      
+      <%= form.hidden_field :taxbranch_id, value: params[:taxbranch_id] %>
+      taxbranch_id: <%= params[:taxbranch_id] %>
+     <% else %>
+        <%= form.collection_select :taxbranch_id, @taxbranches, :id, :slug_label,
+          { include_blank: "— Seleziona un taxbranch —" },
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                  {"border-gray-400 focus:outline-blue-600": domain.errors[:taxbranch_id].none?,
+                  "border-red-400 focus:outline-red-600": domain.errors[:taxbranch_id].any?}] %>
+    <% end %>
   </div>
   <div class="inline">
     <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>

@@ -32,7 +32,34 @@ class Taxbranch < ApplicationRecord
   def has_post?        = post.present?
   def has_public_post? = post&.published?
   def display_label    = slug_label.presence || slug.to_s.titleize
+  def effective_domain_taxbranch
+    # ordine: self, poi parent, poi parent del parent, ... fino alla root
+    ids = [ id ] + ancestor_ids.reverse
 
+    # pre-carica i record (e i domini) in un colpo solo
+    tb_map = Taxbranch.where(id: ids).includes(:domains).index_by(&:id)
+
+    ids.each do |tid|
+      tb = tb_map[tid]
+      next unless tb
+
+      # se :domains è pre-caricato, usa any?, altrimenti exists?
+      has_domains =
+        if tb.association(:domains).loaded?
+          tb.domains.any?
+        else
+          tb.domains.exists?
+        end
+
+      return tb if has_domains
+    end
+
+    nil
+  end
+
+  def effective_domain
+    effective_domain_taxbranch&.domains&.first
+  end
   private
 
   def bust_categories_cache

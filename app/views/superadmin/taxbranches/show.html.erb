@@ -29,51 +29,22 @@ Lead: <%= Current.user&.lead&.id %>
     <nav class="text-sm text-slate-600">
       <%= taxbranch_breadcrumb(@taxbranch, admin: true) %>
     </nav>
-    <h1 class="text-xl font-bold mt-1">
-      <%= taxbranch_label(@taxbranch) %>
-    </h1>
-    <p> <%= link_to @taxbranch.post.title, @taxbranch.post %></p>
-
-    <div class="flex items-center gap-2 mt-2">
-      <%= link_to "✏️ Modifica", edit_superadmin_taxbranch_path(@taxbranch),
-          class: "text-sm text-blue-700 hover:underline" %>
-
-      <%= link_to "＋ Figlio", new_superadmin_taxbranch_path(parent_id: @taxbranch.id),
-          class: "text-sm text-green-700 hover:underline" %>
-
-      <%= button_to "🗑️ Elimina",
-          superadmin_taxbranch_path(@taxbranch),
-          method: :delete,
-          form: { data: { turbo_confirm: "Eliminare “#{@taxbranch.slug_label}” e le sue sottocategorie?" } },
-          class: "text-sm text-red-700 hover:underline" %>
-    </div>
+    
+    
   </div>
 
-  <div class="shrink-0 flex items-center gap-2">
-    <% if @taxbranch.parent.nil? %>
-      <%= link_to "＋ associa a padre", superadmin_taxbranches_path(children_id: @taxbranch.id),
-          class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
-      <%= link_to "＋ crea padre", new_superadmin_taxbranch_path(children_id: @taxbranch.id),
-          class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
-    <% end %>
-  </div>
+  
 </div>
-
-<!-- Sottocategorie -->
-<% children = @taxbranch.children.ordered %>
-<% if children.any? %>
-  <ul class="space-y-2">
-    <%= render partial: "node", collection: children, as: :node %>
-  </ul>
-<% else %>
-  <p class="text-gray-500 italic">Nessuna sottocategoria.</p>
-<% end %>
-
 <div class="mt-6">
   <%= link_to "⬅️ Torna su",
               (@taxbranch.parent ? superadmin_taxbranch_path(@taxbranch.parent) : superadmin_taxbranches_path),
               class: "text-gray-600 hover:underline" %>
 </div>
+<%= render  "node", node: @taxbranch %>
+<hr>
+
+
+
 
 
 
