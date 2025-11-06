@@ -4,7 +4,12 @@
     <div class="flex justify-between h-16 items-center">
       <div class="flex items-center space-x-3">
         <%= link_to unauthenticated_root_path, class: "font-bold text-lg text-slate-800 hover:text-slate-900" do %>
-          <%= Current.domain&.title.presence || "PosturaCorretta" %>
+          <%= (Current.domain&.title || "PosturaCorretta") %>
+          <% if (root = Current.taxbranch) %>
+            <% root.children.home_nav.each do |b| %>
+              <%= link_to b.display_label, gate_path(b.slug) %>
+            <% end %>
+          <% end %>
         <% end %>
       </div>
       <div class="hidden sm:flex space-x-6">
@@ -19,3 +24,5 @@
     </div>
   </div>
 </nav>
+
+
