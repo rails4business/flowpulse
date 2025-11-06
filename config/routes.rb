@@ -5,7 +5,10 @@ Rails.application.routes.draw do
     resources :taxbranches do
       member do
         get  :positioning
-        patch :move_up, :move_down, :move_left, :move_right, :addparent
+        patch :move_up
+        patch :move_down
+        patch :move_left
+        patch :move_right
       end
       resources :tag_positionings, only: [ :index, :create, :destroy ]
     end

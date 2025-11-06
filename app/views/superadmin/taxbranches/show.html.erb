@@ -77,4 +77,15 @@ Lead: <%= Current.user&.lead&.id %>
 
 
 
-<%= render 'posts/form', post: @post %>
+<%# Render in base alla modalità %>
+<% case @mode %>
+<% when "show" %>
+  <% if @post.persisted? %>
+    <%= render "posts/show", post: @post %>
+  <% else %>
+    <p class="text-slate-500 italic mt-2">Non c’è ancora un post per questa categoria.</p>
+  <% end %>
+
+<% when "edit", "new" %>
+  <%= render "posts/form", post: @post %>
+<% end %>

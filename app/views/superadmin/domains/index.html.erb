@@ -17,7 +17,7 @@
   <tbody>
     <% @domains.each do |d| %>
       <tr class="border-t">
-        <td class="p-2 font-medium"><%= d.host %></td>
+        <td class="p-2 font-medium"><%= link_to d.host, superadmin_domain_path(d) %></td>
         <td class="p-2"><%= d.language %></td>
         <td class="p-2"><%= d.taxbranch.slug_label %></td>
         <td class="p-2"><%= truncate(d.title, length: 40) %></td>

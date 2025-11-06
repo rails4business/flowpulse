@@ -10,8 +10,8 @@
         
         <% if params[:children_id] %>
          <b class="text-xl">
-           <%= link_to "+ padre", addparent_taxbranch_path(branch, children_id: params[:children_id]),
-            data: { turbo_method: :patch },
+           <%= link_to "+ padre", new_superadmin_taxbranch_path(children_id: params[:children_id]),
+            
             method: :patch,
             class: "hover:text-slate-700", title: "Aggiungi come padre" %>
             
@@ -24,16 +24,51 @@
               <div class="flex items-center gap-2">
       
 
-  <%= link_to "✏️ Modifica", edit_superadmin_taxbranch_path(branch),
-      class: "text-sm text-blue-700 hover:underline" %>
+ 
+</div>
+ <% prev      = branch.higher_item %>
+  <% next_node = branch.lower_item  %>
+<div class="flex items-center gap-2 text-xs text-slate-500 shrink-0">
+    <%= link_to "✏️", edit_superadmin_taxbranch_path(branch),
+          class: "hover:text-blue-600", title: "Modifica categoria" %>
+   
 
-  
-  <%= button_to "🗑️ Elimina",
+   <%= button_to "🗑️ ",
       superadmin_taxbranch_path(branch),
       method: :delete,
       form: { data: { turbo_confirm: "Eliminare “#{branch.slug_label}” e le sue sottocategorie?" } },
       class: "text-sm text-red-700 hover:underline" %>
-</div>
+
+    <span class="text-slate-300">|</span>
+
+    <!-- Su/Giù nell'ordine tra i fratelli -->
+    <% if prev.present? %>
+      <%= link_to "⬆", move_up_superadmin_taxbranch_path(branch),
+            data: { turbo_method: :patch },
+            class: "hover:text-slate-700", title: "Sposta su" %>
+    <% else %>
+      <span class="opacity-40" title="Già in cima">⬆</span>
+    <% end %>
+
+    <% if next_node.present? %>
+      <%= link_to "⬇", move_down_superadmin_taxbranch_path(branch),
+            data: { turbo_method: :patch },
+            class: "hover:text-slate-700", title: "Sposta giù" %>
+    <% else %>
+      <span class="opacity-40" title="Già in fondo">⬇</span>
+    <% end %>
+
+    <!-- Outdent/Indent livello -->
+   
+
+    <% if prev.present? %>
+      <%= link_to "➡️", move_right_superadmin_taxbranch_path(branch),
+            data: { turbo_method: :patch },
+            class: "hover:text-slate-700", title: "Sposta a destra (indent)" %>
+    <% else %>
+      <span class="opacity-40" title="Nessun fratello precedente">➡️</span>
+    <% end %>
+  </div>
       </div>
     </div>
   <% end %>

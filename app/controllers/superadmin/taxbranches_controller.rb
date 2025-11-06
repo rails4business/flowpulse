@@ -25,15 +25,23 @@ module Superadmin
      @children = @taxbranch.children.ordered
 
 
-    @post = @taxbranch.post || @taxbranch.build_post
-     @post.lead = Current.user.lead
+     @post = @taxbranch.post || @taxbranch.build_post(lead: Current.user&.lead)
+
+    # mode: "show" | "edit" | "new"
+    @mode =
+      if params[:mode].in?(%w[show edit new])
+        params[:mode]
+      else
+        @post.persisted? ? "show" : "new"
+      end
   end
 
   # GET /taxbranches/new
   def new
     @taxbranch = Current.user.lead.taxbranches.build
-
-    @taxbranch.parent_id = params[:parent_id] if params[:parent_id].present?
+    if params[:parent_id]
+      @taxbranch.parent_id = params[:parent_id] if params[:parent_id].present?
+    end
   end
 
   # GET /taxbranches/1/edit
@@ -67,7 +75,7 @@ module Superadmin
       end
     end
 
-    redirect_to([ :superadmin, @taxbranch.parent ] || superadmin_taxbranches_path, notice: "Creato.", status: :see_other)
+    redirect_to(superadmin_taxbranches_path(@taxbranch.parent)  || superadmin_taxbranches_path, notice: "Creato.", status: :see_other)
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
@@ -76,7 +84,7 @@ module Superadmin
 
 def update
   if @taxbranch.update(taxbranch_params)
-    redirect_to([ :superadmin, @taxbranch.parent ]  || superadmin_taxbranches_path, notice: "Taxbranch aggiornata.", status: :see_other) # 303
+    redirect_to(superadmin_taxbranches_path(@taxbranch.parent)   || superadmin_taxbranches_path, notice: "Taxbranch aggiornata.", status: :see_other) # 303
   else
     render :edit, status: :unprocessable_entity
   end
