@@ -1,0 +1,66 @@
+
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- Header -->
+    <header class="mb-10 flex items-center gap-4">
+      <img src="<%= @post.thumb_url %>"
+           alt="Cover"
+           class="w-16 h-16 rounded-xl object-cover shadow-sm ring-1 ring-slate-200 dark:ring-slate-700">
+      <div>
+        <h1 class="text-2xl font-bold"><%= @post.title%></h1>
+        <p class="text-slate-600 dark:text-slate-400"><%= @post.description%></p>
+      </div>
+    </header>
+
+    <!-- Info box -->
+    <%= render 'body' %>
+
+    <!-- Lista esercizi -->
+    <section >
+      <h2 class="text-2xl font-semibold mb-4 pt-4">Esercizi</h2>
+
+      <% @post.taxbranch.children.each do |taxbranch|%>
+      <% child_post = taxbranch.post %>
+      <% if child_post&.status == "published" %>
+      <!-- Esercizio 1 -->
+      <article class="border-t border-slate-200 dark:border-slate-800 py-6 first:border-t-0 first:pt-0">
+        <div class="flex items-start justify-between">
+          <h3 class="text-lg font-semibold"><%= child_post.title %></h3>
+          <!--span class="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">tag</span-->
+        </div>
+
+        <img src="<%= child_post.cover_url %>"
+             alt="Allungamento del trapezio"
+             class="w-full rounded-xl mt-4 mb-3 shadow-sm object-cover">
+
+        <div class="prose dark:prose-invert max-w-none">
+          <p><%= child_post.description %></p>
+        </div>
+
+        <!--div class="mt-4 flex flex-wrap gap-2 text-sm text-slate-500 dark:text-slate-400">
+          <span>🔁 <strong>3 per lato</strong></span>
+          <span>⏱️ <strong>30 sec</strong></span>
+          <span>🧰 sedia</span>
+        </div-->
+      </article>
+      <% end %>
+      <% end %>
+
+    
+    <!-- Note -->
+    <div class="mt-10 p-6 bg-slate-100 dark:bg-slate-800 rounded-2xl">
+      <h3 class="font-semibold mb-2">Note</h3>
+      <p class="text-slate-700 dark:text-slate-300">Esegui la sequenza lentamente, concentrandoti sul respiro e sulle sensazioni. Non forzare mai i movimenti. Puoi ripetere la scheda 2–3 volte a settimana.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 border-t border-slate-200 pt-6 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 flex justify-between">
+      <div>© 2025 • PosturaCorretta</div>
+      <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">← Torna al percorso</a>
+    </footer>
+
+  </div>
+</body>
+

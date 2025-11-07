@@ -70,7 +70,7 @@ class Taxbranch < ApplicationRecord
     self.slug_category = slug_category.to_s.parameterize
     self.slug_label    = slug_label.to_s.parameterize
 
-    base = [ slug_category, slug_label ].join("-")
+    base = [ slug_category, slug_label ].join("/")
     self.slug = unique_slug_for(base)
   end
 
@@ -79,7 +79,7 @@ class Taxbranch < ApplicationRecord
     candidate = base
     i = 2
     while rel.exists?(slug: candidate)
-      candidate = "#{base}-#{i}"
+      candidate = "#{base}/#{i}"
       i += 1
     end
     candidate
