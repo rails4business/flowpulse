@@ -1,23 +1,23 @@
 # app/helpers/markdown_helper.rb
 require "redcarpet"
 
-# Prova a caricare Rouge, ma non fallire se manca
+# Prova a caricare Rouge (per evidenziare il codice). Se manca, fai fallback.
 begin
   require "rouge"
   require "rouge/plugins/redcarpet"
   MarkdownRenderer = Class.new(Redcarpet::Render::HTML) do
-    include Rouge::Plugins::Redcarpet # evidenziazione se disponibile
+    include Rouge::Plugins::Redcarpet
   end
 rescue LoadError
-  MarkdownRenderer = Redcarpet::Render::HTML # fallback senza evidenziazione
+  MarkdownRenderer = Redcarpet::Render::HTML
 end
 
 module MarkdownHelper
   def markdown(text)
-    return "".html_safe if text.blank?)
+    return "".html_safe if text.blank?  # ← niente parentesi extra qui
 
     renderer = MarkdownRenderer.new(
-      filter_html:   true,   # 🔒 blocca HTML crudo
+      filter_html:   true,  # 🔒 blocca HTML crudo
       hard_wrap:     true,
       with_toc_data: true
     )
@@ -35,16 +35,22 @@ module MarkdownHelper
     )
 
     html = md.render(text.to_s)
-    sanitize(html, tags: permitted_tags, attributes: permitted_attributes).html_safe
+    sanitize(
+      html,
+      tags:        permitted_tags,
+      attributes:  permitted_attributes,
+      protocols:   %w[http https mailto]
+    ).html_safe
   end
 
   private
 
   def permitted_tags
-    %w[p br strong em a ul ol li pre code blockquote h1 h2 h3 h4 h5 h6 table thead tbody tr th td]
+    %w[p br strong em a ul ol li pre code blockquote h1 h2 h3 h4 h5 h6
+       table thead tbody tr th td hr img]
   end
 
   def permitted_attributes
-    %w[href title]
+    %w[href title src alt]
   end
 end
