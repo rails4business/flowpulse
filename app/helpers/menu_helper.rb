@@ -3,6 +3,7 @@ module MenuHelper
     def main_menu_superadmin_items
     [
       { icon: "🏠", label: "Home",         path: dashboard_home_path },
+       { icon: "📆", label: "Evento",         path: dashboard_evento_path },
       { icon: "🌳", label: "Taxbranch",    path: superadmin_taxbranches_path },
        { icon: "🌐", label: "Domain",    path: superadmin_domains_path },
        # { icon: "🏷️", label: "BrandProfile", path: brand_profiles_path },

@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   get "dashboard/igieneposturale"
   get "dashboard/liste"
   get "dashboard/home"
+    get "dashboard/evento"
   get "dashboard/superadmin"
   get "pages/home"
   get "pages/about"

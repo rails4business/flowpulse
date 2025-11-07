@@ -1,8 +1,36 @@
 
 <% content_for :title, "Showing post" %>
 
+<%= render 'shared/nav_partial' %>
 
 
-<%= render 'body' %>
+<!-- Da sistemare la nav e vedere di filtrare per etichette o creare i gate con i posts per i vari formati! 
+E poi vedere come creare il percorso con gli eventi e il resto -->
 
-<!-- app/views/posts/show.html.erb -->
+<!-- app/views/pages/home.html.erb -->
+<div class="max-w-6xl mx-auto p-6">
+ <header class="mb-6">
+
+  <h1 class="text-3xl font-bold"><%= @taxbranch.slug_label %></h1>
+  <% if (desc = Current.domain&.description).present? %>
+    <p class="text-slate-600 mt-2"><%= desc %></p>
+  <% end %>
+</header> 
+
+<%#= Current.domain.id %>
+
+
+<% if authenticated? %>
+<%#= Current.session&.id %>
+<% end %>
+
+  <% if @children.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @children.each do |child_tax| %>
+        <%= render "posts/child_card", child_taxbranch: child_tax %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-slate-500">Non ci sono elementi.</p>
+  <% end %>
+</div>
