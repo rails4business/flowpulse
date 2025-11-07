@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+
+
+/* --- Prose lite — dentro il build! --- */
+@layer components {
+  .prose-lite { @apply text-slate-800 leading-relaxed; }
+  .prose-lite h1 { @apply text-3xl font-bold mt-10 mb-4; }
+  .prose-lite h2 { @apply text-2xl font-semibold mt-8 mb-3; }
+  .prose-lite h3 { @apply text-xl font-semibold mt-6 mb-2; }
+  .prose-lite p  { @apply my-4; }
+  .prose-lite a  { @apply underline underline-offset-2 decoration-slate-300 hover:decoration-slate-500; }
+  .prose-lite ul { @apply list-disc pl-6 my-4; }
+  .prose-lite ol { @apply list-decimal pl-6 my-4; }
+  .prose-lite blockquote { @apply border-l-4 border-slate-300 pl-4 italic my-6 text-slate-700; }
+  .prose-lite code { @apply bg-slate-100 px-1 py-0.5 rounded text-sm; }
+  .prose-lite pre  { @apply bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto my-6; }
+  .prose-lite img  { @apply rounded-lg my-6; }
+  .prose-lite table { @apply w-full my-6 border-collapse; }
+  .prose-lite th, .prose-lite td { @apply border border-slate-200 px-3 py-2; }
+}
+
+/* --- Minimo per evidenziare il codice se usi Rouge (senza github.css esterno) --- */
+@layer components {
+  pre code { @apply block rounded-lg p-4; }
+  pre { @apply bg-slate-900 text-slate-100; }
+}

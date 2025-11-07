@@ -33,6 +33,6 @@
   </div>
   <div>
     <strong class="block font-medium mb-1">Taxbranch:</strong>
-    <%= domain.taxbranch_id %>
+    <%= link_to domain.taxbranch_id, superadmin_taxbranch_path(domain.taxbranch) %>
   </div>
 </div>

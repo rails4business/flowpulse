@@ -65,12 +65,20 @@
         
      
       
-              <%= link_to "📄",
-                    post_path(node.post),
-                    title: "Vedi post pubblicato",
-                    class: "text-emerald-600 hover:text-emerald-700" %>
-      
-      
+      <% if node.post.present? && node.post.published_at.present? && node.post.status.to_s == "published" %>
+        <%= link_to "📄",
+        post_path(node.post),
+        title: "Vedi post pubblicato",
+        class: "text-emerald-600 hover:text-emerald-700" %>
+       <% else %> 
+    
+       <%= link_to "📝",
+                  superadmin_taxbranch_path(taxbranch_id: node.id),
+                  title: "Crea post per questo nodo",
+                  class: "text-slate-400 hover:text-blue-600" %>
+
+            
+      <% end %>
       
          
     <% end %>

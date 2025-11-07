@@ -21,6 +21,7 @@ module Superadmin
 
   # GET /taxbranches/1 or /taxbranches/1.json
   def show
+     @taxbranch_node = @taxbranch
      @children = @taxbranch.children.ordered
 
 
@@ -106,6 +107,7 @@ end
   end
 
   def positioning
+    @taxbranch_node = @taxbranch
     rows = @taxbranch.tag_positionings
     counts = rows.group(:name, :category).count
     @items = counts.map { |(name, cat), n| { text: name, count: n, cat: cat } }

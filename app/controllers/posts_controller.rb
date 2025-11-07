@@ -57,8 +57,7 @@ end
   # GET /posts/1 or /posts/1.json
   def show
     @taxbranch = @post.taxbranch
-
-    @posts = @taxbranch.lead.posts.published.order(published_at: :desc).page(params[:page]).per(20)
+    @taxbranch_node  = @post.taxbranch
 
     # 2️⃣ figli diretti da mostrare in home
     @children  = @taxbranch.children.ordered
@@ -160,7 +159,7 @@ end
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.expect(post: [ :lead_id, :title, :slug, :description, :thumb_url, :cover_url, :banner_url, :content, :published_at, :taxbranch_id, :status, :meta, :url_media_contet  ])
+      params.expect(post: [ :lead_id, :title, :slug, :description, :thumb_url, :cover_url, :banner_url, :content, :content_md, :published_at, :taxbranch_id, :status, :meta, :url_media_contet  ])
     end
     def sort_column
       case params[:sort]

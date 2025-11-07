@@ -16,6 +16,7 @@ class PagesController < ApplicationController
   def home
     # 1️⃣ trova la radice del dominio corrente o la prima tassonomia principale
     @taxbranch = Current.taxbranch || Taxbranch.where(ancestry: nil).ordered.first
+    @taxbranch_node = @taxbranch
     return render file: Rails.root.join("public/404.html"), status: :not_found, layout: false unless @taxbranch
 
     # 2️⃣ figli diretti da mostrare in home

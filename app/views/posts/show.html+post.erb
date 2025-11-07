@@ -1,0 +1,115 @@
+ variant: "post" — Pagina singolo post 
+
+<body class="min-h-full bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
+    <% @parent_taxbranch = @post.taxbranch.parent %>
+
+    <!-- Header -->
+    <%= link_to @parent_taxbranch.post do %>
+    <header class="mb-10">
+      <div class="flex items-center gap-4">
+        <a href="/" class="shrink-0 rounded-full ring-1 ring-slate-200 dark:ring-slate-800 p-1">
+          <picture>
+            <source srcset="" media="(prefers-color-scheme: dark)">
+            <img src="<%= @parent_taxbranch.post.thumb_url %>"
+                 alt="<%= @parent_taxbranch.post.title %>"
+                 class="h-12 w-12 rounded-full object-cover">
+          </picture>
+        </a>
+
+        <div>
+          <!-- titolo e descrizione parent -->
+          <h1 class="text-lg font-semibold"><%= @parent_taxbranch.post.title %></h1>
+          <% if @parent_taxbranch.post.description.present? %>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              <%= @parent_taxbranch.post.description %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- titolo, descrizione e data del post -->
+      <div class="mt-8">
+        <h2 class="text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100">
+          <%= @post.title %>
+        </h2>
+
+        <% if @post.description.present? %>
+          <p class="mt-2 text-lg text-slate-600 dark:text-slate-400">
+            <%= @post.description %>
+          </p>
+        <% end %>
+
+        <% if @post.published_at.present? %>
+          <time datetime="<%= @post.published_at.to_date %>"
+                class="mt-2 block text-sm text-slate-500 dark:text-slate-400">
+            Pubblicato il <%= l(@post.published_at, format: :long) %>
+          </time>
+        <% end %>
+      </div>
+    </header>
+    <% end %>
+
+    <!-- Cover -->
+    <% if @post.cover_url.present? %>
+      <div class="mb-10">
+        <img src="<%= @post.cover_url %>"
+             alt="<%= @post.title %>"
+             class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-sm">
+      </div>
+    <% end %>
+
+    <!-- Body -->
+    <div class="mb-4">
+    <%= render 'posts/body' %>
+    </div>
+
+    <!-- Related posts -->
+    <% if @parent_taxbranch.children.any? %>
+      <div class="pt-8 my-12 border-t border-slate-200 dark:border-slate-800"></div>
+
+      <section class="space-y-8">
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100">
+          Articoli correlati
+        </h2>
+
+        <% @parent_taxbranch.children.each do |child| %>
+          <% related = child.post %>
+          <% next unless related&.status == "published" && related.id != @post.id %>
+
+          <article class="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:border-slate-800">
+            <time datetime="<%= related.published_at&.to_date %>"
+                  class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              <%= related.published_at&.strftime("%d %b %Y") %>
+            </time>
+            <h3 class="mt-1 text-lg font-semibold leading-snug">
+              <%= link_to related, class: "hover:underline decoration-2 underline-offset-2" do %>
+                <%= related.title %>
+              <% end %>
+            </h3>
+            <% if related.description.present? %>
+              <p class="mt-2 text-slate-700 dark:text-slate-300">
+                <%= related.description %>
+              </p>
+            <% end %>
+          </article>
+        <% end %>
+      </section>
+    <% end %>
+
+    <!-- Footer -->
+    <footer class="mt-12 border-t border-slate-200 pt-6 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 flex justify-between">
+      <div>
+        © <span id="year"><%= Time.current.year %></span> •
+        <a href="/" class="hover:underline"><%= @post.taxbranch&.slug || "Blog" %></a>
+      </div>
+
+      <%= link_to "← Torna al Blog", @parent_taxbranch.post,
+            class: "text-blue-600 hover:text-blue-800 hover:underline" %>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
