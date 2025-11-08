@@ -4,11 +4,15 @@
     <div class="flex justify-between h-16 items-center">
 
       <!-- Logo / Titolo -->
+      
       <div class="flex items-center space-x-3">
-        <% if Current.domain&.square_logo_url.present? %>
+        <% if Current.domain&.square_logo_url.present?  %>
           <%= link_to authenticated_root_path do %>
             <img src="<%= Current.domain.square_logo_url %>" alt="Logo"
-                 class="h-10 w-10 object-contain">
+                 class="h-10 w-10 object-contain   inline-block md:hidden ">
+                     <img src="<%= Current.domain.horizontal_logo_url %>" alt="Logo lungo"
+                 class="h-10 object-contain hidden md:flex ">
+          
           <% end %>
         <% else %>
           <%= link_to unauthenticated_root_path,
@@ -17,6 +21,7 @@
           <% end %>
         <% end %>
       </div>
+    
 
       <!-- Link principali dinamici -->
       <div class="hidden sm:flex space-x-6">

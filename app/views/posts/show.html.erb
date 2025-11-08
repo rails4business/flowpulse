@@ -1,7 +1,7 @@
 
-<% content_for :title, "Showing post" %>
+<%# content_for :title, "Showing post" %>
 
-<%= render 'shared/nav_partial' %>
+<%= render 'shared/nav_partial_post' %>
 
 
 <!-- Da sistemare la nav e vedere di filtrare per etichette o creare i gate con i posts per i vari formati! 
@@ -9,13 +9,13 @@ E poi vedere come creare il percorso con gli eventi e il resto -->
 
 <!-- app/views/pages/home.html.erb -->
 <div class="max-w-6xl mx-auto p-6">
- <header class="mb-6">
+   <!--header class="mb-6">
 
-  <h1 class="text-3xl font-bold"><%= @taxbranch.slug_label %></h1>
+  <h1 class="text-3xl font-bold"><%#= @taxbranch.slug_label %></h1>
   <% if (desc = Current.domain&.description).present? %>
-    <p class="text-slate-600 mt-2"><%= desc %></p>
+    <p class="text-slate-600 mt-2"><%#= desc %></p>
   <% end %>
-</header> 
+</header--> 
 
 <%#= Current.domain.id %>
 
