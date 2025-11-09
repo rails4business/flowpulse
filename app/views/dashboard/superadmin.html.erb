@@ -4,6 +4,11 @@
   <%= render "dashboard/aside_menu"  %>
 <% end %>
 
+<%= link_to "Invita un amico",
+            new_session_path(tab: 'signup', ref: Current.user.username),
+            class: "btn" %>
+
+            # invitation_url = new_session_url(tab: 'signup', ref: current_user.username)
 <!DOCTYPE html>
 <html lang="it">
 <head>

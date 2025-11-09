@@ -1,0 +1,57 @@
+<%= form_with(model: eventdate, class: "contents") do |form| %>
+  <% if eventdate.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(eventdate.errors.count, "error") %> prohibited this eventdate from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% eventdate.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :date_start %>
+    <%= form.datetime_field :date_start, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:date_start].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:date_start].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :date_end %>
+    <%= form.datetime_field :date_end, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:date_end].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:date_end].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :taxbranch_id %>
+    <%= form.text_field :taxbranch_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:taxbranch_id].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:taxbranch_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :lead_id %>
+    <%= form.text_field :lead_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:lead_id].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:lead_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :cycle %>
+    <%= form.number_field :cycle, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:cycle].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:cycle].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :status %>
+    <%= form.number_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:status].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:status].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :description %>
+    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:description].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:description].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :meta %>
+    <%= form.text_field :meta, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:meta].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:meta].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

@@ -6,7 +6,7 @@ class BlogController < ApplicationController
 
     # 2️⃣ Se non c'è dominio o taxbranch associato → redirect alla home pubblica
     unless domain&.taxbranch
-      return redirect_to unauthenticated_root_path, alert: "Blog non disponibile per questo dominio."
+      return redirect_to root_path, alert: "Blog non disponibile per questo dominio."
     end
 
     # 3️⃣ Trova il ramo 'blog' tra i figli del taxbranch principale
@@ -14,7 +14,7 @@ class BlogController < ApplicationController
 
     # 4️⃣ Se non trovato → redirect
     unless @blog_branch
-      return redirect_to unauthenticated_root_path, alert: "Blog non disponibile per questo dominio."
+      return redirect_to root_path, alert: "Blog non disponibile per questo dominio."
     end
 
     # 5️⃣ Carica i post se tutto ok

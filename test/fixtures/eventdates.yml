@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date_start: 2025-11-09 22:10:08
+  date_end: 2025-11-09 22:10:08
+  taxbranch: one
+  lead: one
+  cycle: 1
+  status: 1
+  description: MyText
+  meta: 
+
+two:
+  date_start: 2025-11-09 22:10:08
+  date_end: 2025-11-09 22:10:08
+  taxbranch: two
+  lead: two
+  cycle: 1
+  status: 1
+  description: MyText
+  meta: 

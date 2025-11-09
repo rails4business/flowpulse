@@ -1,67 +1,140 @@
+<%# app/views/posts/show.html+exercise_sheet.erb - versione NO JS %>
+<% content_for :title, @post.title.presence || "Scheda esercizi" %>
 
 <%= render 'shared/nav_partial_post' %>
-<body class="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
 
+<div class="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
   <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
 
     <!-- Header -->
-    <header class="mb-10 flex items-center gap-4">
-      <img src="<%= @post.thumb_url %>"
-           alt="Cover"
-           class="w-16 h-16 rounded-xl object-cover shadow-sm ring-1 ring-slate-200 dark:ring-slate-700">
-      <div>
-        <h1 class="text-2xl font-bold"><%= @post.title%></h1>
-        <p class="text-slate-600 dark:text-slate-400"><%= @post.description%></p>
+    <header class="mb-10 flex items-start gap-4">
+      <% if @post.thumb_url.present? %>
+        <img src="<%= @post.thumb_url %>"
+             alt="Cover <%= @post.title %>"
+             class="w-16 h-16 rounded-xl object-cover shadow-sm ring-1 ring-slate-200/60">
+      <% end %>
+      <div class="flex-1">
+        <h1 class="text-2xl font-bold leading-tight">
+          <%= @post.title.presence || "Scheda esercizi" %>
+        </h1>
+        <% if @post.description.present? %>
+          <p class="mt-2 text-slate-600 dark:text-slate-300"><%= @post.description %></p>
+        <% end %>
       </div>
     </header>
 
-    <!-- Info box -->
-    <%= render 'body' %>
+    <%# Lead corrente (fallback a current_lead se esiste nel tuo progetto) %>
+    <% lead = Current.user&.lead || (defined?(current_lead) ? current_lead : nil) %>
 
-    <!-- Lista esercizi -->
-    <section >
-      <h2 class="text-2xl font-semibold mb-4 pt-4">Esercizi</h2>
+    <% children = @post.taxbranch&.children || [] %>
 
-      <% @post.taxbranch.children.each do |taxbranch|%>
-      <% child_post = taxbranch.post %>
-      <% if child_post&.status == "published" %>
-      <!-- Esercizio 1 -->
-      <article class="border-t border-slate-200 dark:border-slate-800 py-6 first:border-t-0 first:pt-0">
-        <div class="flex items-start justify-between">
-          <h3 class="text-lg font-semibold"><%= child_post.title %></h3>
-          <!--span class="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">tag</span-->
-        </div>
-
-        <img src="<%= child_post.cover_url %>"
-             alt="Allungamento del trapezio"
-             class="w-full rounded-xl mt-4 mb-3 shadow-sm object-cover">
-
-        <div class="prose dark:prose-invert max-w-none">
-          <p><%= child_post.description %></p>
-        </div>
-
-        <!--div class="mt-4 flex flex-wrap gap-2 text-sm text-slate-500 dark:text-slate-400">
-          <span>🔁 <strong>3 per lato</strong></span>
-          <span>⏱️ <strong>30 sec</strong></span>
-          <span>🧰 sedia</span>
-        </div-->
-      </article>
+    <!-- Barra progresso (calcolo server-side) -->
+    <% total = 0; done = 0 %>
+    <% children.each do |tb| %>
+      <% cp = tb.post %>
+      <% next unless cp&.status == "published" %>
+      <% total += 1 %>
+      <% if lead && Eventdate.where(lead: lead, taxbranch: tb).exists? %>
+        <% done += 1 %>
       <% end %>
+    <% end %>
+
+    <div class="mb-4 flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Lista esercizi</h2>
+      <div class="text-sm text-slate-600"><%= done %>/<%= total %> completati</div>
+    </div>
+
+    <% if total.zero? %>
+      <div class="rounded-xl border border-slate-200 p-4 text-slate-600">
+        Nessun esercizio collegato. Aggiungi post figli al taxbranch di questa scheda.
+      </div>
+    <% end %>
+
+    <div class="space-y-4">
+      <% children.each do |taxbranch| %>
+        <% child_post = taxbranch.post %>
+        <% next unless child_post&.status == "published" %>
+
+        <% exercise_url = (post_path(child_post) rescue nil) %>
+        <% has_media = child_post.respond_to?(:url_media_content) && child_post.url_media_content.present? %>
+        <% already_done = lead && Eventdate.where(lead: lead, taxbranch: taxbranch).exists? %>
+
+        <article class="border rounded-xl p-4 shadow-sm
+                        <%= already_done ? 'bg-green-50 border-green-300 ring-1 ring-green-200' : 'bg-white border-slate-300' %>
+                        dark:bg-slate-900">
+          <div class="flex items-start justify-between gap-3">
+            <!-- Summary senza JS -->
+            <details class="flex-1">
+              <summary class="cursor-pointer list-none">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                  <span class="inline-block w-1.5 h-5 rounded <%= already_done ? 'bg-green-400' : 'bg-slate-300' %>"></span>
+                  <%= child_post.title.presence || "(Senza titolo)" %>
+                  <% if already_done %>
+                    <span class="ml-2 text-xs font-medium text-green-700">• completato</span>
+                  <% end %>
+                </h3>
+              </summary>
+
+              <div class="mt-3 space-y-3">
+                <% if child_post.description.present? %>
+                  <p class="text-slate-600 dark:text-slate-300"><%= child_post.description %></p>
+                <% end %>
+
+                <% if has_media %>
+                  <div class="overflow-hidden rounded-lg ring-1 ring-slate-200 dark:ring-slate-800">
+                    <%= raw(child_post.url_media_content) %>
+                  </div>
+                <% elsif child_post.cover_url.present? %>
+                  <img src="<%= child_post.cover_url %>"
+                       alt="<%= child_post.title %>"
+                       class="w-full rounded-lg shadow-sm object-cover">
+                <% end %>
+
+                <% if exercise_url.present? %>
+                  <div>
+                    <%= link_to "Apri esercizio →",
+                                exercise_url,
+                                class: "inline-flex items-center text-sm underline hover:no-underline" %>
+                  </div>
+                <% end %>
+              </div>
+            </details>
+
+            <!-- Pulsante FATTO: invia a /posts/:id/mark_done con taxbranch_id -->
+            <div class="ml-4">
+           <%= button_to(
+      already_done ? "☑ Fatto" : "☐ Da fare",
+      mark_done_post_path(child_post, taxbranch_id: taxbranch.id),
+      method: :post,
+      class: "px-3 py-2 rounded-lg border text-sm font-medium " +
+             (already_done ?
+               "border-green-600 text-green-700 bg-green-100 hover:bg-green-200" :
+               "border-slate-400 text-slate-600 hover:bg-slate-100"),
+      form: { data: { turbo: true } }
+    ) %>          <%# Nota: anche se Turbo/JS non è caricato, il form POST funziona comunque con redirect %>
+            </div>
+          </div>
+        </article>
       <% end %>
+    </div>
 
-    
-    <!-- Note -->
-    <!--div class="mt-10 p-6 bg-slate-100 dark:bg-slate-800 rounded-2xl">
-      <h3 class="font-semibold mb-2">Note</h3>
-      <p class="text-slate-700 dark:text-slate-300">Esegui la sequenza lentamente, concentrandoti sul respiro e sulle sensazioni. Non forzare mai i movimenti. Puoi ripetere la scheda 2–3 volte a settimana.</p>
-    </div-->
+    <% if flash[:notice].present? || flash[:alert].present? %>
+      <div class="mt-6">
+        <% if flash[:notice].present? %>
+          <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800">
+            <%= flash[:notice] %>
+          </div>
+        <% end %>
+        <% if flash[:alert].present? %>
+          <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
 
-    <!-- Footer -->
-    <footer class="mt-12 border-t border-slate-200 pt-6 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 flex justify-between">
-      <div>© 2025 • PosturaCorretta</div>
-      <a href="#" class="text-blue-600 hover:text-blue-800 hover:underline">← Torna al percorso</a>
-    </footer>
-
+    <!--p class="mt-8 text-xs text-slate-500">
+      Lo stato “Fatto” viene registrato lato server con un <code>Eventdate</code> collegato al tuo lead (<code>Current.user.lead</code>).
+    </p-->
   </div>
-</body>
-
+</div>

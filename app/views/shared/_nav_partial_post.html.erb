@@ -7,7 +7,7 @@
       
       <div class="flex items-center space-x-3">
         <% if Current.domain&.square_logo_url.present?  %>
-          <%= link_to authenticated_root_path do %>
+          <%= link_to root_path do %>
             <img src="<%= Current.domain.square_logo_url %>" alt="Logo"
                  class="h-10 w-10 object-contain   inline-block md:hidden ">
                      <img src="<%= Current.domain.horizontal_logo_url %>" alt="Logo lungo"
@@ -15,7 +15,7 @@
           
           <% end %>
         <% else %>
-          <%= link_to unauthenticated_root_path,
+          <%= link_to root_path,
                       class: "font-bold text-lg text-slate-800 hover:text-slate-900" do %>
             <%= Current.domain&.title.presence || "PosturaCorretta" %>
           <% end %>
@@ -34,7 +34,7 @@
           <% end %>
         <% else %>
           <!-- fallback -->
-          <%= link_to "Home", unauthenticated_root_path, class: "text-slate-700 hover:text-slate-900 font-medium" %>
+          <%= link_to "Home", root_path, class: "text-slate-700 hover:text-slate-900 font-medium" %>
         <% end %>
       </div>
 
@@ -47,14 +47,14 @@
 
         <% if authenticated? %>
           
-          <% if Current.user.superadmin == true %>
             
          
           
           <%= link_to "Dashboard",
                       dashboard_home_path,
                       class: "text-slate-700 hover:text-slate-900 font-medium" %>
-
+     <% if Current.user.superadmin == true %>
+        
           <%#= button_to "Logout",
                         main_app.session_path,
                         method: :delete,

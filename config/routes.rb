@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :eventdates
   # --- Admin ---
   namespace :superadmin do
     resources :domains
@@ -17,15 +18,19 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :posts do
-    # (facoltativo) in admin potrai creare SocialItem dal post
-    # resources :social_items, only: [:index, :new, :create]
+
+ resource :registration, only: [ :create ]
+ resources :posts do
+    # Aggiunge una rotta POST per un membro specifico (un singolo post)
+    # L'URL sarà /posts/:id/mark_done (ad esempio, /posts/6/mark_done)
+    post :mark_done, on: :member # <--- QUESTA È LA ROTTA CORRETTA
   end
 
+
   # --- Sessioni & pagine ---
-  constraints ->(req) { req.session[:user_id].present? } do
-    root "dashboard#home", as: :authenticated_root
-  end
+  # constraints ->(req) { req.session[:user_id].present? } do
+  #   root "dashboard#home", as: :authenticated_root
+  # end
   resource  :session
   resources :passwords, param: :token
   get "/signup", to: "pages#signup"
@@ -42,5 +47,5 @@ Rails.application.routes.draw do
 
   # Root pubblica
   #  root "pages#home", as: :unauthenticated_root
-  root "posts#show", as: :unauthenticated_root
+  root "posts#show"
 end

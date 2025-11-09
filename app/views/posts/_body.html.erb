@@ -4,7 +4,6 @@
       <%= @post.content %>
     <% elsif @post.content_md.present? %>
       <%= markdown(@post.content_md) %>
-    <% else %>
-      <p class="text-slate-500 italic">Nessun contenuto disponibile.</p>
+   
     <% end %>
   </div>

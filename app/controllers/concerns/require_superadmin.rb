@@ -10,7 +10,7 @@ module RequireSuperadmin
 
   def require_superadmin!
     unless Current.user&.superadmin?
-      redirect_to unauthenticated_root_path, alert: "Non autorizzato."
+      redirect_to root_path, alert: "Non autorizzato."
     end
   end
 end

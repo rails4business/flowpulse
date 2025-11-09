@@ -5,6 +5,7 @@ class Taxbranch < ApplicationRecord
   has_many :tag_positionings, dependent: :destroy
   has_one  :post, inverse_of: :taxbranch, dependent: :destroy
   has_many :domains
+   has_many :eventdates, dependent: :destroy
 
   # ✅ NON blocchiamo più su lista fissa
   validates :slug_category, presence: true

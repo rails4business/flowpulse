@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_07_070521) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_09_211008) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,6 +68,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_07_070521) do
     t.index ["taxbranch_id"], name: "index_domains_on_taxbranch_id"
   end
 
+  create_table "eventdates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "cycle"
+    t.datetime "date_end"
+    t.datetime "date_start"
+    t.text "description"
+    t.bigint "lead_id", null: false
+    t.jsonb "meta"
+    t.integer "status"
+    t.bigint "taxbranch_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lead_id"], name: "index_eventdates_on_lead_id"
+    t.index ["taxbranch_id"], name: "index_eventdates_on_taxbranch_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.datetime "created_at"
     t.string "scope"
@@ -117,7 +132,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_07_070521) do
     t.string "thumb_url"
     t.string "title"
     t.datetime "updated_at", null: false
-    t.string "url_media_contet"
+    t.string "url_media_content"
     t.index ["lead_id"], name: "index_posts_on_lead_id"
     t.index ["meta"], name: "index_posts_on_meta", using: :gin
     t.index ["published_at"], name: "index_posts_on_published_at"
@@ -189,6 +204,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_07_070521) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "domains", "taxbranches"
+  add_foreign_key "eventdates", "leads"
+  add_foreign_key "eventdates", "taxbranches"
   add_foreign_key "leads", "users"
   add_foreign_key "posts", "leads"
   add_foreign_key "sessions", "users"
