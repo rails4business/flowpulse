@@ -82,7 +82,13 @@
 
                 <% if has_media %>
                   <div class="overflow-hidden rounded-lg ring-1 ring-slate-200 dark:ring-slate-800">
-                    <%= raw(child_post.url_media_content) %>
+                   <% if (embed = media_embed(child_post.url_media_content)).present? %>
+  <%= embed %>
+<% elsif child_post.cover_url.present? %>
+  <img src="<%= child_post.cover_url %>"
+       alt="<%= child_post.title %>"
+       class="w-full rounded-lg shadow-sm object-cover">
+<% end %>
                   </div>
                 <% elsif child_post.cover_url.present? %>
                   <img src="<%= child_post.cover_url %>"
