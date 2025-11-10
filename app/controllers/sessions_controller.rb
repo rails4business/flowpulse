@@ -1,39 +1,20 @@
-# class SessionsController < ApplicationController
-#   allow_unauthenticated_access only: %i[ new create ]
-#   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
-#   layout "posts"
-#   def new
-#   end
-
-#   def create
-#     if user = User.authenticate_by(params.permit(:email_address, :password))
-#       start_new_session_for user
-#       redirect_to dashboard_home_path
-#     else
-#       redirect_to new_session_path, alert: "Try another email address or password."
-#     end
-#   end
-
-#   def destroy
-#     terminate_session
-#     redirect_to new_session_path
-#   end
-# end
-
-
-# app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
   allow_unauthenticated_access only: [ :new, :create ]
-    layout "posts"
+  layout "posts"
 
-  def new; end
+  def new
+    redirect_to after_authentication_url if Current.user
+  end
 
   def create
     identifier = params[:email_address].to_s.strip.downcase
-    user = User.find_by(email_address: identifier) || User.find_by(email_address: identifier)
+    password   = params[:password]
 
-    if user&.authenticate(params[:password]) # richiede has_secure_password su User
-      start_new_session_for(user)            # 👈 avvia la sessione persistente
+    # Trova l’utente per email o username (case-insensitive)
+    user = User.where("LOWER(email_address) = :id OR LOWER(username) = :id", id: identifier).first
+
+    if user&.authenticate(password)
+      start_new_session_for(user)
       redirect_to after_authentication_url, notice: "Bentornato!"
     else
       flash.now[:alert] = "Credenziali non valide."
@@ -43,6 +24,6 @@ class SessionsController < ApplicationController
 
   def destroy
     terminate_session
-    redirect_to root_path, notice: "Disconnesso."
+    redirect_to unauthenticated_root_path, notice: "Disconnesso."
   end
 end

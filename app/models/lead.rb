@@ -11,8 +11,13 @@ class Lead < ApplicationRecord
   belongs_to :referral_lead, class_name: "Lead", optional: true
   has_many   :children,      class_name: "Lead", foreign_key: :parent_id, dependent: :nullify
 
-  validates :username, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9._\-]+\z/ }
-  validates :token,    presence: true, uniqueness: true
+  validates :username,
+    presence: true,
+    uniqueness: { case_sensitive: false },
+    format: { with: /\A[a-zA-Z0-9._\-]+\z/ },
+    if: -> { self.respond_to?(:username) && username.present? && self.class.column_names.include?("username") }
+
+    validates :token,    presence: true, uniqueness: true
 
   before_validation :ensure_token
 

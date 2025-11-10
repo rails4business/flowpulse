@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   end
 
 
- resource :registration, only: [ :create ]
+
  resources :posts do
     # Aggiunge una rotta POST per un membro specifico (un singolo post)
     # L'URL sarà /posts/:id/mark_done (ad esempio, /posts/6/mark_done)
@@ -31,7 +31,18 @@ Rails.application.routes.draw do
   # constraints ->(req) { req.session[:user_id].present? } do
   #   root "dashboard#home", as: :authenticated_root
   # end
-  resource  :session
+  resource :registration, only: [ :create, :edit, :update ]
+resource :session, only: [ :new, :create, :destroy ]
+
+  # unauthenticated do
+  #   root to: "sessions#new", as: :unauthenticated_root
+  # end
+
+  # authenticated do
+  #   root to: "dashboard#show", as: :authenticated_root
+  # end
+
+
   resources :passwords, param: :token
   get "/signup", to: "pages#signup"
   get "dashboard/igieneposturale"
