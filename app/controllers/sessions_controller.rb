@@ -24,6 +24,6 @@ class SessionsController < ApplicationController
 
   def destroy
     terminate_session
-    redirect_to unauthenticated_root_path, notice: "Disconnesso."
+    redirect_to root_path, notice: "Disconnesso."
   end
 end
