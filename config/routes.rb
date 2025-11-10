@@ -18,6 +18,10 @@ Rails.application.routes.draw do
     end
   end
 
+  # Area utente autenticato: i miei invitati
+  namespace :account do
+    resources :leads, only: [ :index, :create, :destroy ]
+  end
 
 
  resources :posts do

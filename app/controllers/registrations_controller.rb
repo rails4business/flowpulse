@@ -1,25 +1,48 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < ApplicationController
-  allow_unauthenticated_access only: [ :create ]
-  layout "posts", only: [ :new, :create ]
+  allow_unauthenticated_access only: %i[new create]
+  layout "posts", only: %i[new create]
+
+  def new
+    @referrer = locate_referrer(params[:ref], params.dig(:lead, :referral_code))
+    @user = User.new
+    if params[:ref].present? && @referrer.nil?
+      flash.now[:alert] = "Link invito non valido, scaduto o referrer non abilitato."
+    elsif @referrer && !@referrer.can_invite?
+      flash.now[:alert] = "Questo invito non è più disponibile."
+      @referrer = nil
+    end
+  end
+
   def create
-    referral_username = signup_params[:referral_code].presence
-    referral_lead_id  = Lead.find_by(username: referral_username)&.id if referral_username
+    # preferisci token firmato se presente
+    referrer = locate_referrer(params[:ref], signup_params[:referral_code])
 
     email    = signup_params[:email].to_s.strip
     password = signup_params[:password]
 
-    # Se serve username per il flow
     provisional_username = generate_username_from(email)
 
+    # Se il referrer non è valido/abilitato, ignoralo
+    referrer = nil unless referrer&.can_invite?
+
     flow = LeadSignupFlow.new.call!(
-        lead_params: { email: email, username: provisional_username },
-        password: password,
-        referral_lead_id: referral_lead_id,
-        auto_approve: true
-      )
+      lead_params: { email: email, username: provisional_username },
+      password: password,
+      referral_lead_id: nil,      # non più da username, usiamo referrer se c'è
+      auto_approve: false         # il Tutor approva
+    )
+
+    # collega il referrer (se valido)
+    if referrer
+      flow.user.update!(referrer_id: referrer.id)
+    end
 
     start_new_session_for(flow.user)
+
+    # conteggia solo se c'è referrer valido
+    referrer&.count_successful_invite!
+
     redirect_to after_authentication_url, notice: "Benvenuto! Account creato."
   rescue ActiveRecord::RecordInvalid => e
     @lead = Lead.new(signup_params)
@@ -55,21 +78,34 @@ class RegistrationsController < ApplicationController
 
   private
 
+  def locate_referrer(signed_ref, legacy_ref_code)
+    # 1) token firmato
+    if signed_ref.present?
+      user = User.find_signed(signed_ref, purpose: :referral) rescue nil
+      return (user if user&.approved_referrer?)
+    end
+
+    # 2) fallback legacy: username nel Lead (come prima)
+    if legacy_ref_code.present?
+      lead = Lead.find_by(username: legacy_ref_code)
+      user = lead&.user
+      return (user if user&.approved_referrer?)
+    end
+
+    nil
+  end
+
   def user_params
-    # aggiungi/limita i campi che vuoi rendere modificabili
     params.require(:user).permit(:name, :surname, :phone, :email_address, :password, :password_confirmation)
   end
 
   def lead_params
-    # username e altri campi lato lead
     params.fetch(:lead, {}).permit(:username, :phone, :notes)
   end
 
   def default_username(user)
     user.email_address.to_s.split("@").first.to_s.parameterize.presence || "utente"
   end
-
-
 
   def signup_params
     params.require(:lead).permit(:email, :password, :referral_code)

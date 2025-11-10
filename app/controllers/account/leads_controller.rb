@@ -1,0 +1,108 @@
+# app/controllers/account/leads_controller.rb
+class Account::LeadsController < ApplicationController
+  before_action :require_tutor!
+
+
+
+
+  def index
+    @me      = Current.user
+    @my_lead = @me.lead || Lead.find_by(email: @me.email_address)
+
+    # se non ho un Lead “mio”, creane uno base per poter risultare come referente
+    unless @my_lead
+      @my_lead = Lead.create!(
+        email: @me.email_address,
+        username: default_username(@me),
+        user_id: @me.id,
+        token: SecureRandom.hex(16)
+      )
+    end
+
+    @invited_leads = Lead.where(referral_lead_id: @my_lead.id).order(created_at: :desc)
+    @new_lead      = Lead.new
+  end
+
+  def create
+    me      = Current.user
+    my_lead = me.lead || Lead.find_by(email: me.email_address) ||
+               Lead.create!(email: me.email_address, username: default_username(me), user_id: me.id, token: SecureRandom.hex(16))
+
+    email    = lead_params[:email].to_s.strip.downcase
+    name     = lead_params[:name].presence
+    surname  = lead_params[:surname].presence
+    username = generate_username_from(email)
+
+    Lead.create!(
+      email:             email,
+      name:              name,
+      surname:           surname,
+      username:          username,
+      referral_lead_id:  my_lead.id,
+      token:             SecureRandom.hex(16)
+    )
+
+    redirect_to account_leads_path, notice: "Invito creato."
+  rescue ActiveRecord::RecordInvalid => e
+    @invited_leads = Lead.where(referral_lead_id: my_lead.id).order(created_at: :desc)
+    @new_lead      = Lead.new(lead_params)
+    flash.now[:alert] = e.record.errors.full_messages.to_sentence
+    render :index, status: :unprocessable_entity
+  end
+
+  def destroy
+    me      = Current.user
+    my_lead = me.lead || Lead.find_by(email: me.email_address)
+    lead    = Lead.where(referral_lead_id: my_lead&.id).find(params[:id])
+    lead.destroy!
+    redirect_to account_leads_path, notice: "Invitato rimosso."
+  end
+
+
+  def approve
+    lead = Lead.find(params[:id])
+
+    user = lead.user || User.find_by(email_address: lead.email)
+    user ||= User.create!(
+      email_address: lead.email,
+      password: SecureRandom.base58(16),
+      lead_id: lead.id
+    )
+
+    user.approve!(approved_by_lead: Current.user.lead)
+    link = user.referral_url
+
+    redirect_to account_leads_path,
+      notice: "Utente approvato. Link referral per #{user.email_address}: #{link}"
+  end
+
+  private
+
+  def require_tutor!
+    # unless Current.user&.has_role?(:tutor) || Current.user&.has_role?(:team_manager)
+    unless Current.user&.tutor_or_manager?
+
+     redirect_to account_leads_path, alert: "Non autorizzato."
+    end
+  end
+
+  def lead_params
+    params.require(:lead).permit(:email, :name, :surname)
+  end
+
+  def default_username(user)
+    user.email_address.to_s.split("@").first.to_s.parameterize.presence || "utente"
+  end
+
+  def generate_username_from(email)
+    base = email.split("@").first.to_s.parameterize.presence || "utente"
+    uname = base
+    i = 1
+    while Lead.exists?(username: uname)
+      i += 1
+      uname = "#{base}-#{i}"
+      break if i > 1000
+    end
+    uname
+  end
+end

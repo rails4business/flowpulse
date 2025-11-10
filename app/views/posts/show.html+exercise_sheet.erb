@@ -126,126 +126,64 @@
     }
   }
 </style>
-       <article class="border rounded-xl p-4 shadow-sm bg-white border-slate-300 dark:bg-slate-900">
+      <article class="border rounded-xl p-4 shadow-sm bg-white border-slate-300 dark:bg-slate-900">
 
-          <div class="flex items-start justify-between gap-3">
+  <!-- summary con titolo + bottone allineati -->
+  <details class="group w-full">
 
-            <!-- Summary senza JS -->
+    <summary class="flex items-center justify-between gap-3 cursor-pointer list-none">
+      <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2 min-w-0">
+        <span class="inline-block w-1.5 h-5 rounded <%= already_done ? 'bg-green-400' : 'bg-slate-300' %>"></span>
+        <span class="truncate"><%= child_post.title.presence || "(Senza titolo)" %></span>
+      </h3>
 
-            <details class="flex-1">
+      <div class="shrink-0">
+        <%= button_to(
+          already_done ? "✓" : "○",
+          mark_done_post_path(child_post, taxbranch_id: taxbranch.id),
+          method: :post,
+          class: "w-9 h-9 flex items-center justify-center rounded-full border-2 text-lg font-bold transition-all " +
+                 (already_done ?
+                   "border-green-600 text-green-600 bg-white hover:bg-green-50" :
+                   "border-slate-300 text-slate-400 hover:border-slate-400 hover:text-slate-500"),
+          form: { data: { turbo: true } }
+        ) %>
+      </div>
+    </summary>
 
-              <summary class="cursor-pointer list-none">
+    <% if already_done %>
+      <p class="mt-1 text-xs text-slate-500">
+        Completato il <%= l(done_at, format: :short) %> (x<%= scope.count %>)
+      </p>
+    <% end %>
 
-                <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+    <!-- contenuto espanso a piena larghezza -->
+    <div class="mt-3 space-y-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+      
+      <% if child_post.description.present? %>
+        <p class="text-slate-600 dark:text-slate-300 mt-3"><%= child_post.description %></p>
+      <% end %>
 
-                  <span class="inline-block w-1.5 h-5 rounded <%= already_done ? 'bg-green-400' : 'bg-slate-300' %>"></span>
+      <% if has_media %>
+        <div class="overflow-hidden rounded-lg ring-1 ring-slate-200 dark:ring-slate-800">
+          <% if (embed = media_embed(child_post.url_media_content)).present? %>
+            <%= embed %>
+          <% elsif child_post.cover_url.present? %>
+            <img src="<%= child_post.cover_url %>" alt="<%= child_post.title %>" class="w-full rounded-lg shadow-sm object-cover">
+          <% end %>
+        </div>
+      <% elsif child_post.cover_url.present? %>
+        <img src="<%= child_post.cover_url %>" alt="<%= child_post.title %>" class="w-full rounded-lg shadow-sm object-cover">
+      <% end %>
 
-                  <%= child_post.title.presence || "(Senza titolo)" %>
+      <% if exercise_url.present? %>
+        <%= link_to "Apri esercizio →", exercise_url, class: "inline-flex items-center text-sm underline hover:no-underline" %>
+      <% end %>
+    </div>
 
-                </h3>
+  </details>
+</article>
 
-               <% if already_done %>
-                <% completion_count = scope.count %>
-                <p class="mt-1 text-xs text-slate-500">
-                  Completato il <%= l(done_at, format: :short) %> (x<%= completion_count %>)
-                </p>
-              <% end %>
-
-              </summary>
-
-
-
-              <div class="mt-3 space-y-3">
-
-                <% if child_post.description.present? %>
-
-                  <p class="text-slate-600 dark:text-slate-300"><%= child_post.description %></p>
-
-                <% end %>
-
-
-
-                <% if has_media %>
-
-                  <div class="overflow-hidden rounded-lg ring-1 ring-slate-200 dark:ring-slate-800">
-
-                   <% if (embed = media_embed(child_post.url_media_content)).present? %>
-
-  <%= embed %>
-
-<% elsif child_post.cover_url.present? %>
-
-  <img src="<%= child_post.cover_url %>"
-
-       alt="<%= child_post.title %>"
-
-       class="w-full rounded-lg shadow-sm object-cover">
-
-<% end %>
-
-                  </div>
-
-                <% elsif child_post.cover_url.present? %>
-
-                  <img src="<%= child_post.cover_url %>"
-
-                       alt="<%= child_post.title %>"
-
-                       class="w-full rounded-lg shadow-sm object-cover">
-
-                <% end %>
-
-
-
-                <% if exercise_url.present? %>
-
-                  <div>
-
-                    <%= link_to "Apri esercizio →",
-
-                                exercise_url,
-
-                                class: "inline-flex items-center text-sm underline hover:no-underline" %>
-
-                  </div>
-
-                <% end %>
-
-              </div>
-
-            </details>
-
-
-
-            <!-- Pulsante FATTO: invia a /posts/:id/mark_done con taxbranch_id -->
-
-            <div class="ml-4">
-
-           <%= button_to(
-
-      already_done ? "✓" : "○",
-
-      mark_done_post_path(child_post, taxbranch_id: taxbranch.id),
-
-      method: :post,
-
-      class: "px-4 py-2 rounded-full border-2 text-lg font-bold transition-all " +
-
-             (already_done ?
-
-               "border-green-600 text-green-600 bg-white hover:bg-green-50" :
-
-               "border-slate-300 text-slate-400 hover:border-slate-400 hover:text-slate-500"),
-
-      form: { data: { turbo: true } }
-
-    ) %>
-
-            </div>
-
-          </div>
-
-        </article>
       <% end %>
     </div>
 

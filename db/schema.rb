@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_09_211008) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_10_102920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -189,15 +189,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_09_211008) do
     t.bigint "approved_by_lead_id"
     t.datetime "created_at", null: false
     t.string "email_address", null: false
+    t.integer "invites_count", default: 0, null: false
+    t.integer "invites_limit", default: 7, null: false
     t.datetime "last_active_at"
     t.bigint "lead_id"
     t.string "password_digest", null: false
+    t.integer "referrer_id"
     t.integer "state_registration", default: 0, null: false
     t.boolean "superadmin", default: false, null: false
     t.datetime "updated_at", null: false
     t.index ["approved_by_lead_id"], name: "index_users_on_approved_by_lead_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["lead_id"], name: "index_users_on_lead_id"
+    t.index ["referrer_id"], name: "index_users_on_referrer_id"
     t.index ["state_registration"], name: "index_users_on_state_registration"
   end
 

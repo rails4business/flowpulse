@@ -29,10 +29,22 @@
       />
     </div>
   </form>
+  <ul class="space-y-1">
+  <li>
+  <%= link_to "Impostazioni account", edit_registration_path,
+      class: "block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" %>
+</li>
+
+</ul>
+
   <% if Current.user&.superadmin? %>
     <!--- menu helper--->
   <ul class="space-y-1">
     <% current_group = nil %>
+    <li>
+  <%= link_to "I miei invitati", account_leads_path,
+      class: "block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" %>
+</li>
 
 
 
