@@ -7,18 +7,44 @@ class PostsController < ApplicationController
   layout "application", except: %i[  show  ]
 # GET /posts or /posts.json
 # app/controllers/posts_controller.rb
-class User < ApplicationRecord
-  has_one :lead, dependent: :nullify
-  after_create :ensure_lead!
-
-  def ensure_lead!
-    lead || create_lead!(
-      name:  respond_to?(:name) ? name : "Utente #{id}",
-      email: (respond_to?(:email_address) ? email_address : (respond_to?(:email) ? email : nil))
-    )
+def mark_done
+  # Lead corrente
+  lead = Current.user&.lead || (defined?(current_lead) ? current_lead : nil)
+  unless lead
+    redirect_back fallback_location: post_path(params[:id]), alert: "Devi essere autenticato per registrare l'esercizio."
+    return
   end
-end
 
+  taxbranch = Taxbranch.find_by(id: params[:taxbranch_id])
+  unless taxbranch
+    redirect_back fallback_location: post_path(params[:id]), alert: "Impossibile trovare l'esercizio da marcare."
+    return
+  end
+
+  last_event = Eventdate.where(lead: lead, taxbranch: taxbranch).order(cycle: :desc).first
+  new_cycle = last_event ? last_event.cycle + 1 : 1
+
+  event = Eventdate.new(
+    taxbranch: taxbranch,
+    lead:      lead,
+    date_start: Time.current,
+    date_end:   Time.current,
+    cycle:      new_cycle,
+    status:     :completed # enum
+  )
+
+  if event.save
+    redirect_back fallback_location: post_path(params[:id]),
+                  notice: "🎉 Esercizio “#{taxbranch.post&.title || 'senza titolo'}” completato (ciclo #{new_cycle})."
+  else
+    redirect_back fallback_location: post_path(params[:id]),
+                  alert: "Errore nel salvataggio: #{event.errors.full_messages.to_sentence}"
+  end
+rescue => e
+  Rails.logger.error "Errore in mark_done: #{e.message}"
+  redirect_back fallback_location: post_path(params[:id]),
+                alert: "Si è verificato un errore inatteso."
+end
 
 
   def index

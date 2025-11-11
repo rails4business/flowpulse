@@ -65,18 +65,7 @@ end
   end
 
 
-  def approve
-    lead = Lead.find(params[:id])
 
-    user = lead.user || User.find_by(email_address: lead.email) ||
-          User.create!(email_address: lead.email, password: SecureRandom.base58(16), lead_id: lead.id)
-
-    user.approve!(approved_by_lead: Current.user.lead)
-    link = user.referral_url
-
-    redirect_to account_leads_path,
-      notice: "Utente approvato. Link referral per #{user.email_address}: #{link}"
-  end
 
   private
 

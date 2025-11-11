@@ -40,11 +40,26 @@ class Superadmin::LeadsController < ApplicationController
   }
 end
 
-  def approve
-    lead = Lead.find(params[:id])
-    authorize lead, :approve?
-    lead.update!(status: "approved", approved_at: Time.current)
-    redirect_to superadmin_leads_path(status: "pending"), notice: "Lead approvato."
+    def approve
+    authorize @lead, :approve?
+
+    user = @lead.user || User.find_by(email: @lead.email)
+
+    if user
+      # collega il lead se manca
+      user.update!(lead: @lead) if user.lead_id != @lead.id
+      user.state_registration_approved!
+    else
+      user = User.create!(
+        email: @lead.email,
+        name:  @lead.name,
+        password: SecureRandom.hex(8),
+        lead: @lead,
+        state_registration: :approved
+      )
+    end
+
+    redirect_to [ :superadmin, @lead ], notice: "Lead approvato. User ##{user.id} ⇒ #{user.state_registration}."
   end
 
   def reject
