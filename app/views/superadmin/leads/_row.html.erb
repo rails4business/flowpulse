@@ -34,7 +34,7 @@
     <% end %>
   </td>
 
-  <%# --- Stato: deriva da user.state_registration, non da lead.status --- %>
+  <%# --- Stato: deriva da user.state_registration, non da state_registration.status --- %>
   <%
     status_str =
       if u&.respond_to?(:state_registration)

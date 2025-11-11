@@ -3,13 +3,12 @@ class LeadSignupFlow
   include ActiveModel::Model
   attr_reader :lead, :user
 
-  def call!(lead_params:, password:, referral_lead_id: nil, auto_approve: true)
+  def call!(lead_params:, password:, referral_lead_id: nil, auto_approve: false)
     ActiveRecord::Base.transaction do
       token = SecureRandom.hex(10)
-
-      # normalizza email
       lead_email = lead_params[:email].to_s.strip.downcase
 
+      # 1) Crea il LEAD (senza user_id)
       @lead = Lead.create!(
         name:     lead_params[:name],
         surname:  lead_params[:surname],
@@ -20,33 +19,35 @@ class LeadSignupFlow
         token:    token
       )
 
-      # Scegli l'attributo email corretto su users: :email o :email_address
-      email_attr = if User.column_names.include?("email")
-                     :email
-      elsif User.column_names.include?("email_address")
-                     :email_address
-      else
-                     raise "Users table must have either email or email_address"
-      end
+      # 2) Scegli il campo email corretto su User (:email o :email_address)
+      email_attr =
+        if User.column_names.include?("email")
+          :email
+        elsif User.column_names.include?("email_address")
+          :email_address
+        else
+          raise "Users table must have either email or email_address"
+        end
 
-      # blocca doppioni sull'attributo corretto
+      # 3) Stop se esiste già un utente con questa email
       if User.exists?(email_attr => lead_email)
-        # alza errore sul LEAD per farlo cadere nel rescue già gestito
         @lead.errors.add(:email, "già registrata")
         raise ActiveRecord::RecordInvalid, @lead
       end
 
-      # crea l'utente usando l'attributo corretto
+      # 4) Crea USER collegandolo al LEAD (users.lead_id)
       @user = User.create!(
         email_attr => lead_email,
-        password:    password
+        password:    password,
+        lead:        @lead,
+        # opzionale: imposta lo stato iniziale, ma tu hai scelto gestione manuale
+        # state_registration: :pending
       )
 
-      @lead.update!(user_id: @user.id)
-
-      # opzionale: auto-approve se il modello Lead lo supporta
-      if @lead.respond_to?(:status) && @lead.respond_to?(:approved_at) && auto_approve
-        @lead.update!(status: :approved, approved_at: Time.current)
+      # 5) (OPZIONALE) auto-approve: se vuoi toccare *Lead* o *User* qui
+      # Hai detto "no automatismi", quindi lascio off per default.
+      if auto_approve && @user.respond_to?(:state_registration)
+        @user.update!(state_registration: :approved)
       end
     end
 

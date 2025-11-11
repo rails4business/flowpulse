@@ -13,10 +13,11 @@ class LeadPolicy < ApplicationPolicy
   def approve? = user&.superadmin? #  || (user&.tutor? && in_scope?)
   def reject?  = approve?
 
+
   private
 
   def in_scope?
     return true if user&.superadmin?
-    user&.center_id.present? && record.center_id == user.center_id
+       scope.all
   end
 end

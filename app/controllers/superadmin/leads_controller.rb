@@ -1,71 +1,78 @@
 # app/controllers/superadmin/leads_controller.rb
 class Superadmin::LeadsController < ApplicationController
-  before_action :require_authentication # o come lo chiami
-  def index
-  # lista di base
-  base = policy_scope(Lead)
-           .includes(:user)
-           .left_outer_joins(:user)
-           .order(created_at: :desc)
+  include Pundit
 
-  # mapping enum (integer) -> valore; se hai enum string va comunque bene usando gli stessi simboli
-  pending_val  = User.state_registrations[:pending]
-  approved_val = User.state_registrations[:approved]
-  rejected_val = User.state_registrations[:rejected]
+  before_action :set_lead, only: %i[show edit update destroy approve]
 
-  # filtro tab
-  case params[:status].presence
-  when "pending"
-    # pending = user pending OPPURE lead senza user (non registrato)
-    @leads = base.where(users: { state_registration: pending_val })
-                 .or(base.where(users: { id: nil }))
-                 .distinct
-  when "approved"
-    @leads = base.where(users: { state_registration: approved_val }).distinct
-  when "rejected"
-    @leads = base.where(users: { state_registration: rejected_val }).distinct
-  else
-    @leads = base # all
+  # Pundit user (se usi Current.user)
+  def pundit_user
+    Current.user
   end
 
-  # counts per badge
-  counts_base = policy_scope(Lead).left_outer_joins(:user)
-  @counts = {
-    "all"      => counts_base.distinct.count,
-    "pending"  => counts_base.where(users: { state_registration: pending_val })
-                             .or(counts_base.where(users: { id: nil }))
-                             .distinct.count,
-    "approved" => counts_base.where(users: { state_registration: approved_val }).distinct.count,
-    "rejected" => counts_base.where(users: { state_registration: rejected_val }).distinct.count
-  }
-end
+  def index
+    @leads = Lead.includes(:user).order(created_at: :desc).page(params[:page])
+    authorize Lead
+  end
 
-    def approve
+  def show
+    authorize @lead
+  end
+
+  def new
+    @lead = Lead.new
+    authorize @lead
+  end
+
+  def create
+    @lead = Lead.new(lead_params)
+    authorize @lead
+    if @lead.save
+      redirect_to [ :superadmin, @lead ], notice: "Lead creato."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    authorize @lead
+  end
+
+  def update
+    authorize @lead
+    if @lead.update(lead_params)
+      redirect_to [ :superadmin, @lead ], notice: "Lead aggiornato."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    authorize @lead
+    @lead.destroy
+    redirect_to superadmin_leads_path, notice: "Lead eliminato."
+  end
+
+  def approve
     authorize @lead, :approve?
 
-    user = @lead.user || User.find_by(email: @lead.email)
+    user = @lead.user || User.new(lead: @lead, email: @lead.email)
+    user.state_registration = :approved
+    user.approved_by_lead_id = Current.user&.lead_id if user.respond_to?(:approved_by_lead_id)
 
-    if user
-      # collega il lead se manca
-      user.update!(lead: @lead) if user.lead_id != @lead.id
-      user.state_registration_approved!
+    if user.save
+      redirect_to [ :superadmin, @lead ], notice: "Lead approvato."
     else
-      user = User.create!(
-        email: @lead.email,
-        name:  @lead.name,
-        password: SecureRandom.hex(8),
-        lead: @lead,
-        state_registration: :approved
-      )
+      redirect_to [ :superadmin, @lead ], alert: "Errore: #{user.errors.full_messages.to_sentence}"
     end
-
-    redirect_to [ :superadmin, @lead ], notice: "Lead approvato. User ##{user.id} ⇒ #{user.state_registration}."
   end
 
-  def reject
-    lead = Lead.find(params[:id])
-    authorize lead, :reject?
-    lead.update!(status: "rejected")
-    redirect_to superadmin_leads_path(status: "pending"), notice: "Lead rifiutato."
+  private
+
+  def set_lead
+    @lead = Lead.find(params[:id])
+  end
+
+  def lead_params
+    params.require(:lead).permit(:email, :name, :referral_lead_id) # adatta ai tuoi campi
   end
 end

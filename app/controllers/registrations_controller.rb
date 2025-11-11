@@ -1,81 +1,82 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < ApplicationController
-  allow_unauthenticated_access only: [ :new, :create ]
+  allow_unauthenticated_access only: %i[new create]
   layout "posts", only: %i[new create]
 
   def new
-  @lead ||= Lead.new
-  @referrer = locate_referrer(params[:ref], params.dig(:lead, :referral_code))
-  @user = User.new
-  if params[:ref].present? && @referrer.nil?
-    flash.now[:alert] = "Link invito non valido, scaduto o referrer non abilitato."
-  elsif @referrer && !@referrer.can_invite?
-    flash.now[:alert] = "Questo invito non è più disponibile."
-    @referrer = nil
+    @lead ||= Lead.new
+    @referrer = locate_referrer(params[:ref], params.dig(:lead, :referral_code))
+    @user = User.new
+    if params[:ref].present? && @referrer.nil?
+      flash.now[:alert] = "Link invito non valido, scaduto o referrer non abilitato."
+    elsif @referrer && !@referrer.can_invite?
+      flash.now[:alert] = "Questo invito non è più disponibile."
+      @referrer = nil
+    end
   end
-end
 
   def create
-    # preferisci token firmato se presente
     referrer = locate_referrer(params[:ref], signup_params[:referral_code])
 
     email    = signup_params[:email].to_s.strip
     password = signup_params[:password]
-
     provisional_username = generate_username_from(email)
 
-    # Se il referrer non è valido/abilitato, ignoralo
+    # se il referrer non è abilitato, ignoralo
     referrer = nil unless referrer&.can_invite?
 
     flow = LeadSignupFlow.new.call!(
       lead_params: { email: email, username: provisional_username },
       password: password,
-      referral_lead_id: nil,      # non più da username, usiamo referrer se c'è
-      auto_approve: false         # il Tutor approva
+      referral_lead_id: nil,   # se in futuro salvi l'albero referral tra Lead, passa l'id qui
+      auto_approve: false      # niente automatismi: approverai da superadmin
     )
 
-    # collega il referrer (se valido)
-    if referrer
-      flow.user.update!(referrer_id: referrer.id)
-    end
+    # collega il referrer (se usi questo campo su users)
+    flow.user.update!(referrer_id: referrer.id) if referrer && flow.user.respond_to?(:referrer_id)
 
     start_new_session_for(flow.user)
-
-    # conteggia solo se c'è referrer valido
     referrer&.count_successful_invite!
 
     redirect_to after_authentication_url, notice: "Benvenuto! Account creato."
   rescue ActiveRecord::RecordInvalid => e
     @lead = Lead.new(signup_params)
     flash.now[:alert] = e.record.errors.full_messages.to_sentence
-    render :new, status: :unprocessable_entity   # <- invece di "sessions/new"
+    render :new, status: :unprocessable_entity
   end
 
   def edit
     @user = Current.user
-    @lead = @user.lead || Lead.find_by(email: @user.email_address) || Lead.new(email: @user.email_address, username: default_username(@user))
+    # prova a recuperare un lead esistente partendo dall'email dell'utente
+    email = @user.try(:email_address) || @user.try(:email)
+    @lead = @user.lead || Lead.find_by(email: email) || Lead.new(email: email, username: default_username(@user))
   end
 
   def update
     @user = Current.user
-    @lead = @user.lead || Lead.find_by(email: @user.email_address) || Lead.new(email: @user.email_address, username: default_username(@user))
+    email = @user.try(:email_address) || @user.try(:email)
+    @lead = @user.lead || Lead.find_by(email: email) || Lead.new(email: email, username: default_username(@user))
 
     ActiveRecord::Base.transaction do
       @user.update!(user_params)
+
       if @lead.new_record?
         @lead.assign_attributes(lead_params)
-        @lead.user_id ||= @user.id if @lead.respond_to?(:user_id)
         @lead.save!
+        # 🔁 verso giusto: collega dall'utente al lead
+        @user.update!(lead: @lead) if @user.lead_id.nil? || @user.lead_id != @lead.id
       else
         @lead.update!(lead_params)
+        # assicurati che il legame ci sia
+        @user.update!(lead: @lead) if @user.lead_id.nil?
       end
     end
 
     redirect_to after_authentication_url, notice: "Profilo aggiornato!"
   rescue ActiveRecord::RecordInvalid => e
-      @lead = Lead.new(signup_params)
-      flash.now[:alert] = e.record.errors.full_messages.to_sentence
-      render :new, status: :unprocessable_entity
+    @lead ||= Lead.new
+    flash.now[:alert] = e.record.errors.full_messages.to_sentence
+    render :new, status: :unprocessable_entity
   end
 
   private
@@ -84,20 +85,21 @@ end
     # 1) token firmato
     if signed_ref.present?
       user = User.find_signed(signed_ref, purpose: :referral) rescue nil
-      return (user if user&.approved_referrer?)
+      return user if user&.approved_referrer?
     end
 
-    # 2) fallback legacy: username nel Lead (come prima)
+    # 2) fallback legacy: username di un Lead → suo user
     if legacy_ref_code.present?
       lead = Lead.find_by(username: legacy_ref_code)
       user = lead&.user
-      return (user if user&.approved_referrer?)
+      return user if user&.approved_referrer?
     end
 
     nil
   end
 
   def user_params
+    # se usi :email_address mantienilo qui; se usi :email, adegua
     params.require(:user).permit(:name, :surname, :phone, :email_address, :password, :password_confirmation)
   end
 
@@ -106,7 +108,8 @@ end
   end
 
   def default_username(user)
-    user.email_address.to_s.split("@").first.to_s.parameterize.presence || "utente"
+    base = (user.try(:email_address) || user.try(:email)).to_s.split("@").first.to_s
+    base.parameterize.presence || "utente"
   end
 
   def signup_params

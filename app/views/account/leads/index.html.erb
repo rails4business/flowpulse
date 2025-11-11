@@ -79,7 +79,7 @@
 
   <%# Approva / Rimuovi solo per superadmin o tutor/manager %>
   <% if Current.user&.tutor_or_manager? %>
-  <% if policy(lead).approve? && (lead.status == "pending" || lead.user&.pending?) %>
+  <% if policy(lead).approve? && (lead.user.state_registration == "pending" || lead.user&.pending?) %>
   <%= button_to "Approva", approve_superadmin_lead_path(lead), method: :post, class: "..." %>
 <% end %>
    
