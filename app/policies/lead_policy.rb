@@ -8,16 +8,15 @@ class LeadPolicy < ApplicationPolicy
     end
   end
 
-  def index?   = user&.superadmin? # || user&.tutor?
-  def show?    = index? && in_scope? #
-  def approve? = user&.superadmin? #  || (user&.tutor? && in_scope?)
-  def reject?  = approve?
-
+  def index?   = owner_or_admin? # || user&.tutor?
+  def show?    = owner_or_admin? #
+  def approve? = owner_or_admin? #  || (user&.tutor? && in_scope?)
+  def reject?  = owner_or_admin?
+  def update?  = owner_or_admin?
 
   private
 
-  def in_scope?
-    return true if user&.superadmin?
-       scope.all
+  def owner_or_admin?
+    user&.superadmin? || (user.present? && record.id == user.id)
   end
 end
