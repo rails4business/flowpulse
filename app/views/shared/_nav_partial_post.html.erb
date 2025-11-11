@@ -28,9 +28,7 @@
         <% domain_root = Current.domain&.taxbranch %>
         <% if domain_root.present? %>
           <% domain_root.children.home_nav.each do |branch| %>
-            <%= link_to branch.display_label,
-                        treepage_path(branch.slug),
-                        class: "text-slate-700 hover:text-slate-900 font-medium" %>
+            <%= link_to branch.display_label.capitalize, post_path(branch.post) ,class: "text-slate-700 hover:text-slate-900 font-medium" %>
           <% end %>
         <% else %>
           <!-- fallback -->

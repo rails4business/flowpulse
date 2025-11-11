@@ -1,5 +1,8 @@
 <%# Blog Creators — Index degli articoli dai children del taxbranch %>
 
+<% content_for :title, @post.title.presence || "Blog" %>
+
+<%= render 'shared/nav_partial_post' %>
 
 <body class="min-h-full bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
   <!-- Wrapper centrale -->
@@ -8,18 +11,10 @@
     <!-- Header -->
     <header class="mb-10">
       <div class="flex items-center gap-4">
-        <a href="/" class="shrink-0 rounded-full ring-1 ring-slate-200 dark:ring-slate-800 p-1">
-          <picture>
-            <source srcset="" media="(prefers-color-scheme: dark)">
-         
-            <img src="<%= @post.thumb_url %>"
-                 alt="Avatar"
-                 class="h-12 w-12 rounded-full">
-          </picture>
-        </a>
+        
         <div>
-          <h1 class="text-lg font-semibold"><%= @post.title %></h1>
-          <p class="text-sm text-slate-600 dark:text-slate-400"> <%= @post.description %></p>
+          <h1 class="text-3xl font-semibold"><%= @post.title %></h1>
+          <p class="text-md text-slate-600 dark:text-slate-400"> <%= @post.description %></p>
         </div>
       </div>
 
@@ -42,7 +37,8 @@
         Ripeti <article> in loop.
         Sostituisci href, date, titolo ed excerpt dal tuo backend (Rails, Jekyll, ecc.).
       -->
-      <% @post.taxbranch.children.each do |taxbranch|%>
+      <% @post.taxbranch.children.sort_by { |t| t.post&.published_at || Time.at(0) }.reverse_each do |taxbranch| %>
+  
       
       <% if taxbranch.post&.status == "published" %>
         

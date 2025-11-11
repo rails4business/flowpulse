@@ -1,5 +1,9 @@
  <!-- variant: "post" — Pagina singolo post -->
 
+<% content_for :title, @post.title.presence || "Post" %>
+
+<%= render 'shared/nav_partial_post' %>
+
 <body class="min-h-full bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
   <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
     <% @parent_taxbranch = @post.taxbranch.parent %>
@@ -7,26 +11,7 @@
     <!-- Header -->
     <%= link_to @parent_taxbranch.post do %>
     <header class="mb-10">
-      <div class="flex items-center gap-4">
-        <a href="/" class="shrink-0 rounded-full ring-1 ring-slate-200 dark:ring-slate-800 p-1">
-          <picture>
-            <source srcset="" media="(prefers-color-scheme: dark)">
-            <img src="<%= @parent_taxbranch.post.thumb_url %>"
-                 alt="<%= @parent_taxbranch.post.title %>"
-                 class="h-12 w-12 rounded-full object-cover">
-          </picture>
-        </a>
-
-        <div>
-          <!-- titolo e descrizione parent -->
-          <h1 class="text-lg font-semibold"><%= @parent_taxbranch.post.title %></h1>
-          <% if @parent_taxbranch.post.description.present? %>
-            <p class="text-sm text-slate-600 dark:text-slate-400">
-              <%= @parent_taxbranch.post.description %>
-            </p>
-          <% end %>
-        </div>
-      </div>
+      
 
       <!-- titolo, descrizione e data del post -->
       <div class="mt-8">
