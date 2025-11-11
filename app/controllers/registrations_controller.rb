@@ -1,18 +1,19 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < ApplicationController
-  allow_unauthenticated_access only: %i[new create]
+  allow_unauthenticated_access only: [ :new, :create ]
   layout "posts", only: %i[new create]
 
   def new
-    @referrer = locate_referrer(params[:ref], params.dig(:lead, :referral_code))
-    @user = User.new
-    if params[:ref].present? && @referrer.nil?
-      flash.now[:alert] = "Link invito non valido, scaduto o referrer non abilitato."
-    elsif @referrer && !@referrer.can_invite?
-      flash.now[:alert] = "Questo invito non è più disponibile."
-      @referrer = nil
-    end
+  @lead ||= Lead.new
+  @referrer = locate_referrer(params[:ref], params.dig(:lead, :referral_code))
+  @user = User.new
+  if params[:ref].present? && @referrer.nil?
+    flash.now[:alert] = "Link invito non valido, scaduto o referrer non abilitato."
+  elsif @referrer && !@referrer.can_invite?
+    flash.now[:alert] = "Questo invito non è più disponibile."
+    @referrer = nil
   end
+end
 
   def create
     # preferisci token firmato se presente
@@ -47,7 +48,7 @@ class RegistrationsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     @lead = Lead.new(signup_params)
     flash.now[:alert] = e.record.errors.full_messages.to_sentence
-    render "sessions/new", status: :unprocessable_entity
+    render :new, status: :unprocessable_entity   # <- invece di "sessions/new"
   end
 
   def edit
@@ -72,8 +73,9 @@ class RegistrationsController < ApplicationController
 
     redirect_to after_authentication_url, notice: "Profilo aggiornato!"
   rescue ActiveRecord::RecordInvalid => e
-    flash.now[:alert] = e.record.errors.full_messages.to_sentence
-    render :edit, status: :unprocessable_entity
+      @lead = Lead.new(signup_params)
+      flash.now[:alert] = e.record.errors.full_messages.to_sentence
+      render :new, status: :unprocessable_entity
   end
 
   private

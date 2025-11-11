@@ -1,34 +1,93 @@
 <% content_for :title, "Leads" %>
-<!-- app/views/leads/index.html.erb -->
-<div class="max-w-5xl mx-auto p-6">
-  <h1 class="text-2xl font-semibold mb-4">Leads in attesa di approvazione</h1>
 
-  <% if @leads.any? %>
-    <div class="overflow-x-auto border rounded-lg">
-      <table class="min-w-full text-sm">
-        <thead class="bg-slate-50">
-          <tr>
-            <th class="text-left p-3">Created</th>
-            <th class="text-left p-3">id</th>
-            <th class="text-left p-3">Username</th>
-            <th class="text-left p-3">Email</th>
-            <th class="text-left p-3">Referral</th>
-            <th class="text-left p-3">Stato</th>
-            <th class="text-right p-3">Azioni</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y">
-          <%= render @leads %> <!-- se aggiungi app/views/leads/_lead.html.erb -->
-          <!-- oppure -->
-          <% @leads.each do |lead| %>
-            <%= render "row", lead: lead %>
-          <% end %>
-        </tbody>
+<div class="mx-auto max-w-6xl p-6 space-y-6">
 
-       
-      </table>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight">Leads</h1>
+      <p class="text-slate-500 text-sm">Gestisci richieste di accesso e inviti.</p>
     </div>
-  <% else %>
-    <p class="text-slate-500">Nessun lead in attesa.</p>
+    <div class="hidden sm:flex items-center gap-2">
+      <%= link_to "Nuovo lead", new_superadmin_lead_path,
+          class: "inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700 shadow-sm" %>
+    </div>
+  </div>
+
+  <!-- Tabs stato -->
+  <div class="border-b border-slate-200">
+    <% current_status = params[:status].presence || "all" %>
+    <nav class="-mb-px flex flex-wrap gap-6" aria-label="Tabs">
+      <% [ ["all","Tutti"], ["pending","In attesa"], ["approved","Approvati"], ["rejected","Rifiutati"] ].each do |val,label| %>
+        <% active = (current_status == val) %>
+        <%= link_to superadmin_leads_path(request.query_parameters.merge(status: val, page: nil)),
+            class: "whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium " +
+                   (active ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300") do %>
+          <span><%= label %></span>
+          <%# opzionale: badge numeri se li fornisci come @counts[val] %>
+          <% if defined?(@counts) && @counts[val].to_i > 0 %>
+            <span class="ml-2 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700"><%= @counts[val] %></span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </nav>
+  </div>
+
+  <!-- Search + bulk action -->
+  <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+    <%= form_with url: superadmin_leads_path, method: :get, local: true, class: "flex w-full sm:w-auto items-center gap-2" do |f| %>
+      <%= hidden_field_tag :status, params[:status] %>
+      <div class="relative w-full sm:w-80">
+        <%= f.text_field :q,
+            value: params[:q],
+            placeholder: "Cerca per email o username…",
+            class: "w-full rounded-lg border border-slate-300 px-3 py-2 pr-9 focus:border-blue-500 focus:ring focus:ring-blue-200/50 shadow-sm" %>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+          🔍
+        </div>
+      </div>
+      <%= f.submit "Cerca",
+          class: "inline-flex items-center rounded-lg bg-slate-100 px-3 py-2 text-slate-700 hover:bg-slate-200 border border-slate-200" %>
+    <% end %>
+
+    <%# Placeholder per bulk actions (Stimulus/Alpine in futuro) %>
+    <div class="flex items-center gap-2">
+      <button class="inline-flex items-center rounded-lg bg-white px-3 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50" disabled>
+        Azioni di gruppo
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabella -->
+  <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+    <table class="min-w-full text-sm">
+      <thead class="bg-slate-50 text-slate-700">
+        <tr>
+          <th class="p-3 text-left w-40">Creato</th>
+          <th class="p-3 text-left">ID</th>
+          <th class="p-3 text-left">Username</th>
+          <th class="p-3 text-left">Email</th>
+          <th class="p-3 text-left">Referral</th>
+          <th class="p-3 text-left">Stato</th>
+          <th class="p-3 text-right w-48">Azioni</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% if @leads.any? %>
+          <% @leads.each do |lead| %>
+            <%= render partial: "row", locals: { lead: lead } %>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="7" class="p-6 text-center text-slate-500">Nessun lead trovato.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <%# Pagination (se usi pagy/kaminari/will_paginate) %>
+  <% if defined? pagy_nav %>
+    <div class="pt-2"><%= pagy_nav(@pagy) if @pagy %></div>
   <% end %>
 </div>

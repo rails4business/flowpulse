@@ -5,23 +5,29 @@ class Account::LeadsController < ApplicationController
 
 
 
-  def index
-    @me      = Current.user
-    @my_lead = @me.lead || Lead.find_by(email: @me.email_address)
+   def index
+  @me      = Current.user
+  @my_lead = @me.lead || Lead.find_by(email: @me.email_address) ||
+             Lead.create!(email: @me.email_address, username: default_username(@me), user_id: @me.id, token: SecureRandom.hex(16))
 
-    # se non ho un Lead “mio”, creane uno base per poter risultare come referente
-    unless @my_lead
-      @my_lead = Lead.create!(
-        email: @me.email_address,
-        username: default_username(@me),
-        user_id: @me.id,
-        token: SecureRandom.hex(16)
-      )
-    end
+  @invited_leads = Lead.includes(:user)
+                       .where(referral_lead_id: @my_lead.id)
+                       .order(created_at: :desc)
 
-    @invited_leads = Lead.where(referral_lead_id: @my_lead.id).order(created_at: :desc)
-    @new_lead      = Lead.new
-  end
+  base = Lead.left_outer_joins(:user).where(referral_lead_id: @my_lead.id)
+
+  @counts = {
+    "all"      => base.count,
+    # pending = user pending O lead senza user (non registrato)
+    "pending"  => base.where(users: { state_registration: User.state_registrations[:pending] })
+                      .or(base.where(users: { id: nil })).distinct.count,
+    "approved" => base.where(users: { state_registration: User.state_registrations[:approved] }).distinct.count,
+    "rejected" => base.where(users: { state_registration: User.state_registrations[:rejected] }).distinct.count
+  }
+
+  @new_lead = Lead.new
+end
+
 
   def create
     me      = Current.user
@@ -62,12 +68,8 @@ class Account::LeadsController < ApplicationController
   def approve
     lead = Lead.find(params[:id])
 
-    user = lead.user || User.find_by(email_address: lead.email)
-    user ||= User.create!(
-      email_address: lead.email,
-      password: SecureRandom.base58(16),
-      lead_id: lead.id
-    )
+    user = lead.user || User.find_by(email_address: lead.email) ||
+          User.create!(email_address: lead.email, password: SecureRandom.base58(16), lead_id: lead.id)
 
     user.approve!(approved_by_lead: Current.user.lead)
     link = user.referral_url
@@ -80,7 +82,8 @@ class Account::LeadsController < ApplicationController
 
   def require_tutor!
     # unless Current.user&.has_role?(:tutor) || Current.user&.has_role?(:team_manager)
-    unless Current.user&.tutor_or_manager?
+    unless Current.user.superadmin == "true"
+
 
      redirect_to account_leads_path, alert: "Non autorizzato."
     end
@@ -89,6 +92,7 @@ class Account::LeadsController < ApplicationController
   def lead_params
     params.require(:lead).permit(:email, :name, :surname)
   end
+
 
   def default_username(user)
     user.email_address.to_s.split("@").first.to_s.parameterize.presence || "utente"

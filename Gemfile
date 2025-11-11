@@ -76,3 +76,4 @@ gem "kaminari", "~> 1.2"
 gem "lexxy", "~> 0.1.4.beta" # Need to specify the version since it's a pre-release
 gem "rouge"
 gem "redcarpet"
+gem "pundit"

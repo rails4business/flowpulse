@@ -2,7 +2,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  belongs_to :lead, optional: true, inverse_of: :user
+  belongs_to :lead, optional: true
   belongs_to :referrer, class_name: "User", optional: true
   has_many   :sessions, dependent: :destroy
 
@@ -15,6 +15,24 @@ class User < ApplicationRecord
   # Validazioni base
   validates :email_address, presence: true, uniqueness: true
 
+
+  # estrai il ruolo senza esplodere se manca qualcosa
+  def role_name
+    if Current.user.superadmin == true # lead&.certificate&.role_name&.to_s&.downcase # => "admin", "tutor", "pro", "referrer", ...
+      "superadmin"
+    end
+  end
+
+  # predicati comodi (adatta ai tuoi nomi reali)
+  def admin?    = role_name == "admin"
+  def tutor?    = role_name == "tutor"
+  def pro?      = role_name == "pro"      || role_name == "professionista"
+  def referrer? = role_name == "referrer" || role_name == "segnalatore"
+
+  # se ti serve ambito/centro, esponilo da lead (se esiste)
+  def center_id
+    lead&.center_id
+  end
   # ---- APPROVAL ----
   def approved?
     approved_at.present?
@@ -51,7 +69,7 @@ class User < ApplicationRecord
   end
 
   def tutor_or_manager?
-    superadmin?
+    self.superadmin == true
   end
 
   def referral_url(host:)

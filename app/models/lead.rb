@@ -1,6 +1,6 @@
 # app/models/lead.rb
 class Lead < ApplicationRecord
-  belongs_to :user, optional: true, inverse_of: :lead
+  has_one :user, dependent: :nullify
   has_many :taxbranches
   has_many :posts, inverse_of: :lead, dependent: :nullify
 

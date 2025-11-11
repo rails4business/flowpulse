@@ -1,23 +1,22 @@
 # app/policies/lead_policy.rb
 class LeadPolicy < ApplicationPolicy
-  def approve?
-    return false unless user.present?
-    return true  if user.superadmin?
-
-    approver_lead_id = user.lead&.id
-    return false unless approver_lead_id
-
-    record.referral_lead_id == approver_lead_id || record.parent_id == approver_lead_id
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      return scope.all if user&.superadmin?
+      return scope.where(center_id: user.center_id) if user&.tutor?
+      scope.none
+    end
   end
 
-  class Scope < Scope
-    def resolve
-      if user&.superadmin?
-        scope.all
-      else
-        scope.where(referral_lead_id: user.lead&.id)
-             .or(scope.where(parent_id: user.lead&.id))
-      end
-    end
+  def index?   = user&.superadmin? # || user&.tutor?
+  def show?    = index? && in_scope? #
+  def approve? = user&.superadmin? #  || (user&.tutor? && in_scope?)
+  def reject?  = approve?
+
+  private
+
+  def in_scope?
+    return true if user&.superadmin?
+    user&.center_id.present? && record.center_id == user.center_id
   end
 end

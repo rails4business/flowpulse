@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_10_102920) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_11_140802) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -105,13 +105,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_10_102920) do
     t.string "surname"
     t.string "token", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
     t.string "username", null: false
     t.index ["email"], name: "index_leads_on_email"
     t.index ["parent_id"], name: "index_leads_on_parent_id"
     t.index ["referral_lead_id"], name: "index_leads_on_referral_lead_id"
     t.index ["token"], name: "index_leads_on_token", unique: true
-    t.index ["user_id"], name: "index_leads_on_user_id"
     t.index ["username"], name: "index_leads_on_username", unique: true
   end
 
@@ -210,7 +208,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_10_102920) do
   add_foreign_key "domains", "taxbranches"
   add_foreign_key "eventdates", "leads"
   add_foreign_key "eventdates", "taxbranches"
-  add_foreign_key "leads", "users"
   add_foreign_key "posts", "leads"
   add_foreign_key "sessions", "users"
   add_foreign_key "tag_positionings", "leads"

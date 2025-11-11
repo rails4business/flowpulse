@@ -1,28 +1,30 @@
 <%= render 'shared/nav_partial_post' %>
 <br><br>
 
-<% active_tab = params[:tab] == 'signup' ? 'signup' : 'login' %>
-
-<div class="mx-auto md:w-2/3 w-full">
+<% active_tab =
+     (current_page?(new_registration_path) || controller_name == 'registrations') ?
+       'signup' : 'login' %>
+<div class="mx-auto md:w-2/3 w-full p-4">
   <div class="border-b border-slate-200 mb-6">
-    <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-      <%= link_to url_for(request.query_parameters.merge(tab: 'login')),
-        class: "whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium " +
-               (active_tab == 'login' ?
-                 "border-blue-600 text-blue-700" :
-                 "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300") do %>
-        Ho un account
-      <% end %>
+  <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+    <%= link_to new_session_path,
+      class: "whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium " +
+             (active_tab == 'login' ?
+               "border-blue-600 text-blue-700" :
+               "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300") do %>
+      Ho un account
+    <% end %>
 
-      <%= link_to url_for(request.query_parameters.merge(tab: 'signup')),
-        class: "whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium " +
-               (active_tab == 'signup' ?
-                 "border-blue-600 text-blue-700" :
-                 "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300") do %>
-        Crea un account
-      <% end %>
-    </nav>
-  </div>
+    <%= link_to new_registration_path,
+      class: "whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium " +
+             (active_tab == 'signup' ?
+               "border-blue-600 text-blue-700" :
+               "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300") do %>
+      Crea un account
+    <% end %>
+  </nav>
+</div>
+
 
   <% if flash[:notice] %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-600 font-medium rounded-lg inline-block"><%= flash[:notice] %></p>

@@ -1,28 +1,80 @@
-<!-- app/views/leads/_row.html.erb -->
-<tr id="lead_row_<%= lead.id %>" data-lead-id="<%= lead.id %>">
-  <td class="p-3 text-slate-500"><%= l(lead.created_at, format: :short) %></td>
-  <td class="p-3 font-medium"><%= lead.username %></td>
-  <td class="p-3"><%= lead.email %></td>
-  <td class="p-3 text-slate-600"><%= lead.referral_lead_id || "—" %></td>
-  <td class="p-3">
-    <% if lead.user&.pending? %>
-      <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">pending</span>
-    <% else %>
-      <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">approved</span>
+<%# app/views/superadmin/leads/_row.html.erb %>
+<% u = lead.user || User.find_by(email_address: lead.email) %>
+
+<tr>
+  <td class="p-3 align-top">
+    <div class="font-medium"><%= lead.username.presence || "—" %></div>
+    <div class="text-xs text-slate-500">lead_id: <%= lead.id %></div>
+    <% if u %>
+      <div class="text-xs text-slate-500">user_id: <%= u.id %></div>
     <% end %>
   </td>
-  <td class="p-3 text-right">
-    <% if lead.user&.pending? && policy(lead).approve? %>
-      <button
-        class="inline-flex items-center px-3 py-1.5 rounded-lg border bg-white hover:bg-slate-50 text-slate-700"
-        data-controller="approve"
-        data-approve-url-value="<%= approve_lead_path(lead, format: :json) %>"
-        data-action="click->approve#go"
-        data-approve-target="button">
-        Approva
-      </button>
+
+  <td class="p-3 align-top"><%= mail_to lead.email %></td>
+
+  <%# --- Referral: mostra un codice o un link se l'utente è approvato --- %>
+  <td class="p-3 align-top text-slate-600">
+    <% referral_link =
+         if u&.respond_to?(:referral_url)
+           u.referral_url(host: (Current.domain&.host || "http://localhost:3000"))
+         end %>
+
+    <% if u&.approved? && referral_link.present? %>
+      <div class="flex items-center gap-2">
+        <input type="text" readonly value="<%= referral_link %>"
+               class="w-full rounded-md border border-slate-300 px-2 py-1 text-xs">
+        <button data-action="click->clipboard#copy"
+                data-clipboard-text-value="<%= referral_link %>"
+                class="text-xs rounded border px-2 py-1 hover:bg-slate-50">
+          Copia
+        </button>
+      </div>
     <% else %>
-      <span class="text-slate-400 text-sm">—</span>
+      — 
     <% end %>
+  </td>
+
+  <%# --- Stato: deriva da user.state_registration, non da lead.status --- %>
+  <%
+    status_str =
+      if u&.respond_to?(:state_registration)
+        u.state_registration
+      else
+        (u.nil? ? "unregistered" : "unknown")
+      end
+
+    badge_class =
+      case status_str
+      when "approved"     then "bg-green-100 text-green-800 ring-green-200"
+      when "pending"      then "bg-amber-100 text-amber-800 ring-amber-200"
+      when "rejected"     then "bg-red-100 text-red-800 ring-red-200"
+      when "suspended"    then "bg-slate-200 text-slate-700 ring-slate-300"
+      when "unregistered" then "bg-slate-100 text-slate-600 ring-slate-200"
+      else                      "bg-slate-100 text-slate-600 ring-slate-200"
+      end
+  %>
+  <td class="p-3 align-top">
+    <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs ring-1 <%= badge_class %>">
+      <%= status_str.humanize %>
+    </span>
+  </td>
+
+  <%# --- Azioni --- %>
+  <td class="p-3 align-top text-right space-x-3">
+    <%# Approva: solo se mancano user o è pending %>
+    <% if (Current.user&.superadmin? || Current.user&.tutor_or_manager?) && (u.nil? || u.pending?) %>
+      <%= button_to "Approva",
+            approve_superadmin_lead_path(lead),
+            method: :post,
+            form: { data: { turbo_confirm: "Confermi approvazione?" } },
+            class: "inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50" %>
+    <% end %>
+
+    <%# Rimuovi %>
+    <%= button_to "Rimuovi",
+          superadmin_lead_path(lead),
+          method: :delete,
+          form: { data: { turbo_confirm: "Rimuovere questo lead?" } },
+          class: "text-red-600 hover:underline" %>
   </td>
 </tr>

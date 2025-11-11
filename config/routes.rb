@@ -13,8 +13,11 @@ Rails.application.routes.draw do
       end
       resources :tag_positionings, only: [ :index, :create, :destroy ]
     end
-    resources :leads do
-      member { post :approve }
+     resources :leads do
+      member do
+        post :approve
+        post :reject
+      end
     end
   end
 
@@ -31,13 +34,15 @@ Rails.application.routes.draw do
   end
 
 
-  # --- Sessioni & pagine ---
-  # constraints ->(req) { req.session[:user_id].present? } do
-  #   root "dashboard#home", as: :authenticated_root
-  # end
-  resource :registration, only: [ :create, :edit, :update ]
-resource :session, only: [ :new, :create, :destroy ]
-
+ # --- Sessioni & pagine ---
+ # constraints ->(req) { req.session[:user_id].present? } do
+ #   root "dashboard#home", as: :authenticated_root
+ # end
+ resource :session,       only: [ :new, :create, :destroy ]
+  resource :registration,  only: [ :new, :create, :edit, :update ]
+  resource :password_reset, only: [ :new, :create, :edit, :update ] # (nome può variare)
+  get "/login",  to: "sessions#new",      as: :login
+   get "/signup", to: "registrations#new", as: :signup
   # unauthenticated do
   #   root to: "sessions#new", as: :unauthenticated_root
   # end
