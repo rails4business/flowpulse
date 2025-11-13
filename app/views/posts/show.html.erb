@@ -7,7 +7,7 @@
     <div class="max-w-6xl mx-auto p-6">
       <% if @children.any? %>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <% @children.each do |child_tax| %>
+          <% @children.where.not(home_nav: true).each do |child_tax| %>
             <%= render "posts/child_card", child_taxbranch: child_tax %>
           <% end %>
         </div>
