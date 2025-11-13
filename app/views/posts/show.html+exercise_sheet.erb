@@ -63,7 +63,7 @@
 
     <!-- Barra progresso (calcolo server-side) -->
     <% total = 0; done = 0 %>
-    <% children.each do |tb| %>
+    <% children.order(position: :desc).each do |tb| %>
       <% cp = tb.post %>
       <% next unless cp&.status == "published" %>
       <% total += 1 %>
