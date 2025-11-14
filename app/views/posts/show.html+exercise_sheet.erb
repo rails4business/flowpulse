@@ -89,12 +89,12 @@
         <% next unless child_post&.status == "published" %>
 
         <% exercise_url = (post_path(child_post) rescue nil) %>
-<% has_media = child_post.respond_to?(:url_media_content) && child_post.url_media_content.present? %>
-<%
-  scope       = lead ? Eventdate.where(lead: lead, taxbranch: taxbranch) : Eventdate.none
-  done_at     = scope.order(created_at: :desc).limit(1).pick(:created_at)
-  already_done = done_at.present?
-%>
+      <% has_media = child_post.respond_to?(:url_media_content) && child_post.url_media_content.present? %>
+      <%
+        scope       = lead ? Eventdate.where(lead: lead, taxbranch: taxbranch) : Eventdate.none
+        done_at     = scope.order(created_at: :desc).limit(1).pick(:created_at)
+        already_done = done_at.present?
+      %>
 
 
 
@@ -179,9 +179,7 @@
 
     <!-- Contenuto espanso -->
     <div class="p-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
-      <% if child_post.description.present? %>
-        <p class="text-slate-600 dark:text-slate-300"><%= child_post.description %></p>
-      <% end %>
+     
 
       <% if has_media %>
         <div class="overflow-hidden rounded-lg ring-1 ring-slate-200 dark:ring-slate-800">
@@ -198,6 +196,9 @@
       <% if exercise_url.present? %>
         <%= link_to "Apri esercizio →", exercise_url,
               class: "inline-flex items-center text-sm underline hover:no-underline" %>
+      <% end %>
+      <% if child_post.description.present? %>
+        <p class="text-slate-600 dark:text-slate-300"><%= child_post.description %></p>
       <% end %>
     </div>
   </details>
