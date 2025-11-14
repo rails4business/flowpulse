@@ -84,7 +84,7 @@
     <% end %>
 
     <div class="space-y-4">
-      <% children.each do |taxbranch| %>
+      <% children.order(position: :desc).each do |taxbranch| %>
         <% child_post = taxbranch.post %>
         <% next unless child_post&.status == "published" %>
 
