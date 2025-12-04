@@ -11,7 +11,7 @@ class Payment < ApplicationRecord
              foreign_key: :parent_payment_id,
              dependent: :nullify
 
-  enum method: {
+  enum :method, {
     cash:          0,
     bank_transfer: 1,
     card_pos:      2,
@@ -28,7 +28,7 @@ class Payment < ApplicationRecord
     partially_refunded: 5
   }
 
-  enum kind: {
+  enum :kind, {
     charge:   0,
     refund:   1,
     adjust:   2
