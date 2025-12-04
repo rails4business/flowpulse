@@ -1,0 +1,46 @@
+<div id="<%= dom_id service %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Name:</strong>
+    <%= service.name %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Description:</strong>
+    <%= service.description %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">N eventdates planned:</strong>
+    <%= service.n_eventdates_planned %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Price ticket euro:</strong>
+    <%= service.price_enrollment_euro %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Price ticket dash:</strong>
+    <%= service.price_ticket_dash %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Min tickets:</strong>
+    <%= service.min_tickets %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Max tickets:</strong>
+    <%= service.max_tickets %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Open by journey:</strong>
+    <%= service.open_by_journey? ? "Yes" : "No" %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Taxbranch:</strong>
+    <%= service.taxbranch_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Lead:</strong>
+    <%= service.lead_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Meta:</strong>
+    <%= service.meta %>
+  </div>
+</div>

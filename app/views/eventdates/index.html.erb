@@ -2,28 +2,248 @@
 
 <div class="w-full">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice">
+      <%= notice %>
+    </p>
   <% end %>
 
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Eventdates</h1>
-    <%= link_to "New eventdate", new_eventdate_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div>
+      <h1 class="font-bold text-4xl">Eventdates</h1>
+      <p class="text-sm text-slate-500 mt-1">
+        I tuoi eventi, filtrati per giorno e tipo di data.
+      </p>
+    </div>
+
+    <div class="flex items-end gap-4">
+      <!-- Filtro giorno / agenda -->
+      <%= form_with url: eventdates_path, method: :get, local: true, class: "flex items-end gap-2" do |f| %>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">
+            📆 Giorno agenda
+          </label>
+          <%= f.date_field :on,
+                value: (@date&.to_date || nil),
+                class: "block w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+          <%= hidden_field_tag :tab, @tab %>
+        </div>
+        <div>
+          <%= f.submit "Filtra",
+                class: "rounded-md px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium cursor-pointer" %>
+        </div>
+      <% end %>
+
+      <%= link_to "New eventdate",
+          new_eventdate_path,
+          class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium" %>
+    </div>
   </div>
 
-  <div id="eventdates" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @eventdates.any? %>
-      <% @eventdates.each do |eventdate| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render eventdate %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", eventdate, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_eventdate_path(eventdate), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", eventdate, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+  <!-- AGENDA DEL GIORNO -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold text-slate-900">
+        🗓️ Agenda
+        <% if @date %>
+          <span class="text-slate-500 text-sm">
+            per <%= l(@date, format: :long) rescue @date %>
+          </span>
+        <% else %>
+          <span class="text-slate-400 text-sm">(seleziona un giorno e filtra)</span>
+        <% end %>
+      </h2>
+    </div>
+
+    <% if @date && @agenda_eventdates.any? %>
+      <div class="space-y-3">
+        <% @agenda_eventdates.each do |eventdate| %>
+          <div class="flex flex-col sm:flex-row justify-between items-start gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <!-- Info evento -->
+            <div class="flex-1 text-sm text-slate-700 space-y-1">
+              <p class="font-semibold text-slate-900">
+                <% if eventdate.date_start.present? && eventdate.date_end.present? %>
+                  <%= l(eventdate.date_start, format: :short) %>
+                  – <%= l(eventdate.date_end, format: :short) %>
+                <% elsif eventdate.date_start.present? %>
+                  <%= l(eventdate.date_start, format: :short) %>
+                <% elsif eventdate.date_end.present? %>
+                  Fine: <%= l(eventdate.date_end, format: :short) %>
+                <% else %>
+                  Data non impostata
+                <% end %>
+              </p>
+
+              <% if eventdate.location.present? %>
+                <p>
+                  <span class="font-semibold text-slate-900">📍</span>
+                  <%= eventdate.location %>
+                </p>
+              <% end %>
+
+              <p class="text-xs text-slate-600">
+                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100">
+                  <%= eventdate.event_type %> · <%= eventdate.mode %>
+                </span>
+              </p>
+
+              <% if eventdate.journey.present? %>
+                <p class="text-xs text-slate-600">
+                  Journey:
+                  <%= link_to eventdate.journey.title,
+                        journey_path(eventdate.journey),
+                        class: "underline" %>
+                </p>
+              <% end %>
+            </div>
+
+            <!-- Azioni -->
+            <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
+              <%= link_to "Show",
+                  eventdate,
+                  class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-xs" %>
+
+              <%= link_to "Edit",
+                  edit_eventdate_path(eventdate),
+                  class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-xs" %>
+
+              <%= button_to "Destroy",
+                  eventdate,
+                  method: :delete,
+                  class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer text-xs",
+                  data: { turbo_confirm: "Are you sure?" } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% elsif @date %>
+      <p class="text-sm text-slate-500 text-center py-6">
+        Nessun evento in agenda per questo giorno.
+      </p>
+    <% else %>
+      <p class="text-sm text-slate-400">
+        Imposta una data e premi “Filtra” per vedere l'agenda giornaliera.
+      </p>
+    <% end %>
+  </div>
+
+  <!-- TABS: COMPLETE / START ONLY / TODO -->
+  <div class="mb-4 border-b border-slate-200">
+    <nav class="-mb-px flex gap-4 text-sm">
+      <% tabs = {
+        "complete"   => "Date complete",
+        "start_only" => "Solo inizio",
+        "todo"       => "Da pianificare"
+      } %>
+
+      <% tabs.each do |key, label| %>
+        <% active = (@tab == key) %>
+        <%= link_to label,
+            eventdates_path(on: (@date&.to_s), tab: key),
+            class: [
+              "px-4 py-2 border-b-2 font-medium",
+              active ? "border-slate-900 text-slate-900" : "border-transparent text-slate-500 hover:text-slate-900"
+            ].join(" ") %>
+      <% end %>
+    </nav>
+  </div>
+
+  <% current_collection =
+      case @tab
+      when "complete"   then @complete_eventdates
+      when "start_only" then @start_only_eventdates
+      else                    @todo_eventdates
+      end %>
+
+  <div id="eventdates-tab-content" class="min-w-full space-y-5 mb-10">
+    <% if current_collection.any? %>
+      <% current_collection.each do |eventdate| %>
+        <div class="flex flex-col sm:flex-row justify-between items-start gap-4 pb-5 border-b border-gray-200">
+          <!-- Card evento -->
+          <div class="flex-1 w-full bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+            <div class="text-sm text-slate-700 space-y-1">
+              <p>
+                <span class="font-semibold text-slate-900">📅</span>
+                <% if eventdate.date_start.present? && eventdate.date_end.present? %>
+                  <%= l(eventdate.date_start.to_date, format: :long) %>
+                  · <%= l(eventdate.date_start, format: :time) %>
+                  – <%= l(eventdate.date_end, format: :time) %>
+                <% elsif eventdate.date_start.present? %>
+                  <%= l(eventdate.date_start.to_date, format: :long) %>
+                  · <%= l(eventdate.date_start, format: :time) %>
+                <% elsif eventdate.date_end.present? %>
+                  Fine: <%= l(eventdate.date_end.to_date, format: :long) %>
+                  · <%= l(eventdate.date_end, format: :time) %>
+                <% else %>
+                  Nessuna data impostata
+                <% end %>
+              </p>
+
+              <% if eventdate.location.present? %>
+                <p>
+                  <span class="font-semibold text-slate-900">📍</span>
+                  <%= eventdate.location %>
+                </p>
+              <% end %>
+              <p>
+                <span class="font-semibold text-slate-900">Description:</span>
+                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-xs">
+                  <%= eventdate.description %>
+                </span>
+              </p>
+              <p>
+                <span class="font-semibold text-slate-900">Tipo:</span>
+                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-xs">
+                  <%= eventdate.event_type %>
+                </span>
+              </p>
+
+              <p>
+                <span class="font-semibold text-slate-900">Modalità:</span>
+                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-xs">
+                  <%= eventdate.mode %>
+                </span>
+              </p>
+
+              <% if eventdate.journey.present? %>
+                <p>
+                  <span class="font-semibold text-slate-900">Journey:</span>
+                  <%= link_to eventdate.journey.title,
+                        journey_path(eventdate.journey),
+                        class: "underline" %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Azioni -->
+          <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
+            <%= link_to "Show",
+                eventdate,
+                class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-sm" %>
+
+            <%= link_to "Edit",
+                edit_eventdate_path(eventdate),
+                class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-sm" %>
+
+            <%= button_to "Destroy",
+                eventdate,
+                method: :delete,
+                class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer text-sm",
+                data: { turbo_confirm: "Are you sure?" } %>
           </div>
         </div>
       <% end %>
     <% else %>
-      <p class="text-center my-10">No eventdates found.</p>
+      <p class="text-sm text-slate-500">
+        <% if @tab == "complete" %>
+          Nessun evento con data completa (inizio + fine).
+        <% elsif @tab == "start_only" %>
+          Nessun evento con solo data di inizio.
+        <% else %>
+          Nessun evento da pianificare (senza data).
+        <% end %>
+      </p>
     <% end %>
   </div>
 </div>

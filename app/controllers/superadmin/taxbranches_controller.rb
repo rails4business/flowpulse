@@ -2,23 +2,66 @@ module Superadmin
   class TaxbranchesController < ApplicationController
     include RequireSuperadmin
     before_action :set_taxbranch, only: %i[
-      show edit update destroy
+      show edit update destroy journeys
       move_down move_up move_right move_left
     ]
 
   # GET /taxbranches or /taxbranches.json
   def index
-      scope =
+    # 1. Scope di base in base all'utente
+    base_scope =
       if Current.user&.superadmin?
         Taxbranch.all
       else
-        # se per qualche motivo arrivi qui senza lead → nessun record
         Current.user&.lead&.taxbranches || Taxbranch.none
       end
 
-    @taxbranches = scope.where(ancestry: [ nil, "" ]).ordered
+    # 2. Modalità: selezione link vs elenco normale
+    @link_parent = nil
+
+    if params[:link_parent_id].present?
+      @link_parent_id = params[:link_parent_id].to_i
+      @link_parent   = Taxbranch.find_by(id: @link_parent_id)
+
+      # in modalità selezione link: di solito vuoi vedere TUTTI (o quasi)
+      scope = base_scope
+    else
+      # elenco normale: solo radici
+      scope = base_scope.where(ancestry: [ nil, "" ])
+    end
+
+    # 3. Ricerca testuale (slug, label, category)
+    if params[:q].present?
+      q = "%#{params[:q].strip}%"
+      scope = scope.where(
+        "slug ILIKE :q OR slug_label ILIKE :q OR slug_category ILIKE :q",
+        q: q
+      )
+    end
+
+    # 4. Ordinamento finale
+    @taxbranches = scope.ordered
   end
 
+  def journeys
+    @journeys = @taxbranch.journeys
+  end
+
+   def set_link_child
+    child  = Taxbranch.find(params[:id])               # quello cliccato in index
+    parent = Taxbranch.find(params[:link_parent_id])   # quello da trasformare in link
+
+    if parent.children.any?
+      redirect_to superadmin_taxbranch_path(parent),
+                  alert: "Questo taxbranch ha figli: non può essere trasformato in link."
+      return
+    end
+
+    parent.update!(link_child: child)
+
+    redirect_to superadmin_taxbranch_path(parent),
+                notice: "Collegato a «#{child.display_label}»."
+  end
   # GET /taxbranches/1 or /taxbranches/1.json
   def show
      @taxbranch_node = @taxbranch
@@ -30,11 +73,16 @@ module Superadmin
 
   # GET /taxbranches/new
   def new
-    @taxbranch = Current.user.lead.taxbranches.build
+    @taxbranch = Current.user.lead.taxbranches.build(
+      status:     :draft,
+      visibility: :private_node
+    )
+
     if params[:parent_id]
       @taxbranch.parent_id = params[:parent_id] if params[:parent_id].present?
     end
   end
+
 
   # GET /taxbranches/1/edit
   def edit
@@ -63,7 +111,7 @@ module Superadmin
 
 def update
   if @taxbranch.update(taxbranch_params)
-    redirect_to(superadmin_taxbranches_path(@taxbranch.parent)   || superadmin_taxbranches_path, notice: "Taxbranch aggiornata.", status: :see_other) # 303
+    redirect_to(superadmin_taxbranch_path(@taxbranch), notice: "Taxbranch aggiornata.", status: :see_other) # 303
   else
     render :edit, status: :unprocessable_entity
   end
@@ -128,9 +176,15 @@ end
 
 
 
+   # Only allow a list of trusted parameters through.
+   def taxbranch_params
     # Only allow a list of trusted parameters through.
-    def taxbranch_params
-      params.expect(taxbranch: [ :lead_id, :description, :slug, :slug_category, :slug_label, :ancestry, :position, :meta, :parent_id, :home_nav, :positioning_tag_public ])
-    end
+    params.expect(taxbranch: [
+    :lead_id, :description, :slug, :slug_category, :slug_label,
+    :ancestry, :position, :meta, :parent_id, :home_nav,
+    :positioning_tag_public, :service_certificable, :certificate_role,
+    :status, :visibility, :published_at, :scheduled_at
+  ])
+  end
   end
 end

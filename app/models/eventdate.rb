@@ -1,15 +1,32 @@
 class Eventdate < ApplicationRecord
-  # taxbranch si riferisce all'esercizio che è stato completato
-  belongs_to :taxbranch
-  # lead è l'utente che ha completato l'esercizio (se usi Devise, questo sarà User)
-  belongs_to :lead
+  # Può essere usato come:
+  # - evento di calendario (solo date + location + journey opzionale)
+  # - log/diario (taxbranch + lead + cycle + status)
 
-  # Aggiungi le validazioni
-  validates :cycle, presence: true, numericality: { greater_than_or_equal_to: 1 }
-  validates :taxbranch, presence: true
+  # 🔗 Relazioni
+  belongs_to :journey,   optional: true
+  belongs_to :taxbranch, optional: true
+  belongs_to :lead,      optional: true
+
+  has_many :commitments,    dependent: :destroy
+  has_many :bookings, dependent: :destroy
+
+  # 🎭 Tipologia / meta-evento
+  enum :event_type, { session: 0, meeting: 1, online_call: 2, recording: 3 }
+  enum :mode,       { onsite: 0, online: 1, hybrid: 2 }
+  enum :visibility, { internal_date: 0, public_date: 1 }
+
+ # ✅ Stati del "diario"
+ enum :status, { pending: 0, tracking: 1, completed: 2, skipped: 3 }
+
+
+  # 📅 Validazione "da calendario" – sempre sensata
+  validates :description, presence: true
   validates :lead, presence: true
-  validates :status, presence: true
 
-  # Definisci gli stati (esempio comune: 1=Completato, 2=In corso)
-  enum :status, { pending: 0, completed: 1, skipped: 2 }
+  # 📓 Validazioni "da diario" – SOLO se stai usando taxbranch
+  with_options if: -> { taxbranch_id.present? } do
+    validates :cycle, presence: true, numericality: { greater_than_or_equal_to: 1 }
+    validates :status, presence: true
+  end
 end

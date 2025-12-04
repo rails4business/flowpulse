@@ -1,0 +1,532 @@
+<%= form_with(model: [commitment.journey || @journey, commitment], local: true, class: "space-y-8") do |form| %>
+  <% if commitment.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(commitment.errors.count, "error") %> prohibited this commitmenting saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% commitment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Header -->
+  <div class="border-b pb-6">
+    <h1 class="text-2xl font-bold text-slate-900 mb-1">
+      <%= commitment.persisted? ? "✏️ Modifica Commitmentitment" : "➕ Nuovo Commitmentitment" %>
+    </h1>
+    <p class="text-sm text-slate-600">
+      <%= commitment.persisted? ? "Aggiorna i dettagli dello commitment" : "Crea un nuovo commitment per il journey" %>
+    </p>
+  </div>
+
+  <!-- SECTION 1: Journey & Evento -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-slate-900">📌 Journey e Evento</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Journey -->
+      <% journey = commitment.journey || @journey %>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          Journey <span class="text-red-500">*</span>
+        </label>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+          <p class="font-medium text-slate-900">
+            <%= journey&.title || "Journey" %>
+          </p>
+          <p class="text-xs text-slate-600">ID: <%= journey&.id %></p>
+        </div>
+
+        <%#= form.hidden_field :journey_id, value: journey.id %>
+      </div>
+
+      <!-- Eventdate -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          📅 Evento (opzionale)
+        </label>
+        
+        <div class="space-y-3">
+          <!-- Toggle Buttons -->
+          <div class="flex gap-2 border border-slate-300 rounded-lg p-1 bg-slate-50" data-controller="eventdate-toggle">
+            <button 
+              type="button"
+              class="flex-1 px-3 py-2 rounded text-sm font-medium transition-colors eventdate-toggle-btn active"
+              data-action="click->eventdate-toggle#selectExisting"
+              data-eventdate-toggle-target="existingBtn"
+            >
+              📋 Scegli evento
+            </button>
+            <button 
+              type="button"
+              class="flex-1 px-3 py-2 rounded text-sm font-medium transition-colors eventdate-toggle-btn"
+              data-action="click->eventdate-toggle#selectNew"
+              data-eventdate-toggle-target="newBtn"
+            >
+              ➕ Nuovo evento
+            </button>
+          </div>
+
+          <!-- Existing Events (shown by default) -->
+          <div id="eventdate-existing" data-eventdate-toggle-target="existingContent">
+            <% if params[:eventdate_id] %>
+              <%= form.hidden_field :eventdate_id, value: params[:eventdate_id] %>
+              <div class="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+                <% eventdate = Eventdate.find(params[:eventdate_id]) rescue nil %>
+                <p class="font-medium text-slate-900">
+                  <%= eventdate&.location || "Evento" %>
+                </p>
+                <p class="text-xs text-slate-600">
+                  <%= l(eventdate&.date_start, format: :short) rescue "ID: #{params[:eventdate_id]}" %>
+                </p>
+              </div>
+            <% else %>
+              <%= form.collection_select :eventdate_id, Eventdate.all, :id, 
+                lambda { |e| "#{l(e.date_start, format: :short)} - #{e.location}" },
+                { prompt: "Nessun evento (commitment standalone)" },
+                class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                data: { eventdate_toggle_target: "select" } %>
+            <% end %>
+          </div>
+
+          <!-- New Event Form (hidden by default) -->
+          <div id="eventdate-new" class="hidden space-y-3" data-eventdate-toggle-target="newContent">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  Data inizio <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="datetime-local" 
+                  id="new_eventdate_start"
+                  class="block w-full shadow-sm rounded-lg border border-slate-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="2025-12-10T09:00"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  Data fine
+                </label>
+                <input 
+                  type="datetime-local" 
+                  id="new_eventdate_end"
+                  class="block w-full shadow-sm rounded-lg border border-slate-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="2025-12-10T17:00"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">
+                Ubicazione <span class="text-red-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="new_eventdate_location"
+                placeholder="es. Roma - Headquarters, Virtual - Teams"
+                class="block w-full shadow-sm rounded-lg border border-slate-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  Tipo <span class="text-red-500">*</span>
+                </label>
+                <select 
+                  id="new_eventdate_type"
+                  class="block w-full shadow-sm rounded-lg border border-slate-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="in-person">🏢 In-person</option>
+                  <option value="online">💻 Online</option>
+                  <option value="hybrid">🔄 Hybrid</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                  Modalità <span class="text-red-500">*</span>
+                </label>
+                <select 
+                  id="new_eventdate_mode"
+                  class="block w-full shadow-sm rounded-lg border border-slate-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="live">🔴 Live</option>
+                  <option value="async">⏰ Async</option>
+                  <option value="recorded">📹 Recorded</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800">
+              <p class="font-medium mb-2">💡 Creare nuovo evento</p>
+              <p class="text-xs">L'evento sarà creato quando salvi questo commitment. Verifica i dati!</p>
+            </div>
+
+            <button
+              type="button"
+              class="w-full px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition"
+              data-action="click->eventdate-toggle#createEventQuick"
+            >
+              ✅ Crea evento e prosegui
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Tipo e Ruolo -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-slate-900">🎯 Tipo e Ruolo</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Commitment Kind -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          Tipo di Commitment <span class="text-red-500">*</span>
+        </label>
+        <%= form.select :commitment_kind, 
+          Commitment.commitment_kinds.keys.map { |k| [k.titleize, k] },
+          { prompt: "Seleziona tipo" },
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+        <p class="text-xs text-slate-500 mt-1">
+          Internal Task • Operator Role • Client Commitment • Event Session
+        </p>
+      </div>
+
+      <!-- Taxbranch -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          🏢 Taxbranch (opzionale)
+        </label>
+        <%= form.collection_select :taxbranch_id, Taxbranch.all, :id, 
+          lambda { |t| "#{t.slug_label} - #{t.slug_category}" },
+          { prompt: "Seleziona area" },
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Ruolo e Risorse -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-slate-900">👥 Ruolo e Risorse</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Role Name -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          Nome Ruolo <span class="text-red-500">*</span>
+        </label>
+        <%= form.text_field :role_name, 
+          placeholder: "es. Senior Developer, Tech Lead, Coach...",
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+
+      <!-- Role Count -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          Numero di Ruoli Richiesti
+        </label>
+        <%= form.number_field :role_count, 
+          value: commitment.role_count || 1,
+          min: 1,
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+
+      <!-- Duration -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          ⏱️ Durata (minuti) <span class="text-red-500">*</span>
+        </label>
+        <%= form.number_field :duration_minutes, 
+          placeholder: "es. 60, 120, 180...",
+          min: 15,
+          commitment: 15,
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+
+      <!-- Area -->
+     <div>
+      <label class="block text-sm font-semibold text-slate-900 mb-2">
+        Area / Dipartimento
+      </label>
+
+      <%= form.select :area,
+        [
+          "Prodotti e Servizi",
+          "Brand & Posizionamento",
+          "Organizzazione & Eventi",
+          "Produzione Contenuti",
+          "Amministrazione & Segreteria",
+          "Programmazione / Rails",
+          "Modelli & Monitoraggio"
+        ],
+        { include_blank: "Seleziona un'area..." },
+        class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      %>
+    </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4: Metriche Importanza/Urgenza/Energia -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-slate-900">📊 Metriche</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Urgency -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          🚨 Urgenza (1-10)
+        </label>
+        <div class="flex items-center gap-2">
+          <%= form.range_field :urgency, 
+            min: 1, max: 10, commitment: 1,
+            value: commitment.urgency || 5,
+            class: "flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600" %>
+          <span class="text-sm font-bold text-slate-900 w-8 text-right" data-urgency-display>
+            <%= commitment.urgency || 5 %>
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-1">Quanto è urgente questo commitment?</p>
+      </div>
+
+      <!-- Importance -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          ⭐ Importanza (1-10)
+        </label>
+        <div class="flex items-center gap-2">
+          <%= form.range_field :importance, 
+            min: 1, max: 10, commitment: 1,
+            value: commitment.importance || 5,
+            class: "flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600" %>
+          <span class="text-sm font-bold text-slate-900 w-8 text-right" data-importance-display>
+            <%= commitment.importance || 5 %>
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-1">Quanto è importante?</p>
+      </div>
+
+      <!-- Energy -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          ⚡ Energia Richiesta (1-10)
+        </label>
+        <div class="flex items-center gap-2">
+          <%= form.range_field :energy, 
+            min: 1, max: 10, commitment: 1,
+            value: commitment.energy || 5,
+            class: "flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-green-600" %>
+          <span class="text-sm font-bold text-slate-900 w-8 text-right" data-energy-display>
+            <%= commitment.energy || 5 %>
+          </span>
+        </div>
+        <p class="text-xs text-slate-500 mt-1">Quanto è impegnativo?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Compensi -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-slate-900">💰 Compensi (opzionale)</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Compensation Euro -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          💵 Compenso in Euro
+        </label>
+        <%= form.number_field :compensation_euro, 
+          placeholder: "es. 500.00 €",
+          commitment: 0.01,
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+
+      <!-- Compensation Dash -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          🪙 Compenso in Dash 1 dash 20 euro
+        </label>
+        <%= form.number_field :compensation_dash, 
+          placeholder: "es. 25 Dash",
+          commitment: 0.00000001,
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Ordinamento e Note -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-slate-900">📝 Ordinamento e Note</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Position -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">
+          🔢 Posizione nel Journey
+        </label>
+        <%= form.number_field :position, 
+          placeholder: "es. 1, 2, 3...",
+          class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+        <p class="text-xs text-slate-500 mt-1">Lascia vuoto per aggiungere alla fine</p>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div>
+      <label class="block text-sm font-semibold text-slate-900 mb-2">
+        📌 Note / Descrizione
+      </label>
+      <%= form.text_area :notes, 
+        rows: 4,
+        placeholder: "Aggiungi note, dettagli o istruzioni per questo commitment...",
+        class: "block w-full shadow-sm rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+    </div>
+  </div>
+
+  <!-- Hidden Meta -->
+  <%= form.hidden_field :meta, value: (commitment.meta || {}).to_json %>
+
+  <!-- Actions -->
+  <div class="flex gap-3 pt-6 border-t">
+    <%= link_to "← Annulla", 
+      commitment.journey ? journey_path(commitment.journey) : journeys_path,
+      class: "px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium" %>
+    
+    <%= form.submit commitment.persisted? ? "💾 Aggiorna Commitment" : "✅ Crea Commitment",
+      class: "px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium cursor-pointer" %>
+  </div>
+<% end %>
+
+<script type="module">
+  import { Controller } from "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.13.0/+esm";
+
+  // Eventdate Toggle Controller
+  class EventdateToggleController extends Controller {
+    static targets = ["existingBtn", "newBtn", "existingContent", "newContent"];
+
+    selectExisting() {
+      this.existingBtnTarget.classList.add("active", "bg-white", "text-slate-900", "shadow-sm");
+      this.existingBtnTarget.classList.remove("text-slate-600");
+      
+      this.newBtnTarget.classList.remove("active", "bg-white", "text-slate-900", "shadow-sm");
+      this.newBtnTarget.classList.add("text-slate-600");
+
+      this.existingContentTarget.classList.remove("hidden");
+      this.newContentTarget.classList.add("hidden");
+
+      // Clear hidden field if exists
+      const hiddenField = document.createElement('input');
+      hiddenField.type = 'hidden';
+      hiddenField.name = 'commitment[eventdate_id]';
+      hiddenField.value = '';
+    }
+
+    selectNew() {
+      this.newBtnTarget.classList.add("active", "bg-white", "text-slate-900", "shadow-sm");
+      this.newBtnTarget.classList.remove("text-slate-600");
+      
+      this.existingBtnTarget.classList.remove("active", "bg-white", "text-slate-900", "shadow-sm");
+      this.existingBtnTarget.classList.add("text-slate-600");
+
+      this.newContentTarget.classList.remove("hidden");
+      this.existingContentTarget.classList.add("hidden");
+    }
+
+    async createEventQuick(event) {
+      event.preventDefault();
+
+      const startAt = document.getElementById("new_eventdate_start").value;
+      const endAt = document.getElementById("new_eventdate_end").value;
+      const location = document.getElementById("new_eventdate_location").value;
+      const eventType = document.getElementById("new_eventdate_type").value;
+      const mode = document.getElementById("new_eventdate_mode").value;
+
+      if (!startAt || !location) {
+        alert("Compila almeno data inizio e ubicazione!");
+        return;
+      }
+
+      try {
+        const response = await fetch('/eventdates', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({
+            eventdate: {
+              start_at: startAt,
+              end_at: endAt || startAt,
+              location,
+              event_type: eventType,
+              mode
+            }
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Set the hidden field with new eventdate ID
+          const form = document.querySelector('form');
+          let hiddenField = form.querySelector('input[name="commitment[eventdate_id]"]');
+          if (!hiddenField) {
+            hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = 'commitment[eventdate_id]';
+            form.appendChild(hiddenField);
+          }
+          hiddenField.value = data.id;
+
+          // Show success
+          alert(`✅ Evento creato! ID: ${data.id}`);
+          
+          // Switch back to existing
+          this.selectExisting();
+        } else {
+          alert("❌ Errore nella creazione dell'evento");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("❌ Errore: " + error.message);
+      }
+    }
+  }
+
+  // Range Slider Display
+  document.addEventListener('DOMContentLoaded', () => {
+    const urgencyInput = document.querySelector('input[name="commitment[urgency]"]');
+    const importanceInput = document.querySelector('input[name="commitment[importance]"]');
+    const energyInput = document.querySelector('input[name="commitment[energy]"]');
+    
+    if (urgencyInput) {
+      urgencyInput.addEventListener('input', (e) => {
+        document.querySelector('[data-urgency-display]').textContent = e.target.value;
+      });
+    }
+    
+    if (importanceInput) {
+      importanceInput.addEventListener('input', (e) => {
+        document.querySelector('[data-importance-display]').textContent = e.target.value;
+      });
+    }
+    
+    if (energyInput) {
+      energyInput.addEventListener('input', (e) => {
+        document.querySelector('[data-energy-display]').textContent = e.target.value;
+      });
+    }
+
+    // Register Stimulus controller
+    application.register("eventdate-toggle", EventdateToggleController);
+  });
+</script>
+
+

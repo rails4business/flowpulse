@@ -17,11 +17,14 @@ class BlogController < ApplicationController
       return redirect_to root_path, alert: "Blog non disponibile per questo dominio."
     end
 
-    # 5️⃣ Carica i post se tutto ok
+    # 5️⃣ Carica i post usando status/published_at sul taxbranch
     @posts = @blog_branch.posts
-                         .where(status: :published)
-                         .order(published_at: :desc)
-                         .page(params[:page]).per(12)
+                        .joins(:taxbranch)
+                        .merge(
+                          Taxbranch.public_node.published_now
+                        )
+                        .order("taxbranches.published_at DESC")
+                        .page(params[:page]).per(12)
   end
 
   def show

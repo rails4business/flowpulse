@@ -2,6 +2,7 @@
 class Lead < ApplicationRecord
   has_one :user, dependent: :nullify
   has_many :taxbranches
+  has_many :journeys
   has_many :posts, inverse_of: :lead, dependent: :nullify
 
   has_many :tag_positionings, dependent: :destroy

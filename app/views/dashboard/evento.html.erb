@@ -31,10 +31,10 @@
     .toast.error { @apply bg-rose-50 text-rose-800 border border-rose-200; }
     @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
     
-    /* Step indicator */
-    .step-indicator { @apply flex gap-2 mb-6; }
-    .step { @apply h-2 flex-1 rounded-full bg-slate-200 transition-all; }
-    .step.active { @apply bg-[hsl(var(--brand))]; }
+    /* Commitment indicator */
+    .commitment-indicator { @apply flex gap-2 mb-6; }
+    .commitment { @apply h-2 flex-1 rounded-full bg-slate-200 transition-all; }
+    .commitment.active { @apply bg-[hsl(var(--brand))]; }
     
     /* Input styling */
     input, textarea, select {
@@ -66,13 +66,13 @@
     <div class="grid md:grid-cols-3 gap-6">
       <!-- Form Builder -->
       <div class="md:col-span-2">
-        <div class="step-indicator" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="6">
-          <div class="step active" id="step1"></div>
-          <div class="step" id="step2"></div>
-          <div class="step" id="step3"></div>
-          <div class="step" id="step4"></div>
-          <div class="step" id="step5"></div>
-          <div class="step" id="step6"></div>
+        <div class="commitment-indicator" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="6">
+          <div class="commitment active" id="commitment1"></div>
+          <div class="commitment" id="commitment2"></div>
+          <div class="commitment" id="commitment3"></div>
+          <div class="commitment" id="commitment4"></div>
+          <div class="commitment" id="commitment5"></div>
+          <div class="commitment" id="commitment6"></div>
         </div>
 
         <!-- Section 1: Basic Info -->
@@ -103,7 +103,7 @@
 
           <label class="block">
             <span class="text-sm font-medium text-slate-700">Prezzo base (€)</span>
-            <input id="basePrice" type="number" min="0" step="0.01" placeholder="0.00" />
+            <input id="basePrice" type="number" min="0" commitment="0.01" placeholder="0.00" />
           </label>
 
           <label class="block">
@@ -294,7 +294,7 @@
       </label>
       <label class="block">
         <span class="text-xs font-medium text-slate-700">Prezzo (€)</span>
-        <input type="number" min="0" step="0.01" class="tPrice mt-1 w-full" placeholder="0.00" />
+        <input type="number" min="0" commitment="0.01" class="tPrice mt-1 w-full" placeholder="0.00" />
       </label>
       <label class="block">
         <span class="text-xs font-medium text-slate-700">Quantità</span>
@@ -361,8 +361,8 @@
       capacity: "", mode: "online", venue: "", dates: [], roles: [], tickets: [], sessions: [], invites: []
     };
 
-    let currentStep = 1;
-    const totalSteps = 6;
+    let currentCommitment = 1;
+    const totalCommitments = 6;
 
     // Toast notifications
     function showToast(msg, type = 'success') {
@@ -374,25 +374,25 @@
       setTimeout(() => toast.remove(), 3000);
     }
 
-    // Step navigation
-    function goToStep(step) {
-      if (step < 1 || step > totalSteps) return;
+    // Commitment navigation
+    function goToCommitment(commitment) {
+      if (commitment < 1 || commitment > totalCommitments) return;
       
-      for (let i = 1; i <= totalSteps; i++) {
+      for (let i = 1; i <= totalCommitments; i++) {
         const sec = $(`#sec${i}`);
-        const stepEl = $(`#step${i}`);
-        if (i === step) {
+        const commitmentEl = $(`#commitment${i}`);
+        if (i === commitment) {
           sec.classList.remove('hidden');
-          stepEl.classList.add('active');
+          commitmentEl.classList.add('active');
         } else {
           sec.classList.add('hidden');
-          stepEl.classList.remove('active');
+          commitmentEl.classList.remove('active');
         }
       }
       
-      currentStep = step;
+      currentCommitment = commitment;
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      $('[role="progressbar"]').setAttribute('aria-valuenow', step);
+      $('[role="progressbar"]').setAttribute('aria-valuenow', commitment);
     }
 
     // Simple field bindings
@@ -536,17 +536,17 @@
       localStorage.setItem('eventize_draft_v1', JSON.stringify(state));
     }
 
-    // Step navigation buttons
-    $('#btnNext1').addEventListener('click', () => goToStep(2));
-    $('#btnBack1').addEventListener('click', () => goToStep(1));
-    $('#btnNext2').addEventListener('click', () => goToStep(3));
-    $('#btnBack2').addEventListener('click', () => goToStep(2));
-    $('#btnNext3').addEventListener('click', () => goToStep(4));
-    $('#btnBack3').addEventListener('click', () => goToStep(3));
-    $('#btnNext4').addEventListener('click', () => goToStep(5));
-    $('#btnBack4').addEventListener('click', () => goToStep(4));
-    $('#btnNext5').addEventListener('click', () => { updateSummary(); goToStep(6); });
-    $('#btnBack5').addEventListener('click', () => goToStep(5));
+    // Commitment navigation buttons
+    $('#btnNext1').addEventListener('click', () => goToCommitment(2));
+    $('#btnBack1').addEventListener('click', () => goToCommitment(1));
+    $('#btnNext2').addEventListener('click', () => goToCommitment(3));
+    $('#btnBack2').addEventListener('click', () => goToCommitment(2));
+    $('#btnNext3').addEventListener('click', () => goToCommitment(4));
+    $('#btnBack3').addEventListener('click', () => goToCommitmentitmentitment(3));
+    $('#btnNext4').addEventListener('click', () => goToCommitment(5));
+    $('#btnBack4').addEventListener('click', () => goToCommitment(4));
+    $('#btnNext5').addEventListener('click', () => { updateSummary(); goToCommitment(6); });
+    $('#btnBack5').addEventListener('click', () => goToCommitment(5));
 
     // Summary
     function updateSummary() {
@@ -574,7 +574,7 @@
     $('#btnFinal').addEventListener('click', () => {
       localStorage.setItem('eventize_draft_v1', JSON.stringify(state));
       showToast('✓ Evento salvato! 🎉', 'success');
-      setTimeout(() => goToStep(1), 1000);
+      setTimeout(() => goToCommitment(1), 1000);
     });
 
     $('#btnExportJSON').addEventListener('click', () => {
@@ -667,7 +667,7 @@
           inputs.venue.value = state.venue;
 
           render();
-          goToStep(1);
+          goToCommitment(1);
           showToast('✓ Evento importato con successo', 'success');
         } catch (err) {
           showToast(`✗ Errore: ${err.message || 'File non valido'}`, 'error');
@@ -693,7 +693,7 @@
       });
 
       render();
-      goToStep(1);
+      goToCommitment(1);
       showToast('✓ Tutto svuotato', 'success');
     });
 
@@ -741,7 +741,7 @@
       }
       
       render();
-      goToStep(1);
+      goToCommitment(1);
     }
 
     init();

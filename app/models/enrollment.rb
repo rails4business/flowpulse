@@ -1,0 +1,60 @@
+# app/models/enrollment.rb
+class Enrollment < ApplicationRecord
+  belongs_to :service,  optional: true
+  belongs_to :journey,  optional: true
+  belongs_to :contact
+
+  belongs_to :requested_by_lead,
+             class_name: "Contact",
+             optional: true
+  belongs_to :invited_by_lead,
+             class_name: "Contact",
+             optional: true
+
+  has_many :bookings, dependent: :nullify
+  has_many :commitments
+  has_many :payments, as: :payable, dependent: :nullify
+
+
+
+
+
+  enum :status, {
+    draft:               0,
+    requested:           1, # il cliente chiede accesso
+    pending_confirmation: 2, # serve azione del tutor/pro
+    confirmed:           3, # enrollment attivo
+    cancelled:           4,
+    rejected:            5,
+    completed:           6
+  }
+
+  enum :mode, {
+    autonomia:  0,
+    individuale: 1,
+    gruppo:     2,
+    lavoratore: 3 # es. chi eroga/produce
+  }
+
+  enum :request_kind, {
+    diretto:   0, # creato dall'operatore/tutor
+    invito:    1, # l'utente è invitato
+    candidatura: 2 # l'utente fa richiesta autonoma
+  }
+
+  def requester
+    requested_by_lead || contact
+  end
+
+  def inviter
+    invited_by_lead
+  end
+
+  def confirm!
+    update!(status: :confirmed)
+  end
+
+  def cancel!
+    update!(status: :cancelled)
+  end
+end

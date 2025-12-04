@@ -11,5 +11,23 @@
 
   <%= link_to "Edit this eventdate", edit_eventdate_path(@eventdate), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= link_to "Back to eventdates", eventdates_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  
+  <% if @eventdate.journey.present?  %>
+    <%= link_to "Back to journey", journey_path(@eventdate.journey), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <% end %>
+  <% if @eventdate.taxbranch.present?  %>
+    
+    <% if Current.user.superadmin == true %>
+      
+   
+      <%= link_to "Back to taxbranch", superadmin_taxbranch_path(@eventdate.taxbranch), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    <% end %>
+    
+    <% if @eventdate.taxbranch.post.present?  %>
+      <%= link_to "Back to post", post_path(@eventdate.taxbranch.post), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    <% end %>
+  <% end %>
+ 
+ 
   <%= button_to "Destroy this eventdate", @eventdate, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
 </div>

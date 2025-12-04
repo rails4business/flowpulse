@@ -1,163 +1,269 @@
-<!-- app/views/superadmin/taxbranches/_node.html.erb -->
 <li
-  class="flex items-center justify-between border border-slate-200 rounded-md px-2 py-1.5 shadow-sm mb-1 <%= "bg-red-100" if node.id == @taxbranch.id %>  "
-  style="margin-left: <%= node.depth * 12 %>px"
->
-  <!-- Info principale -->
-  <div class="flex items-center gap-2 flex-1 min-w-0">
-     <!-- Badge categoria -->
-      
-     <% dom = node.domains.first %>
-
-      <% if dom %>
-      <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-      
-        <%= link_to dom.host,
-                    superadmin_domains_path(taxbranch_id: node.id),
-                    class: "text-blue-600 hover:underline" %>
-        </span>
-      <% else %>
- 
-        <%# tenta eredità risalendo l'ancestry (metodo sul modello) %>
-        <% src = node.effective_domain_taxbranch %>
-
-        <% if src.present? %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-            
-            <%= link_to src.display_label,
-                        superadmin_domains_path(taxbranch_id: src.id),
-                        class: "underline" %>
+  class="mb-1 list-none"
+  style="margin-left: <%= node.depth * 12 %>px">
+  <details
+    class="group border border-slate-200 rounded-md shadow-sm px-2 py-1.5 <%= 'ring-2 ring-blue-300' if node.id == @taxbranch.id %>"
+    style="<%= pastel_bg_for_category(node.slug_category) %>"
+  >
+    <summary class="flex items-center justify-between cursor-pointer list-none">
+      <!-- Info principale -->
+      <div class="flex items-center gap-2 flex-1 min-w-0">
+        <!-- Icona apertura: freccia che ruota -->
+        <% if node.children.exists? %>
+          <span
+            class="mr-1 text-xs text-slate-500 transition-transform group-open:rotate-90"
+          >
+            ▶
           </span>
-   
-    
-        <% else node.slug_category == "brand" %>
-         <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-   
-          <%= link_to "＋ dominio",
-                      new_superadmin_domain_path(taxbranch_id: node.id),
-                      class: "text-green-600 hover:underline" %>
-                       </span>
-        
+        <% else %>
+          <span class="w-3 mr-1"></span>
         <% end %>
-      <% end %>
-    
- 
-    <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-      <%= node.slug_category.presence || "—" %>
-    </span>
-    <!-- Etichetta -->
-    <%= link_to "id: #{node.id} - #{node.slug_label}",
-                superadmin_taxbranch_path(node),
-                class: "text-sm text-slate-800 font-medium truncate hover:underline" %>
 
-   
+        <!-- Badge dominio -->
+        <% dom = node.domains.first %>
 
-    <!-- Link al post associato (se esiste) -->
-    <% if node&.post.nil? %>
-      <%= link_to "📝",
-                  superadmin_taxbranch_path(taxbranch_id: node.id),
-                  title: "Crea post per questo nodo",
-                  class: "text-slate-400 hover:text-blue-600" %>
+        <% if dom %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+            <%= link_to dom.host,
+                        superadmin_domains_path(taxbranch_id: node.id),
+                        class: "text-blue-600 hover:underline" %>
+          </span>
+        <% else %>
+          <% src = node.effective_domain_taxbranch %>
 
-      <% else %>
-      
-      <% if node&.post&.id? %>
-        
-     
-      
-      <% if node.post.present? && node.post.published_at.present? && node.post.status.to_s == "published" %>
-        <%= link_to "📄",
-        post_path(node.post),
-        title: "Vedi post pubblicato",
-        class: "text-emerald-600 hover:text-emerald-700" %>
-       <% else %> 
-    
-       <%= link_to "📝",
-                  superadmin_taxbranch_path(taxbranch_id: node.id),
-                  title: "Crea post per questo nodo",
-                  class: "text-slate-400 hover:text-blue-600" %>
+          <% if src.present? %>
+            <span class="ml-1 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+              <%= link_to src.display_label,
+                          superadmin_domains_path(taxbranch_id: src.id),
+                          class: "underline" %>
+            </span>
+          <% elsif node.slug_category == "brand" %>
+            <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+              <%= link_to "＋ dominio",
+                          new_superadmin_domain_path(taxbranch_id: node.id),
+                          class: "text-green-600 hover:underline" %>
+            </span>
+          <% end %>
+        <% end %>
 
-            
-      <% end %>
-      
-         
-    <% end %>
+        <!-- Categoria (badge colorato in base alla slug_category) -->
+        <span
+          class="ml-1 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium"
+          style="<%= pastel_style_for_category(node.slug_category) %>"
+        >
+          <%= node.slug_category.presence || "—" %>
+        </span>
+
+        <!-- Stato editoriale (taxbranch) -->
+        <% case node.status %>
+        <% when "published" %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-800">
+            Pubblicato
+          </span>
+        <% when "draft" %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-800">
+            Bozza
+          </span>
+        <% when "in_review" %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-medium text-sky-700">
+            Review
+          </span>
+        <% when "archived" %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-medium text-slate-700">
+            Archivio
+          </span>
+        <% else %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+            <%= node.status.to_s.titleize %>
+          </span>
+        <% end %>
+
+        <!-- Visibilità -->
+        <% human_visibility =
+             case node.visibility
+             when "private_node"      then "Privato"
+             when "shared_node"       then "Condiviso"
+             when "participants_only" then "Partecipanti"
+             when "public_node"       then "Pubblico"
+             else node.visibility.to_s.titleize
+             end %>
+
+        <span class="ml-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+          <%= human_visibility %>
+        </span>
+
+        <!-- Etichetta -->
+        <%= link_to "id: #{node.id} - #{node.slug_label}",
+                    superadmin_taxbranch_path(node),
+                    class: "text-sm text-slate-800 font-medium truncate hover:underline" %>
+
+        <!-- Link al post associato (se esiste) -->
+        <% if node&.post&.persisted? %>
+          <% is_published_public =
+               node.published? &&
+               node.public_node? &&
+               (node.published_at.nil? || node.published_at <= Time.current) %>
+
+          <% if is_published_public %>
           
-    <% end %>
+       
+            
+      <%= link_to "📝",
+                        superadmin_taxbranch_path(node, anchor: "post-form"),
+                        title: "Modifica/crea post per questo nodo",
+                        class: "ml-1 text-slate-400 hover:text-blue-600" %>
+          
+            
+          <% else %>
+          <%= link_to "📄",
+                        post_path(node.post),
+                        title: "Vedi post pubblicato",
+                        class: "ml-1 text-emerald-600 hover:text-emerald-700" %>
+                           
+           
+          <% end %>
+        <% else %>
+          <%= link_to "📝",
+                      superadmin_taxbranch_path(node, anchor: "post-form"),
+                      title: "Crea post per questo nodo",
+                      class: "ml-1 text-slate-400 hover:text-blue-600" %>
+                     
+        <% end %>
 
-    <!-- Metadati -->
-   
-   <% if node.positioning_tag_public %>
-  <span class="ml-1 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-200">
-    TAG
-  </span>
+        <!-- Metadati TAG / NAV -->
+        <% if node.positioning_tag_public %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-200">
+            TAG
+          </span>
+        <% end %>
+
+        <% if node.home_nav == true %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200">
+            NAV
+          </span>
+        <% end %>
+       <% tb = node %>
+
+<% if tb.link_node? && tb.link_child %>
+  <%= link_to superadmin_taxbranch_path(tb.link_child),
+              class: "ml-1 inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200" do %>
+    LINK →
+  <% end %>
 <% end %>
 
-<% if node.home_nav %>
-  <span class="ml-1 inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200">
-    NAV
-  </span>
+<% if tb.linked_parents.any? %>
+  <button
+    type="button"
+    class="ml-1 inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200"
+    onclick="document.getElementById('parents-modal-<%= tb.id %>').classList.remove('hidden')">
+    ← LINKS
+  </button>
+
+  <div
+    id="parents-modal-<%= tb.id %>"
+    class="fixed inset-0 z-50 hidden bg-black/40 flex items-center justify-center"
+    onclick="this.classList.add('hidden')"  
+  ><!-- click sull’overlay = chiudi -->
+    <div
+      class="mx-4 max-w-md rounded-lg bg-white p-4 shadow-lg"
+      onclick="event.stopPropagation()"    
+    >  <!-- click dentro = NON chiudere -->
+      <div class="mb-2 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-slate-800">
+          Taxbranch che linkano
+          <span class="font-bold"><%= tb.display_label %></span>
+        </h2>
+        <button
+          type="button"
+          class="text-xs text-slate-500 hover:text-slate-700"
+          onclick="document.getElementById('parents-modal-<%= tb.id %>').classList.add('hidden')">
+          ✕
+        </button>
+      </div>
+
+      <ul class="space-y-2">
+        <% tb.linked_parents.each do |parent| %>
+          <li>
+            <%= link_to superadmin_taxbranch_path(parent),
+                        class: "block" do %>
+              <div class="border rounded-md p-3 flex items-center justify-between gap-3 hover:bg-slate-50 transition">
+                <div class="flex flex-col">
+                  <span class="font-medium text-slate-800"><%= parent.display_label %></span>
+                  <span class="text-xs text-slate-500">
+                    <%= parent.slug_category %> / <%= parent.slug_label %>
+                  </span>
+                </div>
+
+                <span class="text-slate-400 text-sm">Apri →</span>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 <% end %>
-   
 
-  </div>
+     
 
-  <!-- Azioni -->
-  <% prev      = node.higher_item %>
-  <% next_node = node.lower_item  %>
+      </div>
 
-  <div class="flex items-center gap-2 text-xs text-slate-500 shrink-0">
-    <%= link_to "✏️", edit_superadmin_taxbranch_path(node),
-          class: "hover:text-blue-600", title: "Modifica categoria" %>
-    <%= link_to "＋ Figlio",
-              new_superadmin_taxbranch_path(parent_id: node.id),
-              class: "hover:text-green-700", title: "+ figlio" %>
+      <!-- Azioni -->
+      <% prev      = node.higher_item %>
+      <% next_node = node.lower_item  %>
 
-    <%= link_to "🗑️", superadmin_taxbranch_path(node),
-          data:  { turbo_method: :delete, turbo_confirm: "Sicuro di eliminare questo ramo?" },
-          class: "hover:text-red-600", title: "Elimina" %>
+      <div class="flex items-center gap-2 text-xs text-slate-500 shrink-0">
+        <%= link_to "✏️", edit_superadmin_taxbranch_path(node),
+              class: "hover:text-blue-600", title: "Modifica categoria" %>
+        <%= link_to "＋ Figlio",
+                  new_superadmin_taxbranch_path(parent_id: node.id),
+                  class: "hover:text-green-700", title: "+ figlio" %>
 
-    <span class="text-slate-300">|</span>
+        <%= link_to "🗑️", superadmin_taxbranch_path(node),
+              data:  { turbo_method: :delete, turbo_confirm: "Sicuro di eliminare questo ramo?" },
+              class: "hover:text-red-600", title: "Elimina" %>
 
-    <!-- Su/Giù nell'ordine tra i fratelli -->
-    <% if prev.present? %>
-      <%= link_to "⬆", move_up_superadmin_taxbranch_path(node),
-            data: { turbo_method: :patch },
-            class: "hover:text-slate-700", title: "Sposta su" %>
-    <% else %>
-      <span class="opacity-40" title="Già in cima">⬆</span>
+        <span class="text-slate-300">|</span>
+
+        <% if prev.present? %>
+          <%= link_to "⬆", move_up_superadmin_taxbranch_path(node),
+                data: { turbo_method: :patch },
+                class: "hover:text-slate-700", title: "Sposta su" %>
+        <% else %>
+          <span class="opacity-40" title="Già in cima">⬆</span>
+        <% end %>
+
+        <% if next_node.present? %>
+          <%= link_to "⬇", move_down_superadmin_taxbranch_path(node),
+                data: { turbo_method: :patch },
+                class: "hover:text-slate-700", title: "Sposta giù" %>
+        <% else %>
+          <span class="opacity-40" title="Già in fondo">⬇</span>
+        <% end %>
+
+        <% if node.parent.present?  %>
+          <%= link_to "⬅️", move_left_superadmin_taxbranch_path(node),
+                data: { turbo_method: :patch },
+                class: "hover:text-slate-700", title: "Sposta a sinistra (outdent)" %>
+        <% else %>
+          <span class="opacity-40" title="Già a radice">⬅️</span>
+        <% end %>
+
+        <% if prev.present? %>
+          <%= link_to "➡️", move_right_superadmin_taxbranch_path(node),
+                data: { turbo_method: :patch },
+                class: "hover:text-slate-700", title: "Sposta a destra (indent)" %>
+        <% else %>
+          <span class="opacity-40" title="Nessun fratello precedente">➡️</span>
+        <% end %>
+      </div>
+    </summary>
+
+    <%# FIGLI: visibili solo quando il <details> è aperto %>
+    <% if node.children.exists? %>
+      <ul class="ml-4 mt-1 space-y-1">
+        <%= render partial: "node", collection: node.children.ordered, as: :node %>
+      </ul>
     <% end %>
-
-    <% if next_node.present? %>
-      <%= link_to "⬇", move_down_superadmin_taxbranch_path(node),
-            data: { turbo_method: :patch },
-            class: "hover:text-slate-700", title: "Sposta giù" %>
-    <% else %>
-      <span class="opacity-40" title="Già in fondo">⬇</span>
-    <% end %>
-
-    <!-- Outdent/Indent livello -->
-    <% if node.parent.present?  %>
-      <%= link_to "⬅️", move_left_superadmin_taxbranch_path(node),
-            data: { turbo_method: :patch },
-            class: "hover:text-slate-700", title: "Sposta a sinistra (outdent)" %>
-    <% else %>
-      <span class="opacity-40" title="Già a radice">⬅️</span>
-    <% end %>
-
-    <% if prev.present? %>
-      <%= link_to "➡️", move_right_superadmin_taxbranch_path(node),
-            data: { turbo_method: :patch },
-            class: "hover:text-slate-700", title: "Sposta a destra (indent)" %>
-    <% else %>
-      <span class="opacity-40" title="Nessun fratello precedente">➡️</span>
-    <% end %>
-  </div>
+  </details>
 </li>
-
-<%# Ricorsione figli %>
-<% if node.children.exists? %>
-  <ul class="ml-0 mt-1 space-y-1">
-    <%= render partial: "node", collection: node.children.ordered, as: :node %>
-  </ul>
-<% end %>

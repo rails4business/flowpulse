@@ -10,10 +10,27 @@
     </div>
   <% end %>
 
+  <%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
+<br>
+
 <%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
+
+<% if @taxbranch.persisted? %>
+  <br>
+  <% if @taxbranch.children.exists? %>
+    <p class="text-xs text-slate-500">
+      Questo nodo ha già dei figli, non può diventare un link.
+    </p>
+  <% else %>
+    <%= link_to "🔗 Collega a un altro taxbranch",
+                superadmin_taxbranches_path(link_parent_id: @taxbranch.id),
+                class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
+  <% end %>
+<% end %>
   <!-- Metadati e posizionamento -->
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
     <div>
+      
       <%= f.label :lead_id, "Lead ID", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= f.text_field :lead_id,
             class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:lead_id].any?}" %>
@@ -30,15 +47,12 @@
         <p class="mt-1 text-xs text-red-600"><%= m %></p>
       <% end %>
     </div>
-  <div class="flex items-center gap-2">
-  <%= f.check_box :home_nav,
-        class: "peer sr-only" %>
-  <div class="relative w-10 h-5 bg-gray-200 rounded-full peer-checked:bg-emerald-500 transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
-  <%= f.label :home_nav, "Mostra nella navbar", class: "text-sm text-gray-700 cursor-pointer" %>
-</div>
 
-
-    
+    <div class="flex items-center gap-2 mt-6 sm:mt-0">
+      <%= f.check_box :home_nav, class: "peer sr-only" %>
+      <div class="relative w-10 h-5 bg-gray-200 rounded-full peer-checked:bg-emerald-500 transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
+      <%= f.label :home_nav, "Mostra nella navbar", class: "text-sm text-gray-700 cursor-pointer" %>
+    </div>
 
     <div>
       <%= f.label :parent_id, "ID Padre", class: "block text-sm font-medium text-gray-700 mb-1" %>
@@ -49,6 +63,68 @@
       <% end %>
     </div>
   </div>
+
+  <!-- Stato editoriale + visibilità -->
+   <!-- Stato editoriale + visibilità -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div>
+      <%= f.label :status, "Stato editoriale", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :status,
+                   Taxbranch.statuses.keys.map { |s| [s.humanize, s] },
+                   {},
+                   class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:status].any?}" %>
+      <% taxbranch.errors.full_messages_for(:status).each do |m| %>
+        <p class="mt-1 text-xs text-red-600"><%= m %></p>
+      <% end %>
+    </div>
+
+    <div>
+      <%= f.label :visibility, "Visibilità", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <% visibility_options =
+        Taxbranch.visibilities.keys.map do |key|
+          label =
+            case key.to_sym
+            when :private_node      then "Privato"
+            when :shared_node       then "Condiviso (team)"
+            when :participants_only then "Solo partecipanti"
+            when :public_node       then "Pubblico"
+            else key.to_s.humanize
+            end
+
+          [label, key]
+        end
+      %>
+      <%= f.select :visibility,
+                   visibility_options,
+                   {},
+                   class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:visibility].any?}" %>
+      <% taxbranch.errors.full_messages_for(:visibility).each do |m| %>
+        <p class="mt-1 text-xs text-red-600"><%= m %></p>
+      <% end %>
+    </div>
+
+   
+
+    <div>
+      <%= f.label :scheduled_at, "Data programmata", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.datetime_local_field :scheduled_at,
+                                 value: taxbranch.scheduled_at&.strftime("%Y-%m-%dT%H:%M"),
+                                 class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:scheduled_at].any?}" %>
+      <% taxbranch.errors.full_messages_for(:scheduled_at).each do |m| %>
+        <p class="mt-1 text-xs text-red-600"><%= m %></p>
+      <% end %>
+    </div>
+     <div>
+      <%= f.label :published_at, "Data pubblicazione", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.datetime_local_field :published_at,
+                                 value: taxbranch.published_at&.strftime("%Y-%m-%dT%H:%M"),
+                                 class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:published_at].any?}" %>
+      <% taxbranch.errors.full_messages_for(:published_at).each do |m| %>
+        <p class="mt-1 text-xs text-red-600"><%= m %></p>
+      <% end %>
+    </div>
+  </div>
+
 
   <!-- Descrizione -->
   <div>
@@ -61,38 +137,41 @@
     <% end %>
   </div>
 
- <div>
-  <%= f.label :positioning_tag_public, "Mostra pubblicamente (tag positioning)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+  <!-- Tag positioning pubblico -->
+  <div>
+    <%= f.label :positioning_tag_public, "Mostra pubblicamente (tag positioning)", class: "block text-sm font-medium text-gray-700 mb-1" %>
 
-  <div class="flex items-center gap-2">
-    <%= f.check_box :positioning_tag_public, { include_hidden: true, class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" } %>
-    <span class="text-sm text-slate-600">Abilita visibilità pubblica dei tag positioning</span>
+    <div class="flex items-center gap-2">
+      <%= f.check_box :positioning_tag_public,
+                      { include_hidden: true,
+                        class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" } %>
+      <span class="text-sm text-slate-600">Abilita visibilità pubblica dei tag positioning</span>
+    </div>
+
+    <% taxbranch.errors.full_messages_for(:positioning_tag_public).each do |m| %>
+      <p class="mt-1 text-xs text-red-600"><%= m %></p>
+    <% end %>
   </div>
-
-  <% taxbranch.errors.full_messages_for(:positioning_tag_public).each do |m| %>
-    <p class="mt-1 text-xs text-red-600"><%= m %></p>
-  <% end %>
-</div>
-  
 
   <!-- Slug builder (con Stimulus) -->
   <div class="space-y-4" data-controller="taxbranch-slug">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-     <div class="space-y-1">
-      <%= f.label :slug_category, "Categoria", class: "block text-sm font-medium text-slate-700" %>
-      <%= f.text_field :slug_category,
-            list: "slug-categories",
-            placeholder: "es. blog_creators, ruolo, corso…",
-            class: "w-full rounded-md border-slate-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      <div class="space-y-1">
+        <%= f.label :slug_category, "Categoria", class: "block text-sm font-medium text-slate-700" %>
+        <%= f.text_field :slug_category,
+              list: "slug-categories",
+              placeholder: "es. blog_creators, ruolo, corso…",
+              class: "w-full rounded-md border-slate-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
 
-      <datalist id="slug-categories">
-        <% Taxbranch.category_suggestions.each do |cat| %>
-          <option value="<%= cat %>"></option>
-        <% end %>
-      </datalist>
+        <datalist id="slug-categories">
+          <% Taxbranch.category_suggestions.each do |cat| %>
+            <option value="<%= cat %>"></option>
+          <% end %>
+        </datalist>
 
-      <p class="text-xs text-slate-500">Scegli una categoria esistente o scrivine una nuova.</p>
-    </div>
+        <p class="text-xs text-slate-500">Scegli una categoria esistente o scrivine una nuova.</p>
+      </div>
+
       <div>
         <%= f.label :slug_label, "Etichetta slug", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.text_field :slug_label,
@@ -112,7 +191,6 @@
         <% taxbranch.errors.full_messages_for(:slug).each do |m| %>
           <p class="mt-1 text-xs text-red-600"><%= m %></p>
         <% end %>
-        <!-- Metti readonly: true se vuoi bloccarne l’edit manuale -->
       </div>
     </div>
   </div>

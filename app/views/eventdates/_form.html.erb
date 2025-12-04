@@ -11,44 +11,94 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :date_start %>
-    <%= form.datetime_field :date_start, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:date_start].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:date_start].any?}] %>
+  <!-- Data inizio/fine -->
+   <div class="my-5">
+    <%= form.label :description, "Descrizione" %>
+    <%= form.text_area :description, rows: 4,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:description].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:description].any? }] %>
   </div>
+  <div class="my-5">
+    <%= form.label :date_start, "Data inizio" %>
+    <%= form.datetime_field :date_start,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:date_start].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:date_start].any? }] %>
+  </div>
+  
 
   <div class="my-5">
-    <%= form.label :date_end %>
-    <%= form.datetime_field :date_end, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:date_end].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:date_end].any?}] %>
+    <%= form.label :date_end, "Data fine" %>
+    <%= form.datetime_field :date_end,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:date_end].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:date_end].any? }] %>
   </div>
 
+  <% if params[:journey_id] %>
+  <!-- Journey (solo se lo usi come diario / collegato a un esercizio) -->
+    <div class="my-5">
+      <%= form.label :journey_id, "Journey (opzionale)" %>
+      
+    
+        
+  
+      
+      <%= form.text_field :journey_id,
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:journey_id].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:journey_id].any? }], value: params[:journey_id] %>
+                  
+    </div>
+  <% end %>
+  <!-- Taxbranch (solo se lo usi come diario / collegato a un esercizio) -->
   <div class="my-5">
-    <%= form.label :taxbranch_id %>
-    <%= form.text_field :taxbranch_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:taxbranch_id].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:taxbranch_id].any?}] %>
+    <%= form.label :taxbranch_id, "Taxbranch (opzionale)" %>
+    <%= form.text_field :taxbranch_id,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:taxbranch_id].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:taxbranch_id].any? }] %>
   </div>
 
+  <!-- Lead: precompilato se c'è Current.user.lead -->
   <div class="my-5">
-    <%= form.label :lead_id %>
-    <%= form.text_field :lead_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:lead_id].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:lead_id].any?}] %>
+    <%= form.label :lead_id, "Lead (opzionale, obbligatorio se usi taxbranch)" %>
+    <%= form.text_field :lead_id,
+      value: eventdate.lead_id || Current.user&.lead&.id,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:lead_id].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:lead_id].any? }] %>
   </div>
 
+  <!-- Cycle (solo diario) -->
   <div class="my-5">
-    <%= form.label :cycle %>
-    <%= form.number_field :cycle, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:cycle].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:cycle].any?}] %>
+    <%= form.label :cycle, "Ciclo (solo se legato a esercizio)" %>
+    <%= form.number_field :cycle,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:cycle].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:cycle].any? }] %>
   </div>
 
+  <!-- Status come enum, non numero crudo -->
   <div class="my-5">
-    <%= form.label :status %>
-    <%= form.number_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:status].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:status].any?}] %>
+    <%= form.label :status, "Stato (diario)" %>
+    <%= form.select :status,
+      Eventdate.statuses.keys.map { |s| [s.humanize, s] },
+      { include_blank: "Nessuno (solo evento)" },
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:status].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:status].any? }] %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:description].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:description].any?}] %>
-  </div>
+ 
 
   <div class="my-5">
-    <%= form.label :meta %>
-    <%= form.text_field :meta, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": eventdate.errors[:meta].none?, "border-red-400 focus:outline-red-600": eventdate.errors[:meta].any?}] %>
+    <%= form.label :meta, "Meta (JSON / note tecniche)" %>
+    <%= form.text_field :meta,
+      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:meta].none?,
+                "border-red-400 focus:outline-red-600": eventdate.errors[:meta].any? }] %>
   </div>
 
   <div class="inline">

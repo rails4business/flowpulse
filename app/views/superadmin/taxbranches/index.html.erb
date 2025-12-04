@@ -1,3 +1,71 @@
+
+<% link_parent_id = params[:link_parent_id].presence&.to_i %>
+<% link_parent    = Taxbranch.find_by(id: link_parent_id) if link_parent_id %>
+
+<% if link_parent.present? %>
+  
+  <!-- MODALITÀ SELEZIONE LINK -->
+  
+
+ <h1 class="text-2xl font-bold mb-2">Seleziona destinazione link</h1>
+
+  <p class="mb-4 text-sm text-slate-600">
+    Stai scegliendo il taxbranch di destinazione per:
+    <span class="font-semibold"><%= link_parent.display_label %></span>
+    (##<%= link_parent.id %>).
+  </p>
+
+  <%= form_with url: superadmin_taxbranches_path, method: :get, local: true, class: "mb-4 flex gap-2 items-center" do |f| %>
+    <%= f.hidden_field :link_parent_id, value: link_parent.id %>
+
+    <%= f.text_field :q,
+          value: params[:q],
+          placeholder: "Cerca per slug, categoria o etichetta…",
+          class: "flex-1 rounded-md border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+
+    <%= f.submit "Cerca",
+          class: "rounded-md bg-slate-800 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-900" %>
+  <% end %>
+  <div class="space-y-2">
+    <% @taxbranches.each do |branch| %>
+      <div class="border p-3 rounded hover:bg-slate-50 flex justify-between items-center">
+        <div>
+          <div class="text-sm font-medium text-slate-800">
+            <%= branch.display_label %>
+            <span class="text-xs text-slate-400">(#<%= branch.id %>)</span>
+          </div>
+          <div class="text-xs text-slate-500">
+            <%= branch.slug_category %> / <%= branch.slug %>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs">
+          <% if branch.id == link_parent.id %>
+            <span class="italic text-slate-400">Non puoi linkare se stesso</span>
+          <% else %>
+            <%= button_to "Usa come destinazione",
+                          set_link_child_superadmin_taxbranch_path(
+                            branch,
+                            link_parent_id: link_parent.id
+                          ),
+                          method: :post,
+                          class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "⬅ Torna",
+                superadmin_taxbranch_path(params[:link_parent_id]),
+                class: "text-sm text-slate-600 hover:text-slate-800" %>
+  </div>
+
+<% else %>
+
+
+
 <% content_for :title, "Taxbranches" %>
 
 <h1 class="text-2xl font-bold mb-4">Tassonomie principali</h1>
@@ -78,3 +146,4 @@
   <%= link_to "➕ Nuova categoria radice", new_superadmin_taxbranch_path, class: "inline-block bg-blue-600 text-white px-4 py-2 rounded" %>
 </div>
 
+<% end %>

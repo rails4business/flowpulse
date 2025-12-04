@@ -1,3 +1,5 @@
 # config/locales/it.yml
 it:
-  hello: "Ciao mondo"
+  time:
+    formats:
+      short_with_time: "%d/%m/%y %H:%M"

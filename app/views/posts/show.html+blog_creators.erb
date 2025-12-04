@@ -59,7 +59,7 @@
       
       <article class="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:border-slate-800">
         <time datetime="2025-11-01" class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-             <%= taxbranch.post&.published_at.strftime("%d %b %Y") %>
+             <%= taxbranch.published_at.strftime("%d %b %Y") %>
         </time>
         <h2 class="mt-1 text-xl font-semibold leading-snug">
           <%= link_to taxbranch.post, class:"hover:underline decoration-2 underline-offset-2" do %>

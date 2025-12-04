@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  n_eventdates_planned: 1
+  price_enrollment_euro: 9.99
+  price_ticket_dash: 9.99
+  min_tickets: 1
+  max_tickets: 1
+  open_by_journey: false
+  taxbranch: one
+  lead: one
+  meta: 
+
+two:
+  name: MyString
+  description: MyText
+  n_eventdates_planned: 1
+  price_enrollment_euro: 9.99
+  price_ticket_dash: 9.99
+  min_tickets: 1
+  max_tickets: 1
+  open_by_journey: false
+  taxbranch: two
+  lead: two
+  meta: 

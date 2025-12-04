@@ -1,0 +1,157 @@
+<%= form_with(model: journey, class: "contents") do |form| %>
+  <% if journey.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(journey.errors.count, "error") %> prohibited this journey from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% journey.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:title].none?, "border-red-400 focus:outline-red-600": journey.errors[:title].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :taxbranch_id %>
+    
+    <% if params[:taxbranch_id] %>
+      <%= form.text_field :taxbranch_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:taxbranch_id].none?, "border-red-400 focus:outline-red-600": journey.errors[:taxbranch_id].any?}], value: params[:taxbranch_id] %>
+ 
+    <% else %>
+    
+    <%= form.text_field :taxbranch_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:taxbranch_id].none?, "border-red-400 focus:outline-red-600": journey.errors[:taxbranch_id].any?}] %>
+ <% end %> 
+ </div>
+
+  <div class="my-5">
+    <%= form.label :service_id %>
+    <%= form.text_field :service_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:service_id].none?, "border-red-400 focus:outline-red-600": journey.errors[:service_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :lead_id %>
+    <%= form.text_field :lead_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:lead_id].none?, "border-red-400 focus:outline-red-600": journey.errors[:lead_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+  <%= form.label :importance %>
+  <%= form.number_field :importance,
+        min: 1, max: 5,
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+        {"border-gray-400 focus:outline-blue-600": journey.errors[:importance].none?,
+         "border-red-400 focus:outline-red-600": journey.errors[:importance].any?}] %>
+</div>
+
+<div class="my-5">
+  <%= form.label :urgency %>
+  <%= form.number_field :urgency,
+        min: 1, max: 5,
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+        {"border-gray-400 focus:outline-blue-600": journey.errors[:urgency].none?,
+         "border-red-400 focus:outline-red-600": journey.errors[:urgency].any?}] %>
+</div>
+
+<div class="my-5">
+  <%= form.label :energy %>
+
+  <div class="flex items-center space-x-3 mt-2">
+    <% [
+      ["😴", 1],
+      ["🙂", 2],
+      ["😀", 3],
+      ["⚡️", 4],
+      ["🔥", 5]
+    ].each do |emoji, val| %>
+
+      <label class="flex flex-col items-center cursor-pointer">
+        <%= form.radio_button :energy, val, class: "hidden peer" %>
+        <span class="text-2xl peer-checked:ring-2 peer-checked:ring-blue-600 peer-checked:scale-110 transition">
+          <%= emoji %>
+        </span>
+        <span class="text-xs text-gray-500 mt-1"><%= val %></span>
+      </label>
+
+    <% end %>
+  </div>
+
+  <% if journey.errors[:energy].any? %>
+    <p class="text-red-600 text-sm mt-2"><%= journey.errors[:energy].first %></p>
+  <% end %>
+</div>
+
+
+  <div class="my-5">
+    <%= form.label :progress %>
+    <%= form.number_field :progress, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:progress].none?, "border-red-400 focus:outline-red-600": journey.errors[:progress].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :notes %>
+    <%= form.textarea :notes, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:notes].none?, "border-red-400 focus:outline-red-600": journey.errors[:notes].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :price_estimate_euro %>
+    <%= form.text_field :price_estimate_euro, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:price_estimate_euro].none?, "border-red-400 focus:outline-red-600": journey.errors[:price_estimate_euro].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :price_estimate_dash %>
+    <%= form.text_field :price_estimate_dash, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:price_estimate_dash].none?, "border-red-400 focus:outline-red-600": journey.errors[:price_estimate_dash].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :meta %>
+    <%= form.text_field :meta, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:meta].none?, "border-red-400 focus:outline-red-600": journey.errors[:meta].any?}] %>
+  </div>
+
+  <div class="my-4">
+    <%= form.label :kind, "Tipo di Journey", class: "block text-sm font-medium mb-1" %>
+    <%= form.select :kind, 
+          Journey.kinds.keys.map { |k| [k.humanize, k] },
+          {},
+          class: "block w-full rounded-md border px-3 py-2 shadow-sm" %>
+  </div>
+ 
+
+  <div class="my-5">
+    <%= form.label :template_journey_id %>
+    <%= form.number_field :template_journey_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:template_journey_id].none?, "border-red-400 focus:outline-red-600": journey.errors[:template_journey_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :start_ideate %>
+    <%= form.datetime_field :start_ideate, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:start_ideate].none?, "border-red-400 focus:outline-red-600": journey.errors[:start_ideate].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :start_realized %>
+    <%= form.datetime_field :start_realized, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:start_realized].none?, "border-red-400 focus:outline-red-600": journey.errors[:start_realized].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :start_erogation %>
+    <%= form.datetime_field :start_erogation, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:start_erogation].none?, "border-red-400 focus:outline-red-600": journey.errors[:start_erogation].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :complete %>
+    <%= form.datetime_field :complete, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:complete].none?, "border-red-400 focus:outline-red-600": journey.errors[:complete].any?}] %>
+  </div>
+
+  
+
+  <% if journey.errors[:is_template].any? %>
+    <p class="text-red-600 text-xs mt-1"><%= journey.errors[:is_template].first %></p>
+  <% end %>
+</div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

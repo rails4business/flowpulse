@@ -1,34 +1,42 @@
-<div id="<%= dom_id eventdate %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Date start:</strong>
-    <%= eventdate.date_start %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Date end:</strong>
-    <%= eventdate.date_end %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Taxbranch:</strong>
-    <%= eventdate.taxbranch_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Lead:</strong>
-    <%= eventdate.lead_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Cycle:</strong>
-    <%= eventdate.cycle %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Status:</strong>
-    <%= eventdate.status %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= eventdate.description %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Meta:</strong>
-    <%= eventdate.meta %>
-  </div>
+<div class="space-y-3 bg-white rounded-lg shadow p-4">
+  <p><strong>Inizio:</strong> <%= @eventdate.date_start %></p>
+  <p><strong>Fine:</strong> <%= @eventdate.date_end %></p>
+  <p><strong>Location:</strong> <%= @eventdate.location.presence || "Nessuna" %></p>
+  <p><strong>Tipo:</strong> <%= @eventdate.event_type %></p>
+  <p><strong>Modalità:</strong> <%= @eventdate.mode %></p>
+  <p><strong>Visibilità:</strong> <%= @eventdate.visibility %></p>
+
+  <% if @eventdate.journey.present? %>
+    <p><strong>Journey:</strong>
+      <%= link_to @eventdate.journey.title, journey_path(@eventdate.journey) %>
+    </p>
+  <% end %>
+
+  <% if @eventdate.taxbranch.present? %>
+    <p><strong>Taxbranch:</strong> <%= @eventdate.taxbranch.name || @eventdate.taxbranch.slug_label %></p>
+  <% end %>
+
+  <% if @eventdate.lead.present? %>
+    <p><strong>Creato da:</strong> <%= @eventdate.lead.full_name rescue @eventdate.lead.id %></p>
+  <% end %>
+
+  <p><strong>Status:</strong> <%= @eventdate.status %></p>
+
+  <% if @eventdate.description.present? %>
+    <p><strong>Descrizione:</strong> <%= @eventdate.description %></p>
+  <% end %>
+
+  <% if @eventdate.commitments.any? %>
+    <div class="mt-4">
+      <strong>Commitmentitments collegati:</strong>
+      <ul class="list-disc ml-6 mt-2">
+        <% @eventdate.commitments.each do |commitment| %>
+          <li>
+            <%= link_to(commitment.role_name || "Commitment ##{commitment.id}", edit_commitment_path(commitment)) %>
+            (<%= commitment.duration_minutes || "?" %> min)
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 </div>

@@ -1,15 +1,41 @@
 Rails.application.routes.draw do
-  resources :eventdates
+  resources :payments
+  resources :bookings
+  resources :enrollments
+  resources :contacts
+  resources :commitments
+  resources :journeys  do
+    member do
+      post "start_tracking"
+      post "stop_tracking"
+      get "carousel"
+    end
+    resources :commitments
+    resources :eventdates
+  end
+
+
+
+
+  resources :eventdates  do
+    resources :commitments
+  end
+
   # --- Admin ---
   namespace :superadmin do
+    resources :services
     resources :domains
     resources :taxbranches do
+      resources :services
+
       member do
+        get  :journeys
         get  :positioning
         patch :move_up
         patch :move_down
         patch :move_left
         patch :move_right
+        post :set_link_child
       end
       resources :tag_positionings, only: [ :index, :create, :destroy ]
     end

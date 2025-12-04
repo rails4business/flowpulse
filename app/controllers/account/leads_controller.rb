@@ -1,32 +1,34 @@
 # app/controllers/account/leads_controller.rb
 class Account::LeadsController < ApplicationController
-  before_action :require_tutor!
+   # before_action :require_tutor!
+   # before_action :ensure_lead!, only: [ :index, :create ]
+
 
 
 
 
    def index
-  @me      = Current.user
-  @my_lead = @me.lead || Lead.find_by(email: @me.email_address) ||
-             Lead.create!(email: @me.email_address, username: default_username(@me), user_id: @me.id, token: SecureRandom.hex(16))
+      @me      = Current.user
+      @my_lead = @me.lead || Lead.find_by(email: @me.email_address) ||
+                Lead.create!(email: @me.email_address, username: default_username(@me), user_id: @me.id, token: SecureRandom.hex(16))
 
-  @invited_leads = Lead.includes(:user)
-                       .where(referral_lead_id: @my_lead.id)
-                       .order(created_at: :desc)
+      @invited_leads = Lead.includes(:user)
+                          .where(referral_lead_id: @my_lead.id)
+                          .order(created_at: :desc)
 
-  base = Lead.left_outer_joins(:user).where(referral_lead_id: @my_lead.id)
+      base = Lead.left_outer_joins(:user).where(referral_lead_id: @my_lead.id)
 
-  @counts = {
-    "all"      => base.count,
-    # pending = user pending O lead senza user (non registrato)
-    "pending"  => base.where(users: { state_registration: User.state_registrations[:pending] })
-                      .or(base.where(users: { id: nil })).distinct.count,
-    "approved" => base.where(users: { state_registration: User.state_registrations[:approved] }).distinct.count,
-    "rejected" => base.where(users: { state_registration: User.state_registrations[:rejected] }).distinct.count
-  }
+      @counts = {
+        "all"      => base.count,
+        # pending = user pending O lead senza user (non registrato)
+        "pending"  => base.where(users: { state_registration: User.state_registrations[:pending] })
+                          .or(base.where(users: { id: nil })).distinct.count,
+        "approved" => base.where(users: { state_registration: User.state_registrations[:approved] }).distinct.count,
+        "rejected" => base.where(users: { state_registration: User.state_registrations[:rejected] }).distinct.count
+      }
 
-  @new_lead = Lead.new
-end
+      @new_lead = Lead.new
+    end
 
 
   def create
@@ -85,6 +87,17 @@ end
 
   def default_username(user)
     user.email_address.to_s.split("@").first.to_s.parameterize.presence || "utente"
+  end
+
+  def ensure_lead!
+    user = Current.user
+    return unless user
+
+    user.lead || Lead.find_by(email: user.email_address) ||
+      Lead.create!(email: user.email_address,
+                  username: default_username(user),
+                  user_id: user.id,
+                  token: SecureRandom.hex(16))
   end
 
   def generate_username_from(email)

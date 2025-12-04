@@ -10,11 +10,11 @@
 
     <!-- Header -->
     <%= link_to @parent_taxbranch.post do %>
-    <header class="mb-10">
+    <header class="mb-10 flex card p-4 rounded-lg border">
       
 
       <!-- titolo, descrizione e data del post -->
-      <div class="mt-8">
+      <div class="">
         <h2 class="text-3xl font-bold leading-tight text-slate-900 dark:text-white">
           <%= @post.title %>
         </h2>
@@ -25,10 +25,10 @@
           </p>
         <% end %>
 
-        <% if @post.published_at.present? %>
-          <time datetime="<%= @post.published_at.to_date %>"
-                class="mt-2 block text-sm text-slate-500 dark:text-white>
-            Pubblicato il <%= l(@post.published_at, format: :long) %>
+        <% if @post.taxbranch.published_at.present? %>
+          <time datetime="<%= @post.taxbranch.published_at.to_date %>"
+                class="mt-2 block text-sm text-slate-500 dark:text-white">
+            Pubblicato il <%= l(@post.taxbranch.published_at, format: :long) %>
           </time>
         <% end %>
       </div>
@@ -60,12 +60,11 @@
 
         <% @parent_taxbranch.children.each do |child| %>
           <% related = child.post %>
-          <% next unless related&.status == "published" && related.id != @post.id %>
-
-          <article class="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:border-slate-800">
-            <time datetime="<%= related.published_at&.to_date %>"
+        <% next unless @post.taxbranch.visible_and_published_for?(@post.lead) %>
+          <article class="card p-4 rounded-lg border border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:border-slate-800">
+            <time datetime="<%= related.taxbranch.published_at&.to_date %>"
                   class="block text-xs uppercase tracking-wide text-slate-500 dark:text-white">
-              <%= related.published_at&.strftime("%d %b %Y") %>
+              <%= related.taxbranch.published_at&.strftime("%d %b %Y") %>
             </time>
             <h3 class="mt-1 text-lg font-semibold leading-snug">
               <%= link_to related, class: "hover:underline decoration-2 underline-offset-2" do %>

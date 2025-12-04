@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  taxbranch: one
+  service: one
+  lead: one
+  importance: 1
+  urgency: 1
+  energy: 1
+  progress: 1
+  notes: MyText
+  price_estimate_euro: 9.99
+  price_estimate_dash: 9.99
+  meta: 
+ 
+  template_journey_id: 1
+  start_ideate: 2025-11-15 16:22:27
+  start_realized: 2025-11-15 16:22:27
+  start_erogation: 2025-11-15 16:22:27
+  complete: 2025-11-15 16:22:27
+
+two:
+  title: MyString
+  taxbranch: two
+  service: two
+  lead: two
+  importance: 1
+  urgency: 1
+  energy: 1
+  progress: 1
+  notes: MyText
+  price_estimate_euro: 9.99
+  price_estimate_dash: 9.99
+  meta: 
+
+  template_journey_id: 1
+  start_ideate: 2025-11-15 16:22:27
+  start_realized: 2025-11-15 16:22:27
+  start_erogation: 2025-11-15 16:22:27
+  complete: 2025-11-15 16:22:27

@@ -1,5 +1,25 @@
 <% content_for :title, "Editing taxbranch" %>
+<!-- Tabs azioni -->
+<div class="border-b border-slate-200 mb-4">
+  <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+    <% tabs = [
+      ["📄 Taxbranch", superadmin_taxbranch_path(@taxbranch)],
+      ["📝 Edit", edit_superadmin_taxbranch_path(taxbranch_id: @taxbranch.id)],
+      ["🌐 Tag Posizionamento", positioning_superadmin_taxbranch_path(@taxbranch)]
+    ] %>
 
+    <% tabs.each do |label, path| %>
+      <%= link_to label, path,
+        class: class_names(
+          "whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium",
+          current_page?(path) ?
+            "border-blue-500 text-blue-600" :
+            "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700"
+        )
+      %>
+    <% end %>
+  </nav>
+</div>
 <div class="md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">Editing taxbranch</h1>
 

@@ -12,15 +12,28 @@
     <div>
       <label class="block text-sm font-medium mb-1">Categoria</label>
       <%= f.select :taxbranch_id,
-            options_for_select([["Tutte", ""]] + @taxbranches.map { |t| [t.slug_label, t.id] }, params[:taxbranch_id]),
-            {}, class: "w-full border rounded-lg px-3 py-2" %>
+            options_for_select(
+              [["Tutte", ""]] + @taxbranches.map { |t| [t.slug_label, t.id] },
+              params[:taxbranch_id]
+            ),
+            {},
+            class: "w-full border rounded-lg px-3 py-2" %>
     </div>
 
     <div>
-      <label class="block text-sm font-medium mb-1">Stato</label>
+      <label class="block text-sm font-medium mb-1">Stato pubblicazione</label>
       <%= f.select :status,
-            options_for_select([["Tutti", ""], ["Bozza", :draft], ["Pubblicato", :published], ["Archiviato", :archived]], params[:status]),
-            {}, class: "w-full border rounded-lg px-3 py-2" %>
+            options_for_select(
+              [
+                ["Tutti", ""],
+                ["Bozza",      "draft"],
+                ["Pubblicato", "published"],
+                ["Archiviato", "archived"]
+              ],
+              params[:status]
+            ),
+            {},
+            class: "w-full border rounded-lg px-3 py-2" %>
     </div>
 
     <div>
@@ -60,9 +73,10 @@
             <div class="font-medium">
               <%= link_to(post.title.presence || "(senza titolo)", post_path(post), class: "hover:underline") %>
             </div>
-            <%# breve descrizione sotto il titolo %>
             <% if post.description.present? %>
-              <div class="text-slate-500 line-clamp-2"><%= truncate(strip_tags(post.description), length: 120) %></div>
+              <div class="text-slate-500 line-clamp-2">
+                <%= truncate(strip_tags(post.description), length: 120) %>
+              </div>
             <% end %>
           </td>
 
@@ -75,7 +89,7 @@
           </td>
 
           <td class="py-3 px-4 align-top whitespace-nowrap">
-            <%= fmt_datetime(post.published_at) %>
+            <%= fmt_datetime(post.taxbranch_published_at) %>
           </td>
 
           <td class="py-3 px-4 align-top whitespace-nowrap">

@@ -23,18 +23,58 @@
       </div>
     
 
-      <!-- Link principali dinamici -->
-      <div class="hidden sm:flex space-x-6">
-        <% domain_root = Current.domain&.taxbranch %>
-        <% if domain_root.present? %>
-          <% domain_root.children.home_nav.each do |branch| %>
-            <%= link_to branch.display_label.capitalize, post_path(branch.post) ,class: "text-slate-700 hover:text-slate-900 font-medium" %>
-          <% end %>
-        <% else %>
-          <!-- fallback -->
-          <%= link_to "Home", root_path, class: "text-slate-700 hover:text-slate-900 font-medium" %>
+      <!-- Link principali dinamici centrali-->
+      <% domain_root = Current.domain&.taxbranch %>
+
+<!-- Mobile: dropdown Flowbite -->
+<div class="sm:hidden relative">
+  <button id="mobileNavDropdownButton"
+          data-dropdown-toggle="mobileNavDropdown"
+          type="button"
+          class="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-white rounded-lg  hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+    <span>Menu</span>
+    <svg class="w-4 h-4 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M1 1l4 4 4-4"/>
+    </svg>
+  </button>
+
+  <div id="mobileNavDropdown"
+       class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+    <ul class="py-2 text-sm text-gray-700" aria-labelledby="mobileNavDropdownButton">
+      <% if domain_root.present? %>
+        <% domain_root.children.home_nav.each do |branch| %>
+          <li>
+            <%= link_to branch.display_label.capitalize,
+                        post_path(branch.post),
+                        class: "block px-4 py-2 hover:bg-gray-100" %>
+          </li>
         <% end %>
-      </div>
+      <% else %>
+        <li>
+          <%= link_to "Home",
+                      root_path,
+                      class: "block px-4 py-2 hover:bg-gray-100" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<!-- Desktop: link orizzontali -->
+<div class="hidden sm:flex space-x-6">
+  <% if domain_root.present? %>
+    <% domain_root.children.home_nav.each do |branch| %>
+      <%= link_to branch.display_label.capitalize,
+                  post_path(branch.post),
+                  class: "text-slate-700 hover:text-slate-900 font-medium" %>
+    <% end %>
+  <% else %>
+    <!-- fallback -->
+    <%= link_to "Home", root_path, class: "text-slate-700 hover:text-slate-900 font-medium" %>
+  <% end %>
+</div>
+
 
       <!-- Area utente -->
       <div class="flex items-center space-x-4">
