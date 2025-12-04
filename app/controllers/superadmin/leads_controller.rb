@@ -1,6 +1,6 @@
 # app/controllers/superadmin/leads_controller.rb
 class Superadmin::LeadsController < ApplicationController
-  include Pundit
+  include Pundit::Authorization
 
   before_action :set_lead, only: %i[show edit update destroy approve]
 
