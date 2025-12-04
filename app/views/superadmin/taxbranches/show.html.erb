@@ -1,223 +1,206 @@
-<div class="min-h-screen bg-slate-50">
-  <!-- Header -->
-  <header class="bg-white/80 backdrop-blur border-b border-slate-200 sticky top-0 z-10">
-    <div class="max-w-6xl mx-auto px-6 py-6">
-      <div class="flex items-start justify-between gap-6 mb-6">
-        <div class="flex-1">
-          <% if Current.user.superadmin && @taxbranch.present? %>
-            <div class="mb-2 text-xs text-slate-500">
-              <%= link_to "← Taxbranch", superadmin_taxbranch_path(@journey.taxbranch),
-                    class: "inline-block text-xs text-slate-600 underline" %>
-              <span class="ml-1">
-                <%= @journey.taxbranch&.slug_label || @journey.taxbranch&.name %>
-              </span>
-            </div>
-          <% end %>
+<!-- app/views/superadmin/taxbranches/show.html.erb -->
 
-          <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
-            <%= @journey.title %>
-          </h1>
+<!-- Tabs azioni -->
+<div class="border-b border-slate-200 mb-4">
+  <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+    <% tabs = [
+      ["📄 Taxbranch", superadmin_taxbranch_path(@taxbranch)],
+      ["Post", edit_superadmin_taxbranch_path(@taxbranch)],
+      ["Journey", journeys_superadmin_taxbranch_path(@taxbranch)],
+      ["Services", superadmin_taxbranch_services_path(@taxbranch)],
+      ["🌐 Tag", positioning_superadmin_taxbranch_path(@taxbranch)]
+    ] %>
 
-          <div class="mt-2 flex flex-wrap items-center gap-2">
-            <%= link_to "Modifica journey", 
-                  edit_journey_path(@journey),
-                  class: "inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-slate-900 text-white rounded-full hover:bg-slate-800" %>
-
-            <% if @journey.taxbranch&.name %>
-              <span class="text-xs text-slate-500">
-                • <%= @journey.taxbranch.name %> 
-              </span>
-            <% end %>
-
-            <%# 🎯 Badge template / istanza / singolo %>
-            <% if @journey.template? %>
-              <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
-                🧩 Template di Journey
-              </span>
-            <% elsif @journey.template_journey_id.present? %>
-              <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
-                🌱 Istanza da template:
-                <%= link_to @journey.template_journey.title,
-                      journey_path(@journey.template_journey),
-                      class: "underline ml-1" %>
-              </span>
-            <% elsif @journey.draft? %>
-              <span class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-700">
-                📝 Journey in bozza
-              </span>
-            <% else %>
-              <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                🔧 Journey singolo (no template)
-              </span>
-            <% end %>
-          </div>
-
-          <!-- Mini stats -->
-          <div class="mt-4 grid grid-cols-3 gap-3 max-w-md text-xs">
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-              <p class="text-slate-500">Eventi</p>
-              <p class="text-lg font-semibold text-slate-900">
-                <%= @journey.eventdates.distinct.count %>
-              </p>
-            </div>
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-              <p class="text-slate-500">Risorse (step)</p>
-              <p class="text-lg font-semibold text-slate-900">
-                <%= @journey.commitments.count %>
-              </p>
-            </div>
-            <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-              <p class="text-slate-500">Iscritti</p>
-              <p class="text-lg font-semibold text-slate-900">
-                <%= @journey.enrollments.count %>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="shrink-0 flex flex-col items-end gap-2">
-          <%= link_to "+ data",
-              new_journey_eventdate_path(@journey),
-              class: "inline-flex items-center gap-1 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 font-medium text-sm shadow-sm" %>
-          
-          <%# spazio per future azioni %>
-        </div>
-      </div>
-
-      <!-- Tabs (solo navigazione) -->
-      <div class="flex gap-6 border-b border-slate-200 -mb-px overflow-x-auto text-sm">
-        <!-- Eventi: tab attivo (pagina corrente) -->
-        <button 
-          type="button"
-          class="px-4 py-3 font-medium border-b-2 border-slate-900 text-slate-900 whitespace-nowrap"
-        >
-          📅 Eventi
-        </button>
-
-        <!-- Risorse: link (anche fittizio per ora) -->
-        <%= link_to "#",
-          class: "px-4 py-3 font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-900 whitespace-nowrap" do %>
-          🧩 Risorse
-        <% end %>
-
-        <!-- Iscritti: link (anche fittizio per ora) -->
-        <%= link_to "#",
-          class: "px-4 py-3 font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-900 whitespace-nowrap" do %>
-          👥 Iscritti
-        <% end %>
-
-        <!-- Carosello: link reale -->
-        <%= link_to carousel_journey_path(@journey),
-          class: "px-4 py-3 font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-900 whitespace-nowrap" do %>
-          🎞️ Carosello
-        <% end %>
-      </div>
-    </div>
-  </header>
-
-  <!-- Content: SOLO EVENTI -->
-  <div class="max-w-6xl mx-auto px-6 py-8">
-    <% if @journey.eventdates.distinct.any? %>
-      <div class="space-y-4">
-        <% @journey.eventdates.distinct.order(:date_start).each do |eventdate| %>
-          <div class="relative overflow-hidden rounded-xl border border-slate-200 bg-white/80 shadow-sm hover:shadow-md transition-shadow">
-            <div class="p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:items-start">
-              
-              <!-- Icona + data -->
-              <div class="flex items-start gap-3 w-full sm:w-1/3">
-                <div class="mt-1 shrink-0">
-                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h14M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                </div>
-                <div class="min-w-0">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    <%= eventdate.date_start.present? ? l(eventdate.date_start, format: :long) : "Data da definire" %>
-                  </p>
-                  <p class="mt-1 font-semibold text-slate-900 text-sm">
-                    <%= link_to eventdate_path(eventdate), class: "hover:underline" do %>
-                      <% if eventdate.respond_to?(:title) && eventdate.title.present? %>
-                        <%= eventdate.title %>
-                      <% elsif eventdate.description.present? %>
-                        <%= truncate(eventdate.description, length: 60) %>
-                      <% else %>
-                        Evento #<%= eventdate.id %>
-                      <% end %>
-                    <% end %>
-                  </p>
-                  <% if eventdate.respond_to?(:end_at) && eventdate.end_at.present? %>
-                    <p class="mt-0.5 text-xs text-slate-500">
-                      Fino a <%= l(eventdate.end_at, format: :short) %>
-                    </p>
-                  <% end %>
-                </div>
-              </div>
-
-              <!-- Info evento -->
-              <div class="flex-1 min-w-0 space-y-2">
-                <p class="text-sm text-slate-600 flex items-center gap-1">
-                  📍 <span><%= eventdate.location.presence || "Nessuna sede indicata" %></span>
-                </p>
-
-                <% if eventdate.description.present? %>
-                  <p class="text-xs text-slate-500 line-clamp-2">
-                    <%= truncate(strip_tags(eventdate.description), length: 140) %>
-                  </p>
-                <% end %>
-
-                <div class="flex flex-wrap gap-2 mt-1">
-                  <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-700 capitalize inline-flex items-center gap-1">
-                    <%# adattalo ai tuoi enum reali %>
-                    <% if eventdate.event_type == 'in-person' || eventdate.event_type == 'session' %>
-                      🏢
-                    <% else %>
-                      💻
-                    <% end %>
-                    <span><%= eventdate.event_type %></span>
-                  </span>
-                  
-                  <span class="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-700 capitalize">
-                    <%= eventdate.mode %>
-                  </span>
-                </div>
-              </div>
-
-              <!-- Stat collegate -->
-              <div class="shrink-0 flex flex-col items-end justify-between gap-3 text-xs text-slate-600">
-                <div class="text-right space-y-1">
-                  <p>
-                    <span class="font-semibold text-slate-900">
-                      <%= @journey.commitments.where(eventdate: eventdate).count %>
-                    </span>
-                    <span class="text-slate-500">step</span>
-                  </p>
-                  <%# volendo qui in futuro: iscritti collegati all'evento %>
-                </div>
-
-                <div class="flex gap-2">
-                  <%= link_to "➕ Aggiungi step", 
-                      new_commitment_path(journey_id: @journey.id, eventdate_id: eventdate.id),
-                      class: "inline-flex items-center justify-center rounded-full px-3 py-1 bg-slate-900 text-white hover:bg-slate-800 text-xs font-medium" %>
-                  <%= link_to "📌 Prenota risorsa", 
-                      new_booking_path(eventdate_id: eventdate.id),
-                      class: "inline-flex items-center justify-center rounded-full px-3 py-1 bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-medium" %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="flex flex-col items-center justify-center py-16 text-center">
-        <p class="text-sm text-slate-500 mb-4">
-          Nessun evento collegato a questo Journey.
-        </p>
-        <%= link_to "+ Crea il primo evento",
-            new_journey_eventdate_path(@journey),
-            class: "inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800" %>
-      </div>
+    <% tabs.each do |label, path| %>
+      <%= link_to label, path,
+        class: class_names(
+          "whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium",
+          current_page?(path) ?
+            "border-blue-500 text-blue-600" :
+            "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700"
+        )
+      %>
     <% end %>
+  </nav>
+</div>
+
+<!-- Breadcrumb + Title + Actions -->
+<div class="mb-4 flex items-start justify-between gap-3">
+  <div class="flex-1 min-w-0">
+    <nav class="text-sm text-slate-600">
+      <% if Current.domain&.taxbranch %>
+        <%= taxbranch_breadcrumb(
+      @post.taxbranch,
+      starting_node: Current.domain&.taxbranch
+    ) %>
+      <% else %>
+        <%= taxbranch_breadcrumb(@taxbranch_node) %>
+      <% end %>
+    </nav>
+
+    <div class="flex items-center gap-2 text-xs text-slate-600 mt-1">
+      <%= link_to "⬅️ Torna su",
+                  (@taxbranch.parent ? superadmin_taxbranch_path(@taxbranch.parent) : superadmin_taxbranches_path),
+                  class: "text-gray-600 hover:underline" %>
+      <span class="text-slate-400">·</span>
+      <span>User: <%= Current.user&.id %></span>
+      <span class="text-slate-400">·</span>
+      <span>Lead: <%= Current.user&.lead&.id %></span>
+    </div>
   </div>
 </div>
+
+<!-- RENDER DEL NODO (già presente) -->
+<div id="form-post">
+  <%= render "node", node: @taxbranch %>
+</div>
+
+
+<br>
+
+<!-- PANNELLO STATO / VISIBILITÀ / PUBLICATION -->
+<div class="mb-6 grid gap-4 md:grid-cols-3">
+  <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      Stato editoriale
+    </p>
+    <p class="mt-1 text-sm">
+      <%# usa lo stesso stile dei badge che usi per i post, ma qui sul taxbranch %>
+      <% case @taxbranch.status %>
+      <% when "published" %>
+        <span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+          Pubblicato
+        </span>
+      <% when "draft" %>
+        <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+          Bozza
+        </span>
+      <% when "in_review" %>
+        <span class="inline-flex items-center rounded-full bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700">
+          In revisione
+        </span>
+      <% when "archived" %>
+        <span class="inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700">
+          Archivio
+        </span>
+      <% else %>
+        <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+          <%= @taxbranch.status.to_s.titleize %>
+        </span>
+      <% end %>
+    </p>
+    <p class="mt-2 text-xs text-slate-500">
+      Status e visibilità ora si gestiscono a livello di Taxbranch e si riflettono su Post/Journey/Service collegati.
+    </p>
+  </div>
+
+  <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      Visibilità
+    </p>
+    <p class="mt-1 text-sm">
+      <% human_visibility =
+          case @taxbranch.visibility
+          when "private_node"      then "Privato"
+          when "shared_node"       then "Condiviso"
+          when "participants_only" then "Solo partecipanti"
+          when "public_node"       then "Pubblico"
+          else @taxbranch.visibility.to_s.titleize
+          end %>
+
+      <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+        <%= human_visibility %>
+      </span>
+    </p>
+    <p class="mt-2 text-xs text-slate-500">
+      Controlla chi può vedere i contenuti di questo ramo (post, percorsi, ecc.).
+    </p>
+  </div>
+
+  <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      Data di pubblicazione
+    </p>
+    <p class="mt-1 text-sm">
+      <% if @taxbranch.published_at.present? %>
+        <%= l(@taxbranch.published_at, format: :short) %>
+      <% else %>
+        <span class="text-slate-400">Non impostata</span>
+      <% end %>
+    </p>
+    <p class="mt-2 text-xs text-slate-500">
+      Usata per ordinare i contenuti nel blog/roadmap (es. Post.published_recent).
+    </p>
+  </div>
+</div>
+
+
+<!-- FORM RAPIDO PER MODIFICARE STATO / VISIBILITÀ / PUBLISHED_AT -->
+<div class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+  <h3 class="text-sm font-semibold text-slate-800 mb-3">
+    Modifica stato editoriale del ramo
+  </h3>
+
+  <%= form_with model: @taxbranch,
+                url: superadmin_taxbranch_path(@taxbranch),
+                method: :patch,
+                local: true,
+                class: "grid gap-4 md:grid-cols-4 items-end" do |f| %>
+
+    <div>
+      <%= f.label :status, "Stato", class: "block text-xs font-medium text-slate-600" %>
+      <%= f.select :status,
+                   Taxbranch.statuses.keys.map { |s| [s.humanize, s] },
+                   {},
+                   class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :visibility, "Visibilità", class: "block text-xs font-medium text-slate-600" %>
+      <%= f.select :visibility,
+                   [
+                     ["Privato",          :private_node],
+                     ["Condiviso",        :shared_node],
+                     ["Solo partecipanti",:participants_only],
+                     ["Pubblico",         :public_node]
+                   ],
+                   { selected: @taxbranch.visibility },
+                   class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :published_at, "Data pubblicazione", class: "block text-xs font-medium text-slate-600" %>
+      <%= f.datetime_local_field :published_at,
+                                 value: @taxbranch.published_at&.strftime("%Y-%m-%dT%H:%M"),
+                                 class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
+    </div>
+
+    <div class="md:text-right">
+      <%= f.submit "Aggiorna",
+                   class: "inline-flex items-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700" %>
+    </div>
+  <% end %>
+</div>
+
+
+
+<!-- POST ASSOCIATO -->
+<div class="container mt-6 mx-auto px-4 sm:px-6 lg:px-8">
+  <h2 class="text-2xl font-bold mb-4">Post associato</h2>
+
+  <% if @post.present? %>
+    <p class="text-xs text-slate-500 mb-1">
+      Post id: <%= @post.id %>
+    </p>
+  <% else %>
+    <p class="text-xs text-slate-500 mb-3">
+      Nessun post ancora associato a questo ramo. Compila il form per creare il primo.
+    </p>
+  <% end %>
+ 
+ <a id="post-form"></a>
+ 
+  <%= render "posts/form", post: @post, taxbranch: @taxbranch %>
+</div>
+
+

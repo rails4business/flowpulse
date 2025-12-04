@@ -6,7 +6,7 @@
         <div class="flex-1">
           <% if Current.user.superadmin && @taxbranch.present? %>
             <div class="mb-2 text-xs text-slate-500">
-              <%= link_to "← Taxbranch", superadmin_taxbranch_path(@journey.taxbranch),
+              <%= link_to "← Taxbranch", superadmin_taxbranch_path(@taxbranch),
                     class: "inline-block text-xs text-slate-600 underline" %>
               <span class="ml-1">
                 <%= @journey.taxbranch&.slug_label || @journey.taxbranch&.name %>
