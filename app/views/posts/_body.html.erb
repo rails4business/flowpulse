@@ -1,5 +1,5 @@
 <%# app/views/posts/_body.html.erb %>
-<div class="prose-lite text-left">
+<div class="prose-lite text-left dark:bg-slate-950 dark:text-white">
     <% if @post.respond_to?(:content) && @post.content.present? %>
       <%= @post.content %>
     <% elsif @post.content_md.present? %>

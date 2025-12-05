@@ -9,11 +9,11 @@
     <% @parent_taxbranch = @post.taxbranch.parent %>
 
     <!-- Header -->
-    <%= link_to @parent_taxbranch.post do %>
-    <header class="mb-10 flex card p-4 rounded-lg border">
+    <%#= link_to @parent_taxbranch.post do %>
+    <!--header class="mb-10 flex card p-4 rounded-lg border">
       
 
-      <!-- titolo, descrizione e data del post -->
+     
       <div class="">
         <h2 class="text-3xl font-bold leading-tight text-slate-900 dark:text-white">
           <%= @post.title %>
@@ -32,8 +32,8 @@
           </time>
         <% end %>
       </div>
-    </header>
-    <% end %>
+    </header-->
+    <%# end %>
 
     <!-- Cover -->
     <% if @post.cover_url.present? %>
@@ -51,7 +51,7 @@
 
     <!-- Related posts -->
     <% if @parent_taxbranch.children.any? %>
-      <div class="pt-8 my-12 border-t border-slate-200 dark:border-slate-800"></div>
+      <div class="pt-8 my-12 border-t border-slate-200 dark:bg-slate-950 dark:text-white"></div>
 
       <section class="space-y-8">
         <h2 class="text-xl font-semibold text-slate-800 dark:text-white">
@@ -61,7 +61,7 @@
         <% @parent_taxbranch.children.each do |child| %>
           <% related = child.post %>
         <% next unless @post.taxbranch.visible_and_published_for?(@post.lead) %>
-          <article class="card p-4 rounded-lg border border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:border-slate-800">
+          <article class="card p-4 rounded-lg border border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:bg-slate-950 dark:text-white">
             <time datetime="<%= related.taxbranch.published_at&.to_date %>"
                   class="block text-xs uppercase tracking-wide text-slate-500 dark:text-white">
               <%= related.taxbranch.published_at&.strftime("%d %b %Y") %>
