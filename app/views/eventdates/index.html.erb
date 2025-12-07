@@ -56,65 +56,21 @@
     </div>
 
     <% if @date && @agenda_eventdates.any? %>
-      <div class="space-y-3">
-        <% @agenda_eventdates.each do |eventdate| %>
-          <div class="flex flex-col sm:flex-row justify-between items-start gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-            <!-- Info evento -->
-            <div class="flex-1 text-sm text-slate-700 space-y-1">
-              <p class="font-semibold text-slate-900">
-                <% if eventdate.date_start.present? && eventdate.date_end.present? %>
-                  <%= l(eventdate.date_start, format: :short) %>
-                  – <%= l(eventdate.date_end, format: :short) %>
-                <% elsif eventdate.date_start.present? %>
-                  <%= l(eventdate.date_start, format: :short) %>
-                <% elsif eventdate.date_end.present? %>
-                  Fine: <%= l(eventdate.date_end, format: :short) %>
-                <% else %>
-                  Data non impostata
-                <% end %>
-              </p>
-
-              <% if eventdate.location.present? %>
-                <p>
-                  <span class="font-semibold text-slate-900">📍</span>
-                  <%= eventdate.location %>
-                </p>
-              <% end %>
-
-              <p class="text-xs text-slate-600">
-                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100">
-                  <%= eventdate.event_type %> · <%= eventdate.mode %>
-                </span>
-              </p>
-
-              <% if eventdate.journey.present? %>
-                <p class="text-xs text-slate-600">
-                  Journey:
-                  <%= link_to eventdate.journey.title,
-                        journey_path(eventdate.journey),
-                        class: "underline" %>
-                </p>
-              <% end %>
-            </div>
-
-            <!-- Azioni -->
-            <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
-              <%= link_to "Show",
-                  eventdate,
-                  class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-xs" %>
-
-              <%= link_to "Edit",
-                  edit_eventdate_path(eventdate),
-                  class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-xs" %>
-
-              <%= button_to "Destroy",
-                  eventdate,
-                  method: :delete,
-                  class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer text-xs",
-                  data: { turbo_confirm: "Are you sure?" } %>
-            </div>
-          </div>
-        <% end %>
+      <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+        <table class="min-w-full divide-y divide-slate-200 text-sm">
+          <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <tr>
+              <th scope="col" class="px-4 py-3 text-left">Periodo</th>
+              <th scope="col" class="px-4 py-3 text-left">Stato</th>
+              <th scope="col" class="px-4 py-3 text-right">Azioni</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 bg-white text-slate-700">
+            <%= render partial: "eventdates/list_row",
+                collection: @agenda_eventdates,
+                as: :eventdate %>
+          </tbody>
+        </table>
       </div>
     <% elsif @date %>
       <p class="text-sm text-slate-500 text-center py-6">
@@ -132,8 +88,8 @@
     <nav class="-mb-px flex gap-4 text-sm">
       <% tabs = {
         "complete"   => "Date complete",
-        "start_only" => "Solo inizio",
-        "todo"       => "Da pianificare"
+        "start_only" => "Task Make",
+        "todo"       => "To Do"
       } %>
 
       <% tabs.each do |key, label| %>
@@ -155,85 +111,24 @@
       else                    @todo_eventdates
       end %>
 
-  <div id="eventdates-tab-content" class="min-w-full space-y-5 mb-10">
+  <div id="eventdates-tab-content" class="mb-10">
     <% if current_collection.any? %>
-      <% current_collection.each do |eventdate| %>
-        <div class="flex flex-col sm:flex-row justify-between items-start gap-4 pb-5 border-b border-gray-200">
-          <!-- Card evento -->
-          <div class="flex-1 w-full bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-            <div class="text-sm text-slate-700 space-y-1">
-              <p>
-                <span class="font-semibold text-slate-900">📅</span>
-                <% if eventdate.date_start.present? && eventdate.date_end.present? %>
-                  <%= l(eventdate.date_start.to_date, format: :long) %>
-                  · <%= l(eventdate.date_start, format: :time) %>
-                  – <%= l(eventdate.date_end, format: :time) %>
-                <% elsif eventdate.date_start.present? %>
-                  <%= l(eventdate.date_start.to_date, format: :long) %>
-                  · <%= l(eventdate.date_start, format: :time) %>
-                <% elsif eventdate.date_end.present? %>
-                  Fine: <%= l(eventdate.date_end.to_date, format: :long) %>
-                  · <%= l(eventdate.date_end, format: :time) %>
-                <% else %>
-                  Nessuna data impostata
-                <% end %>
-              </p>
-
-              <% if eventdate.location.present? %>
-                <p>
-                  <span class="font-semibold text-slate-900">📍</span>
-                  <%= eventdate.location %>
-                </p>
-              <% end %>
-              <p>
-                <span class="font-semibold text-slate-900">Description:</span>
-                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-xs">
-                  <%= eventdate.description %>
-                </span>
-              </p>
-              <p>
-                <span class="font-semibold text-slate-900">Tipo:</span>
-                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-xs">
-                  <%= eventdate.event_type %>
-                </span>
-              </p>
-
-              <p>
-                <span class="font-semibold text-slate-900">Modalità:</span>
-                <span class="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-xs">
-                  <%= eventdate.mode %>
-                </span>
-              </p>
-
-              <% if eventdate.journey.present? %>
-                <p>
-                  <span class="font-semibold text-slate-900">Journey:</span>
-                  <%= link_to eventdate.journey.title,
-                        journey_path(eventdate.journey),
-                        class: "underline" %>
-                </p>
-              <% end %>
-            </div>
-          </div>
-
-          <!-- Azioni -->
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2">
-            <%= link_to "Show",
-                eventdate,
-                class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-sm" %>
-
-            <%= link_to "Edit",
-                edit_eventdate_path(eventdate),
-                class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium text-sm" %>
-
-            <%= button_to "Destroy",
-                eventdate,
-                method: :delete,
-                class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer text-sm",
-                data: { turbo_confirm: "Are you sure?" } %>
-          </div>
-        </div>
-      <% end %>
+      <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+        <table class="min-w-full divide-y divide-slate-200 text-sm">
+          <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <tr>
+              <th scope="col" class="px-4 py-3 text-left">Periodo</th>
+              <th scope="col" class="px-4 py-3 text-left">Stato</th>
+              <th scope="col" class="px-4 py-3 text-right">Azioni</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 bg-white text-slate-700">
+            <%= render partial: "eventdates/list_row",
+                collection: current_collection,
+                as: :eventdate %>
+          </tbody>
+        </table>
+      </div>
     <% else %>
       <p class="text-sm text-slate-500">
         <% if @tab == "complete" %>

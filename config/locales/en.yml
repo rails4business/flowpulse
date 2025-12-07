@@ -28,4 +28,8 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  time:
+    formats:
+      time: "%H:%M"      # es: 14:30
+      short: "%H:%M"     # se vuoi, tieni anche gli altri
+      long: "%H:%M:%S"   # es: 14:30:15

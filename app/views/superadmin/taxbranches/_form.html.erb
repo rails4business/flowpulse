@@ -16,7 +16,8 @@
 <%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
 
 <% if @taxbranch.persisted? %>
-  <br>
+ 
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
   <% if @taxbranch.children.exists? %>
     <p class="text-xs text-slate-500">
       Questo nodo ha già dei figli, non può diventare un link.
@@ -26,6 +27,28 @@
                 superadmin_taxbranches_path(link_parent_id: @taxbranch.id),
                 class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
   <% end %>
+    <% if action_name != "new" %>
+
+      <% if @taxbranch.children.count == 0 %>
+
+        <div>
+          <%= f.label :link_child_taxbranch_id, "link a unico figlio",
+                class: "block text-sm font-medium text-gray-700 mb-1" %>
+
+          <%= f.text_field :link_child_taxbranch_id,
+                class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm
+                      focus:border-blue-500 focus:ring-blue-500
+                      #{'border-red-300 bg-red-50' if @taxbranch.errors[:link_child_taxbranch_id].any?}" %>
+
+          <% @taxbranch.errors.full_messages_for(:link_child_taxbranch_id).each do |m| %>
+            <p class="mt-1 text-xs text-red-600"><%= m %></p>
+          <% end %>
+        </div>
+
+      <% end %>
+    
+  <% end %>
+  <div>
 <% end %>
   <!-- Metadati e posizionamento -->
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -54,6 +77,7 @@
       <%= f.label :home_nav, "Mostra nella navbar", class: "text-sm text-gray-700 cursor-pointer" %>
     </div>
 
+
     <div>
       <%= f.label :parent_id, "ID Padre", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= f.text_field :parent_id, value: taxbranch.parent_id,
@@ -62,6 +86,10 @@
         <p class="mt-1 text-xs text-red-600"><%= m %></p>
       <% end %>
     </div>
+
+  
+   
+
   </div>
 
   <!-- Stato editoriale + visibilità -->

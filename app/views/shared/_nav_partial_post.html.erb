@@ -44,10 +44,23 @@
     <ul class="py-2 text-sm text-gray-700" aria-labelledby="mobileNavDropdownButton">
       <% if domain_root.present? %>
         <% domain_root.children.home_nav.each do |branch| %>
-          <li>
-            <%= link_to branch.display_label.capitalize,
+          <li> 
+            <% if branch.link_child_taxbranch_id.nil? %>
+       
+        
+              <%= link_to branch.display_label.capitalize,
                         post_path(branch.post),
                         class: "block px-4 py-2 hover:bg-gray-100" %>
+            <% else %>
+              <% nav_child_branch = Taxbranch.find(branch.link_child_taxbranch_id)  %>
+              <% if nav_child_branch.status == "published" && nav_child_branch.visibility == "public_node"  %>
+    
+              <%= link_to nav_child_branch.display_label.capitalize,
+                        post_path(nav_child_branch.post),
+                        class: "block px-4 py-2 hover:bg-gray-100" %>
+                             <% end %>
+            <% end %>
+          
           </li>
         <% end %>
       <% else %>
@@ -65,9 +78,21 @@
 <div class="hidden sm:flex space-x-6">
   <% if domain_root.present? %>
     <% domain_root.children.home_nav.each do |branch| %>
+     <% if branch.link_child_taxbranch_id.nil? %>
+       
       <%= link_to branch.display_label.capitalize,
                   post_path(branch.post),
                   class: "text-slate-700 hover:text-slate-900 font-medium" %>
+    <% else %>
+      <% nav_child_branch = Taxbranch.find(branch.link_child_taxbranch_id)  %>
+    <% if nav_child_branch.status == "published" && nav_child_branch.visibility == "public_node"  %>
+      
+    
+      <%= link_to nav_child_branch.display_label.capitalize,
+                        post_path(nav_child_branch.post),
+                        class: "text-slate-700 hover:text-slate-900 font-medium" %>
+                         <% end %>
+    <% end %>
     <% end %>
   <% else %>
     <!-- fallback -->
