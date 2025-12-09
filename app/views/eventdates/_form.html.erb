@@ -54,11 +54,26 @@
   <% end %>
   <!-- Taxbranch (solo se lo usi come diario / collegato a un esercizio) -->
   <div class="my-5">
+    
+    <% if @taxbranch.nil? %>
+    
+    <% if Current.domain.taxbranch.present? %>
+       <% taxbr = Current.domain.taxbranch %>
+    <% else %>
+      <% taxbr = nil %>
+    <% end %>
+    <% else %>
+       <% taxbr = @taxbranch %>
+    
+   
+      
+    <% end %>
+    
     <%= form.label :taxbranch_id, "Taxbranch (opzionale)" %>
     <%= form.text_field :taxbranch_id,
       class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
               { "border-gray-400 focus:outline-blue-600": eventdate.errors[:taxbranch_id].none?,
-                "border-red-400 focus:outline-red-600": eventdate.errors[:taxbranch_id].any? }] %>
+                "border-red-400 focus:outline-red-600": eventdate.errors[:taxbranch_id].any? }], value: taxbr.id %>
   </div>
 
   <!-- Lead: precompilato se c'è Current.user.lead -->

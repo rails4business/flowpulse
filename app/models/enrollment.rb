@@ -2,13 +2,13 @@
 class Enrollment < ApplicationRecord
   belongs_to :service,  optional: true
   belongs_to :journey,  optional: true
-  belongs_to :contact
+  belongs_to :mycontact
 
   belongs_to :requested_by_lead,
-             class_name: "Contact",
+             class_name: "Datacontact",
              optional: true
   belongs_to :invited_by_lead,
-             class_name: "Contact",
+             class_name: "Datacontact",
              optional: true
 
   has_many :bookings, dependent: :nullify
@@ -43,7 +43,7 @@ class Enrollment < ApplicationRecord
   }
 
   def requester
-    requested_by_lead || contact
+    requested_by_lead || datacontact
   end
 
   def inviter

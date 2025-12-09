@@ -4,7 +4,9 @@ class Lead < ApplicationRecord
   has_many :taxbranches
   has_many :journeys
   has_many :posts, inverse_of: :lead, dependent: :nullify
-
+  has_many :contacts, dependent: :destroy
+  has_many :datacontacts, dependent: :nullify
+  has_many :mycontacts, dependent: :destroy
   has_many :tag_positionings, dependent: :destroy
 
 

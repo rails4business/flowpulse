@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_08_125723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,13 +54,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
 
   create_table "bookings", force: :cascade do |t|
     t.bigint "commitment_id"
-    t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.bigint "enrollment_id"
     t.bigint "eventdate_id", null: false
     t.bigint "invited_by_lead_id"
     t.jsonb "meta", default: {}
     t.integer "mode", default: 0, null: false
+    t.bigint "mycontact_id", null: false
     t.text "notes"
     t.integer "participant_role", default: 0, null: false
     t.decimal "price_dash", precision: 16, scale: 8
@@ -70,10 +70,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["commitment_id"], name: "index_bookings_on_commitment_id"
-    t.index ["contact_id"], name: "index_bookings_on_contact_id"
     t.index ["enrollment_id"], name: "index_bookings_on_enrollment_id"
     t.index ["eventdate_id"], name: "index_bookings_on_eventdate_id"
     t.index ["invited_by_lead_id"], name: "index_bookings_on_invited_by_lead_id"
+    t.index ["mycontact_id"], name: "index_bookings_on_mycontact_id"
     t.index ["requested_by_lead_id"], name: "index_bookings_on_requested_by_lead_id"
     t.index ["service_id"], name: "index_bookings_on_service_id"
   end
@@ -89,6 +89,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
     t.bigint "eventdate_id", null: false
     t.integer "importance"
     t.jsonb "meta", default: {}, null: false
+    t.text "notes"
     t.integer "position"
     t.integer "role_count"
     t.string "role_name"
@@ -100,7 +101,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
     t.index ["template_commitment_id"], name: "index_commitments_on_template_commitment_id"
   end
 
-  create_table "contacts", force: :cascade do |t|
+  create_table "datacontacts", force: :cascade do |t|
     t.string "billing_address"
     t.string "billing_city"
     t.string "billing_country"
@@ -116,9 +117,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
     t.jsonb "meta"
     t.string "phone"
     t.string "place_of_birth"
+    t.integer "referent_lead_id"
+    t.text "socials"
     t.datetime "updated_at", null: false
     t.string "vat_number"
-    t.index ["lead_id"], name: "index_contacts_on_lead_id"
+    t.index ["lead_id"], name: "index_datacontacts_on_lead_id"
   end
 
   create_table "domains", force: :cascade do |t|
@@ -138,12 +141,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
   end
 
   create_table "enrollments", force: :cascade do |t|
-    t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.bigint "invited_by_lead_id"
     t.bigint "journey_id"
     t.jsonb "meta", default: {}
     t.integer "mode", default: 0, null: false
+    t.bigint "mycontact_id", null: false
     t.text "notes"
     t.decimal "price_dash", precision: 16, scale: 8
     t.decimal "price_euro", precision: 10, scale: 2
@@ -153,9 +156,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
     t.bigint "service_id"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.index ["contact_id"], name: "index_enrollments_on_contact_id"
     t.index ["invited_by_lead_id"], name: "index_enrollments_on_invited_by_lead_id"
     t.index ["journey_id"], name: "index_enrollments_on_journey_id"
+    t.index ["mycontact_id"], name: "index_enrollments_on_mycontact_id"
     t.index ["requested_by_lead_id"], name: "index_enrollments_on_requested_by_lead_id"
     t.index ["service_id"], name: "index_enrollments_on_service_id"
   end
@@ -237,6 +240,18 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
     t.index ["referral_lead_id"], name: "index_leads_on_referral_lead_id"
     t.index ["token"], name: "index_leads_on_token", unique: true
     t.index ["username"], name: "index_leads_on_username", unique: true
+  end
+
+  create_table "mycontacts", force: :cascade do |t|
+    t.datetime "approved_by_referent_at"
+    t.datetime "created_at", null: false
+    t.bigint "datacontact_id", null: false
+    t.bigint "lead_id", null: false
+    t.boolean "original"
+    t.string "status_contact"
+    t.datetime "updated_at", null: false
+    t.index ["datacontact_id"], name: "index_mycontacts_on_datacontact_id"
+    t.index ["lead_id"], name: "index_mycontacts_on_lead_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -377,7 +392,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "commitments"
-  add_foreign_key "bookings", "contacts"
+  add_foreign_key "bookings", "datacontacts", column: "mycontact_id"
   add_foreign_key "bookings", "enrollments"
   add_foreign_key "bookings", "eventdates"
   add_foreign_key "bookings", "leads", column: "invited_by_lead_id"
@@ -385,9 +400,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
   add_foreign_key "bookings", "services"
   add_foreign_key "commitments", "commitments", column: "template_commitment_id"
   add_foreign_key "commitments", "eventdates"
-  add_foreign_key "contacts", "leads"
+  add_foreign_key "datacontacts", "leads"
   add_foreign_key "domains", "taxbranches"
-  add_foreign_key "enrollments", "contacts"
+  add_foreign_key "enrollments", "datacontacts", column: "mycontact_id"
   add_foreign_key "enrollments", "journeys"
   add_foreign_key "enrollments", "leads", column: "invited_by_lead_id"
   add_foreign_key "enrollments", "leads", column: "requested_by_lead_id"
@@ -399,7 +414,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_25_121406) do
   add_foreign_key "journeys", "leads"
   add_foreign_key "journeys", "services"
   add_foreign_key "journeys", "taxbranches"
-  add_foreign_key "payments", "contacts"
+  add_foreign_key "mycontacts", "datacontacts"
+  add_foreign_key "mycontacts", "leads"
+  add_foreign_key "payments", "datacontacts", column: "contact_id"
   add_foreign_key "payments", "payments", column: "parent_payment_id"
   add_foreign_key "posts", "leads"
   add_foreign_key "services", "leads"

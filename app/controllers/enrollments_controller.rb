@@ -22,7 +22,7 @@ class EnrollmentsController < ApplicationController
   # POST /enrollments or /enrollments.json
   def create
     @enrollment = Enrollment.new(enrollment_params)
-    @enrollment.contact = current_contact
+    @enrollment.mycontact = current_contact
     @enrollment.request_kind = :candidatura
     @enrollment.status       = :requested
     @enrollment.mode         = :autonomia # o individuale/gruppo

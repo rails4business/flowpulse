@@ -8,7 +8,8 @@ class Journey < ApplicationRecord
              optional: true
   has_many :child_journeys,
            class_name: "Journey",
-           foreign_key: :template_journey_id
+           foreign_key: :template_journey_id,
+           dependent: :nullify
 
   # 👇 relazioni corrette
   has_many :eventdates, dependent: :destroy
@@ -34,8 +35,6 @@ class Journey < ApplicationRecord
   # 👇 aggiungiamo scope “di data”
   scope :ordered_by_created, -> { order(created_at: :desc) }
   scope :ordered_by_updated, -> { order(updated_at: :desc) }
-
-  # se vuoi un generico `ordered`, scegli quello che userai di più:
   scope :ordered, -> { order(created_at: :desc) }
   # fine aggiunta scope
   # # ⚙️ Fase corrente in base alle date compilate

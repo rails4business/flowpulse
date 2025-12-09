@@ -1,4 +1,5 @@
 class CommitmentsController < ApplicationController
+  before_action :set_eventdate, only: %i[new create]
   before_action :set_commitment, only: %i[ show edit update destroy ]
   before_action :set_journey
 
@@ -13,7 +14,10 @@ class CommitmentsController < ApplicationController
 
   # GET /commitments/new
   def new
-    @commitment = Commitment.new
+    @commitment = Commitment.new(
+      eventdate: @eventdate,
+      taxbranch: @eventdate&.taxbranch
+    )
   end
 
   # GET /commitments/1/edit
@@ -22,7 +26,11 @@ class CommitmentsController < ApplicationController
 
   # POST /commitments or /commitments.json
   def create
-    @commitment = @event.commitments.build(commitment_params)
+    @commitment = Commitment.new(commitment_params)
+    @commitment.eventdate ||= @eventdate
+    @commitment.taxbranch ||= @commitment.eventdate&.taxbranch
+
+    raise ActiveRecord::RecordInvalid, @commitment unless @commitment.eventdate.present?
 
     if @commitment.position.present?
       # salvi e poi lo sposti alla posizione scelta
@@ -33,7 +41,8 @@ class CommitmentsController < ApplicationController
       @commitment.save
     end
 
-    redirect_to @journey, notice: "Commitment creato correttamente."
+    redirect_to(@commitment.eventdate,
+      notice: "Commitment creato correttamente.")
   rescue ActiveRecord::RecordInvalid
     render :new, status: :unprocessable_entity
   end
@@ -64,15 +73,26 @@ class CommitmentsController < ApplicationController
 
   private
     def set_journey
-      #  @journey = Journey.find(params[:journey_id])
+      @journey ||= begin
+        if params[:journey_id].present?
+          Journey.find_by(id: params[:journey_id])
+        else
+          @eventdate&.journey
+        end
+      end
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_commitment
       @commitment = Commitment.find(params.expect(:id))
     end
 
+    def set_eventdate
+      eventdate_id = params[:eventdate_id] || params[:event_id] || params.dig(:commitment, :eventdate_id)
+      @eventdate = Eventdate.find_by(id: eventdate_id)
+    end
+
     # Only allow a list of trusted parameters through.
     def commitment_params
-      params.expect(commitment: [ :journey_id, :taxbranch_id, :eventdate_id, :role_name, :area, :role_count, :compensation_euro, :compensation_dash, :duration_minutes, :importance, :urgency, :energy, :position, :commitment_kind, :notes, :meta ])
+      params.expect(commitment: [ :taxbranch_id, :eventdate_id, :role_name, :area, :role_count, :compensation_euro, :compensation_dash, :duration_minutes, :importance, :urgency, :energy, :position, :commitment_kind, :notes, :meta ])
     end
 end

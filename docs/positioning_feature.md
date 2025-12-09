@@ -1,5 +1,8 @@
 # Posizionamento & Priorità condivise
 
+https://www.dreamers-community.it/#eventi e skool.com 
+ per prendere spunto 
+
 dividere tag_positioning in due tabelle: 
 tag per legare positionig (nome categoria  urgenza importanza ed energia ) con un polimorfic(taxbranch o journey eventadate o commitment)
 Spostare urgenza importanza ed energia da journey a positioning 

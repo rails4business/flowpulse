@@ -1,6 +1,25 @@
 <%# app/views/registrations/edit.html.erb %>
 <% content_for :title, "Impostazioni account" %>
 
+<% tabs = [
+     { label: "Profilo", path: edit_registration_path },
+     { label: "I miei dati contatto", path: datacontacts_path }
+   ] %>
+
+<nav class="mx-auto max-w-2xl mb-6 border-b border-slate-200">
+  <div class="flex gap-4">
+    <% tabs.each do |tab| %>
+      <% active = current_page?(tab[:path]) %>
+      <%= link_to tab[:label],
+          tab[:path],
+          class: [
+            "px-3 py-2 text-sm font-medium border-b-2 transition",
+            active ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-800"
+          ].join(" ") %>
+    <% end %>
+  </div>
+</nav>
+
 <div class="mx-auto max-w-2xl bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
   <h1 class="text-2xl font-bold mb-2">Impostazioni account</h1>
   <p class="text-slate-600 mb-6">Aggiorna i tuoi dati. I campi Lead servono per la rete PosturaCorretta.</p>

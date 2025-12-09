@@ -26,7 +26,7 @@ class Eventdate < ApplicationRecord
 
   # 📓 Validazioni "da diario" – SOLO se stai usando taxbranch
   with_options if: -> { taxbranch_id.present? } do
-    validates :cycle, presence: true, numericality: { greater_than_or_equal_to: 1 }
+    # validates :cycle, presence: true, numericality: { greater_than_or_equal_to: 1 }
     validates :status, presence: true
   end
 end

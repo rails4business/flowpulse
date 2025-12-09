@@ -1,19 +1,34 @@
 Rails.application.routes.draw do
+  resources :mycontacts do
+    collection do
+      post :lookup
+    end
+  end
+  get "/datacontacts/:datacontact_id/mycontacts/new",
+      to: "mycontacts#new_for_datacontact",
+      as: :new_datacontact_mycontact
   resources :payments
   resources :bookings
   resources :enrollments
-  resources :contacts
+  resources :datacontacts
   resources :commitments
   resources :journeys  do
     member do
+      get "instance_cycle"
+      post "clone_cycle"
       post "start_tracking"
       post "stop_tracking"
       get "carousel"
+      post "replicate_template_events"
+      delete "clear_template_events"
     end
     resources :commitments
     resources :eventdates
   end
 
+  resources :taxbranches, only: [] do
+    resources :eventdates, only: :index
+  end
 
 
 

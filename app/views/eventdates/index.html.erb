@@ -10,15 +10,21 @@
   <!-- Header -->
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
     <div>
-      <h1 class="font-bold text-4xl">Eventdates</h1>
+      <h1 class="font-bold text-4xl"> 🗓️ Agenda</h1>
       <p class="text-sm text-slate-500 mt-1">
-        I tuoi eventi, filtrati per giorno e tipo di data.
+        I tuoi eventi, filtrati per giorno, tipo di data e taxbranch.
       </p>
+      <% if @selected_taxbranch %>
+        <p class="mt-2 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+          Filtrato per
+          <span class="ml-1 font-semibold text-slate-900"><%= @selected_taxbranch.display_label %></span>
+        </p>
+      <% end %>
     </div>
 
     <div class="flex items-end gap-4">
       <!-- Filtro giorno / agenda -->
-      <%= form_with url: eventdates_path, method: :get, local: true, class: "flex items-end gap-2" do |f| %>
+      <%= form_with url: eventdates_path, method: :get, local: true, class: "flex flex-wrap gap-3 items-end" do |f| %>
         <div>
           <label class="block text-xs font-semibold text-slate-600 mb-1">
             📆 Giorno agenda
@@ -28,6 +34,27 @@
                 class: "block w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
           <%= hidden_field_tag :tab, @tab %>
         </div>
+
+        <div class="flex flex-col">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">
+            🏷️ Taxbranch
+          </label>
+          <%= hidden_field_tag :taxbranch_id, @selected_taxbranch&.id, id: "taxbranch-id-field" %>
+          <%= text_field_tag :taxbranch_query,
+                @selected_taxbranch&.display_label,
+                list: "taxbranch-options",
+                placeholder: "Scrivi per filtrare",
+                autocomplete: "off",
+                class: "block w-full rounded-md border border-slate-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                id: "taxbranch-query-field" %>
+          <datalist id="taxbranch-options">
+            <option value="" data-id="">Tutti</option>
+            <% @taxbranches.each do |tb| %>
+              <option value="<%= tb.display_label %>" data-id="<%= tb.id %>"></option>
+            <% end %>
+          </datalist>
+        </div>
+
         <div>
           <%= f.submit "Filtra",
                 class: "rounded-md px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium cursor-pointer" %>
@@ -42,44 +69,15 @@
 
   <!-- AGENDA DEL GIORNO -->
   <div class="mb-8">
-    <div class="flex items-center justify-between mb-3">
-      <h2 class="text-lg font-semibold text-slate-900">
-        🗓️ Agenda
-        <% if @date %>
-          <span class="text-slate-500 text-sm">
-            per <%= l(@date, format: :long) rescue @date %>
-          </span>
-        <% else %>
-          <span class="text-slate-400 text-sm">(seleziona un giorno e filtra)</span>
-        <% end %>
-      </h2>
-    </div>
+   
 
     <% if @date && @agenda_eventdates.any? %>
-      <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table class="min-w-full divide-y divide-slate-200 text-sm">
-          <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            <tr>
-              <th scope="col" class="px-4 py-3 text-left">Periodo</th>
-              <th scope="col" class="px-4 py-3 text-left">Stato</th>
-              <th scope="col" class="px-4 py-3 text-right">Azioni</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200 bg-white text-slate-700">
-            <%= render partial: "eventdates/list_row",
-                collection: @agenda_eventdates,
-                as: :eventdate %>
-          </tbody>
-        </table>
-      </div>
+      <%= render "eventdates/grouped_table", grouped_eventdates: @grouped_agenda_eventdates %>
     <% elsif @date %>
       <p class="text-sm text-slate-500 text-center py-6">
         Nessun evento in agenda per questo giorno.
       </p>
     <% else %>
-      <p class="text-sm text-slate-400">
-        Imposta una data e premi “Filtra” per vedere l'agenda giornaliera.
-      </p>
     <% end %>
   </div>
 
@@ -87,6 +85,7 @@
   <div class="mb-4 border-b border-slate-200">
     <nav class="-mb-px flex gap-4 text-sm">
       <% tabs = {
+        "all"        => "Tutti",
         "complete"   => "Date complete",
         "start_only" => "Task Make",
         "todo"       => "To Do"
@@ -95,7 +94,7 @@
       <% tabs.each do |key, label| %>
         <% active = (@tab == key) %>
         <%= link_to label,
-            eventdates_path(on: (@date&.to_s), tab: key),
+            eventdates_path(on: (@date&.to_s), tab: key, taxbranch_id: @selected_taxbranch&.id),
             class: [
               "px-4 py-2 border-b-2 font-medium",
               active ? "border-slate-900 text-slate-900" : "border-transparent text-slate-500 hover:text-slate-900"
@@ -104,34 +103,14 @@
     </nav>
   </div>
 
-  <% current_collection =
-      case @tab
-      when "complete"   then @complete_eventdates
-      when "start_only" then @start_only_eventdates
-      else                    @todo_eventdates
-      end %>
-
   <div id="eventdates-tab-content" class="mb-10">
-    <% if current_collection.any? %>
-      <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table class="min-w-full divide-y divide-slate-200 text-sm">
-          <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            <tr>
-              <th scope="col" class="px-4 py-3 text-left">Periodo</th>
-              <th scope="col" class="px-4 py-3 text-left">Stato</th>
-              <th scope="col" class="px-4 py-3 text-right">Azioni</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200 bg-white text-slate-700">
-            <%= render partial: "eventdates/list_row",
-                collection: current_collection,
-                as: :eventdate %>
-          </tbody>
-        </table>
-      </div>
+    <% if @current_collection.any? %>
+      <%= render "eventdates/grouped_table", grouped_eventdates: @grouped_tab_eventdates %>
     <% else %>
       <p class="text-sm text-slate-500">
-        <% if @tab == "complete" %>
+        <% if @tab == "all" %>
+          Nessun evento disponibile.
+        <% elsif @tab == "complete" %>
           Nessun evento con data completa (inizio + fine).
         <% elsif @tab == "start_only" %>
           Nessun evento con solo data di inizio.
@@ -142,3 +121,27 @@
     <% end %>
   </div>
 </div>
+
+<%= javascript_tag do %>
+  const setupTaxbranchAutocomplete = () => {
+    const input = document.getElementById("taxbranch-query-field");
+    const hidden = document.getElementById("taxbranch-id-field");
+    if (!input || !hidden) return;
+
+    const options = Array.from(document.querySelectorAll("#taxbranch-options option"));
+
+    const syncHidden = () => {
+      const value = input.value.trim();
+      const match = options.find((option) => option.value === value);
+      hidden.value = match && match.dataset.id ? match.dataset.id : "";
+    };
+
+    input.addEventListener("change", syncHidden);
+    input.addEventListener("input", () => {
+      if (!input.value) hidden.value = "";
+    });
+  };
+
+  document.addEventListener("turbo:load", setupTaxbranchAutocomplete);
+  document.addEventListener("DOMContentLoaded", setupTaxbranchAutocomplete);
+<% end %>

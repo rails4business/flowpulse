@@ -1,0 +1,138 @@
+<% referent_options =
+     (@referent_leads || []).map do |lead|
+       [ lead.full_name.presence || lead.email || "Lead ##{lead.id}", lead.id ]
+     end %>
+
+<%= form_with(model: datacontact, class: "space-y-8") do |form| %>
+  <% if datacontact.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-600 px-3 py-2 font-medium rounded-md">
+      <h2 class="text-sm font-semibold">
+        <%= pluralize(datacontact.errors.count, "errore") %> non permette di salvare i dati:
+      </h2>
+      <ul class="list-disc ml-5 text-sm font-normal mt-2 space-y-1">
+        <% datacontact.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :lead_id, value: datacontact.lead_id.presence || Current.user&.lead&.id %>
+
+  <section class="border border-slate-200 rounded-xl p-4">
+    <h3 class="text-base font-semibold text-slate-800 mb-4">Dati anagrafici</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <%= form.label :first_name, "Nome", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :first_name,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :last_name, "Cognome", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :last_name,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :date_of_birth, "Data di nascita", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.datetime_field :date_of_birth,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :place_of_birth, "Luogo di nascita", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :place_of_birth,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :fiscal_code, "Codice fiscale", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :fiscal_code,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm uppercase focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :vat_number, "Partita IVA", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :vat_number,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+    </div>
+  </section>
+
+  <section class="border border-slate-200 rounded-xl p-4">
+    <h3 class="text-base font-semibold text-slate-800 mb-4">Contatti</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="sm:col-span-2">
+        <%= form.label :email, "Email", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.email_field :email,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= form.label :phone, "Telefono", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.telephone_field :phone,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= form.label :socials, "Link social / sito", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_area :socials,
+              rows: 3,
+              placeholder: "https://www.sito.it, https://instagram.com/@utente",
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+        <p class="text-xs text-slate-500 mt-1">Un link per riga o separati da virgola.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border border-slate-200 rounded-xl p-4">
+    <h3 class="text-base font-semibold text-slate-800 mb-4">Dati di fatturazione</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="sm:col-span-2">
+        <%= form.label :billing_name, "Intestatario", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :billing_name,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= form.label :billing_address, "Indirizzo", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :billing_address,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :billing_zip, "CAP", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :billing_zip,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :billing_city, "Città", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :billing_city,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= form.label :billing_country, "Paese", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :billing_country,
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+      </div>
+    </div>
+  </section>
+
+  <section class="border border-slate-200 rounded-xl p-4">
+    <h3 class="text-base font-semibold text-slate-800 mb-4">Referente & note</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <%= form.label :referent_lead_id, "Referente (Lead)", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.select :referent_lead_id,
+              options_for_select(referent_options, datacontact.referent_lead_id),
+              { include_blank: "Seleziona il referente" },
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500" %>
+        <p class="text-xs text-slate-500 mt-1">Chi gestisce questo contatto (es. genitore, tutor).</p>
+      </div>
+      <div class="sm:col-span-2">
+        <%= form.label :meta, "Note (JSON)", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_area :meta,
+              rows: 4,
+              placeholder: '{"note": "appunti vari"}',
+              class: "mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-blue-500" %>
+      </div>
+    </div>
+  </section>
+
+  <div class="flex justify-end">
+    <%= form.submit "Salva dati contatto",
+          class: "rounded-md px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium cursor-pointer" %>
+  </div>
+<% end %>

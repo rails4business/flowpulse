@@ -79,17 +79,20 @@
 
   <%# Approva / Rimuovi solo per superadmin o tutor/manager %>
   <% if Current.user&.tutor_or_manager? %>
+
+  <div class="flex">
   <% if policy(lead).approve? && (lead.user.state_registration == "pending" || lead.user&.pending?) %>
   <%= button_to "Approva", approve_superadmin_lead_path(lead), method: :post, class: "..." %>
 <% end %>
    
-
+  
     <%= button_to "Rimuovi",
           account_lead_path(lead),
           method: :delete,
           form: { data: { turbo_confirm: "Rimuovere questo invitato?" } },
           class: "text-red-600 hover:underline" %>
   <% end %>
+  </div>
 </td>
         </tr>
       <% end %>

@@ -1,12 +1,12 @@
-class Contact < ApplicationRecord
+class Datacontact < ApplicationRecord
   belongs_to :lead, optional: true
+  belongs_to :referent_lead, class_name: "Lead", optional: true
 
   has_many :enrollments, dependent: :destroy
   has_many :journeys, through: :enrollments
   has_many :bookings,    dependent: :destroy
   has_many :payments,    dependent: :destroy
-
-
+  has_many :mycontacts, dependent: :destroy
 
   has_many :requests_made,
            class_name: "Enrollment",

@@ -27,4 +27,8 @@ module EventdatesHelper
       ["Da pianificare", "bg-amber-50 text-amber-700 border border-amber-200"]
     end
   end
+
+  def eventdate_taxbranch_label(eventdate)
+    eventdate.taxbranch&.display_label || "-"
+  end
 end

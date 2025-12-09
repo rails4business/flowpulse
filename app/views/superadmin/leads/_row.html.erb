@@ -62,6 +62,7 @@
   <%# --- Azioni --- %>
   <td class="p-3 align-top text-right space-x-3">
     <%# Approva: solo se mancano user o è pending %>
+   <div class="flex">
     <% if (Current.user&.superadmin? || Current.user&.tutor_or_manager?) && (u.nil? || u.pending?) %>
       <%= button_to "Approva",
             approve_superadmin_lead_path(lead),
@@ -75,6 +76,7 @@
           superadmin_lead_path(lead),
           method: :delete,
           form: { data: { turbo_confirm: "Rimuovere questo lead?" } },
-          class: "text-red-600 hover:underline" %>
+          class: "p-4 text-red-600 hover:underline" %>
+          </div>
   </td>
 </tr>

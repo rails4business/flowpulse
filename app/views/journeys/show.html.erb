@@ -34,6 +34,9 @@
               <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
                 🧩 Template di Journey
               </span>
+              <%= link_to "Gestisci cicli",
+                    instance_cycle_journey_path(@journey),
+                    class: "inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100" %>
             <% elsif @journey.template_journey_id.present? %>
               <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
                 🌱 Istanza da template:
@@ -75,10 +78,18 @@
           </div>
         </div>
 
-                <div class="shrink-0 flex flex-col items-end gap-2">
-          <%= link_to "+ data",
-              new_journey_eventdate_path(@journey),
-              class: "inline-flex items-center gap-1 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 font-medium text-sm shadow-sm" %>
+        <div class="shrink-0 flex flex-col items-end gap-2">
+          <% if @journey.template? %>
+            <%= button_to "Crea nuovo cycle",
+                clone_cycle_journey_path(@journey),
+                method: :post,
+                class: "inline-flex items-center gap-1 bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-500 font-medium text-sm shadow-sm",
+                data: { turbo_confirm: "Creare un nuovo ciclo basato su questo template?" } %>
+          <% else %>
+            <%= link_to "+ data",
+                new_journey_eventdate_path(@journey),
+                class: "inline-flex items-center gap-1 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800 font-medium text-sm shadow-sm" %>
+          <% end %>
           
           <%# 🔴 Time tracking solo per journey in bozza %>
           <% if @journey.draft? %>
@@ -146,145 +157,138 @@
   </header>
 
   <!-- Content: SOLO EVENTI -->
-  <div class="max-w-6xl mx-auto px-6 py-8">
+  <div class="max-w-6xl mx-auto px-6 py-8 space-y-6">
     <% if @journey.eventdates.distinct.any? %>
-      <div class="space-y-4">
-        <% @journey.ordered_eventdates.each do |eventdate| %>
-         <div class="space-y-3">
-  <!-- Card evento -->
-  <div class="group relative overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm hover:shadow-lg transition-all duration-200 hover:border-slate-300">
-    
-    <!-- Header compatto con data e titolo -->
-    <div class="border-b border-slate-100 bg-gradient-to-r from-slate-50 to-transparent px-5 py-4">
-      <div class="flex items-start justify-between gap-4">
-        <div class="flex items-center gap-3 flex-1 min-w-0">
-          <!-- Icona calendario -->
-          <div class="shrink-0">
-            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h14M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-          </div>
-          
-          <!-- Data e titolo -->
-          <div class="min-w-0 flex-1">
-            <p class="text-[11px] font-semibold uppercase tracking-widest text-slate-500">
-              <% if eventdate.date_start.present? %>
-                <%= l(eventdate.date_start, format: "%d/%m/%y %H:%M") %>
-              <% else %>
-                Data da definire
-              <% end %>
-            </p>
-
-            <h3 class="mt-1 font-bold text-slate-900 text-sm truncate">
-              <%= link_to eventdate_path(eventdate), class: "hover:text-blue-600 transition-colors" do %>
-                <% if eventdate.respond_to?(:title) && eventdate.title.present? %>
-                  <%= eventdate.title %>
-                <% elsif eventdate.description.present? %>
-                  <%= truncate(strip_tags(eventdate.description), length: 60) %>
-                <% else %>
-                  Evento #<%= eventdate.id %>
-                <% end %>
-              <% end %>
-            </h3>
-          </div>
-        </div>
-        
-        <!-- Badge impegni collegati -->
-        <div class="shrink-0 flex items-center gap-2">
-          <div class="text-center px-3 py-1.5 rounded-lg bg-blue-50">
-            <p class="font-bold text-blue-900 text-sm">
-              <%= @journey.commitments.where(eventdate: eventdate).count %>
-            </p>
-            <p class="text-xs text-blue-600">impegni</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Body con info evento -->
-    <div class="px-5 py-4 space-y-3">
-      <!-- Metadata grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-        <!-- Ubicazione -->
-        <div class="flex items-start gap-2">
-          <span class="text-lg mt-0.5">📍</span>
-          <div class="min-w-0">
-            <p class="text-xs text-slate-500 font-medium">UBICAZIONE</p>
-            <p class="text-slate-700 font-medium truncate">
-              <%= eventdate.location.presence || "Non specificata" %>
-            </p>
-          </div>
-        </div>
-
-        <!-- Data fine (se presente) -->
-        <% if eventdate.date_end.present? %>
-          <div class="flex items-start gap-2">
-            <span class="text-lg mt-0.5">⏱️</span>
-            <div class="min-w-0">
-              <p class="text-xs text-slate-500 font-medium">FINE EVENTO</p>
-              <p class="text-slate-700 font-medium">
-                <%= l(eventdate.date_end, format: "%d/%m/%y %H:%M") %>
-              </p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <!-- Descrizione -->
-      <% if eventdate.description.present? %>
-        <div class="p-3 rounded-lg bg-slate-50 border border-slate-100">
-          <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-            <%= truncate(strip_tags(eventdate.description), length: 200) %>
-          </p>
-        </div>
-      <% end %>
-
-      <!-- Tag tipo evento e modalità -->
-      <div class="flex flex-wrap gap-2 pt-2">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors bg-blue-50 text-blue-700 hover:bg-blue-100">
-          <% icon = case eventdate.mode
-                   when "onsite"  then "🏢"
-                   when "online"  then "💻"
-                   when "hybrid"  then "🌐"
-                   else "📌"
-                   end %>
-          <span><%= icon %></span>
-          <span><%= eventdate.mode %></span>
-        </span>
-
-        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700">
-          <%= eventdate.event_type %>
-        </span>
-      </div>
-    </div>
-
-    <!-- Footer azioni -->
-    <div class="border-t border-slate-100 bg-slate-50 px-5 py-3 flex gap-2">
-      <%= link_to new_commitment_path(journey_id: @journey.id, eventdate_id: eventdate.id),
-          class: "flex-1 inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 bg-slate-900 text-white hover:bg-slate-800 text-xs font-semibold transition-colors" do %>
-        ➕ Aggiungi impegno
-      <% end %>
-
-      <%= link_to new_booking_path(eventdate_id: eventdate.id),
-          class: "flex-1 inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-semibold transition-colors" do %>
-        📌 Prenota risorsa
-      <% end %>
-    </div>
-  </div>
-</div>
-
-        <% end %>
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-50 text-xs font-semibold uppercase text-slate-500">
+            <tr>
+              <th class="px-4 py-3 text-left">Data</th>
+              <th class="px-4 py-3 text-left">Titolo / Luogo</th>
+              <th class="px-4 py-3 text-left">Tipo</th>
+              <th class="px-4 py-3 text-left">Modalità</th>
+              <th class="px-4 py-3 text-center">Impegni</th>
+              <th class="px-4 py-3 text-right">Azioni</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <% @journey.ordered_eventdates.each do |eventdate| %>
+              <% commitments_count = @journey.commitments.where(eventdate: eventdate).count %>
+              <tr class="hover:bg-slate-50/70">
+                <td class="px-4 py-3 align-top text-xs text-slate-600">
+                  <% if eventdate.date_start.present? %>
+                    <div class="flex items-center gap-3">
+                      <div class="text-center px-2 py-1 rounded-lg bg-slate-100">
+                        <div class="text-lg font-bold text-slate-900 leading-tight">
+                          <%= l(eventdate.date_start, format: "%d") %>
+                        </div>
+                        <div class="text-[11px] uppercase tracking-wide text-slate-500">
+                          <%= l(eventdate.date_start, format: "%b") %>
+                        </div>
+                      </div>
+                      <div class="text-xs text-slate-600">
+                        <div class="font-semibold text-slate-900">
+                          <%= l(eventdate.date_start, format: "%H:%M") %>
+                        </div>
+                        <% if eventdate.date_end.present? %>
+                          <div class="text-[11px] text-slate-500">
+                            <%= l(eventdate.date_end, format: "%H:%M") %>
+                          </div>
+                        <% else %>
+                          <div class="text-[11px] text-slate-500">Durata da definire</div>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% elsif eventdate.date_end.present? %>
+                    <div class="flex items-center gap-3">
+                      <div class="text-center px-2 py-1 rounded-lg bg-slate-100">
+                        <div class="text-lg font-bold text-slate-900 leading-tight">
+                          <%= l(eventdate.date_end, format: "%d") %>
+                        </div>
+                        <div class="text-[11px] uppercase tracking-wide text-slate-500">
+                          <%= l(eventdate.date_end, format: "%b") %>
+                        </div>
+                      </div>
+                      <div class="text-xs text-slate-600">
+                        <div class="font-semibold text-slate-900">
+                          Fine <%= l(eventdate.date_end, format: "%H:%M") %>
+                        </div>
+                      </div>
+                    </div>
+                  <% else %>
+                    <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-600">
+                      ⏳ Data da definire
+                    </span>
+                  <% end %>
+                </td>
+                <td class="px-4 py-3 align-top">
+                  <div class="font-medium text-slate-900">
+                    <%= link_to eventdate_path(eventdate), class: "hover:text-blue-600" do %>
+                      <% if eventdate.respond_to?(:title) && eventdate.title.present? %>
+                        <%= eventdate.title %>
+                      <% elsif eventdate.description.present? %>
+                        <%= truncate(strip_tags(eventdate.description), length: 60) %>
+                      <% else %>
+                        Evento #<%= eventdate.id %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <p class="text-xs text-slate-500">
+                    <%= eventdate.location.presence || "Luogo da definire" %>
+                  </p>
+                </td>
+                <td class="px-4 py-3 align-top text-xs">
+                  <span class="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 font-medium text-amber-700">
+                    <%= eventdate.event_type.presence || "—" %>
+                  </span>
+                </td>
+                <td class="px-4 py-3 align-top text-xs">
+                  <% icon = case eventdate.mode
+                           when "onsite"  then "🏢"
+                           when "online"  then "💻"
+                           when "hybrid"  then "🌐"
+                           else "📌"
+                           end %>
+                  <span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 font-medium text-blue-700">
+                    <%= icon %> <%= eventdate.mode.presence || "n/d" %>
+                  </span>
+                </td>
+                <td class="px-4 py-3 align-top text-center text-slate-800 font-semibold">
+                  <%= commitments_count %>
+                </td>
+                <td class="px-4 py-3 align-top text-right space-y-1">
+                  <%= link_to "Apri",
+                        eventdate_path(eventdate),
+                        class: "inline-flex items-center rounded-md border border-slate-200 px-3 py-1 text-xs font-medium hover:bg-slate-50" %>
+                  <%= link_to "Prenota",
+                        new_booking_path(eventdate_id: eventdate.id),
+                        class: "inline-flex items-center rounded-md border border-indigo-200 px-3 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-50" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     <% else %>
-      <div class="flex flex-col items-center justify-center py-16 text-center">
+      <div class="flex flex-col items-center justify-center py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-white">
         <p class="text-sm text-slate-500 mb-4">
-          Nessun evento collegato a questo Journey.
+          <% if @journey.template? %>
+            Questo template non ha cicli attivi. Crea un nuovo cycle per iniziare a schedulare date.
+          <% else %>
+            Nessun evento collegato a questo Journey.
+          <% end %>
         </p>
-        <%= link_to "+ Crea il primo evento",
-            new_journey_eventdate_path(@journey),
-            class: "inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800" %>
+        <% if @journey.template? %>
+          <%= link_to "Crea nuovo cycle",
+              journeys_path(journey: { template_journey_id: @journey.id, kind: "instance_cycle" }),
+              method: :post,
+              class: "inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-4 py-2 text-sm font-medium hover:bg-emerald-500",
+              data: { turbo_confirm: "Creare un nuovo cycle basato su questo template?" } %>
+        <% else %>
+          <%= link_to "+ Crea il primo evento",
+              new_journey_eventdate_path(@journey),
+              class: "inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-medium hover:bg-slate-800" %>
+        <% end %>
       </div>
     <% end %>
   </div>

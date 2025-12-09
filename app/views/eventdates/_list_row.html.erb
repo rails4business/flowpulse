@@ -5,6 +5,9 @@
     <p class="font-semibold text-slate-900"><%= eventdate_period(eventdate) %></p>
     <p class="mt-1 text-xs text-slate-500"><%= eventdate_label(eventdate) %></p>
   </td>
+  <td class="px-4 py-3 text-sm text-slate-600">
+    <%= eventdate_taxbranch_label(eventdate) %>
+  </td>
   <td class="px-4 py-3">
     <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold <%= status_classes %>">
       <%= status_label %>

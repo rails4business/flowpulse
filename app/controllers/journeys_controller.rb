@@ -1,5 +1,5 @@
 class JourneysController < ApplicationController
-  before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking]
+  before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking instance_cycle clone_cycle]
    def start_tracking
     # evita di aprire due tracking contemporanei sullo stesso journey
     open_event = @journey.eventdates.where(date_end: nil).order(:created_at).last
@@ -49,6 +49,70 @@ class JourneysController < ApplicationController
 
     @enrollments = @journey.enrollments.includes(:contact)
   end
+  def instance_cycle
+    @instance_cycles = @journey.child_journeys.instance_cycle.order(created_at: :desc)
+    @template_events = @journey.eventdates.order(:date_start)
+  end
+
+  def clone_cycle
+    template = @journey
+    instance = template.child_journeys.build(
+      title: "#{template.title} · cycle #{template.child_journeys.count + 1}",
+      taxbranch_id: template.taxbranch_id,
+      service_id: template.service_id,
+      lead_id: template.lead_id,
+      importance: template.importance,
+      urgency: template.urgency,
+      energy: template.energy,
+      kind: :instance_cycle
+    )
+    if instance.save
+      redirect_to instance_cycle_journey_path(template), notice: "Cycle creato dal template."
+    else
+      redirect_to journey_path(template), alert: instance.errors.full_messages.to_sentence
+    end
+  end
+
+  def replicate_template_events
+    cycle = @journey
+    template = cycle.template_journey
+    unless template
+      redirect_back fallback_location: journey_path(cycle), alert: "Questo cycle non è collegato a un template."
+      return
+    end
+
+    if cycle.eventdates.where("meta ? :key", key: "cloned_from_template_id").exists?
+      redirect_back fallback_location: instance_cycle_journey_path(template), notice: "Gli eventi del template sono già stati replicati."
+      return
+    end
+
+    template.eventdates.order(:date_start).each do |event|
+      clone = cycle.eventdates.build(
+        date_start: event.date_start,
+        date_end: event.date_end,
+        description: event.description,
+        event_type: event.event_type,
+        lead_id: cycle.lead_id || event.lead_id,
+        location: event.location,
+        mode: event.mode,
+        visibility: event.visibility,
+        status: event.status,
+        taxbranch_id: event.taxbranch_id,
+        meta: (event.meta || {}).merge("cloned_from_template_id" => event.id)
+      )
+      clone.save!
+    end
+
+    redirect_back fallback_location: instance_cycle_journey_path(template), notice: "Eventi duplicati dal template."
+  end
+
+  def clear_template_events
+    cycle = @journey
+    template = cycle.template_journey
+    destroyed = cycle.eventdates.where("meta ? :key", key: "cloned_from_template_id").destroy_all
+    redirect_back fallback_location: (template ? instance_cycle_journey_path(template) : journey_path(cycle)), notice: "#{destroyed.count} eventi rimossi."
+  end
+
 
   def carousel
   end
@@ -64,7 +128,14 @@ class JourneysController < ApplicationController
 
   # POST /journeys or /journeys.json
   def create
-    @journey = Journey.new(journey_params)
+    if params.dig(:journey, :template_journey_id).present?
+      template = Journey.find(params[:journey][:template_journey_id])
+      attrs = template.slice(:title, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy)
+                      .merge(kind: :instance_cycle, template_journey: template)
+      @journey = Journey.new(attrs)
+    else
+      @journey = Journey.new(journey_params)
+    end
 
     respond_to do |format|
       if @journey.save
@@ -108,6 +179,6 @@ class JourneysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def journey_params
-      params.expect(journey: [ :title, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_ideate, :start_realized, :start_erogation, :complete ])
+      params.expect(journey: [ :title, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_ideate, :start_realized, :start_erogation, :complete, :kind ])
     end
 end

@@ -2,15 +2,15 @@
 class Booking < ApplicationRecord
   belongs_to :service,     optional: true
   belongs_to :eventdate
-  belongs_to :contact
+  belongs_to :mycontact
   belongs_to :enrollment,  optional: true
   belongs_to :commitment, optional: true
 
   belongs_to :requested_by_lead,
-             class_name: "Contact",
+             class_name: "Datacontact",
              optional: true
   belongs_to :invited_by_lead,
-             class_name: "Contact",
+             class_name: "Datacontact",
              optional: true
 
   has_many :payments, as: :payable, dependent: :nullify
@@ -41,7 +41,7 @@ class Booking < ApplicationRecord
   }
 
   def requester
-    requested_by_lead || contact
+    requested_by_lead || mycontact
   end
 
   def inviter

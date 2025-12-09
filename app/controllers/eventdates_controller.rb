@@ -3,7 +3,14 @@ class EventdatesController < ApplicationController
 
  # GET /eventdates or /eventdates.json
  def index
-  return redirect_to root_path, alert: "No lead found" unless Current.user&.lead
+  @lead = Current.user&.lead
+  return redirect_to root_path, alert: "No lead found" unless @lead
+
+  @taxbranches = @lead.taxbranches.order(:slug_label)
+  @selected_taxbranch =
+    if params[:taxbranch_id].present?
+      @taxbranches.find_by(id: params[:taxbranch_id])
+    end
 
   @date = begin
     Date.parse(params[:on]) if params[:on].present?
@@ -12,7 +19,12 @@ class EventdatesController < ApplicationController
   end
 
   # Base: SOLO gli eventi del lead corrente
-  base_scope = Eventdate.where(lead: Current.user.lead).order(date_start: :asc)
+  base_scope = Eventdate
+    .where(lead: @lead)
+    .includes(:taxbranch)
+    .order(date_start: :asc)
+
+  base_scope = base_scope.where(taxbranch_id: @selected_taxbranch.id) if @selected_taxbranch
 
   # Agenda per giorno selezionato (solo quelli con date_start in quel giorno)
   if @date
@@ -23,12 +35,25 @@ class EventdatesController < ApplicationController
     @agenda_eventdates = []
   end
 
-  # Gruppi per le tabs
+  # Collezioni per tabs
+  @all_eventdates        = base_scope
   @complete_eventdates    = base_scope.where.not(date_start: nil).where.not(date_end: nil)
   @start_only_eventdates  = base_scope.where.not(date_start: nil).where(date_end: nil)
   @todo_eventdates        = base_scope.where(date_start: nil)
 
-  @tab = params[:tab].presence_in(%w[complete start_only todo]) || "complete"
+  @tab = params[:tab].presence_in(%w[all complete start_only todo]) || "all"
+
+  @grouped_agenda_eventdates = group_eventdates(@agenda_eventdates)
+
+  @current_collection =
+    case @tab
+    when "all"        then @all_eventdates
+    when "complete"   then @complete_eventdates
+    when "start_only" then @start_only_eventdates
+    else                    @todo_eventdates
+    end
+
+  @grouped_tab_eventdates = group_eventdates(@current_collection)
 end
 
 
@@ -93,5 +118,18 @@ end
     # Only allow a list of trusted parameters through.
     def eventdate_params
       params.expect(eventdate: [ :date_start, :date_end, :taxbranch_id, :lead_id, :cycle, :status, :description, :meta, :journey_id ])
+    end
+
+    def group_eventdates(scope)
+      records = scope.respond_to?(:to_a) ? scope.to_a : Array(scope)
+      groups = records.group_by(&:taxbranch)
+
+      groups.map do |taxbranch, events|
+        {
+          taxbranch: taxbranch,
+          label: taxbranch&.display_label || "Senza taxbranch",
+          events: events
+        }
+      end.sort_by { |group| [ group[:label].to_s.downcase, group[:taxbranch]&.id.to_i ] }
     end
 end

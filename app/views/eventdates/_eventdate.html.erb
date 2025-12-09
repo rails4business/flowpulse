@@ -1,42 +1,70 @@
-<div class="space-y-3 bg-white rounded-lg shadow p-4">
-  <p><strong>Inizio:</strong> <%= @eventdate.date_start %></p>
-  <p><strong>Fine:</strong> <%= @eventdate.date_end %></p>
-  <p><strong>Location:</strong> <%= @eventdate.location.presence || "Nessuna" %></p>
-  <p><strong>Tipo:</strong> <%= @eventdate.event_type %></p>
-  <p><strong>Modalità:</strong> <%= @eventdate.mode %></p>
-  <p><strong>Visibilità:</strong> <%= @eventdate.visibility %></p>
+<div class="space-y-6">
+  <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+    <h2 class="text-xl font-semibold text-slate-900">Dettagli principali</h2>
+    <dl class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Periodo</dt>
+        <dd class="mt-1 text-sm text-slate-800"><%= eventdate_period(eventdate) %></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Status diario</dt>
+        <dd class="mt-1 text-sm text-slate-800"><%= eventdate.status %></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Location</dt>
+        <dd class="mt-1 text-sm text-slate-800"><%= eventdate.location.presence || "Non specificata" %></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Taxbranch</dt>
+        <dd class="mt-1 text-sm text-slate-800"><%= eventdate_taxbranch_label(eventdate) %></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Lead</dt>
+        <dd class="mt-1 text-sm text-slate-800"><%= eventdate.lead&.full_name.presence || "-" %></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Journey</dt>
+        <dd class="mt-1 text-sm text-slate-800">
+          <% if eventdate.journey.present? %>
+            <%= link_to eventdate.journey.title, journey_path(eventdate.journey), class: "text-blue-600 hover:underline" %>
+          <% else %>
+            -
+          <% end %>
+        </dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Ciclo</dt>
+        <dd class="mt-1 text-sm text-slate-800"><%= eventdate.cycle.presence || "-" %></dd>
+      </div>
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Meta</dt>
+        <dd class="mt-1 text-sm text-slate-800"><%= eventdate.meta.presence || "-" %></dd>
+      </div>
+    </dl>
+  </section>
 
-  <% if @eventdate.journey.present? %>
-    <p><strong>Journey:</strong>
-      <%= link_to @eventdate.journey.title, journey_path(@eventdate.journey) %>
-    </p>
+  <% if eventdate.description.present? %>
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <h2 class="text-xl font-semibold text-slate-900">Descrizione</h2>
+      <p class="mt-3 text-sm text-slate-700"><%= simple_format(eventdate.description) %></p>
+    </section>
   <% end %>
 
-  <% if @eventdate.taxbranch.present? %>
-    <p><strong>Taxbranch:</strong> <%= @eventdate.taxbranch.name || @eventdate.taxbranch.slug_label %></p>
-  <% end %>
-
-  <% if @eventdate.lead.present? %>
-    <p><strong>Creato da:</strong> <%= @eventdate.lead.full_name rescue @eventdate.lead.id %></p>
-  <% end %>
-
-  <p><strong>Status:</strong> <%= @eventdate.status %></p>
-
-  <% if @eventdate.description.present? %>
-    <p><strong>Descrizione:</strong> <%= @eventdate.description %></p>
-  <% end %>
-
-  <% if @eventdate.commitments.any? %>
-    <div class="mt-4">
-      <strong>Commitmentitments collegati:</strong>
-      <ul class="list-disc ml-6 mt-2">
-        <% @eventdate.commitments.each do |commitment| %>
-          <li>
-            <%= link_to(commitment.role_name || "Commitment ##{commitment.id}", edit_commitment_path(commitment)) %>
-            (<%= commitment.duration_minutes || "?" %> min)
-          </li>
-        <% end %>
-      </ul>
+  <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+    <h2 class="text-xl font-semibold text-slate-900">Specifiche evento</h2>
+    <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Tipo</p>
+        <p class="mt-1 text-sm font-semibold text-slate-800"><%= eventdate.event_type %></p>
+      </div>
+      <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Modalità</p>
+        <p class="mt-1 text-sm font-semibold text-slate-800"><%= eventdate.mode %></p>
+      </div>
+      <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Visibilità</p>
+        <p class="mt-1 text-sm font-semibold text-slate-800"><%= eventdate.visibility %></p>
+      </div>
     </div>
-  <% end %>
+  </section>
 </div>

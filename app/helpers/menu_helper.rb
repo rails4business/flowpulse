@@ -9,6 +9,8 @@ module MenuHelper
       { icon: "🌐", label: "Domain", path: superadmin_domains_path },
       { icon: "📊", label: "Post", path: posts_path },
 
+      { icon: "📇", label: "Contatti", path: mycontacts_path },
+
       { icon: "🖥️", label: "Services", path: superadmin_services_path },
       { icon: "📋", label: "Journeys", path: journeys_path },
       { icon: "📆", label: "EventDate", path: eventdates_path },
