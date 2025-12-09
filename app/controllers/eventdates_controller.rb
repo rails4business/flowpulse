@@ -43,8 +43,6 @@ class EventdatesController < ApplicationController
 
   @tab = params[:tab].presence_in(%w[all complete start_only todo]) || "all"
 
-  @grouped_agenda_eventdates = group_eventdates(@agenda_eventdates)
-
   @current_collection =
     case @tab
     when "all"        then @all_eventdates
@@ -52,8 +50,6 @@ class EventdatesController < ApplicationController
     when "start_only" then @start_only_eventdates
     else                    @todo_eventdates
     end
-
-  @grouped_tab_eventdates = group_eventdates(@current_collection)
 end
 
 
@@ -120,16 +116,4 @@ end
       params.expect(eventdate: [ :date_start, :date_end, :taxbranch_id, :lead_id, :cycle, :status, :description, :meta, :journey_id ])
     end
 
-    def group_eventdates(scope)
-      records = scope.respond_to?(:to_a) ? scope.to_a : Array(scope)
-      groups = records.group_by(&:taxbranch)
-
-      groups.map do |taxbranch, events|
-        {
-          taxbranch: taxbranch,
-          label: taxbranch&.display_label || "Senza taxbranch",
-          events: events
-        }
-      end.sort_by { |group| [ group[:label].to_s.downcase, group[:taxbranch]&.id.to_i ] }
-    end
 end

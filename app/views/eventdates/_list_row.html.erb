@@ -2,8 +2,32 @@
 
 <tr class="align-top">
   <td class="px-4 py-3">
-    <p class="font-semibold text-slate-900"><%= eventdate_period(eventdate) %></p>
-    <p class="mt-1 text-xs text-slate-500"><%= eventdate_label(eventdate) %></p>
+    <div class="flex items-center gap-3">
+      <div class="text-center px-2 py-1 rounded-lg bg-slate-100">
+        <div class="text-lg font-bold text-slate-900 leading-tight">
+          <%= eventdate.date_start ? l(eventdate.date_start, format: "%d") : "--" %>
+        </div>
+        <div class="text-[11px] uppercase tracking-wide text-slate-500">
+          <%= eventdate.date_start ? l(eventdate.date_start, format: "%b") : "" %>
+        </div>
+      </div>
+      <div class="text-sm text-slate-700">
+        <p class="font-semibold">
+          <%= link_to eventdate_label(eventdate), eventdate_path(eventdate), class: "hover:text-blue-600" %>
+        </p>
+        <p class="text-xs text-slate-500">
+          <% if eventdate.date_start.present? %>
+            <strong><%= l(eventdate.date_start, format: :time) %></strong>
+          <% end %>
+          <% if eventdate.date_end.present? %>
+            – <strong><%= l(eventdate.date_end, format: :time) %></strong>
+          <% end %>
+        </p>
+        <% if eventdate.location.present? %>
+          <p class="text-xs text-slate-500">📍 <%= eventdate.location %></p>
+        <% end %>
+      </div>
+    </div>
   </td>
   <td class="px-4 py-3 text-sm text-slate-600">
     <%= eventdate_taxbranch_label(eventdate) %>
