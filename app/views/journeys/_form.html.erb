@@ -18,15 +18,16 @@
 
   <div class="my-5">
     <%= form.label :taxbranch_id %>
-    
-    <% if params[:taxbranch_id] %>
-      <%= form.text_field :taxbranch_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:taxbranch_id].none?, "border-red-400 focus:outline-red-600": journey.errors[:taxbranch_id].any?}], value: params[:taxbranch_id] %>
- 
-    <% else %>
-    
-    <%= form.text_field :taxbranch_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:taxbranch_id].none?, "border-red-400 focus:outline-red-600": journey.errors[:taxbranch_id].any?}] %>
- <% end %> 
- </div>
+    <%= form.text_field :taxbranch_id,
+          class: [
+            "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+            {
+              "border-gray-400 focus:outline-blue-600": journey.errors[:taxbranch_id].none?,
+              "border-red-400 focus:outline-red-600": journey.errors[:taxbranch_id].any?
+            }
+          ],
+          value: default_taxbranch_id_for(journey) %>
+  </div>
 
   <div class="my-5">
     <%= form.label :service_id %>

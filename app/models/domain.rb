@@ -1,4 +1,5 @@
 class Domain < ApplicationRecord
+   store_accessor :aree_ruoli
   belongs_to :taxbranch
   #  belongs_to :owner, class_name: "Lead", optional: true
 

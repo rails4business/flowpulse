@@ -71,7 +71,7 @@ class Taxbranch < ApplicationRecord
   def has_public_post? = post&.published?
   def display_label    = slug_label.presence || slug.to_s.titleize
 
-  def effective_domain_taxbranch
+  def header_domain_taxbranch
     ids   = [ id ] + ancestor_ids.reverse
     tb_map = Taxbranch.where(id: ids).includes(:domains).index_by(&:id)
 
@@ -92,8 +92,18 @@ class Taxbranch < ApplicationRecord
     nil
   end
 
+  alias_method :effective_domain_taxbranch, :header_domain_taxbranch
+
   def effective_domain
-    effective_domain_taxbranch&.domains&.first
+    header_domain_taxbranch&.domains&.first
+  end
+
+  def header_domain
+    @header_domain ||= effective_domain
+  end
+
+  def header_domain_id
+    header_domain&.id
   end
 
   scope :public_published_ordered, -> {

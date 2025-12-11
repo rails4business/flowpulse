@@ -61,7 +61,10 @@
 <div class="group relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition dark:bg-slate-900 dark:border-slate-800">
   <%# Click area ampia (se esiste il post) %>
   <% if post.present? %>
-    <%= link_to post_path(post), class: "absolute inset-0 z-[1]" do %><% end %>
+    <% link_target = post_entry_link(post, taxbranch: tax) %>
+    <% if link_target.present? %>
+      <%= link_to link_target, class: "absolute inset-0 z-[1]" do %><% end %>
+    <% end %>
   <% end %>
 
   <%# MEDIA: se c'è un video YouTube/Vimeo, mostro thumb; in mancanza di thumb, embed responsivo; altrimenti placeholder %>
@@ -107,9 +110,12 @@
 
     <div class="mt-4 flex items-center gap-2">
       <% if post.present? %>
-        <%= link_to "Inizia",
-                    post_path(post),
-                    class: "inline-flex items-center rounded-lg border border-slate-200 bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:border-slate-700" %>
+        <% link_target = post_entry_link(post, taxbranch: tax) %>
+        <% if link_target.present? %>
+          <%= link_to "Inizia",
+                      link_target,
+                      class: "inline-flex items-center rounded-lg border border-slate-200 bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:border-slate-700" %>
+        <% end %>
 
       
       <% end %>

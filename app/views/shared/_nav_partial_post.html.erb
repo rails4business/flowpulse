@@ -48,7 +48,7 @@
             <% if branch.link_child_taxbranch_id.nil? %>
               <% if branch.post.present? %>
                 <%= link_to branch.display_label.capitalize,
-                            post_path(branch.post),
+                            post_entry_link(branch.post, taxbranch: branch),
                             class: "block px-4 py-2 hover:bg-gray-100" %>
               <% else %>
                 <span class="block px-4 py-2 text-gray-400"><%= branch.display_label.capitalize %></span>
@@ -57,7 +57,7 @@
               <% nav_child_branch = Taxbranch.find(branch.link_child_taxbranch_id)  %>
               <% if nav_child_branch.status == "published" && nav_child_branch.visibility == "public_node" && nav_child_branch.post.present? %>
                 <%= link_to nav_child_branch.display_label.capitalize,
-                            post_path(nav_child_branch.post),
+                            post_entry_link(nav_child_branch.post, taxbranch: nav_child_branch),
                             class: "block px-4 py-2 hover:bg-gray-100" %>
               <% else %>
                 <span class="block px-4 py-2 text-gray-400"><%= nav_child_branch.display_label.capitalize %></span>
@@ -84,7 +84,7 @@
      <% if branch.link_child_taxbranch_id.nil? %>
       <% if branch.post.present? %>
         <%= link_to branch.display_label.capitalize,
-                    post_path(branch.post),
+                    post_entry_link(branch.post, taxbranch: branch),
                     class: "text-slate-700 hover:text-slate-900 font-medium" %>
       <% else %>
         <span class="text-slate-400 font-medium"><%= branch.display_label.capitalize %></span>
@@ -93,7 +93,7 @@
       <% nav_child_branch = Taxbranch.find(branch.link_child_taxbranch_id)  %>
       <% if nav_child_branch.status == "published" && nav_child_branch.visibility == "public_node" && nav_child_branch.post.present? %>
         <%= link_to nav_child_branch.display_label.capitalize,
-                    post_path(nav_child_branch.post),
+                    post_entry_link(nav_child_branch.post, taxbranch: nav_child_branch),
                     class: "text-slate-700 hover:text-slate-900 font-medium" %>
       <% else %>
         <span class="text-slate-400 font-medium"><%= nav_child_branch.display_label.capitalize %></span>
