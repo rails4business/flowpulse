@@ -5,9 +5,9 @@
 
 <% taxbranch = @post.taxbranch %>
 <% modules   = taxbranch&.children&.ordered || Taxbranch.none %>
-<% sheet_nodes, week_nodes = modules.partition { |tb|
+<% week_nodes, sheet_nodes = modules.partition { |tb|
      slug = (tb.slug_category.presence || tb.slug_label.to_s).downcase
-     slug.include?("sheet") || slug.include?("scheda")
+     slug.include?("week") || slug.include?("settimana")
    } %>
 
 <div class="min-h-screen bg-slate-50 text-slate-900 antialiased">
@@ -69,34 +69,63 @@
       </div>
 
       <% if week_nodes.any? %>
-        <div class="space-y-3">
-          <% week_nodes.each_with_index do |node, idx| %>
-            <% target = node.link_child || node %>
-            <% target_post = target.post %>
-            <% url = target_post ? post_entry_link(target_post, taxbranch: target) : nil %>
-            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col gap-3 md:flex-row md:items-center">
-              <div class="flex-1 min-w-0">
-                <p class="text-xs uppercase tracking-wide text-slate-400 mb-1">
-                  Modulo <%= idx + 1 %>
-                </p>
-                <h3 class="text-lg font-semibold text-slate-900 truncate">
-                  <%= node.slug_label.presence || node.display_label %>
-                </h3>
-                <% if target_post&.description.present? %>
-                  <p class="text-sm text-slate-600 line-clamp-2"><%= target_post.description %></p>
-                <% end %>
-                <% if target_post&.journey.present? %>
-                  <p class="text-xs text-slate-500 mt-1">
-                    Journey: <%= target_post.journey.title.presence || "##{target_post.journey.id}" %>
+        <div class="space-y-4">
+          <% week_nodes.each_with_index do |week_node, w_idx| %>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs uppercase tracking-wide text-slate-400 mb-1">
+                    Settimana <%= w_idx + 1 %>
                   </p>
+                  <h3 class="text-xl font-semibold text-slate-900">
+                    <%= week_node.slug_label.presence || week_node.display_label %>
+                  </h3>
+                  <% if week_node.description.present? %>
+                    <p class="text-sm text-slate-600"><%= week_node.description %></p>
+                  <% end %>
+                </div>
+                <% if (week_post = (week_node.link_child || week_node).post) %>
+                  <%= link_to "Apri modulo",
+                              post_entry_link(week_post, taxbranch: (week_node.link_child || week_node)),
+                              class: "inline-flex items-center justify-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
                 <% end %>
               </div>
-              <% if url %>
-                <%= link_to "Apri modulo",
-                            url,
-                            class: "inline-flex items-center justify-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+
+              <% day_nodes = week_node.children.ordered %>
+              <% if day_nodes.any? %>
+                <ol class="space-y-3">
+                  <% day_nodes.each_with_index do |day_node, d_idx| %>
+                    <% sheet_branch = day_node.link_child || day_node %>
+                    <% sheet_post   = sheet_branch.post %>
+                    <% sheet_url    = sheet_post ? post_entry_link(sheet_post, taxbranch: sheet_branch) : nil %>
+                    <li class="rounded-xl border border-slate-100 bg-slate-50 p-4 space-y-2">
+                      <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <p class="text-xs uppercase tracking-wide text-slate-400">Giorno <%= d_idx + 1 %></p>
+                          <h4 class="text-lg font-semibold text-slate-900">
+                            <%= day_node.slug_label.presence || day_node.display_label %>
+                          </h4>
+                          <% if day_node.description.present? %>
+                            <p class="text-sm text-slate-600"><%= day_node.description %></p>
+                          <% end %>
+                        </div>
+                        <% if sheet_url %>
+                          <%= link_to "Inizia",
+                                      sheet_url,
+                                      class: "inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 border border-slate-300 hover:bg-slate-100",
+                                      data: { turbo_frame: "sheet_modal" } %>
+                        <% else %>
+                          <span class="text-xs text-slate-400">Nessuna scheda collegata</span>
+                        <% end %>
+                      </div>
+                      <% if sheet_post.present? %>
+                        <p class="text-xs text-slate-500">ID scheda: <%= sheet_branch.id %></p>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ol>
               <% else %>
-                <span class="text-xs text-slate-400">Nessun contenuto collegato</span>
+                <p class="text-sm text-slate-500">Nessun giorno associato a questa settimana.</p>
               <% end %>
             </article>
           <% end %>
@@ -167,5 +196,6 @@
         <% end %>
       </div>
     </section>
+    <turbo-frame id="sheet_modal"></turbo-frame>
   </div>
 </div>
