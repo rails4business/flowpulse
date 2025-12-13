@@ -257,6 +257,7 @@ end
       :content,
       :content_md,
       :taxbranch_id,
+      :mermaid,
       :meta,
       :url_media_content
     ])

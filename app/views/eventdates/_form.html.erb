@@ -102,6 +102,19 @@
                 "border-red-400 focus:outline-red-600": eventdate.errors[:meta].any? }] %>
   </div>
 
+  <div class="my-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+    <label class="flex items-center gap-2 text-sm text-slate-700">
+      <%= form.check_box :allows_invite,
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+      Permetti inviti
+    </label>
+    <label class="flex items-center gap-2 text-sm text-slate-700">
+      <%= form.check_box :allows_request,
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+      Permetti richieste
+    </label>
+  </div>
+
   <div class="inline">
     <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
   </div>

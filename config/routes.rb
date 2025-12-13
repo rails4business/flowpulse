@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :certificates
   resources :mycontacts do
     collection do
       post :lookup
@@ -21,6 +22,8 @@ Rails.application.routes.draw do
       get "carousel"
       post "replicate_template_events"
       delete "clear_template_events"
+      get :rails4b
+      get :generaimpresa
     end
     resources :commitments
     resources :eventdates
@@ -36,10 +39,22 @@ Rails.application.routes.draw do
     resources :commitments
   end
 
+  resources :myservices, only: :index
+
   # --- Admin ---
   namespace :superadmin do
-    resources :services
-    resources :domains
+    resources :services do
+      member do
+        get :rails4b
+        get :generaimpresa
+      end
+    end
+    resources :domains do
+      member do
+        get :rails4b
+        get :generaimpresa
+      end
+    end
     resources :taxbranches do
       resources :services
 
@@ -65,6 +80,7 @@ Rails.application.routes.draw do
   # Area utente autenticato: i miei invitati
   namespace :account do
     resources :leads, only: [ :index, :create, :destroy ]
+    resource  :profile, only: :show
   end
 
 

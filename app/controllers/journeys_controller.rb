@@ -1,5 +1,8 @@
 class JourneysController < ApplicationController
-  before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking instance_cycle clone_cycle]
+  before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking instance_cycle clone_cycle rails4b generaimpresa ]
+  before_action :load_branch_links, only: %i[ show rails4b generaimpresa ]
+  before_action :load_production_stats, only: %i[ show rails4b generaimpresa ]
+  before_action :load_public_revenue_stats, only: %i[ show generaimpresa ]
    def start_tracking
     # evita di aprire due tracking contemporanei sullo stesso journey
     open_event = @journey.eventdates.where(date_end: nil).order(:created_at).last
@@ -117,6 +120,21 @@ class JourneysController < ApplicationController
   def carousel
   end
 
+  def rails4b
+    @service = @journey.service
+    @taxbranch = @journey.taxbranch
+    @eventdates = @journey.eventdates.order(:date_start)
+    @commitments = @journey.commitments.includes(:taxbranch)
+  end
+
+  def generaimpresa
+    @enrollments = @journey.enrollments.includes(:mycontact)
+    @enrollments_count = @enrollments.count
+    @bookings_count = @journey.bookings.count
+    @certificates_count = @journey.certificates.count
+    @participants_per_role = @journey.enrollments.group(:role_name).count
+  end
+
   # GET /journeys/new
   def new
     @journey = Current.user.lead.journeys.build
@@ -179,6 +197,24 @@ class JourneysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def journey_params
-      params.expect(journey: [ :title, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_ideate, :start_realized, :start_erogation, :complete, :kind ])
+      params.expect(journey: [ :title, :slug, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_ideate, :start_realized, :start_erogation, :complete, :kind, :allows_invite, :allows_request ])
+    end
+
+    def load_branch_links
+      @frontline_branch = @journey.taxbranch if @journey.taxbranch&.frontline?
+      @rails4b_branches = Taxbranch.where(branch_kind: Taxbranch.branch_kinds[:rails4b], rails4b_target_journey_id: @journey.id)
+      @generaimpresa_branches = Taxbranch.where(branch_kind: Taxbranch.branch_kinds[:generaimpresa], generaimpresa_target_journey_id: @journey.id)
+    end
+
+    def load_production_stats
+      @production_cost_euro = @journey.commitments.sum("COALESCE(compensation_euro, 0)")
+      @production_minutes = @journey.commitments.sum("COALESCE(duration_minutes, 0)")
+    end
+
+    def load_public_revenue_stats
+      @enrollment_revenue_euro = @journey.enrollments.sum("COALESCE(price_euro, 0)")
+      booking_scope = Booking.where(eventdate_id: @journey.eventdates.select(:id))
+      @booking_revenue_euro = booking_scope.sum("COALESCE(price_euro, 0)")
+      @public_revenue_euro = @enrollment_revenue_euro + @booking_revenue_euro
     end
 end

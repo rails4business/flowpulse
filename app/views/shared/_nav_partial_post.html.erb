@@ -45,22 +45,23 @@
       <% if domain_root.present? %>
         <% domain_root.children.home_nav.each do |branch| %>
           <li> 
+            <% link_label = branch.slug_label.presence || branch.display_label %>
             <% if branch.link_child_taxbranch_id.nil? %>
               <% if branch.post.present? %>
-                <%= link_to branch.display_label.capitalize,
+                <%= link_to link_label.capitalize,
                             post_entry_link(branch.post, taxbranch: branch),
                             class: "block px-4 py-2 hover:bg-gray-100" %>
               <% else %>
-                <span class="block px-4 py-2 text-gray-400"><%= branch.display_label.capitalize %></span>
+                <span class="block px-4 py-2 text-gray-400"><%= link_label.capitalize %></span>
               <% end %>
             <% else %>
               <% nav_child_branch = Taxbranch.find(branch.link_child_taxbranch_id)  %>
               <% if nav_child_branch.status == "published" && nav_child_branch.visibility == "public_node" && nav_child_branch.post.present? %>
-                <%= link_to nav_child_branch.display_label.capitalize,
+                <%= link_to link_label.capitalize,
                             post_entry_link(nav_child_branch.post, taxbranch: nav_child_branch),
                             class: "block px-4 py-2 hover:bg-gray-100" %>
               <% else %>
-                <span class="block px-4 py-2 text-gray-400"><%= nav_child_branch.display_label.capitalize %></span>
+                <span class="block px-4 py-2 text-gray-400"><%= link_label.capitalize %></span>
               <% end %>
             <% end %>
           
@@ -81,22 +82,23 @@
 <div class="hidden sm:flex space-x-6">
   <% if domain_root.present? %>
     <% domain_root.children.home_nav.each do |branch| %>
+     <% link_label = branch.slug_label.presence || branch.display_label %>
      <% if branch.link_child_taxbranch_id.nil? %>
       <% if branch.post.present? %>
-        <%= link_to branch.display_label.capitalize,
+        <%= link_to link_label.capitalize,
                     post_entry_link(branch.post, taxbranch: branch),
                     class: "text-slate-700 hover:text-slate-900 font-medium" %>
       <% else %>
-        <span class="text-slate-400 font-medium"><%= branch.display_label.capitalize %></span>
+        <span class="text-slate-400 font-medium"><%= link_label.capitalize %></span>
       <% end %>
     <% else %>
       <% nav_child_branch = Taxbranch.find(branch.link_child_taxbranch_id)  %>
       <% if nav_child_branch.status == "published" && nav_child_branch.visibility == "public_node" && nav_child_branch.post.present? %>
-        <%= link_to nav_child_branch.display_label.capitalize,
+        <%= link_to link_label.capitalize,
                     post_entry_link(nav_child_branch.post, taxbranch: nav_child_branch),
                     class: "text-slate-700 hover:text-slate-900 font-medium" %>
       <% else %>
-        <span class="text-slate-400 font-medium"><%= nav_child_branch.display_label.capitalize %></span>
+        <span class="text-slate-400 font-medium"><%= link_label.capitalize %></span>
       <% end %>
     <% end %>
     <% end %>

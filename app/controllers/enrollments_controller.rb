@@ -80,6 +80,11 @@ class EnrollmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def enrollment_params
-      params.expect(enrollment: [ :service_id, :journey_id, :contact_id, :role_name, :status, :mode, :request_kind, :requested_by_lead_id, :invited_by_lead_id, :price_euro, :price_dash, :notes, :meta ])
+      params.expect(enrollment: [
+        :service_id, :journey_id, :contact_id, :role_name, :status, :mode,
+        :request_kind, :requested_by_lead_id, :invited_by_lead_id,
+        :price_euro, :price_dash, :notes, :meta,
+        :participant_role, :target_role, :certified_at
+      ])
     end
 end

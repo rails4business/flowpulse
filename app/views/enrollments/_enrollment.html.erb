@@ -16,6 +16,14 @@
     <%= enrollment.role_name %>
   </div>
   <div>
+    <strong class="block font-medium mb-1">Ruolo di ingresso:</strong>
+    <%= enrollment.participant_role.presence || "—" %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Ruolo in uscita:</strong>
+    <%= enrollment.target_role.presence || "—" %>
+  </div>
+  <div>
     <strong class="block font-medium mb-1">Status:</strong>
     <%= enrollment.status %>
   </div>
@@ -42,6 +50,14 @@
   <div>
     <strong class="block font-medium mb-1">Price dash:</strong>
     <%= enrollment.price_dash %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Certificato il:</strong>
+    <% if enrollment.certified_at.present? %>
+      <%= l(enrollment.certified_at, format: :short) %>
+    <% else %>
+      —
+    <% end %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Notes:</strong>

@@ -17,6 +17,21 @@
   </div>
 
   <div class="my-5">
+    <%= form.label :slug %>
+    <%= form.text_field :slug,
+          class: [
+            "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+            {
+              "border-gray-400 focus:outline-blue-600": journey.errors[:slug].none?,
+              "border-red-400 focus:outline-red-600": journey.errors[:slug].any?
+            }
+          ] %>
+    <p class="text-xs text-slate-500 mt-1">
+      Se lasci vuoto lo slug verrà generato automaticamente dal titolo.
+    </p>
+  </div>
+
+  <div class="my-5">
     <%= form.label :taxbranch_id %>
     <%= form.text_field :taxbranch_id,
           class: [
@@ -109,6 +124,19 @@
   <div class="my-5">
     <%= form.label :meta %>
     <%= form.text_field :meta, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": journey.errors[:meta].none?, "border-red-400 focus:outline-red-600": journey.errors[:meta].any?}] %>
+  </div>
+
+  <div class="my-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+    <label class="flex items-center gap-2 text-sm text-slate-700">
+      <%= form.check_box :allows_invite,
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+      Permetti iscrizioni su invito
+    </label>
+    <label class="flex items-center gap-2 text-sm text-slate-700">
+      <%= form.check_box :allows_request,
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+      Permetti richieste autonome
+    </label>
   </div>
 
   <div class="my-4">

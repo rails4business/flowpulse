@@ -98,6 +98,20 @@
     </p>
   </div>
 
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <%= form.label :mermaid, "Diagramma (Mermaid.js)", class: "block text-sm font-medium text-slate-700" %>
+      <span class="text-xs text-slate-500">Esempio: <code>flowchart TD; A-->B</code></span>
+    </div>
+    <%= form.text_area :mermaid,
+          rows: 6,
+          placeholder: "flowchart TD;\n  idea --> prototipo --> servizio",
+          class: "w-full rounded-md border border-slate-300 px-3 py-2 font-mono text-sm" %>
+    <p class="mt-1 text-xs text-slate-500">
+      Il codice verrà renderizzato solo sui rami Genera Impresa per visualizzare roadmap e funding.
+    </p>
+  </div>
+
   <div>
     <%= form.label :meta, "Meta (JSON / testo)", class: "block text-sm font-medium" %>
     <%= form.text_area :meta, rows: 3, class: "mt-1 block w-full rounded-md border px-3 py-2" %>

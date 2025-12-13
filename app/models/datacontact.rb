@@ -7,6 +7,7 @@ class Datacontact < ApplicationRecord
   has_many :bookings,    dependent: :destroy
   has_many :payments,    dependent: :destroy
   has_many :mycontacts, dependent: :destroy
+  has_many :certificates, dependent: :destroy
 
   has_many :requests_made,
            class_name: "Enrollment",

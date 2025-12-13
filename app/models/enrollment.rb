@@ -14,6 +14,11 @@ class Enrollment < ApplicationRecord
   has_many :bookings, dependent: :nullify
   has_many :commitments
   has_many :payments, as: :payable, dependent: :nullify
+  has_many :certificates, dependent: :destroy
+  has_many :issued_certificates,
+           class_name: "Certificate",
+           foreign_key: :issued_by_enrollment_id,
+           dependent: :nullify
 
 
 
@@ -56,5 +61,13 @@ class Enrollment < ApplicationRecord
 
   def cancel!
     update!(status: :cancelled)
+  end
+
+  def taxbranch
+    service&.taxbranch || journey&.taxbranch
+  end
+
+  def domain
+    taxbranch&.header_domain
   end
 end

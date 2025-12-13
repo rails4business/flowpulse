@@ -5,6 +5,16 @@
   <!-- Contenuto principale -->
   <main class="flex-grow">
     <div class="max-w-6xl mx-auto p-6">
+      <% if @taxbranch&.generaimpresa? && @post&.mermaid.present? %>
+        <div class="mb-6">
+          <%= render "shared/mermaid_diagram",
+                    mermaid: @post.mermaid,
+                    badge: "Genera Impresa",
+                    title: "Blueprint di campagna",
+                    subtitle: @taxbranch.display_label,
+                    hint: "Il diagramma viene letto da mermaid.js" %>
+        </div>
+      <% end %>
       <% if @children.any? %>
       
         <% visible_children = @children.where(status: :published, visibility: :public_node).where("published_at IS NULL OR published_at <= ?", Time.current).where.not(home_nav: true) %>

@@ -113,7 +113,7 @@ end
 
     # Only allow a list of trusted parameters through.
     def eventdate_params
-      params.expect(eventdate: [ :date_start, :date_end, :taxbranch_id, :lead_id, :cycle, :status, :description, :meta, :journey_id ])
+      params.expect(eventdate: [ :date_start, :date_end, :taxbranch_id, :lead_id, :cycle, :status, :description, :meta, :journey_id, :allows_invite, :allows_request ])
     end
 
 end

@@ -32,6 +32,23 @@
   </div>
 
   <div class="my-5">
+    <%= form.label :participant_role, "Ruolo di ingresso" %>
+    <%= form.text_field :participant_role, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:participant_role].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:participant_role].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :target_role, "Ruolo atteso in uscita" %>
+    <%= form.text_field :target_role, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:target_role].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:target_role].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :certified_at, "Certificato il" %>
+    <%= form.datetime_local_field :certified_at,
+          value: enrollment.certified_at&.strftime("%Y-%m-%dT%H:%M"),
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:certified_at].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:certified_at].any?}] %>
+  </div>
+
+  <div class="my-5">
     <%= form.label :status %>
     <%= form.number_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:status].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:status].any?}] %>
   </div>

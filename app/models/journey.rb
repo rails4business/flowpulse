@@ -17,7 +17,11 @@ class Journey < ApplicationRecord
 
   has_many :enrollments, dependent: :destroy
   has_many :bookings, through: :enrollments
+  has_many :certificates, dependent: :restrict_with_exception
 
+  validates :slug, presence: true, uniqueness: true
+
+  before_validation :ensure_slug!
 
 
 
@@ -91,5 +95,14 @@ class Journey < ApplicationRecord
     else
       eventdates.distinct.order(date_start: :asc)
     end
+  end
+
+  private
+
+  def ensure_slug!
+    return if slug.present?
+
+    base = (title.presence || "journey-#{SecureRandom.hex(3)}").parameterize
+    self.slug = base.presence || "journey-#{SecureRandom.hex(3)}"
   end
 end

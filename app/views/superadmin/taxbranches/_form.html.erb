@@ -1,3 +1,4 @@
+<div class="mx-auto w-full max-w-5xl">
 <%= form_with(model: [:superadmin, taxbranch], local: true, class: "space-y-6") do |f| %>
   <% if taxbranch.errors.any? %>
     <div class="rounded-md border border-red-200 bg-red-50 p-4 text-red-800">
@@ -10,148 +11,160 @@
     </div>
   <% end %>
 
-  <%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
-<br>
-
-<%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
-
-<% if @taxbranch.persisted? %>
- 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-  <% if @taxbranch.children.exists? %>
+  <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-2">
+    <%= f.label :branch_kind, "Tipo di taxbranch", class: "block text-sm font-semibold text-slate-700" %>
+    <% kind_options = Taxbranch.branch_kinds.keys.map do |kind|
+         label =
+           case kind.to_sym
+           when :frontline     then "Frontline · Ramo pubblico"
+           when :rails4b       then "Rails4B · Officina"
+           when :generaimpresa then "Genera Impresa · Funding"
+           else kind.to_s.humanize
+           end
+         [label, kind]
+       end %>
+    <%= f.select :branch_kind,
+                 kind_options,
+                 {},
+                 class: "w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
     <p class="text-xs text-slate-500">
-      Questo nodo ha già dei figli, non può diventare un link.
+      Frontline = ramo pubblico; Rails4B = officina interna; Genera Impresa = campagna di funding/sponsor.
     </p>
-  <% else %>
-    <%= link_to "🔗 Collega a un altro taxbranch",
-                superadmin_taxbranches_path(link_parent_id: @taxbranch.id),
-                class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
-  <% end %>
-    <% if action_name != "new" %>
-
-      <% if @taxbranch.children.count == 0 %>
-
-        <div>
-          <%= f.label :link_child_taxbranch_id, "link a unico figlio",
-                class: "block text-sm font-medium text-gray-700 mb-1" %>
-
-          <%= f.text_field :link_child_taxbranch_id,
-                class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm
-                      focus:border-blue-500 focus:ring-blue-500
-                      #{'border-red-300 bg-red-50' if @taxbranch.errors[:link_child_taxbranch_id].any?}" %>
-
-          <% @taxbranch.errors.full_messages_for(:link_child_taxbranch_id).each do |m| %>
-            <p class="mt-1 text-xs text-red-600"><%= m %></p>
-          <% end %>
-        </div>
-
-      <% end %>
-    
-  <% end %>
-  <div>
-<% end %>
-  <!-- Metadati e posizionamento -->
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <div>
-      
-      <%= f.label :lead_id, "Lead ID", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_field :lead_id,
-            class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:lead_id].any?}" %>
-      <% taxbranch.errors.full_messages_for(:lead_id).each do |m| %>
-        <p class="mt-1 text-xs text-red-600"><%= m %></p>
-      <% end %>
-    </div>
-
-    <div>
-      <%= f.label :position, "Posizione", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.number_field :position,
-            class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:position].any?}" %>
-      <% taxbranch.errors.full_messages_for(:position).each do |m| %>
-        <p class="mt-1 text-xs text-red-600"><%= m %></p>
-      <% end %>
-    </div>
-
-    <div class="flex items-center gap-2 mt-6 sm:mt-0">
-      <%= f.check_box :home_nav, class: "peer sr-only" %>
-      <div class="relative w-10 h-5 bg-gray-200 rounded-full peer-checked:bg-emerald-500 transition-colors duration-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
-      <%= f.label :home_nav, "Mostra nella navbar", class: "text-sm text-gray-700 cursor-pointer" %>
-    </div>
-
-
-    <div>
-      <%= f.label :parent_id, "ID Padre", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_field :parent_id, value: taxbranch.parent_id,
-            class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:parent_id].any?}" %>
-      <% taxbranch.errors.full_messages_for(:parent_id).each do |m| %>
-        <p class="mt-1 text-xs text-red-600"><%= m %></p>
-      <% end %>
-    </div>
-
-  
-   
-
   </div>
+
+  <%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
+
+  <% if @taxbranch.persisted? %>
+    <div class="grid gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        Collegamenti rapidi
+      </p>
+      <div class="flex flex-wrap items-center gap-3 text-sm">
+        <% if @taxbranch.children.exists? %>
+          <p class="text-slate-500">
+            Questo nodo ha già dei figli, non può diventare un link.
+          </p>
+        <% else %>
+          <%= link_to "🔗 Collega a un altro taxbranch",
+                      superadmin_taxbranches_path(link_parent_id: @taxbranch.id),
+                      class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
+        <% end %>
+
+        <% if action_name != "new" && @taxbranch.children.none? %>
+          <div class="w-full md:w-auto md:flex-1">
+            <%= f.label :link_child_taxbranch_id, "Link a unico figlio", class: "block text-xs font-medium text-slate-600 mb-1" %>
+            <%= f.text_field :link_child_taxbranch_id,
+                  class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if @taxbranch.errors[:link_child_taxbranch_id].any?}" %>
+            <% @taxbranch.errors.full_messages_for(:link_child_taxbranch_id).each do |m| %>
+              <p class="mt-1 text-xs text-red-600"><%= m %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <!-- Metadati e posizionamento -->
+  <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
+    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      Metadati principali
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div>
+        <%= f.label :lead_id, "Lead ID", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :lead_id,
+              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:lead_id].any?}" %>
+        <% taxbranch.errors.full_messages_for(:lead_id).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :position, "Posizione", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :position,
+              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:position].any?}" %>
+        <% taxbranch.errors.full_messages_for(:position).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :parent_id, "ID Padre", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :parent_id, value: taxbranch.parent_id,
+              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:parent_id].any?}" %>
+        <% taxbranch.errors.full_messages_for(:parent_id).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
+    </div>
+
+    <label class="inline-flex items-center gap-2 text-sm text-slate-700">
+      <%= f.check_box :home_nav, class: "h-4 w-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500" %>
+      Mostra nella navbar
+    </label>
+  </section>
 
   <!-- Stato editoriale + visibilità -->
-   <!-- Stato editoriale + visibilità -->
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-    <div>
-      <%= f.label :status, "Stato editoriale", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.select :status,
-                   Taxbranch.statuses.keys.map { |s| [s.humanize, s] },
-                   {},
-                   class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:status].any?}" %>
-      <% taxbranch.errors.full_messages_for(:status).each do |m| %>
-        <p class="mt-1 text-xs text-red-600"><%= m %></p>
-      <% end %>
-    </div>
+  <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
+    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      Stato editoriale & visibilità
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <%= f.label :status, "Stato editoriale", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :status,
+                     Taxbranch.statuses.keys.map { |s| [s.humanize, s] },
+                     {},
+                     class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:status].any?}" %>
+        <% taxbranch.errors.full_messages_for(:status).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
 
-    <div>
-      <%= f.label :visibility, "Visibilità", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <% visibility_options =
-        Taxbranch.visibilities.keys.map do |key|
-          label =
-            case key.to_sym
-            when :private_node      then "Privato"
-            when :shared_node       then "Condiviso (team)"
-            when :participants_only then "Solo partecipanti"
-            when :public_node       then "Pubblico"
-            else key.to_s.humanize
-            end
+      <div>
+        <%= f.label :visibility, "Visibilità", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <% visibility_options =
+          Taxbranch.visibilities.keys.map do |key|
+            label =
+              case key.to_sym
+              when :private_node      then "Privato"
+              when :shared_node       then "Condiviso (team)"
+              when :participants_only then "Solo partecipanti"
+              when :public_node       then "Pubblico"
+              else key.to_s.humanize
+              end
 
-          [label, key]
-        end
-      %>
-      <%= f.select :visibility,
-                   visibility_options,
-                   {},
-                   class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:visibility].any?}" %>
-      <% taxbranch.errors.full_messages_for(:visibility).each do |m| %>
-        <p class="mt-1 text-xs text-red-600"><%= m %></p>
-      <% end %>
-    </div>
+            [label, key]
+          end
+        %>
+        <%= f.select :visibility,
+                     visibility_options,
+                     {},
+                     class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:visibility].any?}" %>
+        <% taxbranch.errors.full_messages_for(:visibility).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
 
-   
-
-    <div>
-      <%= f.label :scheduled_at, "Data programmata", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.datetime_local_field :scheduled_at,
-                                 value: taxbranch.scheduled_at&.strftime("%Y-%m-%dT%H:%M"),
-                                 class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:scheduled_at].any?}" %>
-      <% taxbranch.errors.full_messages_for(:scheduled_at).each do |m| %>
-        <p class="mt-1 text-xs text-red-600"><%= m %></p>
-      <% end %>
+      <div>
+        <%= f.label :scheduled_at, "Data programmata", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.datetime_local_field :scheduled_at,
+                                   value: taxbranch.scheduled_at&.strftime("%Y-%m-%dT%H:%M"),
+                                   class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:scheduled_at].any?}" %>
+        <% taxbranch.errors.full_messages_for(:scheduled_at).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
+      <div>
+        <%= f.label :published_at, "Data pubblicazione", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.datetime_local_field :published_at,
+                                   value: taxbranch.published_at&.strftime("%Y-%m-%dT%H:%M"),
+                                   class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:published_at].any?}" %>
+        <% taxbranch.errors.full_messages_for(:published_at).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
     </div>
-     <div>
-      <%= f.label :published_at, "Data pubblicazione", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.datetime_local_field :published_at,
-                                 value: taxbranch.published_at&.strftime("%Y-%m-%dT%H:%M"),
-                                 class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:published_at].any?}" %>
-      <% taxbranch.errors.full_messages_for(:published_at).each do |m| %>
-        <p class="mt-1 text-xs text-red-600"><%= m %></p>
-      <% end %>
-    </div>
-  </div>
+  </section>
 
 
   <!-- Descrizione -->
@@ -181,47 +194,184 @@
     <% end %>
   </div>
 
-  <!-- Slug builder (con Stimulus) -->
-  <div class="space-y-4" data-controller="taxbranch-slug">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="space-y-1">
-        <%= f.label :slug_category, "Categoria", class: "block text-sm font-medium text-slate-700" %>
-        <%= f.text_field :slug_category,
-              list: "slug-categories",
-              placeholder: "es. blog_creators, ruolo, corso…",
-              class: "w-full rounded-md border-slate-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+  <% header_domain = taxbranch.header_domain %>
+  <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-4">
+    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      Dominio & accessi
+    </p>
+    <div class="grid gap-6 lg:grid-cols-2">
+      <!-- Slug builder (con Stimulus) -->
+      <div class="space-y-4" data-controller="taxbranch-slug">
+        <div class="space-y-1">
+          <%= f.label :slug_category, "Categoria", class: "block text-sm font-medium text-slate-700" %>
+          <%= f.text_field :slug_category,
+                list: "slug-categories",
+                placeholder: "es. blog_creators, ruolo, corso…",
+                class: "w-full rounded-md border-slate-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
 
-        <datalist id="slug-categories">
-          <% Taxbranch.category_suggestions.each do |cat| %>
-            <option value="<%= cat %>"></option>
+          <datalist id="slug-categories">
+            <% Taxbranch.category_suggestions.each do |cat| %>
+              <option value="<%= cat %>"></option>
+            <% end %>
+          </datalist>
+
+          <p class="text-xs text-slate-500">Scegli una categoria esistente o scrivine una nuova.</p>
+        </div>
+
+        <div>
+          <%= f.label :slug_label, "Etichetta slug", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.text_field :slug_label,
+                  class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug_label].any?}",
+                  data: { "taxbranch-slug-target": "label", action: "input->taxbranch-slug#update" } %>
+          <% taxbranch.errors.full_messages_for(:slug_label).each do |m| %>
+            <p class="mt-1 text-xs text-red-600"><%= m %></p>
           <% end %>
-        </datalist>
+        </div>
 
-        <p class="text-xs text-slate-500">Scegli una categoria esistente o scrivine una nuova.</p>
+        <div>
+          <%= f.label :slug, "Slug (auto)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.text_field :slug,
+                placeholder: "generato da categoria + etichetta o nome",
+                class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug].any?}",
+                data: { "taxbranch-slug-target": "slug" } %>
+          <% taxbranch.errors.full_messages_for(:slug).each do |m| %>
+            <p class="mt-1 text-xs text-red-600"><%= m %></p>
+          <% end %>
+        </div>
       </div>
 
-      <div>
-        <%= f.label :slug_label, "Etichetta slug", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :slug_label,
-              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug_label].any?}",
-              data: { "taxbranch-slug-target": "label", action: "input->taxbranch-slug#update" } %>
-        <% taxbranch.errors.full_messages_for(:slug_label).each do |m| %>
-          <p class="mt-1 text-xs text-red-600"><%= m %></p>
-        <% end %>
-      </div>
+      <div class="space-y-5">
+        <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm">
+          <p class="text-xs uppercase tracking-wide text-slate-500 mb-1">Dominio di riferimento</p>
+          <% if header_domain.present? %>
+            <p>
+              <%= link_to header_domain.title.presence || header_domain.host,
+                          superadmin_domain_path(header_domain),
+                          class: "text-blue-600 hover:underline" %>
+              <span class="text-slate-400">· Taxbranch #<%= header_domain.taxbranch_id %></span>
+            </p>
+          <% else %>
+            <p class="text-slate-500">Nessun dominio associato.</p>
+          <% end %>
+        </div>
 
-      <div>
-        <%= f.label :slug, "Slug (auto)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :slug,
-              placeholder: "generato da categoria + etichetta o nome",
-              class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug].any?}",
-              data: { "taxbranch-slug-target": "slug" } %>
-        <% taxbranch.errors.full_messages_for(:slug).each do |m| %>
-          <p class="mt-1 text-xs text-red-600"><%= m %></p>
-        <% end %>
+        <div>
+          <%= f.label :permission_access_roles, "Ruoli che hanno il permesso di accedere", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%
+            available_roles = header_domain&.role_areas.presence
+            error_classes = "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:permission_access_roles].any?}"
+          %>
+          <% if available_roles.present? %>
+            <div class="rounded-lg border border-slate-200 bg-white p-3">
+              <%= hidden_field_tag "#{f.object_name}[permission_access_roles][]", "", id: nil %>
+              <div class="grid gap-2 sm:grid-cols-2">
+                <%= f.collection_check_boxes :permission_access_roles,
+                      available_roles,
+                      :to_s,
+                      :to_s do |b| %>
+                  <label class="flex items-center gap-2 rounded-md border border-slate-200 px-2 py-1 text-sm text-slate-700">
+                    <%= b.check_box(class: "h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500") %>
+                    <span><%= b.text %></span>
+                  </label>
+                <% end %>
+              </div>
+              <p class="mt-2 text-xs text-slate-500">
+                Seleziona uno o più ruoli per limitare l’accesso a questo ramo. Se non spunti nulla il contenuto resta aperto a tutti.
+              </p>
+            </div>
+          <% else %>
+            <%= f.text_area :permission_access_roles,
+                  value: taxbranch.permission_access_roles_text,
+                  rows: 3,
+                  placeholder: "Es.\nUtente\nProfessionista\nTutor",
+                  class: error_classes %>
+            <p class="mt-1 text-xs text-slate-500">
+              Nessuna lista disponibile dal dominio: inserisci i ruoli consentiti separati da newline o virgole. Lascia vuoto per non impostare restrizioni.
+            </p>
+          <% end %>
+          <% taxbranch.errors.full_messages_for(:permission_access_roles).each do |m| %>
+            <p class="mt-1 text-xs text-red-600"><%= m %></p>
+          <% end %>
+        </div>
+
+        <% rails4b_active = taxbranch.rails4b? %>
+        <div class="rounded-lg border border-slate-200 p-3 space-y-3">
+          <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+            <span>Collegamento Rails4B / Officina</span>
+            <% unless rails4b_active %>
+              <span class="text-xs text-slate-500">(imposta il tipo su “Rails4B” per renderlo attivo)</span>
+            <% end %>
+          </div>
+
+          <div>
+            <%= f.label :rails4b_target_domain_id, "Dominio target (Officina)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :rails4b_target_domain_id,
+                  list: "taxbranch-domains",
+                  class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
+                  placeholder: "ID dominio (auto-completato dall'host)" %>
+            <p class="mt-1 text-xs text-slate-500">
+              Digita l'ID o inizia a scrivere l'host: le opzioni vengono proposte automaticamente.
+            </p>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <%= f.label :rails4b_target_service_id, "Service collegato", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_field :rails4b_target_service_id,
+                    list: "taxbranch-services",
+                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
+                    placeholder: "ID service (auto-completato dallo slug)" %>
+            </div>
+            <div>
+              <%= f.label :rails4b_target_journey_id, "Journey collegato", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_field :rails4b_target_journey_id,
+                    list: "taxbranch-journeys",
+                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
+                    placeholder: "ID journey (auto-completato dallo slug)" %>
+            </div>
+          </div>
+        </div>
+
+        <% funding_active = taxbranch.generaimpresa? %>
+        <div class="rounded-lg border border-slate-200 p-3 space-y-3">
+          <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+            <span>Collegamento Genera Impresa</span>
+            <% unless funding_active %>
+              <span class="text-xs text-slate-500">(imposta il tipo su “Genera Impresa” per usarlo)</span>
+            <% end %>
+          </div>
+
+          <div>
+            <%= f.label :generaimpresa_target_domain_id, "Dominio finanziato", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.text_field :generaimpresa_target_domain_id,
+                  list: "taxbranch-domains",
+                  class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
+                  placeholder: "ID dominio (auto-completato dall'host)" %>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <%= f.label :generaimpresa_target_service_id, "Service finanziato", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_field :generaimpresa_target_service_id,
+                    list: "taxbranch-services",
+                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
+                    placeholder: "ID service (auto-completato dallo slug)" %>
+            </div>
+            <div>
+              <%= f.label :generaimpresa_target_journey_id, "Journey finanziato", class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <%= f.text_field :generaimpresa_target_journey_id,
+                    list: "taxbranch-journeys",
+                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
+                    placeholder: "ID journey (auto-completato dallo slug)" %>
+            </div>
+          </div>
+          <p class="mt-1 text-xs text-slate-500">
+            Usa questi campi per collegare il ramo Genera Impresa al percorso o servizio da finanziare.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Ancestry -->
   <%= f.hidden_field :ancestry, value: taxbranch.ancestry %>
@@ -231,4 +381,21 @@
     <%= f.submit "💾 Salva",
           class: "inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-white font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
   </div>
+
+  <datalist id="taxbranch-domains">
+    <% @available_domains.each do |domain| %>
+      <option value="<%= domain.id %>"><%= domain.host %></option>
+    <% end %>
+  </datalist>
+  <datalist id="taxbranch-services">
+    <% @available_services.each do |service| %>
+      <option value="<%= service.id %>"><%= service.slug.presence || service.name %></option>
+    <% end %>
+  </datalist>
+  <datalist id="taxbranch-journeys">
+    <% @available_journeys.each do |journey| %>
+      <option value="<%= journey.id %>"><%= journey.slug.presence || journey.title %></option>
+    <% end %>
+  </datalist>
 <% end %>
+</div>

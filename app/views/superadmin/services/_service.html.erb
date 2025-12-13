@@ -4,8 +4,36 @@
     <%= service.name %>
   </div>
   <div>
+    <strong class="block font-medium mb-1">Slug:</strong>
+    <code class="text-xs bg-slate-100 px-2 py-1 rounded"><%= service.slug %></code>
+  </div>
+  <div>
     <strong class="block font-medium mb-1">Description:</strong>
     <%= service.description %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Ruoli ammessi:</strong>
+    <% if service.allowed_roles.present? %>
+      <ul class="list-disc ml-5 text-sm text-slate-700 space-y-0.5">
+        <% service.allowed_roles.each do |role| %>
+          <li><%= role %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <span class="text-sm text-slate-500">Nessuna restrizione.</span>
+    <% end %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Ruoli rilasciati:</strong>
+    <% if service.output_roles.present? %>
+      <ul class="list-disc ml-5 text-sm text-slate-700 space-y-0.5">
+        <% service.output_roles.each do |role| %>
+          <li><%= role %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <span class="text-sm text-slate-500">Non specificato.</span>
+    <% end %>
   </div>
   <div>
     <strong class="block font-medium mb-1">N eventdates planned:</strong>
@@ -30,6 +58,30 @@
   <div>
     <strong class="block font-medium mb-1">Open by journey:</strong>
     <%= service.open_by_journey? ? "Yes" : "No" %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Certificazione automatica:</strong>
+    <%= service.auto_certificate? ? "Sì" : "No" %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Verifica booking:</strong>
+    <%= service.require_booking_verification? ? "Richiesta" : "Non necessaria" %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Verifica finale:</strong>
+    <%= service.require_enrollment_verification? ? "Richiesta" : "Non necessaria" %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Ruoli verificatori:</strong>
+    <% if service.verifier_roles.present? %>
+      <ul class="list-disc ml-5 text-sm text-slate-700 space-y-0.5">
+        <% service.verifier_roles.each do |role| %>
+          <li><%= role %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <span class="text-sm text-slate-500">Nessun ruolo specificato.</span>
+    <% end %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Taxbranch:</strong>

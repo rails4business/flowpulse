@@ -17,8 +17,77 @@
   </div>
 
   <div class="my-5">
+    <%= form.label :slug %>
+    <%= form.text_field :slug,
+          class: [
+            "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+            {
+              "border-gray-400 focus:outline-blue-600": service.errors[:slug].none?,
+              "border-red-400 focus:outline-red-600": service.errors[:slug].any?
+            }
+          ] %>
+    <p class="text-xs text-slate-500 mt-1">
+      Lascia vuoto per generare automaticamente lo slug a partire dal nome.
+    </p>
+  </div>
+
+  <div class="my-5">
     <%= form.label :description %>
     <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:description].none?, "border-red-400 focus:outline-red-600": service.errors[:description].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :allowed_roles, "Ruoli ammessi (uno per riga)" %>
+    <%= form.text_area :allowed_roles,
+          value: service.allowed_roles_text,
+          rows: 3,
+          placeholder: "Es.\nUtente\nProfessionista",
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:allowed_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:allowed_roles].any?}] %>
+    <p class="mt-1 text-xs text-slate-500">
+      I ruoli indicano chi può iscriversi al servizio.
+    </p>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :output_roles, "Ruoli rilasciati (uno per riga)" %>
+    <%= form.text_area :output_roles,
+          value: service.output_roles_text,
+          rows: 3,
+          placeholder: "Es.\nTutor\nInsegnante",
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:output_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:output_roles].any?}] %>
+    <p class="mt-1 text-xs text-slate-500">
+      Specifica il ruolo/titolo che i partecipanti ottengono al completamento.
+    </p>
+  </div>
+
+  <div class="grid gap-4 my-5 md:grid-cols-3">
+    <div class="flex items-center gap-2">
+      <%= form.check_box :auto_certificate,
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+      <%= form.label :auto_certificate, "Certifica automaticamente", class: "text-sm text-slate-700" %>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= form.check_box :require_booking_verification,
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+      <%= form.label :require_booking_verification, "Richiede verifica booking", class: "text-sm text-slate-700" %>
+    </div>
+    <div class="flex items-center gap-2">
+      <%= form.check_box :require_enrollment_verification,
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+      <%= form.label :require_enrollment_verification, "Richiede verifica finale", class: "text-sm text-slate-700" %>
+    </div>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :verifier_roles, "Ruoli verificatori (uno per riga)" %>
+    <%= form.text_area :verifier_roles,
+          value: service.verifier_roles_text,
+          rows: 3,
+          placeholder: "Es.\nTutor\nInsegnante",
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:verifier_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:verifier_roles].any?}] %>
+    <p class="mt-1 text-xs text-slate-500">
+      Seleziona i ruoli abilitati a verificare booking/certificati quando non sono automatici.
+    </p>
   </div>
 
   <div class="my-5">

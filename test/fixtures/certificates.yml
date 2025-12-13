@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lead: one
+  datacontact: one
+  enrollment: one
+  service: one
+  journey: one
+  taxbranch: one
+  role_name: MyString
+  status: 1
+  issued_at: 2025-12-12 12:12:53
+  expires_at: 2025-12-12 12:12:53
+  issued_by_enrollment: one
+  meta: 
+
+two:
+  lead: two
+  datacontact: two
+  enrollment: two
+  service: two
+  journey: two
+  taxbranch: two
+  role_name: MyString
+  status: 1
+  issued_at: 2025-12-12 12:12:53
+  expires_at: 2025-12-12 12:12:53
+  issued_by_enrollment: two
+  meta: 

@@ -2,24 +2,35 @@ module MenuHelper
   # unica fonte di verità
   def main_menu_superadmin_items
     [
-      { icon: "🏠", label: "Home", path: dashboard_home_path },
+
+
+      # Dashboard
+      { icon: "🏠", label: "Dashboard", path: dashboard_home_path },
       { icon: "📆", label: "Evento", path: dashboard_evento_path },
 
-      { icon: "🌳", label: "Taxbranch", path: superadmin_taxbranches_path },
-      { icon: "🌐", label: "Domain", path: superadmin_domains_path },
-      { icon: "📊", label: "Post", path: posts_path },
-
+      # Dati persone
       { icon: "📇", label: "Contatti", path: mycontacts_path },
+      { icon: "☎️", label: "Lead", path: superadmin_leads_path },
 
+      # Contenuti e struttura
+      { icon: "📊", label: "Post", path: posts_path },
+      { icon: "🌳", label: "Taxonomy", path: superadmin_taxbranches_path },
+      { icon: "🌐", label: "Domains", path: superadmin_domains_path },
       { icon: "🖥️", label: "Services", path: superadmin_services_path },
       { icon: "📋", label: "Journeys", path: journeys_path },
-      { icon: "📆", label: "EventDate", path: eventdates_path },
+
+
+      # Sistema servizi / percorsi
+
+      # Operatività dinamica
+      { icon: "📆", label: "Eventi", path: eventdates_path },
       { icon: "⚙️", label: "Commitments", path: commitments_path },
 
-      { icon: "☎️", label: "Lead", path: superadmin_leads_path },
+      # Progetti interni
       { icon: "🧘", label: "Igiene Posturale", path: dashboard_igieneposturale_path },
       { icon: "📋", label: "Liste", path: dashboard_liste_path },
 
+      # Admin
       {
         icon: "🧑‍💼",
         label: "Superadmin",
@@ -29,12 +40,10 @@ module MenuHelper
     ]
   end
 
-  # controlla se il link è attivo
   def nav_active?(path)
     request.path == path
   end
 
-  # classi base per link
   def nav_link_classes(active)
     base = "flex items-center p-2 rounded-lg text-sm transition whitespace-nowrap"
     active ?

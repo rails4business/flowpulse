@@ -11,6 +11,27 @@ class Taxbranch < ApplicationRecord
   has_many :eventdates, dependent: :destroy
   has_many :serices, dependent: :destroy
   has_many :journeys, dependent: :destroy
+  has_many :certificates, dependent: :restrict_with_exception
+
+  belongs_to :rails4b_target_domain,
+             class_name: "Domain",
+             optional: true
+  belongs_to :rails4b_target_service,
+             class_name: "Service",
+             optional: true
+  belongs_to :rails4b_target_journey,
+             class_name: "Journey",
+             optional: true
+
+  belongs_to :generaimpresa_target_domain,
+             class_name: "Domain",
+             optional: true
+  belongs_to :generaimpresa_target_service,
+             class_name: "Service",
+             optional: true
+  belongs_to :generaimpresa_target_journey,
+             class_name: "Journey",
+             optional: true
 
   # 🔗 Self-link: un taxbranch può fare da "link" verso un altro taxbranch
   belongs_to :link_child,
@@ -31,6 +52,10 @@ class Taxbranch < ApplicationRecord
   validates :slug,          presence: true, uniqueness: { case_sensitive: false }
 
   validate :cannot_have_children_if_link_node
+  validate :permission_roles_must_match_domain
+  validate :rails4b_targets_presence, if: :rails4b?
+  validate :generaimpresa_targets_presence, if: :generaimpresa?
+  validate :generaimpresa_must_reference_existing_rails4b, if: :generaimpresa?
 
   before_validation :normalize_and_build_slugs
   after_commit :bust_categories_cache, if: :saved_change_to_slug_category?
@@ -47,6 +72,12 @@ class Taxbranch < ApplicationRecord
     shared_node:       1,  # visibile allo staff, ma non pubblica
     participants_only: 2,  # visibile agli utenti iscritti a un percorso
     public_node:       3   # visibile a tutti, come pagine pubbliche e blog
+  }
+
+  enum :branch_kind, {
+    frontline: 1,
+    rails4b: 2,
+    generaimpresa: 3
   }
 
   scope :roots,          -> { where(ancestry: nil).order(:position, :slug_label) }
@@ -70,6 +101,18 @@ class Taxbranch < ApplicationRecord
   def has_post?        = post.present?
   def has_public_post? = post&.published?
   def display_label    = slug_label.presence || slug.to_s.titleize
+
+  def permission_access_roles=(value)
+    self[:permission_access_roles] = normalize_role_list(value)
+  end
+
+  def permission_access_roles_text
+    Array(permission_access_roles).join("\n")
+  end
+
+  def available_permission_roles
+    Array(header_domain&.role_areas).filter_map { |role| role.to_s.strip.presence }.uniq
+  end
 
   def header_domain_taxbranch
     ids   = [ id ] + ancestor_ids.reverse
@@ -182,5 +225,71 @@ end
       i += 1
     end
     candidate
+  end
+
+  def normalize_role_list(value)
+    list =
+      case value
+      when String
+        value.split(/[\n,;]/)
+      when Array
+        value
+      else
+        Array(value)
+      end
+
+    list.filter_map { |entry| entry.to_s.strip.presence }.uniq
+  end
+
+  def permission_roles_must_match_domain
+    return if permission_access_roles.blank?
+
+    available = available_permission_roles
+    return if available.blank?
+
+    invalid = permission_access_roles - available
+    return if invalid.blank?
+
+    errors.add(
+      :permission_access_roles,
+      "contiene valori non presenti tra i ruoli disponibili del dominio: #{invalid.join(', ')}"
+    )
+  end
+
+  def rails4b_targets_presence
+    if rails4b_target_service_id.blank? && rails4b_target_journey_id.blank? && rails4b_target_domain_id.blank?
+      errors.add(:base, "Il ramo Rails4B deve essere collegato ad almeno un dominio, service o journey.")
+    end
+  end
+
+  def generaimpresa_targets_presence
+    if generaimpresa_target_service_id.blank? && generaimpresa_target_journey_id.blank? && generaimpresa_target_domain_id.blank?
+      errors.add(:base, "Il ramo Genera Impresa deve indicare cosa sta finanziando (dominio, service o journey).")
+    end
+  end
+
+  def generaimpresa_must_reference_existing_rails4b
+    partner = rails4b_partner
+    errors.add(:base, "Nessun ramo Rails4B collegato alle stesse risorse: crea prima il ramo officina.") if partner.nil?
+  end
+
+  public
+
+  def rails4b_partner
+    return unless generaimpresa?
+
+    scope = Taxbranch.where(branch_kind: Taxbranch.branch_kinds[:rails4b])
+    scope = scope.where(rails4b_target_service_id: generaimpresa_target_service_id) if generaimpresa_target_service_id.present?
+    scope = scope.where(rails4b_target_journey_id: generaimpresa_target_journey_id) if generaimpresa_target_journey_id.present?
+    scope = scope.where(rails4b_target_domain_id: generaimpresa_target_domain_id) if generaimpresa_target_domain_id.present?
+    scope.first
+  end
+
+  def frontline_partner
+    return unless rails4b?
+
+    service_branch = rails4b_target_service&.taxbranch
+    journey_branch = rails4b_target_journey&.taxbranch
+    [ service_branch, journey_branch ].compact.find(&:frontline?)
   end
 end

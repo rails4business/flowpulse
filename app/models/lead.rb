@@ -8,6 +8,7 @@ class Lead < ApplicationRecord
   has_many :datacontacts, dependent: :nullify
   has_many :mycontacts, dependent: :destroy
   has_many :tag_positionings, dependent: :destroy
+  has_many :certificates, dependent: :destroy
 
 
   belongs_to :parent,        class_name: "Lead", optional: true
@@ -30,5 +31,13 @@ class Lead < ApplicationRecord
 
   def full_name
     [ name, surname ].compact_blank.join(" ")
+  end
+
+  def enrollments
+    Enrollment.where(mycontact_id: mycontacts.select(:id))
+  end
+
+  def active_domains
+    enrollments.includes(service: { taxbranch: :domains }).map(&:domain).compact.uniq
   end
 end

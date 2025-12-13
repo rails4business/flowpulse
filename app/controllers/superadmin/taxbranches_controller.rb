@@ -5,6 +5,8 @@ module Superadmin
       show edit update destroy journeys
       move_down move_up move_right move_left
     ]
+    before_action :load_domains, only: %i[new edit create update]
+    before_action :load_services_and_journeys, only: %i[new edit create update]
 
   # GET /taxbranches or /taxbranches.json
   def index
@@ -180,11 +182,23 @@ end
    def taxbranch_params
     # Only allow a list of trusted parameters through.
     params.expect(taxbranch: [
-    :lead_id, :description, :slug, :slug_category, :slug_label,
-    :ancestry, :position, :meta, :parent_id, :home_nav,
-    :positioning_tag_public, :service_certificable, :certificate_role,
-    :status, :visibility, :published_at, :scheduled_at
-  ])
+      :lead_id, :description, :slug, :slug_category, :slug_label,
+      :ancestry, :position, :meta, :parent_id, :home_nav,
+      :positioning_tag_public, :service_certificable, :branch_kind,
+      :rails4b_target_domain_id, :rails4b_target_service_id, :rails4b_target_journey_id,
+      :generaimpresa_target_domain_id, :generaimpresa_target_service_id, :generaimpresa_target_journey_id,
+      :status, :visibility, :published_at, :scheduled_at,
+      :permission_access_roles, { permission_access_roles: [] }
+    ])
+  end
+
+  def load_domains
+    @available_domains = Domain.order(:title)
+  end
+
+  def load_services_and_journeys
+    @available_services = Service.order(:name)
+    @available_journeys = Journey.order(:title)
   end
   end
 end

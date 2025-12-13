@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_13_105819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -78,6 +78,29 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.index ["service_id"], name: "index_bookings_on_service_id"
   end
 
+  create_table "certificates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "datacontact_id", null: false
+    t.bigint "enrollment_id", null: false
+    t.datetime "expires_at"
+    t.datetime "issued_at"
+    t.integer "issued_by_enrollment_id"
+    t.bigint "journey_id", null: false
+    t.bigint "lead_id", null: false
+    t.jsonb "meta"
+    t.string "role_name"
+    t.bigint "service_id", null: false
+    t.integer "status"
+    t.bigint "taxbranch_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["datacontact_id"], name: "index_certificates_on_datacontact_id"
+    t.index ["enrollment_id"], name: "index_certificates_on_enrollment_id"
+    t.index ["journey_id"], name: "index_certificates_on_journey_id"
+    t.index ["lead_id"], name: "index_certificates_on_lead_id"
+    t.index ["service_id"], name: "index_certificates_on_service_id"
+    t.index ["taxbranch_id"], name: "index_certificates_on_taxbranch_id"
+  end
+
   create_table "commitments", force: :cascade do |t|
     t.string "area"
     t.integer "commitment_kind", default: 0, null: false
@@ -142,6 +165,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
   end
 
   create_table "enrollments", force: :cascade do |t|
+    t.datetime "certified_at"
     t.datetime "created_at", null: false
     t.bigint "invited_by_lead_id"
     t.bigint "journey_id"
@@ -149,6 +173,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.integer "mode", default: 0, null: false
     t.bigint "mycontact_id", null: false
     t.text "notes"
+    t.string "participant_role"
     t.decimal "price_dash", precision: 16, scale: 8
     t.decimal "price_euro", precision: 10, scale: 2
     t.integer "request_kind", default: 0, null: false
@@ -156,6 +181,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.string "role_name"
     t.bigint "service_id"
     t.integer "status", default: 0, null: false
+    t.string "target_role"
     t.datetime "updated_at", null: false
     t.index ["invited_by_lead_id"], name: "index_enrollments_on_invited_by_lead_id"
     t.index ["journey_id"], name: "index_enrollments_on_journey_id"
@@ -165,6 +191,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
   end
 
   create_table "eventdates", force: :cascade do |t|
+    t.boolean "allows_invite"
+    t.boolean "allows_request"
     t.datetime "created_at", null: false
     t.datetime "date_end"
     t.datetime "date_start"
@@ -197,6 +225,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
   end
 
   create_table "journeys", force: :cascade do |t|
+    t.boolean "allows_invite"
+    t.boolean "allows_request"
     t.datetime "complete"
     t.datetime "created_at", null: false
     t.integer "energy"
@@ -209,6 +239,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.decimal "price_estimate_euro", precision: 8, scale: 2
     t.integer "progress"
     t.bigint "service_id"
+    t.string "slug"
     t.datetime "start_erogation"
     t.datetime "start_ideate"
     t.datetime "start_realized"
@@ -219,6 +250,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.integer "urgency"
     t.index ["lead_id"], name: "index_journeys_on_lead_id"
     t.index ["service_id"], name: "index_journeys_on_service_id"
+    t.index ["slug"], name: "index_journeys_on_slug", unique: true
     t.index ["taxbranch_id"], name: "index_journeys_on_taxbranch_id"
     t.index ["template_journey_id"], name: "index_journeys_on_template_journey_id"
   end
@@ -286,6 +318,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.datetime "created_at", null: false
     t.text "description"
     t.bigint "lead_id", null: false
+    t.text "mermaid"
     t.jsonb "meta", default: {}
     t.string "slug"
     t.integer "taxbranch_id"
@@ -300,6 +333,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
   end
 
   create_table "services", force: :cascade do |t|
+    t.jsonb "allowed_roles", default: [], null: false
+    t.boolean "allows_invite", default: true, null: false
+    t.boolean "allows_request", default: true, null: false
+    t.boolean "auto_certificate"
     t.datetime "created_at", null: false
     t.text "description"
     t.bigint "lead_id", null: false
@@ -309,11 +346,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.integer "n_eventdates_planned"
     t.string "name"
     t.boolean "open_by_journey"
+    t.jsonb "output_roles", default: [], null: false
     t.decimal "price_enrollment_euro", precision: 8, scale: 2
     t.decimal "price_ticket_dash", precision: 16, scale: 8
+    t.boolean "require_booking_verification"
+    t.boolean "require_enrollment_verification"
+    t.string "slug"
     t.bigint "taxbranch_id", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "verifier_roles"
     t.index ["lead_id"], name: "index_services_on_lead_id"
+    t.index ["slug"], name: "index_services_on_slug", unique: true
     t.index ["taxbranch_id"], name: "index_services_on_taxbranch_id"
   end
 
@@ -343,16 +386,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
 
   create_table "taxbranches", force: :cascade do |t|
     t.string "ancestry"
-    t.string "certificate_role"
+    t.integer "branch_kind", default: 1, null: false
     t.datetime "created_at", null: false
     t.string "description"
+    t.integer "generaimpresa_target_domain_id"
+    t.integer "generaimpresa_target_journey_id"
+    t.integer "generaimpresa_target_service_id"
     t.boolean "home_nav"
     t.bigint "lead_id", null: false
     t.bigint "link_child_taxbranch_id"
     t.jsonb "meta"
+    t.jsonb "permission_access_roles", default: [], null: false
     t.integer "position"
     t.boolean "positioning_tag_public", default: false, null: false
     t.datetime "published_at"
+    t.integer "rails4b_target_domain_id"
+    t.integer "rails4b_target_journey_id"
+    t.integer "rails4b_target_service_id"
     t.datetime "scheduled_at"
     t.boolean "service_certificable"
     t.string "slug", null: false
@@ -361,14 +411,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
+    t.index ["generaimpresa_target_domain_id"], name: "index_taxbranches_on_generaimpresa_target_domain_id"
+    t.index ["generaimpresa_target_journey_id"], name: "index_taxbranches_on_generaimpresa_target_journey_id"
+    t.index ["generaimpresa_target_service_id"], name: "index_taxbranches_on_generaimpresa_target_service_id"
     t.index ["lead_id"], name: "index_taxbranches_on_lead_id"
     t.index ["link_child_taxbranch_id"], name: "index_taxbranches_on_link_child_taxbranch_id"
     t.index ["positioning_tag_public"], name: "index_taxbranches_on_positioning_tag_public"
+    t.index ["rails4b_target_domain_id"], name: "index_taxbranches_on_rails4b_target_domain_id"
+    t.index ["rails4b_target_journey_id"], name: "index_taxbranches_on_rails4b_target_journey_id"
+    t.index ["rails4b_target_service_id"], name: "index_taxbranches_on_rails4b_target_service_id"
     t.index ["slug"], name: "index_taxbranches_on_slug", unique: true
     t.index ["slug_category", "slug_label", "slug"], name: "index_taxbranches_on_cat_label_slug_unique", unique: true
   end
 
   create_table "users", force: :cascade do |t|
+    t.integer "active_certificate_id"
     t.datetime "approved_at"
     t.bigint "approved_by_lead_id"
     t.datetime "created_at", null: false
@@ -382,6 +439,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
     t.integer "state_registration", default: 0, null: false
     t.boolean "superadmin", default: false, null: false
     t.datetime "updated_at", null: false
+    t.index ["active_certificate_id"], name: "index_users_on_active_certificate_id"
     t.index ["approved_by_lead_id"], name: "index_users_on_approved_by_lead_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["lead_id"], name: "index_users_on_lead_id"
@@ -398,6 +456,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
   add_foreign_key "bookings", "leads", column: "invited_by_lead_id"
   add_foreign_key "bookings", "leads", column: "requested_by_lead_id"
   add_foreign_key "bookings", "services"
+  add_foreign_key "certificates", "datacontacts"
+  add_foreign_key "certificates", "enrollments"
+  add_foreign_key "certificates", "enrollments", column: "issued_by_enrollment_id"
+  add_foreign_key "certificates", "journeys"
+  add_foreign_key "certificates", "leads"
+  add_foreign_key "certificates", "services"
+  add_foreign_key "certificates", "taxbranches"
   add_foreign_key "commitments", "commitments", column: "template_commitment_id"
   add_foreign_key "commitments", "eventdates"
   add_foreign_key "datacontacts", "leads"
@@ -424,8 +489,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_11_112955) do
   add_foreign_key "sessions", "users"
   add_foreign_key "tag_positionings", "leads"
   add_foreign_key "tag_positionings", "taxbranches"
+  add_foreign_key "taxbranches", "domains", column: "generaimpresa_target_domain_id"
+  add_foreign_key "taxbranches", "domains", column: "rails4b_target_domain_id"
+  add_foreign_key "taxbranches", "journeys", column: "generaimpresa_target_journey_id"
+  add_foreign_key "taxbranches", "journeys", column: "rails4b_target_journey_id"
   add_foreign_key "taxbranches", "leads"
+  add_foreign_key "taxbranches", "services", column: "generaimpresa_target_service_id"
+  add_foreign_key "taxbranches", "services", column: "rails4b_target_service_id"
   add_foreign_key "taxbranches", "taxbranches", column: "link_child_taxbranch_id"
+  add_foreign_key "users", "certificates", column: "active_certificate_id"
   add_foreign_key "users", "leads"
   add_foreign_key "users", "leads", column: "approved_by_lead_id"
 end
