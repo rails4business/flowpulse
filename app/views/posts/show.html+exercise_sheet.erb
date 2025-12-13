@@ -4,7 +4,12 @@
 
 <%= render 'shared/nav_partial_post' %>
 
-<div class="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+<div class="<%= if request.variant == :modal
+                'fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto'
+              else
+                'min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100'
+              end %>">
+  <div class="<%= request.variant == :modal ? 'mt-6 w-full max-w-4xl px-4' : 'mx-auto max-w-5xl px-4 sm:px-6 lg:px-8' %> py-10">
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
     <%# ---------- FLASH MESSAGES ---------- %>
     <% if flash[:notice].present? || flash[:alert].present? %>
@@ -21,6 +26,14 @@
             <div><%= flash[:alert] %></div>
           </div>
         <% end %>
+      </div>
+    <% end %>
+
+    <% if request.variant == :modal %>
+      <div class="mb-4 flex justify-end">
+        <button class="px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 text-sm" data-action="turbo-frame#close" onclick="this.closest('turbo-frame').innerHTML = ''">
+          Chiudi ✕
+        </button>
       </div>
     <% end %>
 
@@ -65,9 +78,9 @@
 
         <button
           class="no-print inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition"
-          onclick="window.print()"
+          onclick="<%= request.variant == :modal ? "document.getElementById('sheet_modal').innerHTML=''" : "window.print()" %>"
         >
-          Scarica PDF
+          <%= request.variant == :modal ? "Chiudi" : "Scarica PDF" %>
         </button>
       </div>
 

@@ -26,47 +26,29 @@
           <%= markdown(@post.content_md.presence || @post.description.to_s) %>
         </div>
       </div>
-      <div class="rounded-2xl bg-slate-900 text-white p-6 shadow-md space-y-4">
-        <p class="text-xs uppercase tracking-wide text-slate-300">Riepilogo</p>
-        <div class="space-y-3">
-          <div>
-            <p class="text-[11px] uppercase tracking-wide text-slate-400">Moduli</p>
-            <p class="text-3xl font-semibold"><%= week_nodes.size %></p>
-          </div>
-          <div>
-            <p class="text-[11px] uppercase tracking-wide text-slate-400">Schede</p>
-            <p class="text-3xl font-semibold"><%= sheet_nodes.size %></p>
-          </div>
-          <div>
-            <p class="text-[11px] uppercase tracking-wide text-slate-400">Eventi pianificati</p>
-            <p class="text-3xl font-semibold">
-              <%= taxbranch&.eventdates&.count || 0 %>
-            </p>
-          </div>
-        </div>
+      <div class="rounded-2xl bg-slate-900 text-white p-6 shadow-md space-y-3">
         <% if taxbranch&.journeys&.exists? %>
-          <p class="text-xs text-slate-300">
-            Journey collegati: <%= taxbranch.journeys.limit(3).map { |j| j.title.presence || "Journey ##{j.id}" }.join(", ") %>
+          <p class="text-xs uppercase tracking-wide text-white/60">Journey collegati</p>
+          <p class="text-sm">
+            <%= taxbranch.journeys.limit(3).map { |j| j.title.presence || "Journey ##{j.id}" }.join(", ") %>
           </p>
+        <% end %>
+        <% if sheet_nodes.any? %>
+          <p class="text-xs uppercase tracking-wide text-white/60">Schede totali</p>
+          <p class="text-2xl font-semibold"><%= sheet_nodes.size %></p>
         <% end %>
       </div>
     </section>
 
     <!-- Timeline / Moduli -->
     <section class="space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-xs uppercase tracking-wide text-slate-500">Programma</p>
-          <h2 class="text-2xl font-semibold text-slate-900">Moduli e settimane</h2>
-        </div>
-        <% if taxbranch&.post&.mermaid.present? %>
-          <%= render "shared/mermaid_diagram",
-                    mermaid: taxbranch.post.mermaid,
-                    badge: "Roadmap",
-                    title: "Timeline del percorso",
-                    hint: "Diagramma auto-generato dal campo mermaid" %>
-        <% end %>
-      </div>
+      <% if taxbranch&.post&.mermaid.present? %>
+        <%= render "shared/mermaid_diagram",
+                  mermaid: taxbranch.post.mermaid,
+                  badge: "Roadmap",
+                  title: "Timeline del percorso",
+                  hint: "Diagramma auto-generato dal campo mermaid" %>
+      <% end %>
 
       <% if week_nodes.any? %>
         <div class="space-y-4">
@@ -113,7 +95,7 @@
                           <%= link_to "Inizia",
                                       sheet_url,
                                       class: "inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 border border-slate-300 hover:bg-slate-100",
-                                      data: { turbo_frame: "sheet_modal" } %>
+                                      data: { turbo_frame: "sheet_modal", turbo_action: "advance" } %>
                         <% else %>
                           <span class="text-xs text-slate-400">Nessuna scheda collegata</span>
                         <% end %>
