@@ -43,7 +43,8 @@
        class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
     <ul class="py-2 text-sm text-gray-700" aria-labelledby="mobileNavDropdownButton">
       <% if domain_root.present? %>
-        <% domain_root.children.home_nav.each do |branch| %>
+        <% nav_links = domain_root.children.home_nav.order(:position) %>
+        <% nav_links.each do |branch| %>
           <li> 
             <% link_label = branch.slug_label.presence || branch.display_label %>
             <% if branch.link_child_taxbranch_id.nil? %>
@@ -81,7 +82,8 @@
 <!-- Desktop: link orizzontali -->
 <div class="hidden sm:flex space-x-6">
   <% if domain_root.present? %>
-    <% domain_root.children.home_nav.each do |branch| %>
+    <% nav_links = domain_root.children.home_nav.order(:position) %>
+    <% nav_links.each do |branch| %>
      <% link_label = branch.slug_label.presence || branch.display_label %>
      <% if branch.link_child_taxbranch_id.nil? %>
       <% if branch.post.present? %>
