@@ -113,7 +113,7 @@ module Superadmin
 
 def update
   if @taxbranch.update(taxbranch_params)
-    redirect_to(superadmin_taxbranch_path(@taxbranch), notice: "Taxbranch aggiornata.", status: :see_other) # 303
+    redirect_to(superadmin_taxbranch_path(@taxbranch.parent.id), notice: "Taxbranch aggiornata.", status: :see_other) # 303
   else
     render :edit, status: :unprocessable_entity
   end

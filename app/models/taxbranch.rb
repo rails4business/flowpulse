@@ -209,11 +209,16 @@ end
   end
 
   def normalize_and_build_slugs
-    self.slug_category = slug_category.to_s.parameterize
-    self.slug_label    = slug_label.to_s.parameterize
+    raw_category = slug_category.to_s
+    raw_label    = slug_label.to_s
 
-    base = [ slug_category, slug_label ].join("/")
-    self.slug = unique_slug_for(base)
+    self.slug_category = raw_category.parameterize.presence || "branch"
+    self.slug_label    = raw_label.strip.presence || raw_category
+
+    label_for_slug = ActiveSupport::Inflector.transliterate(self.slug_label)
+                                             .parameterize
+    base = [ slug_category, label_for_slug ].reject(&:blank?).join("/")
+    self.slug = unique_slug_for(base.presence || SecureRandom.hex(4))
   end
 
   def unique_slug_for(base)
