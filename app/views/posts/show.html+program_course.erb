@@ -1,0 +1,171 @@
+<%# app/views/posts/show.html+program_course.erb %>
+<% content_for :title, @post.title.presence || "Percorso formativo" %>
+
+<%= render "shared/nav_partial_post" %>
+
+<% taxbranch = @post.taxbranch %>
+<% modules   = taxbranch&.children&.ordered || Taxbranch.none %>
+<% sheet_nodes, week_nodes = modules.partition { |tb|
+     slug = (tb.slug_category.presence || tb.slug_label.to_s).downcase
+     slug.include?("sheet") || slug.include?("scheda")
+   } %>
+
+<div class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <!-- Hero -->
+    <section class="grid gap-6 lg:grid-cols-[2fr,1fr]">
+      <div class="rounded-2xl bg-white p-6 shadow-sm space-y-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Percorso</p>
+        <h1 class="text-3xl font-bold text-slate-900 leading-tight">
+          <%= @post.title.presence || taxbranch&.display_label || "Program course" %>
+        </h1>
+        <% if taxbranch&.description.present? %>
+          <p class="text-sm text-slate-600"><%= taxbranch.description %></p>
+        <% end %>
+        <div class="prose prose-slate max-w-none">
+          <%= markdown(@post.content_md.presence || @post.description.to_s) %>
+        </div>
+      </div>
+      <div class="rounded-2xl bg-slate-900 text-white p-6 shadow-md space-y-4">
+        <p class="text-xs uppercase tracking-wide text-slate-300">Riepilogo</p>
+        <div class="space-y-3">
+          <div>
+            <p class="text-[11px] uppercase tracking-wide text-slate-400">Moduli</p>
+            <p class="text-3xl font-semibold"><%= week_nodes.size %></p>
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-wide text-slate-400">Schede</p>
+            <p class="text-3xl font-semibold"><%= sheet_nodes.size %></p>
+          </div>
+          <div>
+            <p class="text-[11px] uppercase tracking-wide text-slate-400">Eventi pianificati</p>
+            <p class="text-3xl font-semibold">
+              <%= taxbranch&.eventdates&.count || 0 %>
+            </p>
+          </div>
+        </div>
+        <% if taxbranch&.journeys&.exists? %>
+          <p class="text-xs text-slate-300">
+            Journey collegati: <%= taxbranch.journeys.limit(3).map { |j| j.title.presence || "Journey ##{j.id}" }.join(", ") %>
+          </p>
+        <% end %>
+      </div>
+    </section>
+
+    <!-- Timeline / Moduli -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-wide text-slate-500">Programma</p>
+          <h2 class="text-2xl font-semibold text-slate-900">Moduli e settimane</h2>
+        </div>
+        <% if taxbranch&.post&.mermaid.present? %>
+          <%= render "shared/mermaid_diagram",
+                    mermaid: taxbranch.post.mermaid,
+                    badge: "Roadmap",
+                    title: "Timeline del percorso",
+                    hint: "Diagramma auto-generato dal campo mermaid" %>
+        <% end %>
+      </div>
+
+      <% if week_nodes.any? %>
+        <div class="space-y-3">
+          <% week_nodes.each_with_index do |node, idx| %>
+            <% target = node.link_child || node %>
+            <% target_post = target.post %>
+            <% url = target_post ? post_entry_link(target_post, taxbranch: target) : nil %>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col gap-3 md:flex-row md:items-center">
+              <div class="flex-1 min-w-0">
+                <p class="text-xs uppercase tracking-wide text-slate-400 mb-1">
+                  Modulo <%= idx + 1 %>
+                </p>
+                <h3 class="text-lg font-semibold text-slate-900 truncate">
+                  <%= node.slug_label.presence || node.display_label %>
+                </h3>
+                <% if target_post&.description.present? %>
+                  <p class="text-sm text-slate-600 line-clamp-2"><%= target_post.description %></p>
+                <% end %>
+                <% if target_post&.journey.present? %>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Journey: <%= target_post.journey.title.presence || "##{target_post.journey.id}" %>
+                  </p>
+                <% end %>
+              </div>
+              <% if url %>
+                <%= link_to "Apri modulo",
+                            url,
+                            class: "inline-flex items-center justify-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+              <% else %>
+                <span class="text-xs text-slate-400">Nessun contenuto collegato</span>
+              <% end %>
+            </article>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500">
+          Non sono ancora stati collegati moduli o settimane a questo corso.
+        </div>
+      <% end %>
+    </section>
+
+    <!-- Schede materiali -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-wide text-slate-500">Materiali</p>
+          <h2 class="text-2xl font-semibold text-slate-900">Schede ed esercizi</h2>
+        </div>
+      </div>
+      <% if sheet_nodes.any? %>
+        <div class="grid gap-4 md:grid-cols-2">
+          <% sheet_nodes.each do |node| %>
+            <% target = node.link_child || node %>
+            <% target_post = target.post %>
+            <% url = target_post ? post_entry_link(target_post, taxbranch: target) : nil %>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-xs text-slate-500">
+                <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 font-semibold text-slate-700">Scheda</span>
+                <span><%= node.slug_category.presence || "sheet" %></span>
+              </div>
+              <h3 class="text-lg font-semibold text-slate-900">
+                <%= node.slug_label.presence || node.display_label %>
+              </h3>
+              <% if target_post&.description.present? %>
+                <p class="text-sm text-slate-600 line-clamp-3"><%= target_post.description %></p>
+              <% end %>
+              <% if url %>
+                <%= link_to "Apri scheda",
+                            url,
+                            class: "inline-flex items-center justify-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+              <% else %>
+                <span class="text-xs text-slate-400">Collega un post per pubblicare la scheda.</span>
+              <% end %>
+            </article>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500">
+          Nessuna scheda collegata. Aggiungile creando taxbranch figli con categoria “sheet”.
+        </div>
+      <% end %>
+    </section>
+
+    <!-- CTA finale -->
+    <section class="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 shadow-lg">
+      <div class="md:flex md:items-center md:justify-between gap-4">
+        <div>
+          <p class="text-sm uppercase tracking-wide text-white/80">Prossimi passi</p>
+          <h3 class="text-2xl font-semibold">Iscriviti alle sessioni del corso</h3>
+          <p class="text-sm text-white/80 mt-1">
+            Troverai gli appuntamenti nella sezione Eventi del taxbranch o tramite il tuo tutor dedicato.
+          </p>
+        </div>
+        <% if taxbranch&.journeys&.exists? %>
+          <%= link_to "Vai al journey",
+                      journey_path(taxbranch.journeys.first),
+                      class: "mt-4 md:mt-0 inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-2 text-sm font-semibold text-white hover:bg-white/20" %>
+        <% end %>
+      </div>
+    </section>
+  </div>
+</div>

@@ -4,6 +4,7 @@
   <details
     class="group border border-slate-200 rounded-md shadow-sm px-2 py-1.5 <%= 'ring-2 ring-blue-300' if node.id == @taxbranch.id %>"
     style="<%= pastel_bg_for_category(node.slug_category) %>"
+    <%= "open" if node.depth <= 1 %>
   >
     <summary class="flex items-center justify-between cursor-pointer list-none">
       <!-- Info principale -->
