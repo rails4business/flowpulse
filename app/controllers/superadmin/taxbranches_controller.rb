@@ -104,7 +104,7 @@ module Superadmin
       @taxbranch.save!
     end
 
-    redirect_to(superadmin_taxbranches_path(@taxbranch.parent.id), notice: "Creato.", status: :see_other)
+    redirect_to(superadmin_taxbranch_path(@taxbranch.parent.id), notice: "Creato.", status: :see_other)
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
