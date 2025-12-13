@@ -51,8 +51,10 @@
 </div>
 
 <!-- RENDER DEL NODO (già presente) -->
+<% expanded_ids = [@taxbranch.id] + @taxbranch.children.pluck(:id) %>
+
 <div id="form-post">
-  <%= render "node", node: @taxbranch %>
+  <%= render "node", node: @taxbranch, expanded_ids: expanded_ids %>
 </div>
 
 
