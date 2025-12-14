@@ -1,0 +1,43 @@
+<% sections = day.children.ordered %>
+
+<article class="rounded-2xl border border-slate-200 bg-gradient-to-r from-white to-slate-50 p-4 shadow-sm space-y-3">
+  <div class="flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white font-semibold text-sm">
+        D<%= index + 1 %>
+      </span>
+      <div>
+        <p class="text-xs uppercase tracking-wide text-slate-400">
+          Giorno · <%= day.slug_category.presence || "day" %>
+        </p>
+        <h3 class="text-lg font-semibold text-slate-900"><%= day.slug_label.presence || day.display_label %></h3>
+        <% if day.description.present? %>
+          <p class="text-sm text-slate-600 mt-1"><%= day.description %></p>
+        <% end %>
+      </div>
+    </div>
+    <span class="text-xs text-slate-400">ID: <%= day.id %></span>
+  </div>
+
+  <% if sections.any? %>
+    <div class="space-y-3 border-l-2 border-slate-200 pl-4">
+      <% sections.each_with_index do |section, s_idx| %>
+        <%= render partial: "posts/course_sheet_preview",
+                   locals: {
+                     sheet_node: section,
+                     lead: lead,
+                     label: section.slug_label.presence || "Sezione #{s_idx + 1}",
+                     context_badge: "Sezione #{s_idx + 1}"
+                   } %>
+      <% end %>
+    </div>
+  <% else %>
+    <%= render partial: "posts/course_sheet_preview",
+               locals: {
+                 sheet_node: day,
+                 lead: lead,
+                 label: day.slug_label.presence || "Scheda giorno #{index + 1}",
+                 context_badge: "Giorno #{index + 1}"
+               } %>
+  <% end %>
+</article>
