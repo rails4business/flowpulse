@@ -22,9 +22,9 @@
       <% if sheet_branch.post.present? %>
         <%= render partial: "posts/course_sheet_preview",
                    locals: {
-                     sheet_node: week,
+                     sheet_node: sheet_branch,
                      lead: lead,
-                     label: "Scheda settimana #{index + 1}",
+                     label: sheet_branch.slug_label.presence || sheet_branch.display_label || "Scheda settimana #{index + 1}",
                      description: sheet_branch.post.description.presence || "Scheda panoramica della settimana",
                      context_badge: "Week #{index + 1}"
                    } %>
