@@ -3,12 +3,13 @@
 <% content_for :title, @post.title.presence || "Scheda esercizi" %>
 
 <% modal_view = turbo_frame_request? || params[:modal].present? %>
-<%= render 'shared/nav_partial_post' unless modal_view %>
+<% view_content = capture do %>
+  <%= render 'shared/nav_partial_post' unless modal_view %>
 
-<div class="<%= modal_view ?
-                'fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto' :
-                'min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100' %>">
-  <div class="<%= modal_view ? 'mt-6 w-full max-w-4xl px-4' : 'mx-auto max-w-5xl px-4 sm:px-6 lg:px-8' %> py-10">
+  <div class="<%= modal_view ?
+                  'fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto' :
+                  'min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100' %>">
+    <div class="<%= modal_view ? 'mt-6 w-full max-w-4xl px-4' : 'mx-auto max-w-5xl px-4 sm:px-6 lg:px-8' %> py-10">
     <%# ---------- FLASH MESSAGES ---------- %>
     <% if flash[:notice].present? || flash[:alert].present? %>
       <div class="mt-2 space-y-3">
@@ -257,8 +258,8 @@
         </section>
       <% end %>
     </main>
+    </div>
   </div>
-</div>
 
 <style>
   /* ---------- CARD ESERCIZI ---------- */
@@ -351,3 +352,12 @@
     }
   }
 </style>
+<% end %>
+
+<% if modal_view %>
+  <%= turbo_frame_tag "sheet_modal" do %>
+    <%= view_content %>
+  <% end %>
+<% else %>
+  <%= view_content %>
+<% end %>

@@ -25,18 +25,24 @@
     <% end %>
   </div>
   <div class="flex items-center gap-3 shrink-0">
-    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border
-                 <%= completed ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-600 border-slate-200' %>">
-      <%= completed ? "Completata" : "Da fare" %>
-    </span>
     <% if sheet_url %>
       <% modal_url = sheet_url.include?("?") ? "#{sheet_url}&modal=1" : "#{sheet_url}?modal=1" %>
-      <% unless completed %>
-        <%= link_to "Esegui",
-                    modal_url,
-                    class: "px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700",
-                    data: { turbo_frame: "sheet_modal", turbo_action: "advance" } %>
-      <% end %>
+      <% button_text =
+          if completed
+            "Rivedi scheda ✓"
+          else
+            "Esegui scheda"
+          end %>
+      <% button_classes =
+          if completed
+            "px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-semibold hover:bg-emerald-200 border border-emerald-200"
+          else
+            "px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700"
+          end %>
+      <%= link_to button_text,
+                  modal_url,
+                  class: button_classes,
+                  data: { turbo_frame: "sheet_modal" } %>
     <% else %>
       <span class="text-xs text-slate-400">Collega una scheda.</span>
     <% end %>
