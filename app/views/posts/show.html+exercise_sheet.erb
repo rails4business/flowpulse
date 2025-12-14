@@ -2,8 +2,8 @@
 <%# app/views/posts/show.html+exercise_sheet.erb - versione NO JS %>
 <% content_for :title, @post.title.presence || "Scheda esercizi" %>
 
-<%= render 'shared/nav_partial_post' %>
 <% modal_view = turbo_frame_request? || params[:modal].present? %>
+<%= render 'shared/nav_partial_post' unless modal_view %>
 
 <div class="<%= modal_view ?
                 'fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto' :

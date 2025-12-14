@@ -19,11 +19,12 @@
   <% if sections.any? %>
     <div class="space-y-3 border-l-2 border-slate-200 pl-4">
       <% sections.each_with_index do |section, s_idx| %>
+        <% section_sheet = section.link_child || section %>
         <%= render partial: "posts/course_sheet_preview",
                    locals: {
-                     sheet_node: section,
+                     sheet_node: section_sheet,
                      lead: lead,
-                     label: section.slug_label.presence || section.display_label || "Sezione #{s_idx + 1}",
+                     label: section_sheet.slug_label.presence || section_sheet.display_label || "Scheda #{s_idx + 1}",
                      context_badge: "Sezione #{s_idx + 1}"
                    } %>
       <% end %>

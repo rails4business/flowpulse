@@ -204,13 +204,15 @@
       <div class="space-y-4" data-controller="taxbranch-slug">
         <div class="space-y-1">
           <%= f.label :slug_category, "Categoria", class: "block text-sm font-medium text-slate-700" %>
+          <% show_templates = Dir.glob(Rails.root.join("app/views/posts/show.html+*.erb"))
+                                .map { |path| File.basename(path).sub("show.html+", "").sub(".erb", "") } %>
           <%= f.text_field :slug_category,
                 list: "slug-categories",
                 placeholder: "es. blog_creators, ruolo, corso…",
                 class: "w-full rounded-md border-slate-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
 
           <datalist id="slug-categories">
-            <% Taxbranch.category_suggestions.each do |cat| %>
+            <% (Taxbranch.category_suggestions + show_templates).uniq.sort.each do |cat| %>
               <option value="<%= cat %>"></option>
             <% end %>
           </datalist>
