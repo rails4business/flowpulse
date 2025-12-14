@@ -7,12 +7,19 @@ class Eventdate < ApplicationRecord
   belongs_to :journey,   optional: true
   belongs_to :taxbranch, optional: true
   belongs_to :lead,      optional: true
+  belongs_to :parent_eventdate, class_name: "Eventdate", optional: true
+  has_many   :child_eventdates,
+             class_name: "Eventdate",
+             foreign_key: :parent_eventdate_id,
+             dependent: :nullify
 
   has_many :commitments,    dependent: :destroy
   has_many :bookings, dependent: :destroy
 
   # 🎭 Tipologia / meta-evento
-  enum :event_type, { session: 0, meeting: 1, online_call: 2, recording: 3 }
+  enum :event_type, { event: 0, todo: 1, done: 2, prenotation: 3, message: 4 }
+  enum :kind_event, { session: 0, meeting: 1, online_call: 2, recording: 3 }
+
   enum :mode,       { onsite: 0, online: 1, hybrid: 2 }
   enum :visibility, { internal_date: 0, public_date: 1 }
 

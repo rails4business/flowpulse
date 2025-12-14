@@ -1,0 +1,84 @@
+<%# app/views/posts/show.html+book.erb %>
+<% content_for :title, @post.title.presence || "Book" %>
+
+<div class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <header class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <div class="flex-1 space-y-2">
+        <p class="text-xs uppercase tracking-wide text-slate-400">Book</p>
+        <h1 class="text-3xl font-bold"><%= @post.title %></h1>
+        <% if @post.description.present? %>
+          <p class="text-sm text-slate-600"><%= @post.description %></p>
+        <% end %>
+      </div>
+      <%# Aside responsive %>
+      <aside class="w-full md:w-64 bg-slate-900 text-white rounded-2xl p-4 space-y-3">
+        <p class="text-xs uppercase tracking-wide text-white/70">Indice rapido</p>
+        <% chapters =
+             @post.taxbranch.children
+                  .ordered
+                  .select { |tb| tb.slug_category == "chapter" } %>
+        <% if chapters.any? %>
+          <ul class="space-y-2 text-sm">
+            <% chapters.each do |chapter| %>
+              <li>
+                <%= link_to chapter.slug_label.presence || chapter.display_label,
+                            post_entry_link(chapter.post, taxbranch: chapter),
+                            class: "block rounded-lg px-3 py-2 hover:bg-white/10" %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-xs text-white/70">Nessun capitolo collegato.</p>
+        <% end %>
+      </aside>
+    </header>
+
+    <section class="grid gap-4 md:grid-cols-3">
+      <article class="md:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 prose max-w-none">
+        <%= markdown(@post.content_md.presence || @post.description.to_s) %>
+      </article>
+      <aside class="md:col-span-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+        <div>
+          <p class="text-xs uppercase tracking-wide text-slate-500">Autore</p>
+          <p class="mt-1 text-sm font-semibold text-slate-900"><%= @post.lead&.full_name || "n/d" %></p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-wide text-slate-500">Taxbranch</p>
+          <p class="mt-1 text-sm font-semibold text-slate-900"><%= @post.taxbranch&.display_label || "n/d" %></p>
+        </div>
+        <% if @post.thumb_url.present? %>
+          <div class="rounded-xl overflow-hidden border border-slate-100">
+            <img src="<%= @post.thumb_url %>" alt="<%= @post.title %>" class="w-full object-cover">
+          </div>
+        <% end %>
+      </aside>
+    </section>
+
+    <% if chapters.any? %>
+      <section class="space-y-4">
+        <h2 class="text-2xl font-semibold text-slate-900">Capitoli</h2>
+        <div class="space-y-4">
+          <% chapters.each_with_index do |chapter, idx| %>
+            <article class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-2">
+              <p class="text-xs uppercase tracking-wide text-slate-400">Capitolo <%= idx + 1 %></p>
+              <h3 class="text-xl font-bold text-slate-900">
+                <%= chapter.slug_label.presence || chapter.display_label %>
+              </h3>
+              <% if chapter.description.present? %>
+                <p class="text-sm text-slate-600"><%= chapter.description %></p>
+              <% end %>
+              <% if chapter.post.present? %>
+                <%= link_to "Apri capitolo",
+                            post_entry_link(chapter.post, taxbranch: chapter),
+                            class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800" %>
+              <% end %>
+            </article>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+
+    <turbo-frame id="sheet_modal"></turbo-frame>
+  </div>
+</div>

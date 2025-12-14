@@ -53,13 +53,24 @@
     </div>
   <% end %>
   <!-- Taxbranch (solo se lo usi come diario / collegato a un esercizio) -->
-  <div class="my-5">
-    <%= form.label :taxbranch_id, "Taxbranch (opzionale)" %>
-    <%= form.text_field :taxbranch_id,
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:taxbranch_id].none?,
-                "border-red-400 focus:outline-red-600": eventdate.errors[:taxbranch_id].any? }],
-      value: default_taxbranch_id_for(eventdate) %>
+  <div class="my-5 grid gap-4 md:grid-cols-2">
+    <div>
+      <%= form.label :taxbranch_id, "Taxbranch (opzionale)" %>
+      <%= form.text_field :taxbranch_id,
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:taxbranch_id].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:taxbranch_id].any? }],
+        value: default_taxbranch_id_for(eventdate) %>
+    </div>
+    <div>
+      <%= form.label :parent_eventdate_id, "Evento collegato" %>
+      <%= form.collection_select :parent_eventdate_id,
+          Eventdate.order(date_start: :desc),
+          :id,
+          ->(e) { "#{e.description.presence || 'Evento'} (##{e.id})" },
+          { include_blank: "Nessuno" },
+          class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full" %>
+    </div>
   </div>
 
   <!-- Lead: precompilato se c'è Current.user.lead -->
@@ -82,14 +93,34 @@
   </div>
 
   <!-- Status come enum, non numero crudo -->
-  <div class="my-5">
-    <%= form.label :status, "Stato (diario)" %>
-    <%= form.select :status,
-      Eventdate.statuses.keys.map { |s| [s.humanize, s] },
-      { include_blank: "Nessuno (solo evento)" },
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:status].none?,
-                "border-red-400 focus:outline-red-600": eventdate.errors[:status].any? }] %>
+  <div class="my-5 grid gap-4 md:grid-cols-3">
+    <div>
+      <%= form.label :status, "Stato (diario)" %>
+      <%= form.select :status,
+        Eventdate.statuses.keys.map { |s| [s.humanize, s] },
+        { include_blank: "Nessuno (solo evento)" },
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:status].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:status].any? }] %>
+    </div>
+    <div>
+      <%= form.label :event_type, "Tipo evento" %>
+      <%= form.select :event_type,
+        Eventdate.event_types.keys.map { |s| [s.humanize, s] },
+        {},
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:event_type].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:event_type].any? }] %>
+    </div>
+    <div>
+      <%= form.label :kind_event, "Kind" %>
+      <%= form.select :kind_event,
+        Eventdate.kind_events.keys.map { |s| [s.humanize, s] },
+        {},
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:kind_event].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:kind_event].any? }] %>
+    </div>
   </div>
 
  

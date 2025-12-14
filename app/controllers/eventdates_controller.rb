@@ -41,15 +41,12 @@ class EventdatesController < ApplicationController
   @start_only_eventdates  = base_scope.where.not(date_start: nil).where(date_end: nil)
   @todo_eventdates        = base_scope.where(date_start: nil)
 
-  @tab = params[:tab].presence_in(%w[all complete start_only todo]) || "all"
+  @event_type_filter = params[:event_type].presence_in(Eventdate.event_types.keys) || "all"
 
-  @current_collection =
-    case @tab
-    when "all"        then @all_eventdates
-    when "complete"   then @complete_eventdates
-    when "start_only" then @start_only_eventdates
-    else                    @todo_eventdates
-    end
+  @current_collection = @all_eventdates
+  if @event_type_filter != "all"
+    @current_collection = @current_collection.where(event_type: Eventdate.event_types[@event_type_filter])
+  end
 end
 
 
@@ -113,7 +110,22 @@ end
 
     # Only allow a list of trusted parameters through.
     def eventdate_params
-      params.expect(eventdate: [ :date_start, :date_end, :taxbranch_id, :lead_id, :cycle, :status, :description, :meta, :journey_id, :allows_invite, :allows_request ])
+      params.expect(eventdate: [
+        :date_start,
+        :date_end,
+        :taxbranch_id,
+        :lead_id,
+        :cycle,
+        :status,
+        :description,
+        :meta,
+        :journey_id,
+        :allows_invite,
+        :allows_request,
+        :event_type,
+        :kind_event,
+        :parent_eventdate_id
+      ])
     end
 
 end

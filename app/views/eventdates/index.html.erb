@@ -14,7 +14,7 @@
         <%= f.date_field :on,
               value: (@date&.to_date || nil),
               class: "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
-        <%= hidden_field_tag :tab, @tab %>
+        <%= hidden_field_tag :event_type, (@event_type_filter unless @event_type_filter == "all") %>
       </div>
       <div class="md:col-span-2">
         <label class="block text-xs font-semibold text-slate-600 mb-1">🏷️ Taxbranch</label>
@@ -35,7 +35,7 @@
       </div>
       <div class="flex items-end gap-3 md:justify-end">
         <%= link_to "Reset",
-            eventdates_path(tab: @tab),
+            eventdates_path,
             class: "inline-flex items-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50" %>
         <%= f.submit "Filtra",
               class: "inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-white text-sm font-semibold shadow-sm hover:bg-slate-800" %>
@@ -107,25 +107,23 @@
 
   <section>
     <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between border-b border-slate-200 pb-3">
-      <nav class="flex gap-4 text-sm">
-        <% tabs = {
-          "all"        => "Tutti",
-          "complete"   => "Date complete",
-          "start_only" => "Task Make",
-          "todo"       => "To Do"
-        } %>
-        <% tabs.each do |key, label| %>
-          <% active = (@tab == key) %>
+      <div></div>
+      <nav class="flex gap-2 text-xs text-slate-600">
+        <% type_tabs = [["all", "Tutti i tipi"]] + Eventdate.event_types.keys.map { |key| [key, key.humanize] } %>
+        <% type_tabs.each do |key, label| %>
+          <% active = (@event_type_filter == key) %>
           <%= link_to label,
-              eventdates_path(on: (@date&.to_s), tab: key, taxbranch_id: @selected_taxbranch&.id),
+              eventdates_path(on: (@date&.to_s),
+                              taxbranch_id: @selected_taxbranch&.id,
+                              event_type: key == "all" ? nil : key),
               class: [
-                "px-4 py-2 border-b-2 font-medium",
-                active ? "border-slate-900 text-slate-900" : "border-transparent text-slate-500 hover:text-slate-900"
+                "rounded-full px-3 py-1 border text-xs font-semibold",
+                active ? "bg-slate-900 text-white border-slate-900" : "border-slate-200 text-slate-600 hover:bg-slate-50"
               ].join(" ") %>
         <% end %>
       </nav>
       <%= link_to "+ Evento rapido",
-          new_eventdate_path(tab: @tab),
+          new_eventdate_path,
           class: "inline-flex items-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50" %>
     </div>
 
@@ -141,15 +139,7 @@
         </div>
       <% else %>
         <p class="text-sm text-slate-500">
-          <% if @tab == "all" %>
-            Nessun evento disponibile.
-          <% elsif @tab == "complete" %>
-            Nessun evento con data completa (inizio + fine).
-          <% elsif @tab == "start_only" %>
-            Nessun evento con solo data di inizio.
-          <% else %>
-            Nessun evento da pianificare (senza data).
-          <% end %>
+          Nessun evento disponibile per i filtri selezionati.
         </p>
       <% end %>
     </div>

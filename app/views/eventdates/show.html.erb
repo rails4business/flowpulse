@@ -49,6 +49,11 @@
           <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1">
             Visibilità: <strong><%= @eventdate.visibility %></strong>
           </span>
+          <% if @eventdate.event_type == "event" %>
+            <span class="inline-flex items-center gap-1 rounded-full border border-blue-200 px-3 py-1 text-blue-700">
+              Kind: <strong><%= @eventdate.kind_event.humanize %></strong>
+            </span>
+          <% end %>
         </div>
       </div>
     </div>
@@ -99,6 +104,24 @@
         <div class="flex justify-between">
           <dt class="text-slate-500">Lead</dt>
           <dd class="font-semibold text-slate-900"><%= @eventdate.lead&.full_name.presence || "—" %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-slate-500">Tipo evento</dt>
+          <dd class="font-semibold text-slate-900"><%= @eventdate.event_type.humanize %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-slate-500">Kind</dt>
+          <dd class="font-semibold text-slate-900"><%= @eventdate.kind_event.humanize %></dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-slate-500">Evento padre</dt>
+          <dd class="font-semibold text-slate-900">
+            <% if @eventdate.parent_eventdate.present? %>
+              <%= link_to "##{@eventdate.parent_eventdate.id}", eventdate_path(@eventdate.parent_eventdate), class: "text-blue-600 hover:underline" %>
+            <% else %>
+              —
+            <% end %>
+          </dd>
         </div>
       </dl>
     </section>

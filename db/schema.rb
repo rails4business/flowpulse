@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_13_105819) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_14_102502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -199,17 +199,20 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_13_105819) do
     t.text "description"
     t.integer "event_type", default: 0, null: false
     t.bigint "journey_id"
+    t.integer "kind_event", default: 0, null: false
     t.bigint "lead_id", null: false
     t.string "location"
     t.integer "max_participants"
     t.jsonb "meta"
     t.integer "mode", default: 0, null: false
+    t.bigint "parent_eventdate_id"
     t.integer "status"
     t.bigint "taxbranch_id"
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
     t.index ["journey_id"], name: "index_eventdates_on_journey_id"
     t.index ["lead_id"], name: "index_eventdates_on_lead_id"
+    t.index ["parent_eventdate_id"], name: "index_eventdates_on_parent_eventdate_id"
     t.index ["taxbranch_id"], name: "index_eventdates_on_taxbranch_id"
   end
 
@@ -472,6 +475,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_13_105819) do
   add_foreign_key "enrollments", "leads", column: "invited_by_lead_id"
   add_foreign_key "enrollments", "leads", column: "requested_by_lead_id"
   add_foreign_key "enrollments", "services"
+  add_foreign_key "eventdates", "eventdates", column: "parent_eventdate_id"
   add_foreign_key "eventdates", "journeys"
   add_foreign_key "eventdates", "leads"
   add_foreign_key "eventdates", "taxbranches"

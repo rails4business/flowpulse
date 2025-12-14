@@ -8,6 +8,9 @@
 | `show.html+week_program.erb`            | Focus sulla settimana: elenco dei day e pulsante “Inizia”        | “Segna fatto” per day, preview scheda in modal.         |
 | `show.html+day_program.erb`             | Programma giornaliero con più schede                             | Bottone completamento giorno + lista schede collegate.  |
 | `show.html+all_sheets.erb`              | Indice di tutte le schede del corso                              | Raggruppa per categoria e linka alle `exercise_sheet`.  |
+| `show.html+book.erb`                    | Libro digitale con indice laterale e capitoli                    | Aside responsive per capitoli, timeline di Chapter.     |
+| `show.html+chapter_header.erb`          | Introduzione di un blocco di capitoli                            | Layout scuro, griglia di sezioni collegate.             |
+| `show.html+chapter.erb`                 | Singolo capitolo narrativo                                       | Corpo testo con markdown renderizzato.                  |
 | `show.html+exercise_sheet.erb` (modal)  | Variante caricata nel `sheet_modal`                              | Layout overlay, bottone “Segna scheda completata”.      |
 | `show.html+program_course.erb` (print)  | Per stampa/ PDF (da aggiungere)                                  | Idea: versione semplificata per report cartacei.        |
 
