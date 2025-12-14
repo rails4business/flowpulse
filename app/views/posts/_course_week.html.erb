@@ -6,14 +6,8 @@
       </span>
       <div>
         <p class="text-xs uppercase tracking-wide text-slate-400">
-          Settimana · <%= week.slug_category.presence || "week" %>
+          Settimana <%= index + 1 %>
         </p>
-        <h2 class="text-xl font-semibold text-slate-900">
-          <%= week.slug_label.presence || week.display_label %>
-        </h2>
-        <% if week.description.present? %>
-          <p class="text-sm text-slate-600 mt-1"><%= week.description %></p>
-        <% end %>
       </div>
     </div>
     <div class="flex-1 flex flex-col gap-2 md:items-end">

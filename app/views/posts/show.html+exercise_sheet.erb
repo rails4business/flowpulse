@@ -3,13 +3,12 @@
 <% content_for :title, @post.title.presence || "Scheda esercizi" %>
 
 <%= render 'shared/nav_partial_post' %>
+<% modal_view = turbo_frame_request? || params[:modal].present? %>
 
-<div class="<%= if request.variant == :modal
-                'fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto'
-              else
-                'min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100'
-              end %>">
-  <div class="<%= request.variant == :modal ? 'mt-6 w-full max-w-4xl px-4' : 'mx-auto max-w-5xl px-4 sm:px-6 lg:px-8' %> py-10">
+<div class="<%= modal_view ?
+                'fixed inset-0 z-50 bg-black/40 flex items-start justify-center overflow-y-auto' :
+                'min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100' %>">
+  <div class="<%= modal_view ? 'mt-6 w-full max-w-4xl px-4' : 'mx-auto max-w-5xl px-4 sm:px-6 lg:px-8' %> py-10">
     <%# ---------- FLASH MESSAGES ---------- %>
     <% if flash[:notice].present? || flash[:alert].present? %>
       <div class="mt-2 space-y-3">
@@ -28,7 +27,7 @@
       </div>
     <% end %>
 
-    <% if request.variant == :modal %>
+    <% if modal_view %>
       <div class="mb-4 flex justify-end">
         <button class="px-3 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 text-sm" data-action="turbo-frame#close" onclick="this.closest('turbo-frame').innerHTML = ''">
           Chiudi ✕
@@ -91,9 +90,9 @@
 
         <button
           class="no-print inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition"
-          onclick="<%= request.variant == :modal ? "document.getElementById('sheet_modal').innerHTML=''" : "window.print()" %>"
+          onclick="<%= modal_view ? "document.getElementById('sheet_modal').innerHTML=''" : "window.print()" %>"
         >
-          <%= request.variant == :modal ? "Chiudi" : "Scarica PDF" %>
+          <%= modal_view ? "Chiudi" : "Scarica PDF" %>
         </button>
       </div>
 

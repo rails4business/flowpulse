@@ -30,10 +30,13 @@
       <%= completed ? "Completata" : "Da fare" %>
     </span>
     <% if sheet_url %>
-      <%= link_to "Esegui",
-                  sheet_url,
-                  class: "px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700",
-                  data: { turbo_frame: "sheet_modal", turbo_action: "advance" } %>
+      <% modal_url = sheet_url.include?("?") ? "#{sheet_url}&modal=1" : "#{sheet_url}?modal=1" %>
+      <% unless completed %>
+        <%= link_to "Esegui",
+                    modal_url,
+                    class: "px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700",
+                    data: { turbo_frame: "sheet_modal", turbo_action: "advance" } %>
+      <% end %>
     <% else %>
       <span class="text-xs text-slate-400">Collega una scheda.</span>
     <% end %>

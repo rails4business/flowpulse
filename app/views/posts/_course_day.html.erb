@@ -9,12 +9,8 @@
       </span>
       <div>
         <p class="text-xs uppercase tracking-wide text-slate-400">
-          Giorno · <%= day.slug_category.presence || "day" %>
+          Giorno <%= index + 1 %>
         </p>
-        <h3 class="text-lg font-semibold text-slate-900"><%= day.slug_label.presence || day.display_label %></h3>
-        <% if day.description.present? %>
-          <p class="text-sm text-slate-600 mt-1"><%= day.description %></p>
-        <% end %>
       </div>
     </div>
     <span class="text-xs text-slate-400">ID: <%= day.id %></span>
