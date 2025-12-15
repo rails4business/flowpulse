@@ -1,81 +1,157 @@
 <%# app/views/posts/show.html+book.erb %>
-<% content_for :title, @post.title.presence || "Book" %>
+<% content_for :title, @post.title.presence || "Libro" %>
+
+<%= render "shared/nav_partial_post" %>
+
+<%
+  taxbranch        = @post.taxbranch
+  children         = taxbranch&.children&.ordered || Taxbranch.none
+  header_nodes, direct_chapters = children.partition { |tb| tb.slug_category == "chapter_header" }
+
+  chapter_groups = header_nodes.map do |header|
+    {
+      header:   header,
+      chapters: header.children.ordered.select { |child| child.slug_category == "chapter" }
+    }
+  end
+
+  if direct_chapters.any?
+    chapter_groups << { header: nil, chapters: direct_chapters }
+  end
+
+  toc_entries = chapter_groups.flat_map do |group|
+    if group[:header]
+      header_label = group[:header].slug_label.presence || group[:header].display_label || "Parte"
+      [
+        { anchor: "header-#{group[:header].id}", title: header_label, level: :header }
+      ] + group[:chapters].map do |chapter|
+        {
+          anchor: "chapter-#{chapter.id}",
+          title:  chapter.slug_label.presence || chapter.display_label || "Capitolo"
+        }
+      end
+    else
+      group[:chapters].map do |chapter|
+        {
+          anchor: "chapter-#{chapter.id}",
+          title:  chapter.slug_label.presence || chapter.display_label || "Capitolo"
+        }
+      end
+    end
+  end
+
+  total_chapters = chapter_groups.sum { |group| group[:chapters].size }
+%>
 
 <div class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-    <header class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-      <div class="flex-1 space-y-2">
-        <p class="text-xs uppercase tracking-wide text-slate-400">Book</p>
-        <h1 class="text-3xl font-bold"><%= @post.title %></h1>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <header class="grid gap-6 lg:grid-cols-[2fr,1fr]">
+      <section class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
+        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Book</p>
+        <h1 class="text-3xl font-bold leading-tight"><%= @post.title.presence || taxbranch&.display_label %></h1>
         <% if @post.description.present? %>
           <p class="text-sm text-slate-600"><%= @post.description %></p>
         <% end %>
-      </div>
-      <%# Aside responsive %>
-      <aside class="w-full md:w-64 bg-slate-900 text-white rounded-2xl p-4 space-y-3">
-        <p class="text-xs uppercase tracking-wide text-white/70">Indice rapido</p>
-        <% chapters =
-             @post.taxbranch.children
-                  .ordered
-                  .select { |tb| tb.slug_category == "chapter" } %>
-        <% if chapters.any? %>
-          <ul class="space-y-2 text-sm">
-            <% chapters.each do |chapter| %>
-              <li>
-                <%= link_to chapter.slug_label.presence || chapter.display_label,
-                            post_entry_link(chapter.post, taxbranch: chapter),
-                            class: "block rounded-lg px-3 py-2 hover:bg-white/10" %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="text-xs text-white/70">Nessun capitolo collegato.</p>
-        <% end %>
-      </aside>
-    </header>
+        <article class="prose prose-slate max-w-none">
+          <%= markdown(@post.content_md.presence || @post.description.to_s) %>
+        </article>
+      </section>
 
-    <section class="grid gap-4 md:grid-cols-3">
-      <article class="md:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 prose max-w-none">
-        <%= markdown(@post.content_md.presence || @post.description.to_s) %>
-      </article>
-      <aside class="md:col-span-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
-        <div>
-          <p class="text-xs uppercase tracking-wide text-slate-500">Autore</p>
-          <p class="mt-1 text-sm font-semibold text-slate-900"><%= @post.lead&.full_name || "n/d" %></p>
-        </div>
-        <div>
-          <p class="text-xs uppercase tracking-wide text-slate-500">Taxbranch</p>
-          <p class="mt-1 text-sm font-semibold text-slate-900"><%= @post.taxbranch&.display_label || "n/d" %></p>
-        </div>
+      <aside class="rounded-2xl bg-slate-900 text-white p-6 space-y-6 lg:sticky lg:top-8 h-max">
         <% if @post.thumb_url.present? %>
-          <div class="rounded-xl overflow-hidden border border-slate-100">
+          <div class="rounded-2xl overflow-hidden border border-white/10">
             <img src="<%= @post.thumb_url %>" alt="<%= @post.title %>" class="w-full object-cover">
           </div>
         <% end %>
-      </aside>
-    </section>
-
-    <% if chapters.any? %>
-      <section class="space-y-4">
-        <h2 class="text-2xl font-semibold text-slate-900">Capitoli</h2>
-        <div class="space-y-4">
-          <% chapters.each_with_index do |chapter, idx| %>
-            <article class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-2">
-              <p class="text-xs uppercase tracking-wide text-slate-400">Capitolo <%= idx + 1 %></p>
-              <h3 class="text-xl font-bold text-slate-900">
-                <%= chapter.slug_label.presence || chapter.display_label %>
-              </h3>
-              <% if chapter.description.present? %>
-                <p class="text-sm text-slate-600"><%= chapter.description %></p>
+        <div class="space-y-2">
+          <p class="text-xs uppercase tracking-wide text-white/70">Autore</p>
+          <p class="text-base font-semibold"><%= @post.lead&.full_name || "n/d" %></p>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs uppercase tracking-wide text-white/70">Capitoli</p>
+          <p class="text-2xl font-semibold"><%= total_chapters %></p>
+        </div>
+        <div class="space-y-3">
+          <p class="text-xs uppercase tracking-wide text-white/70">Indice rapido</p>
+          <% if toc_entries.any? %>
+            <nav class="space-y-2 text-sm">
+              <% toc_entries.each do |entry| %>
+                <%= link_to entry[:title],
+                            "##{entry[:anchor]}",
+                            class: [
+                              "block rounded-xl px-3 py-2 transition",
+                              entry[:level] == :header ? "bg-white/10 font-semibold" : "text-white/80 hover:bg-white/10 ml-3"
+                            ].compact.join(" ") %>
               <% end %>
-              <% if chapter.post.present? %>
-                <%= link_to "Apri capitolo",
-                            post_entry_link(chapter.post, taxbranch: chapter),
-                            class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800" %>
-              <% end %>
-            </article>
+            </nav>
+          <% else %>
+            <p class="text-xs text-white/70">Aggiungi capitoli per popolare l'indice.</p>
           <% end %>
         </div>
+      </aside>
+    </header>
+
+    <% if chapter_groups.any? %>
+      <section class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-500">Sezioni del libro</p>
+            <h2 class="text-2xl font-semibold">Capitoli</h2>
+          </div>
+        </div>
+
+        <div class="space-y-8">
+          <% chapter_groups.each_with_index do |group, idx| %>
+            <% header = group[:header] %>
+            <div class="space-y-4">
+              <% if header.present? %>
+                <article id="header-<%= header.id %>" class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-2">
+                  <p class="text-xs uppercase tracking-wide text-slate-400">Parte <%= idx + 1 %></p>
+                  <h3 class="text-xl font-semibold text-slate-900">
+                    <%= header.slug_label.presence || header.display_label || "Parte" %>
+                  </h3>
+                  <% if header.description.present? %>
+                    <p class="text-sm text-slate-600"><%= header.description %></p>
+                  <% end %>
+                </article>
+              <% end %>
+
+              <div class="grid gap-4 md:grid-cols-2">
+                <% group[:chapters].each_with_index do |chapter, c_idx| %>
+                  <% chapter_post = chapter.post %>
+                  <article id="chapter-<%= chapter.id %>" class="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-3">
+                    <div class="flex items-center justify-between">
+                      <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-semibold">
+                        <%= header.present? ? "#{idx + 1}.#{c_idx + 1}" : (c_idx + 1) %>
+                      </span>
+                    </div>
+                    <div class="space-y-2">
+                      <h4 class="text-lg font-semibold">
+                        <%= chapter.slug_label.presence || chapter.display_label || "Capitolo" %>
+                      </h4>
+                      <% if chapter.description.present? %>
+                        <p class="text-sm text-slate-600">
+                          <%= chapter.description %>
+                        </p>
+                      <% end %>
+                    </div>
+                    <% if chapter_post.present? %>
+                      <%= link_to "Apri capitolo",
+                                  post_entry_link(chapter_post, taxbranch: chapter),
+                                  class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800" %>
+                    <% else %>
+                      <p class="text-xs text-slate-400">Collega un post per questo capitolo.</p>
+                    <% end %>
+                  </article>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+    <% else %>
+      <section class="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center text-slate-500">
+        Nessun capitolo collegato al libro. Aggiungi taxbranch figli con categoria “chapter” o “chapter_header”.
       </section>
     <% end %>
 

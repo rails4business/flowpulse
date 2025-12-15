@@ -1,16 +1,13 @@
 <% sections    = day.children.ordered %>
 <% sheet_node  = day.link_child || day %>
 
-<article class="rounded-2xl border border-slate-200 bg-gradient-to-r from-white to-slate-50 p-4 shadow-sm space-y-3">
   <div class="flex items-center gap-3">
-    <div class="flex items-center gap-3">
+   
       <span class="inline-flex h-10 px-4  items-center justify-center rounded-full bg-slate-900 text-white font-semibold text-sm">
          Giorno <%= index + 1 %>
       </span>
-      <div>
-       
-      </div>
-    </div>
+     
+
     <!--span class="text-xs text-slate-400">ID: <%#= day.id %></span-->
      <% if sections.any? %>
         <div class="flex-1 space-y-3 border-l-2 border-slate-200 pl-4">
@@ -37,4 +34,4 @@
   </div>
 
  
-</article>
+
