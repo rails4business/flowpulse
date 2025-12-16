@@ -1,120 +1,226 @@
 - header: true
   title: "INTRODUZIONE"
-  description: "per i colleghi, pazienti amici, e compagni di viaggio"
+  description: "Per colleghi, pazienti, amici e compagni di viaggio"
   slug: "introduzione-pc-gdc"
+  color: "neutro"
+
 - header: false
   title: "Prologo"
-  description: "Prateria e cavalli. Un invito a guardare oltre la postura. L'ambiente e chi ci videre si condizionano reciprocamente."
+  description: "Prateria e cavalli. La salute è relazione tra corpo, ambiente e stile di vita."
   slug: "prologo-pc-gdc"
+  color: "neutro"
+
+# 🔴 ROSSO → CURARE LA PATOLOGIA
 - header: true
   title: "PARTE I – DALLA CURA DEL DOLORE ALLA CURA DELLA SALUTE"
   description: "Il mondo rosso e il mondo verde possono collaborare"
-  slug: "parte-i-cura-dolore-salute"
+  slug: "parte-1-cura-dolore-salute"
+  color: "rosso"
+
 - header: false
-  title: "Stop al dolore"
+  title: "🔴 Stop al dolore"
   description: "Linee guida per affrontare una patologia e trovare i professionisti di cui hai bisogno"
   slug: "stop-al-dolore"
+  color: "rosso"
+
 - header: false
   title: "Quando i sistemi smettono di funzionare"
-  description: "La malattia non è un evento isolato, ma il risultato di sistemi che non portano più il loro contributo."
+  description: "La malattia come risultato di sistemi che non collaborano più"
   slug: "quando-i-sistemi-smettono-di-funzionare"
+  color: "rosso"
+
+# 🟢 VERDE → SALUTE
+- header: false
+  title: "🟢 Benessere Integrato"
+  description: "Creare un percorso di salute in autonomia o con i professionisti"
+  slug: "benessere-integrato"
+  color: "verde"
+
 - header: false
   title: "Valutare lo stato di salute"
-  description: "Prendi tempo per curare la salute, o lo prenderai per curare la malattia. Gli ambiti e i professionisti che possono aiutarti"
+  description: "Prenditi cura della tua salute o dovrai prenderti cura dei tuoi dolori"
   slug: "valutare-lo-stato-di-salute"
+  color: "verde"
+
 - header: false
   title: "Il diario della salute"
-  description: "Tracciare il tuo percorso e mantenere continuità"
+  description: "Tracciare il percorso, mantenere una continuità e creare il tuo gruppo"
   slug: "diario-della-salute"
+  color: "verde"
+
 - header: false
   title: "Le cinque aree della salute"
-  description: "La salute è conoscere, comunicare e aiutare la nostra fisiologia: cinque aree su cui agire"
+  description: "Cinque aree su cui agire per sostenere la fisiologia"
   slug: "cinque-aree-della-salute"
-- header: false
-  title: "Benessere Integrato"
-  description: "Linee guida per creare un percorso integrato, in autonomia o con i professionisti"
-  slug: "benessere-integrato"
+  color: "verde"
+
+
+
+# 🔵 BLU → POSTURA E FISIOLOGIA
 - header: true
   title: "PARTE II – POSTURA E FISIOLOGIA"
   description: "Il mondo blu di PosturaCorretta"
-  slug: "parte-ii-postura-fisiologia"
+  slug: "parte-2-postura-fisiologia"
+  color: "blu"
+
 - header: false
-  title: "Postura e Fisiologia"
-  description: "Il punto di incontro tra prendersi cura e coltivare la salute"
+  title: "🔵 Postura e Fisiologia"
+  description: "Il ascoltare, conoscere, comunicare e riattivare i nostri sistemi fisiologici"
   slug: "postura-e-fisiologia"
+  color: "blu"
+
 - header: false
   title: "Igiene posturale"
-  description: "Le basi per prendersi cura delle articolazioni e della postura"
+  description: "Prendersi cura delle articolazioni e della mobilità"
   slug: "igiene-posturale"
+  color: "blu"
+
 - header: false
   title: "Cosa ci insegna la fisioterapia"
   description: "Non esistono solo muscoli e articolazioni"
   slug: "insegnamenti-fisioterapia"
+  color: "blu"
+
 - header: false
-  title: "Biomeccanica comportamentale – Metodo GDS"
-  description: "Tra biomeccanica, emozioni e bioritmo delle stagioni"
+  title: "Cos'è la Biomeccanica comportamentale – Metodo GDS"
+  description: "Tra biomeccanica, emozioni e stagioni"
   slug: "biomeccanica-comportamentale-gds"
+  color: "blu"
+
 - header: false
   title: "Ascolta il corpo con l’osteopatia"
-  description: "Sviluppare la percezione e l’ascolto del corpo"
+  description: "Sviluppare percezione e ascolto"
   slug: "osteopatia-ascolto-del-corpo"
+  color: "blu"
+
 - header: false
-  title: "Kinesiologia"
-  description: "Sequenze di movimento per riattivare i sistemi"
+  title: "Kinesiologia una sequenza per riattivarti"
+  description: "Una sequenza di movimento per riattivare, muscoli meridiani ed organi."
   slug: "kinesiologia-movimento"
+  color: "blu"
+
 - header: false
-  title: "Corpo e coscienza"
+  title: "Un ponte tra oriente e occidente, il metodo Corpo e coscienza"
   description: "Bioritmi, sistemi energetici, microcosmo e macrocosmo"
   slug: "corpo-e-coscienza"
+  color: "blu"
+
 - header: false
-  title: "Altre metodiche"
-  description: "Tecniche corporee e terapie manuali a supporto del percorso"
+  title: "E le altre metodiche?"
+  description: "Tecniche corporee e terapie manuali, e altri metodi per la guarigione"
   slug: "altre-metodiche-corporee"
+  color: "blu"
+
 - header: false
-  title: "Le cinque aree della salute e la postura"
-  description: "Un ponte tra fisiologia, postura e aree della salute (in costruzione)"
-  slug: "cinque-aree-salute-e-postura"
+  title: "Postura e le cinque aree della salute"
+  description: "La mappa è tracciata ma c'è ancora tanto lavoro, per collegare fisiologia, postura e le 5 aree della salute"
+  slug: "postura-e-cinque-aree-della-salute"
+  color: "blu"
+
+# 🅿️🅿 AZZURRO → PROFESSIONISTI
+
 - header: true
-  title: "PARTE III – OLTRE LA POSTURA"
-  description: "Stile di vita, tecnologia, visione"
-  slug: "parte-iii-oltre-la-postura"
+  title: "PARTE III – COLLABORARE CON POSTURA CORRETTA"
+  description: "Come collaborare con PosturaCorretta per professionisti, aziende e partner"
+  slug: "parte-3-collaborare-con-postura-corretta"
+  color: "blu"
+
 - header: false
-  title: "Oltre la postura"
-  description: "Perché la salute da sola non basta"
-  slug: "oltre-la-postura"
+  title: "🅿️ 👩🏼‍⚕️ I ruoli nell'accademia PosturaCorretta"
+  description: "Linee guida per organizzare percorsi, e un'accademia per insegnare la postura e la fisiologia"
+  slug: "ruoli-nell-accademia-postura-corretta"
+  color: "blu"
+
 - header: false
-  title: "Flowpulse"
-  description: "Equilibrio tra lavoro, salute e formazione"
+  title: "Valorizzare e far conoscere i professionisti e le metodiche posturali"
+  description: "Linee guida per organizzare percorsi, e un'accademia per insegnare la postura e la fisiologia"
+  slug: "valorizzare-e-far-conoscere-i-professionisti-e-le-metodiche-posturali"
+  color: "blu"
+
+- header: false
+  title: "Creare percorsi integrati con PosturaCorretta"
+  description: "Collaborare conoscendo e rispettando i ruoli della propria professione e di quella di chi collabora con te, seguendo le linee guida etiche"
+  slug: "creare-percorsi-integrati-con-postura-corretta"
+  color: "blu"
+
+- header: false
+  title: "Differenza tra professionista e insegnanti"
+  description: "Organizzare salute, lavoro e formazione attraverso processi e tecnologia"
+  slug:  "differenza-tra-professionista-e-insegnanti"
+  color: "blu"
+
+# 🟠 ARANCIONE → LAVORO / AZIENDA
+
+- header: true
+  title: "PARTE IV – QUANDO LAVORO E FORMAZIONE SI AVVICINANO"
+  description: "In un mondo che cambia, imparare e lavorare diventano un unico processo"
+  slug: "parte-4-lavoro-formazione-convergenza"
+  color: "arancione"
+
+- header: false
+  title: "🟠 🧑🏻‍🎨 🧑‍💻 Flowpulse entra a far parte dei creator"
+  description: "Un’azienda innovativa per organizzare salute, lavoro e formazione attraverso processi e tecnologia"
   slug: "flowpulse"
+  color: "arancione"
+
+
+- header: false
+  title: "Innato acquisito e facciata"
+  description: "Cosa ci insegna la postura sulle nostre attitudini."
+  slug: "innato-acquisito-e-facciata"
+  color: "arancione"
+
+- header: false
+  title: "Tecnologie interne e postura"
+  description: "Cambiare il modo in cui consideriamo l'apprendimento e la tecnologia"
+  slug: "tecnologie-interne-e-postura"
+  color: "arancione"
+
+
+
+
+
+
+# 🟣 VIOLA → FORMAZIONE / EVENTI / TERRITORIO
+- header: true
+  title: "PARTE V – FORMAZIONE, EVENTI E TERRITORIO"
+  description: "Il livello viola: esperienza, evoluzione, e il coro, ognuno mette la sua voce per creare armonia"
+  slug: "parte-5-formazione-territorio"
+  color: "viola"
+
+- header: false
+  title: "La Formazione oltre la salute e il lavoro. Un’antica mappa per l'evoluzione armonica dell'essere umano"
+  description: "Le sfere di flowpulse e il Giardino del Corpo, esplorare le stanze nascoste dentro di noi" 
+  slug: "antica-mappa-giardino-corpo"
+  color: "viola"
+
 - header: false
   title: "Inside Adventure"
-  description: "Capacità cognitive al tempo dell’intelligenza artificiale"
+  description: "Capacità cognitive, stati mentali e apprendimento nell’era dell’IA"
   slug: "inside-adventure"
-- header: true
-  title: "PARTE IV – DAL CORPO AL TERRITORIO"
-  description: "Il Giardino del Corpo"
-  slug: "parte-iv-corpo-territorio"
+  color: "viola"
+
 - header: false
-  title: "Un’antica mappa"
-  description: "Le sfere del Giardino del Corpo"
-  slug: "antica-mappa-giardino-corpo"
+  title: "I ruoli di un individuo all'interno di un gruppo"
+  description: "La formazione per conoscerci meglio. Modelli e chiavi di lettura per comprendere come interagiamo con le altre persone."
+  slug: "ruoli-individuo-gruppo"
+  color: "viola"
+
+
 - header: false
-  title: "L’agriturismo rigenerativo"
-  description: "Una scuola per lo sviluppo armonico dell’essere umano"
-  slug: "agriturismo-rigenerativo"
+  title: "Il Giardino del Corpo"
+  description: "L'Agriturismo rigenerativo, la scuola per l'evoluzione armonico"
+  slug: "giardino-del-corpo"
+  color: "viola"
+
 - header: false
-  title: "Iniziamo dagli eventi e dalle esperienze"
-  description: "Gli eventi come primo passo per diffondere l’idea e incontrare persone affini"
-  slug: "eventi-ed-esperienze"
+  title: "🟣 🎭 🧘‍♂️ 📅 Come costruire Eventi ed esperienze"
+  description: "Il primo passo concreto verso l'agriturismo rigenerativo e la scuola per l'evoluzione armonica dell'essere umano"
+  slug: "come-costruire-eventi-ed-esperienze"
+  color: "viola"
+
 - header: true
   title: "Epilogo – E ora?"
-  description: "Questa non è la fine, ma l’inizio."
+  description: "Questa non è la fine, ma l’inizio"
   slug: "epilogo-e-ora"
-- header: false
-  title: "Dal percorso personale all’organizzazione"
-  description: "Dal percorso personale all’organizzazione dell’Accademia PosturaCorretta e degli eventi Il Giardino del Corpo."
-  slug: "dal-percorso-personale-all-organizzazione"
-- header: false
-  title: "Un invito aperto – Non resta che iniziare"
-  description: "I principi qui raccolti prendono forma attraverso l’Accademia PosturaCorretta e gli eventi Il Giardino del Corpo."
-  slug: "un-invito-aperto-iniziare"
+  color: "neutro"

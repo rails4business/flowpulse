@@ -6,17 +6,9 @@
 <%
   taxbranch = @post.taxbranch
   children  = taxbranch&.children&.ordered || Taxbranch.none
-  header_nodes, direct_chapters = children.partition { |tb| tb.slug_category == "chapter_header" }
-
-  chapter_groups = header_nodes.map do |header|
-    {
-      header:   header,
-      chapters: header.children.ordered.select { |child| child.slug_category == "chapter" }
-    }
-  end
-  chapter_groups << { header: nil, chapters: direct_chapters } if direct_chapters.any?
-
-  total_chapters = chapter_groups.sum { |group| group[:chapters].size }
+  chapter_entries = children.includes(:post)
+  summary_html   = markdown(@post.content_md.presence || @post.description.to_s)
+  total_chapters = chapter_entries.count { |tb| tb.slug_category != "header_chapter_book" }
 
   domain         = Current.domain || taxbranch&.header_domain
   domain_name    = domain&.title.presence || domain&.host
@@ -25,113 +17,94 @@
                    rescue
                      root_path
                    end
+
+  author_email =
+    if @post.lead&.respond_to?(:user) && @post.lead.user&.respond_to?(:email)
+      @post.lead.user.email.presence
+    elsif @post.lead&.respond_to?(:email)
+      @post.lead.email.presence
+    end
 %>
 
-<div class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-    <header class="space-y-5">
-      <div class="space-y-2">
-        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Book · Indice ragionato</p>
-        <h1 class="text-3xl font-bold text-slate-900">
-          <%= @post.title.presence || taxbranch&.display_label || "Libro" %>
-        </h1>
-        <% if @post.description.present? %>
-          <p class="text-base text-slate-600 leading-relaxed"><%= @post.description %></p>
+<body class="bg-slate-50 text-slate-800 antialiased px-4 sm:px-8 lg:px-0">
+  <!-- HEADER -->
+  <header class="mx-auto max-w-3xl lg:max-w-4xl px-4 sm:px-8 lg:px-0 py-8 space-y-4">
+    <div class="space-y-2">
+      <h1 class="text-3xl font-bold text-slate-900">
+        <%= @post.title.presence || taxbranch&.display_label || "Libro" %>
+      </h1>
+      <% if @post.description.present? %>
+        <p class="text-base text-slate-600 leading-relaxed">
+          <%= @post.description %>
+        </p>
+      <% end %>
+      <div class="text-sm text-slate-500">
+        <span class="font-semibold text-slate-700"><%= @post.lead&.full_name || "Autore n/d" %></span>
+        <% if author_email.present? %>
+          · <%= author_email %>
         <% end %>
+        · <%= pluralize(total_chapters, "capitolo") %>
       </div>
+    </div>
 
-      <div class="flex flex-wrap items-center gap-3 no-print">
-        <% if domain %>
-          <%= link_to "↩︎ Torna a #{domain_name}",
-                      domain_home,
-                      class: "rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100" %>
-        <% end %>
-        <button onclick="window.print()"
-                class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-          Stampa / Salva PDF
-        </button>
-      </div>
-    </header>
+    <div class="mt-4 flex flex-wrap items-center gap-3 no-print">
+      <% if domain %>
+        <%= link_to "↩︎ Torna a #{domain_name}",
+                    domain_home,
+                    class: "rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100" %>
+      <% end %>
+      <button onclick="window.print()"
+              class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+        Stampa / Salva PDF
+      </button>
+    </div>
+  </header>
 
-    <section class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
-      <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500">
-        <div>
-          <span class="text-xs uppercase tracking-wide text-slate-400">Autore</span>
-          <p class="text-base font-semibold text-slate-900"><%= @post.lead&.full_name || "n/d" %></p>
-        </div>
-        <div>
-          <span class="text-xs uppercase tracking-wide text-slate-400">Capitoli</span>
-          <p class="text-base font-semibold text-slate-900"><%= total_chapters %></p>
-        </div>
-        <% if @post.thumb_url.present? %>
-          <div class="ml-auto rounded-2xl overflow-hidden border border-slate-100 w-24 h-24">
-            <img src="<%= @post.thumb_url %>" alt="<%= @post.title %>" class="w-full h-full object-cover">
-          </div>
-        <% end %>
-      </div>
-      <div class="prose prose-slate max-w-none text-sm leading-relaxed">
-        <%= markdown(@post.content_md.presence || @post.description.to_s) %>
-      </div>
-    </section>
+  <!-- SUMMARY -->
+  <section class="mx-auto max-w-3xl lg:max-w-4xl px-4 sm:px-8 lg:px-0 pb-4">
+    <div class="prose prose-slate max-w-none text-sm leading-relaxed space-y-3">
+      <%= summary_html %>
+    </div>
+  </section>
 
-    <% if chapter_groups.any? %>
-      <main class="space-y-8">
-        <% chapter_groups.each_with_index do |group, idx| %>
-          <% header = group[:header] %>
-          <section class="space-y-3">
-            <% if header.present? %>
-              <div id="header-<%= header.id %>" class="space-y-1 border-t border-slate-200 pt-6">
-                <p class="text-xs uppercase tracking-wide text-slate-500">Parte <%= idx + 1 %></p>
-                <h2 class="text-2xl font-bold text-slate-900">
-                  <%= header.slug_label.presence || header.display_label || "Parte #{idx + 1}" %>
-                </h2>
-                <% if header.post&.description.present? %>
-                  <p class="text-sm text-slate-600"><%= header.post.description %></p>
-                <% end %>
-              </div>
+  <!-- CONTENT -->
+  <main class="mx-auto max-w-3xl lg:max-w-4xl px-4 sm:px-8 lg:px-0 pb-16 space-y-4">
+    <% if chapter_entries.any? %>
+      <% chapter_entries.each do |entry| %>
+        <% if entry.slug_category == "header_chapter_book" %>
+          <section class="pt-8 border-t border-slate-200">
+            <h2 class="text-xl font-bold text-slate-900">
+              <%= entry.slug_label.presence || entry.display_label || entry.post&.title || "Parte" %>
+            </h2>
+            <% description = entry.post&.description.presence || entry.notes %>
+            <% if description.present? %>
+              <p class="mt-1 text-slate-600 italic"><%= description %></p>
             <% end %>
-
-            <div class="grid gap-4 md:grid-cols-2">
-              <% group[:chapters].each_with_index do |chapter, c_idx| %>
-                <% chapter_post = chapter.post %>
-                <article id="chapter-<%= chapter.id %>" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
-                  <div class="flex items-center gap-3">
-                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-white text-sm font-semibold">
-                      <%= header.present? ? "#{idx + 1}.#{c_idx + 1}" : (c_idx + 1) %>
-                    </span>
-                    <div>
-                      <p class="text-xs uppercase tracking-wide text-slate-400">Capitolo</p>
-                      <h3 class="text-lg font-semibold text-slate-900">
-                        <%= chapter.slug_label.presence || chapter.display_label || "Capitolo" %>
-                      </h3>
-                    </div>
-                  </div>
-                  <% if chapter_post&.description.present? %>
-                    <p class="text-sm text-slate-600 leading-relaxed">
-                      <%= chapter_post.description %>
-                    </p>
-                  <% end %>
-                  <div class="flex flex-wrap items-center gap-3">
-                    <% if chapter_post.present? %>
-                      <%= link_to "Apri capitolo",
-                                  post_entry_link(chapter_post, taxbranch: chapter),
-                                  class: "inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
-                    <% else %>
-                      <span class="text-xs text-slate-400">Collega un post per pubblicare il capitolo.</span>
-                    <% end %>
-                  </div>
-                </article>
-              <% end %>
-            </div>
           </section>
+        <% else %>
+          <% chapter_post = entry.post %>
+          <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h3 class="text-sm font-semibold text-slate-900">
+              <% if chapter_post.present? %>
+                <%= link_to chapter_post.title.presence || entry.slug_label.presence || entry.display_label || "Capitolo",
+                            post_entry_link(chapter_post, taxbranch: entry),
+                            class: "hover:underline" %>
+              <% else %>
+                <%= entry.slug_label.presence || entry.display_label || "Capitolo" %>
+              <% end %>
+            </h3>
+            <% if chapter_post&.description.present? %>
+              <p class="mt-1 text-sm text-slate-600"><%= chapter_post.description %></p>
+            <% end %>
+          </article>
         <% end %>
-      </main>
+      <% end %>
     <% else %>
       <section class="rounded-2xl border border-dashed border-slate-300 bg-white p-6 text-center text-slate-500">
         Nessun capitolo collegato al libro. Aggiungi taxbranch figli con categoria “chapter” o “chapter_header”.
       </section>
     <% end %>
+  </main>
 
-    <turbo-frame id="sheet_modal"></turbo-frame>
-  </div>
-</div>
+  <turbo-frame id="sheet_modal"></turbo-frame>
+</body>

@@ -1,0 +1,149 @@
+- header: true
+  title: "INTRODUZIONE"
+  description: "Per colleghi, pazienti, amici e compagni di viaggio"
+  slug: "introduzione-pc-gdc"
+
+- header: false
+  title: "Prologo"
+  description: "Prateria e cavalli. Un invito a guardare oltre la postura. L’ambiente e chi lo abita si condizionano reciprocamente."
+  slug: "prologo-pc-gdc"
+
+- header: true
+  title: "PARTE I – DALLA CURA DEL DOLORE ALLA CURA DELLA SALUTE"
+  description: "Il mondo rosso e il mondo verde possono collaborare"
+  slug: "parte-1-cura-dolore-salute"
+
+- header: false
+  title: "Stop al dolore"
+  description: "Linee guida per affrontare una patologia e trovare i professionisti di cui hai bisogno"
+  slug: "stop-al-dolore"
+
+- header: false
+  title: "Quando i sistemi smettono di funzionare"
+  description: "La malattia non è un evento isolato, ma il risultato di sistemi che non portano più il loro contributo."
+  slug: "quando-i-sistemi-smettono-di-funzionare"
+
+- header: false
+  title: "Valutare lo stato di salute"
+  description: "Prendi tempo per curare la salute, o lo prenderai per curare la malattia. Gli ambiti e i professionisti che possono aiutarti."
+  slug: "valutare-lo-stato-di-salute"
+
+- header: false
+  title: "Il diario della salute"
+  description: "Tracciare il tuo percorso e mantenere continuità"
+  slug: "diario-della-salute"
+
+- header: false
+  title: "Le cinque aree della salute"
+  description: "La salute è conoscere, comunicare e aiutare la nostra fisiologia: cinque aree su cui agire"
+  slug: "cinque-aree-della-salute"
+
+- header: false
+  title: "Benessere Integrato"
+  description: "Linee guida per creare un percorso integrato, in autonomia o con i professionisti"
+  slug: "benessere-integrato"
+
+- header: true
+  title: "PARTE II – POSTURA E FISIOLOGIA"
+  description: "Il mondo blu di PosturaCorretta"
+  slug: "parte-2-postura-fisiologia"
+
+- header: false
+  title: "Postura e Fisiologia"
+  description: "Il punto di incontro tra prendersi cura e coltivare la salute"
+  slug: "postura-e-fisiologia"
+
+- header: false
+  title: "Igiene posturale"
+  description: "Le basi per prendersi cura delle articolazioni e della postura"
+  slug: "igiene-posturale"
+
+- header: false
+  title: "Cosa ci insegna la fisioterapia"
+  description: "Non esistono solo muscoli e articolazioni"
+  slug: "insegnamenti-fisioterapia"
+
+- header: false
+  title: "Biomeccanica comportamentale – Metodo GDS"
+  description: "Tra biomeccanica, emozioni e bioritmo delle stagioni"
+  slug: "biomeccanica-comportamentale-gds"
+
+- header: false
+  title: "Ascolta il corpo con l’osteopatia"
+  description: "Sviluppare la percezione e l’ascolto del corpo"
+  slug: "osteopatia-ascolto-del-corpo"
+
+- header: false
+  title: "Kinesiologia"
+  description: "Sequenze di movimento per riattivare i sistemi"
+  slug: "kinesiologia-movimento"
+
+- header: false
+  title: "Corpo e coscienza"
+  description: "Bioritmi, sistemi energetici, microcosmo e macrocosmo"
+  slug: "corpo-e-coscienza"
+
+- header: false
+  title: "Altre metodiche"
+  description: "Tecniche corporee e terapie manuali a supporto del percorso"
+  slug: "altre-metodiche-corporee"
+
+- header: false
+  title: "Le cinque aree della salute e la postura"
+  description: "Un ponte tra fisiologia, postura e aree della salute (in costruzione)"
+  slug: "cinque-aree-salute-e-postura"
+
+- header: true
+  title: "PARTE III – LAVORO E FORMAZIONE: LA POSTURA COME CHIAVE DI LETTURA"
+  description: "Trovare l’equilibrio tra salute, lavoro e formazione"
+  slug: "parte-3-lavoro-formazione"
+
+- header: false
+  title: "La postura nel campo del lavoro"
+  description: "Quando la salute diventa uno strumento per comprendere attitudini, ruoli e direzione nella vita"
+  slug: "postura-e-lavoro"
+
+- header: false
+  title: "Flowpulse: un’azienda per sostenere l’Accademia"
+  description: "Un modello organizzativo che mette al centro la salute e il benessere delle persone, integrando eventi, formazione, salute, tecnologia e comunicazione."
+  slug: "azienda-per-accademia"
+
+- header: false
+  title: "Inside Adventure: formazione continua e crescita personale"
+  description: "Imparare come professionisti, come gruppo e come esseri umani. Capacità cognitive nell’era dell’IA."
+  slug: "inside-adventure"
+
+- header: true
+  title: "PARTE IV – DAL CORPO AL TERRITORIO"
+  description: "Il Giardino del Corpo"
+  slug: "parte-4-corpo-territorio"
+
+- header: false
+  title: "Un’antica mappa"
+  description: "Le sfere del Giardino del Corpo"
+  slug: "antica-mappa-giardino-corpo"
+
+- header: false
+  title: "L’agriturismo rigenerativo"
+  description: "Una scuola per lo sviluppo armonico dell’essere umano"
+  slug: "agriturismo-rigenerativo"
+
+- header: false
+  title: "Iniziamo dagli eventi e dalle esperienze"
+  description: "Gli eventi come primo passo per diffondere l’idea e incontrare persone affini"
+  slug: "eventi-ed-esperienze"
+
+- header: true
+  title: "Epilogo – E ora?"
+  description: "Questa non è la fine, ma l’inizio."
+  slug: "epilogo-e-ora"
+
+- header: false
+  title: "Dal percorso personale all’organizzazione"
+  description: "Dal percorso personale all’organizzazione dell’Accademia PosturaCorretta e degli eventi Il Giardino del Corpo."
+  slug: "dal-percorso-personale-all-organizzazione"
+
+- header: false
+  title: "Un invito aperto – Non resta che iniziare"
+  description: "I principi qui raccolti prendono forma attraverso l’Accademia PosturaCorretta e gli eventi Il Giardino del Corpo."
+  slug: "un-invito-aperto-iniziare"

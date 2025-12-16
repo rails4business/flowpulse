@@ -41,8 +41,7 @@ namespace :book do
         lead:        parent.lead,
         title:       item["title"],
         slug:        slug_base,
-        description: item["description"],
-        status:      :published
+        description: item["description"]
       )
       post.save!
     end

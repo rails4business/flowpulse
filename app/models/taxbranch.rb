@@ -9,7 +9,7 @@ class Taxbranch < ApplicationRecord
   has_one  :post, inverse_of: :taxbranch, dependent: :destroy
   has_many :domains, dependent: :destroy
   has_many :eventdates, dependent: :destroy
-  has_many :serices, dependent: :destroy
+  has_many :services, dependent: :nullify
   has_many :journeys, dependent: :destroy
   has_many :certificates, dependent: :restrict_with_exception
 
