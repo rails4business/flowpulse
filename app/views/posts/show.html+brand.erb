@@ -40,10 +40,10 @@
           </div>
         </div>
         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-          <img src="<%= hero_image_url %>" alt="<%= @post.title %>" class="rounded-3xl border border-slate-100 object-cover shadow-lg dark:border-slate-800">
-        </div>
-      </div>
-    </section>
+          <img src="<%= @post.thumb_url.presence || hero_image_url %>" alt="<%= @post.title %>" class="rounded-3xl border border-slate-100 object-cover shadow-lg dark:border-slate-800">
+       </div>
+     </div>
+   </section>
 <div class="mx-auto w-full max-w-4xl px-4 ">
     <section class="mx-auto w-full max-w-4xl px-2">
       <div class="rounded-3xl bg-white shadow ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
