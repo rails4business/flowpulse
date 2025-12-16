@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :enrollments
   resources :datacontacts
   resources :commitments
+  get "/book_index.json", to: "book_index#show"
   resources :journeys  do
     member do
       get "instance_cycle"

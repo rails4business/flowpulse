@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_14_102502) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -391,7 +391,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_14_102502) do
     t.string "ancestry"
     t.integer "branch_kind", default: 1, null: false
     t.datetime "created_at", null: false
-    t.string "description"
     t.integer "generaimpresa_target_domain_id"
     t.integer "generaimpresa_target_journey_id"
     t.integer "generaimpresa_target_service_id"
@@ -399,6 +398,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_14_102502) do
     t.bigint "lead_id", null: false
     t.bigint "link_child_taxbranch_id"
     t.jsonb "meta"
+    t.string "notes"
     t.jsonb "permission_access_roles", default: [], null: false
     t.integer "position"
     t.boolean "positioning_tag_public", default: false, null: false

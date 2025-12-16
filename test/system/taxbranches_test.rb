@@ -17,7 +17,7 @@ class TaxbranchesTest < ApplicationSystemTestCase
     fill_in "Ancestry", with: @taxbranch.ancestry
     fill_in "Lead", with: @taxbranch.lead_id
     fill_in "Meta", with: @taxbranch.meta
-    fill_in "Description", with: @taxbranch.description
+    fill_in "Notes", with: @taxbranch.notes
     fill_in "Position", with: @taxbranch.position
     fill_in "Slug", with: @taxbranch.slug
     fill_in "Slug category", with: @taxbranch.slug_category
@@ -35,7 +35,7 @@ class TaxbranchesTest < ApplicationSystemTestCase
     fill_in "Ancestry", with: @taxbranch.ancestry
     fill_in "Lead", with: @taxbranch.lead_id
     fill_in "Meta", with: @taxbranch.meta
-    fill_in "Description", with: @taxbranch.description
+    fill_in "Notes", with: @taxbranch.notes
     fill_in "Position", with: @taxbranch.position
     fill_in "Slug", with: @taxbranch.slug
     fill_in "Slug category", with: @taxbranch.slug_category

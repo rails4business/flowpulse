@@ -182,7 +182,7 @@ end
    def taxbranch_params
     # Only allow a list of trusted parameters through.
     params.expect(taxbranch: [
-      :lead_id, :description, :slug, :slug_category, :slug_label,
+      :lead_id, :notes, :slug, :slug_category, :slug_label,
       :ancestry, :position, :meta, :parent_id, :home_nav,
       :positioning_tag_public, :service_certificable, :branch_kind,
       :rails4b_target_domain_id, :rails4b_target_service_id, :rails4b_target_journey_id,

@@ -15,8 +15,8 @@
       <h1 class="text-3xl font-bold text-slate-900">
         <%= @post.title.presence || week_branch&.display_label || "Week program" %>
       </h1>
-      <% if week_branch&.description.present? %>
-        <p class="text-sm text-slate-600"><%= week_branch.description %></p>
+      <% if @post.description.present? %>
+        <p class="text-sm text-slate-600"><%= @post.description %></p>
       <% end %>
       <div class="prose prose-slate max-w-none">
         <%= markdown(@post.content_md.presence || @post.description.to_s) %>
@@ -72,8 +72,8 @@
                     <h3 class="text-xl font-semibold text-slate-900">
                       <%= day.slug_label.presence || day.display_label %>
                     </h3>
-                    <% if day.description.present? %>
-                      <p class="text-sm text-slate-600"><%= day.description %></p>
+                    <% if day.post&.description.present? %>
+                      <p class="text-sm text-slate-600"><%= day.post.description %></p>
                     <% end %>
                   </div>
                 </div>
@@ -144,8 +144,8 @@
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-2">
               <p class="text-xs uppercase tracking-wide text-slate-400"><%= node.slug_category.presence || "Resource" %></p>
               <h3 class="text-lg font-semibold text-slate-900"><%= node.slug_label.presence || node.display_label %></h3>
-              <% if node.description.present? %>
-                <p class="text-sm text-slate-600 line-clamp-3"><%= node.description %></p>
+              <% if node.post&.description.present? %>
+                <p class="text-sm text-slate-600 line-clamp-3"><%= node.post.description %></p>
               <% end %>
               <% if url %>
                 <%= link_to "Apri risorsa",

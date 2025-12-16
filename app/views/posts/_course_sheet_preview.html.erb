@@ -1,7 +1,7 @@
 <% sheet_label = local_assigns[:label].presence || sheet_node.slug_label.presence || sheet_node.display_label %>
 <% sheet_branch = sheet_node.link_child || sheet_node %>
 <% sheet_post   = sheet_branch.post %>
-<% sheet_desc   = local_assigns[:description].presence || sheet_post&.description || sheet_branch.description %>
+<% sheet_desc   = local_assigns[:description].presence || sheet_post&.description || sheet_branch.notes %>
 <% sheet_url    = sheet_post ? post_entry_link(sheet_post, taxbranch: sheet_branch) : nil %>
 <% lead         = local_assigns[:lead] %>
 <% completed_scope = lead && sheet_branch ? Eventdate.where(lead: lead, taxbranch: sheet_branch) : Eventdate.none %>

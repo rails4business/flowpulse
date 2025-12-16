@@ -33,8 +33,8 @@
         <h1 class="text-3xl font-bold text-slate-900 leading-tight">
           <%= @post.title.presence || taxbranch&.display_label || "Program course" %>
         </h1>
-        <% if taxbranch&.description.present? %>
-          <p class="text-sm text-slate-600"><%= taxbranch.description %></p>
+        <% if @post.description.present? %>
+          <p class="text-sm text-slate-600"><%= @post.description %></p>
         <% end %>
         <div class="prose prose-slate max-w-none">
           <%= markdown(@post.content_md.presence || @post.description.to_s) %>

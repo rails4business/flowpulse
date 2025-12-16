@@ -4,8 +4,8 @@
     <%= taxbranch.lead_id %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">description:</strong>
-    <%= taxbranch.description %>
+    <strong class="block font-medium mb-1">Note interne:</strong>
+    <%= taxbranch.notes.presence || "—" %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Slug:</strong>

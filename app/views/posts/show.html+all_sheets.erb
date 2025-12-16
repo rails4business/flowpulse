@@ -13,8 +13,8 @@
       <h1 class="text-3xl font-bold text-slate-900">
         <%= @post.title.presence || branch&.display_label || "All sheets" %>
       </h1>
-      <% if branch&.description.present? %>
-        <p class="text-sm text-slate-600"><%= branch.description %></p>
+      <% if @post.description.present? %>
+        <p class="text-sm text-slate-600"><%= @post.description %></p>
       <% end %>
       <div class="prose prose-slate max-w-none">
         <%= markdown(@post.content_md.presence || @post.description.to_s) %>
