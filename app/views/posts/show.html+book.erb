@@ -1,13 +1,13 @@
 <%# app/views/posts/show.html+book.erb %>
 <% content_for :title, @post.title.presence || "Indice del libro" %>
 
-<%= render "shared/nav_partial_post" %>
+<%#= render "shared/nav_partial_post" %>
 
 <%
   taxbranch = @post.taxbranch
   children  = taxbranch&.children&.ordered || Taxbranch.none
   chapter_entries = children.includes(:post)
-  summary_html   = markdown(@post.content_md.presence || @post.description.to_s)
+
   total_chapters = chapter_entries.count { |tb| tb.slug_category != "header_chapter_book" }
 
   domain         = Current.domain || taxbranch&.header_domain
@@ -26,7 +26,8 @@
     end
 %>
 
-<body class="bg-slate-50 text-slate-800 antialiased px-4 sm:px-8 lg:px-0">
+<body class="bg-slate-50 text-slate-800 antialiased px-4 sm:px-8 lg:px-0 print:p-0">
+  <div class="max-w-3xl lg:max-w-4xl mx-auto print:max-w-[38rem] print:px-0">
   <!-- HEADER -->
   <header class="mx-auto max-w-3xl lg:max-w-4xl px-4 sm:px-8 lg:px-0 py-8 space-y-4">
     <div class="space-y-2">
@@ -61,13 +62,15 @@
   </header>
 
   <!-- SUMMARY -->
+<% if @post.content_md.present? %>
   <section class="mx-auto max-w-3xl lg:max-w-4xl px-4 sm:px-8 lg:px-0 pb-4">
     <div class="rounded-2xl bg-white border border-slate-200 shadow-sm p-6">
       <div class="space-y-3 text-sm text-slate-700 leading-relaxed">
-        <%= summary_html %>
+        <%= markdown(@post.content_md.presence)  %>
       </div>
     </div>
   </section>
+  <% end %>
 
   <!-- CONTENT -->
   <main class="mx-auto max-w-3xl lg:max-w-4xl px-4 sm:px-8 lg:px-0 pb-16 space-y-4">
@@ -109,4 +112,5 @@
   </main>
 
   <turbo-frame id="sheet_modal"></turbo-frame>
+  </div>
 </body>
