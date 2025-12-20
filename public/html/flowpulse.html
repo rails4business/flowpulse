@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flowpulse Dashboard</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0099ff", // Brighter, cleaner blue for light theme
+                        "secondary": "#6366f1",
+                        "background": "#f8fafc", // Very light slate/white for cleanliness
+                        "surface": "#ffffff",
+                        "text-main": "#1e293b", // Slate 800 - High contrast text
+                        "text-sub": "#64748b", // Slate 500 - Softer secondary text
+                        "border": "#e2e8f0", // Slate 200 - Subtle borders
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "soft": "0 10px 40px -10px rgba(0,0,0,0.05)",
+                        "card": "0 2px 10px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03)"
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-display text-text-main antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-28">
+<div class="sticky top-0 z-30 flex items-center justify-between bg-surface/90 backdrop-blur-xl px-6 py-4 shadow-sm border-b border-border/50">
+<div class="flex items-center gap-3">
+<div class="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-blue-400 text-white shadow-lg shadow-blue-200">
+<span class="material-symbols-outlined text-[20px]">pulse_alert</span>
+</div>
+<h1 class="text-xl font-extrabold tracking-tight text-text-main">Flowpulse</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative flex items-center justify-center rounded-full text-text-sub transition-colors hover:bg-slate-50 hover:text-text-main p-1">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 rounded-full border border-surface bg-red-500"></span>
+</button>
+<div class="size-9 rounded-full bg-cover bg-center ring-2 ring-white shadow-md cursor-pointer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuANKTPojE1_Y-fwIO_ggjJUOTqGoC9WOZdcLTtTK9K4TfRFeTKfWrxiBec7sba2i1dTWP6Vi02cEh7purAZkjxGfF-6tiNEKO0HJOWBFxrhcgonrGiuZV30KXaWVOSXhFyVRUFxszGcjohpLv7F_UZf26v-EQWmfI0ObkoB3ts_CCZJntmLpPPwtlzCSWjfssEEiSmqNzoaoQ9OvlDVNxLOsphHJFe-sDBunHvmnUsQPmcGFvg8xlUvNSmBTH5KPP36sIULLf5Xc5p3");'></div>
+</div>
+</div>
+<div class="flex flex-col gap-8 pt-6">
+<div class="flex w-full overflow-x-auto no-scrollbar px-6 gap-4 pb-2 snap-x snap-mandatory">
+<div class="flex min-w-[160px] flex-1 flex-col gap-4 rounded-2xl bg-surface p-5 shadow-card ring-1 ring-border snap-start transition-transform active:scale-[0.98]">
+<div class="flex items-center justify-between">
+<div class="rounded-xl bg-blue-50 p-2.5 text-blue-600">
+<span class="material-symbols-outlined text-[24px]">work</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-medium text-text-sub">Progetti Attivi</p>
+<p class="mt-1 text-3xl font-bold text-text-main">12</p>
+<div class="mt-2 flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 w-fit px-2 py-1 rounded-md">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 
+                            In corso
+                        </div>
+</div>
+</div>
+<div class="flex min-w-[160px] flex-1 flex-col gap-4 rounded-2xl bg-surface p-5 shadow-card ring-1 ring-border snap-start transition-transform active:scale-[0.98]">
+<div class="flex items-center justify-between">
+<div class="rounded-xl bg-emerald-50 p-2.5 text-emerald-600">
+<span class="material-symbols-outlined text-[24px]">savings</span>
+</div>
+</div>
+<div>
+<p class="text-sm font-medium text-text-sub">Fondi Raccolti</p>
+<p class="mt-1 text-3xl font-bold text-text-main">€450k</p>
+<div class="mt-2 text-xs font-semibold text-emerald-600 bg-emerald-50 w-fit px-2 py-1 rounded-md">
+                            +12% vs last month
+                        </div>
+</div>
+</div>
+<div class="flex min-w-[160px] flex-1 flex-col gap-4 rounded-2xl bg-surface p-5 shadow-card ring-1 ring-border snap-start transition-transform active:scale-[0.98]">
+<div class="flex items-center justify-between">
+<div class="rounded-xl bg-amber-50 p-2.5 text-amber-600">
+<span class="material-symbols-outlined text-[24px]">event_busy</span>
+</div>
+<span class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">Urgent</span>
+</div>
+<div>
+<p class="text-sm font-medium text-text-sub">Scadenze Imminenti</p>
+<p class="mt-1 text-3xl font-bold text-text-main">3</p>
+<div class="mt-2 text-xs font-medium text-text-sub">
+                            Due this week
+                        </div>
+</div>
+</div>
+</div>
+<div>
+<h2 class="px-6 text-lg font-bold leading-tight text-text-main">Quick Access</h2>
+<div class="mt-4 grid grid-cols-2 gap-4 px-6">
+<div class="group relative flex aspect-[4/3] cursor-pointer flex-col justify-end overflow-hidden rounded-2xl bg-surface shadow-soft transition-all hover:shadow-lg">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDQhaECJu7fxzycOxXnswOQ2A-m2Rtj9Ny3Jmg9L5un_ISRADE5YyCVN3DlmYEmDNHVx5n5OHqUQ8Kjoc6WEWWRxGgQWeRpGOjub4ezleypFRYpKvcBF1CC_Uh6PkbJpquRLmD3ukdE1ARzED3BfIxDGAilENuEujs7mt49BCOB_FACnbI5_5eeiksKqR-8bQt8MnhJimapNmsWT7I2Q4uX-ywTxZC6_vU-PmdLWxlZbDJ1OCwtarv6-C2G4qoo7g1elObRUJ_bjGeu");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+</div>
+<div class="relative p-4">
+<div class="mb-2 flex size-8 items-center justify-center rounded-lg bg-white/20 text-white backdrop-blur-md">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+</div>
+<p class="font-bold leading-tight text-white">Generaimpresa</p>
+<p class="mt-0.5 text-[11px] font-medium text-white/80">Launch &amp; grow</p>
+</div>
+</div>
+<div class="group relative flex aspect-[4/3] cursor-pointer flex-col justify-end overflow-hidden rounded-2xl bg-surface shadow-soft transition-all hover:shadow-lg">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCGOxi_c9IX3i7U-0T3cvrU_Sov0jH93hn_Bn3L-QRUNdJLlVujA4aDV1IiAJt7J3sO4w1Ain97mgKOMyKedCONUeJKoyR4wXGQ-Jt6Zhl7yCwtPun5b-nAcY4eChXfEd1Twhzrisi4AfATlL9M-ZkhEVMJZP5ooSe7DHAAZmUmcY_57GoIai7M0h9Xbf0vFZYgb4jCzp-0SDlxf52pS2WYD8CmB-JVT2ZbYInggGaSeqQlVr-iwsjVNo8R9stD9KXBxmwXRJQj-dK4");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+</div>
+<div class="relative p-4">
+<div class="mb-2 flex size-8 items-center justify-center rounded-lg bg-white/20 text-white backdrop-blur-md">
+<span class="material-symbols-outlined text-[20px]">dns</span>
+</div>
+<p class="font-bold leading-tight text-white">Rails4B</p>
+<p class="mt-0.5 text-[11px] font-medium text-white/80">Tech infra</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between px-6 pb-4">
+<h2 class="text-lg font-bold leading-tight text-text-main">Recent Activity</h2>
+<button class="text-sm font-semibold text-primary transition-colors hover:text-blue-600">View All</button>
+</div>
+<div class="flex flex-col gap-3 px-6">
+<div class="flex items-start gap-4 rounded-2xl bg-surface p-4 shadow-card ring-1 ring-border/50 transition-colors hover:bg-slate-50">
+<div class="mt-1 flex size-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-start justify-between">
+<p class="font-bold text-text-main">New Funder</p>
+<span class="text-xs font-medium text-text-sub">10m ago</span>
+</div>
+<p class="mt-0.5 text-sm text-text-sub line-clamp-1">TechVentures SpA joined.</p>
+<div class="mt-2 flex items-center gap-1.5">
+<span class="rounded bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700">Generaimpresa</span>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-4 rounded-2xl bg-surface p-4 shadow-card ring-1 ring-border/50 transition-colors hover:bg-slate-50">
+<div class="mt-1 flex size-10 shrink-0 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+<span class="material-symbols-outlined">update</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-start justify-between">
+<p class="font-bold text-text-main">System Maint.</p>
+<span class="text-xs font-medium text-text-sub">2h ago</span>
+</div>
+<p class="mt-0.5 text-sm text-text-sub line-clamp-1">Server patch v2.4 applied.</p>
+<div class="mt-2 flex items-center gap-1.5">
+<span class="rounded bg-purple-50 px-2 py-0.5 text-[10px] font-semibold text-purple-700">Rails4B</span>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-4 rounded-2xl bg-surface p-4 shadow-card ring-1 ring-border/50 transition-colors hover:bg-slate-50">
+<div class="mt-1 flex size-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-start justify-between">
+<p class="font-bold text-text-main">Task Assigned</p>
+<span class="text-xs font-medium text-text-sub">5h ago</span>
+</div>
+<p class="mt-0.5 text-sm text-text-sub line-clamp-1">Review Q3 financials.</p>
+<div class="mt-2 flex items-center gap-1.5">
+<span class="rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">Flowpulse</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed bottom-0 left-0 z-40 w-full border-t border-border bg-surface/90 backdrop-blur-lg pb-safe">
+<div class="flex h-16 items-center justify-around px-2">
+<button class="group flex flex-1 flex-col items-center justify-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[26px] transition-transform group-hover:scale-110" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-semibold">Flowpulse</span>
+</button>
+<button class="group flex flex-1 flex-col items-center justify-center gap-1 text-text-sub transition-colors hover:text-text-main">
+<span class="material-symbols-outlined text-[26px] transition-transform group-hover:scale-110">rocket_launch</span>
+<span class="text-[10px] font-medium">Generaimpresa</span>
+</button>
+<button class="group flex flex-1 flex-col items-center justify-center gap-1 text-text-sub transition-colors hover:text-text-main">
+<span class="material-symbols-outlined text-[26px] transition-transform group-hover:scale-110">dns</span>
+<span class="text-[10px] font-medium">Rails4B</span>
+</button>
+</div>
+<div class="h-4 w-full"></div>
+</div>
+</div>
+
+</body></html>

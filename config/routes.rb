@@ -120,6 +120,8 @@ Rails.application.routes.draw do
   get "pages/home"
   get "pages/about"
   get "pages/contact"
+  get "/manifest.json", to: "pwa#manifest", as: :pwa_manifest
+  get "/service-worker.js", to: "pwa#service_worker", as: :pwa_service_worker
   get "up" => "rails/health#show", as: :rails_health_check
 
 

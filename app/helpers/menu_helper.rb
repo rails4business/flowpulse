@@ -23,7 +23,7 @@ module MenuHelper
       # Sistema servizi / percorsi
 
       # Operatività dinamica
-      { icon: "📆", label: "Eventi", path: eventdates_path },
+      { icon: "📆", label: "Eventi 1impegno", path: eventdates_path },
       { icon: "⚙️", label: "Commitments", path: commitments_path },
 
       # Progetti interni

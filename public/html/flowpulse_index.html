@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Piattaforma Flowpulse</title>
+  <style>
+    :root{
+      --orange:#F39A2E;
+      --blue:#2E86FF;
+      --red:#E44B3A;
+      --green:#35A853;
+      --purple:#B56BFF;
+      --bg:#ffffff;
+      --text:#1f2937;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:#fff;
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      padding:24px;
+    }
+    .frame{
+      width:min(980px, 100%);
+      background:var(--bg);
+      border:6px solid var(--orange);
+      border-radius:42px;
+      padding:22px 18px 26px;
+      position:relative;
+    }
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin:4px 0 10px;
+      color:var(--orange);
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    header .heart{
+      font-size:26px;
+      line-height:1;
+      transform: translateY(-1px);
+    }
+    header h1{
+      margin:0;
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight:900;
+    }
+    header h1 span{
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 6px;
+    }
+
+    .canvas{
+      position:relative;
+      min-height:760px;
+      padding:12px 8px 18px;
+    }
+
+    /* Macro labels */
+    .macro{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      font-weight:900;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      text-align:center;
+      user-select:none;
+      opacity:.95;
+    }
+    .macro.salute{ top:170px; color:var(--blue); font-size:56px; }
+    .macro.lavoro{ top:355px; color:var(--red);  font-size:56px; }
+    .macro.formazione{ top:540px; color:var(--green); font-size:44px; }
+
+    /* Icon circles */
+    .icon{
+      position:absolute;
+      width:170px;
+      text-align:center;
+    }
+    .bubble{
+      width:150px;
+      height:150px;
+      border-radius:999px;
+      margin:0 auto 8px;
+      border:4px solid rgba(0,0,0,.08);
+      overflow:hidden;
+      background:#fff;
+      display:grid;
+      place-items:center;
+      box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    }
+    .bubble img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .label{
+      margin:0;
+      font-weight:900;
+      line-height:1.05;
+      font-size:22px;
+      text-shadow: 0 1px 0 rgba(255,255,255,.65);
+    }
+    .label.small{ font-size:20px; }
+    .label.tiny{ font-size:18px; }
+    .label.blue{ color:var(--blue); }
+    .label.red{ color:var(--red); }
+    .label.green{ color:var(--green); }
+    .label.purple{ color:var(--purple); }
+
+    /* Specific ring colors (like your circles) */
+    .ring-blue{ border-color: rgba(46,134,255,.9); }
+    .ring-red{ border-color: rgba(228,75,58,.9); }
+    .ring-green{ border-color: rgba(53,168,83,.9); }
+    .ring-purple{ border-color: rgba(181,107,255,.9); }
+    .ring-orange{ border-color: rgba(243,154,46,.95); }
+
+    /* “Il giardino del corpo” script-ish */
+    .footer-script{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:128px;
+      font-family: "Brush Script MT", "Segoe Script", "Apple Chancery", cursive;
+      font-size:46px;
+      color:var(--purple);
+      opacity:.95;
+      white-space:nowrap;
+    }
+
+    /* Responsive: stack-ish layout on small screens */
+    @media (max-width: 740px){
+      .canvas{ min-height:auto; padding-bottom:24px; }
+      .macro{ position:static; transform:none; margin:10px 0; }
+      .macro.salute,.macro.lavoro{ font-size:44px; }
+      .macro.formazione{ font-size:34px; }
+      .icon{ position:static; width:100%; margin:14px auto; }
+      .footer-script{ position:static; transform:none; text-align:center; margin-top:6px; }
+      .grid-mobile{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:12px 8px;
+        align-items:start;
+      }
+      .grid-mobile .icon{ margin:0; }
+      .bubble{ width:140px; height:140px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="frame">
+    <header aria-label="Titolo">
+      <div class="heart">♡</div>
+      <h1>Piattaforma <span>Flowpulse</span></h1>
+    </header>
+
+    <section class="canvas" aria-label="Mappa Flowpulse">
+      <!-- Macro areas -->
+      <div class="macro salute">SALUTE</div>
+      <div class="macro lavoro">LAVORO</div>
+      <div class="macro formazione">FORMAZIONE</div>
+
+      <!-- SALUTE: centro alto -->
+      <div class="icon" style="left:50%; top:34px; transform:translateX(-50%);">
+        <div class="bubble ring-blue">
+          <img src="assets/posturacorretta.png" alt="PosturaCorretta" />
+        </div>
+        <!-- (facoltativo) -->
+        <!-- <p class="label blue">Postura<br/>Corretta</p> -->
+      </div>
+
+      <!-- SALUTE: sinistra alto -->
+      <div class="icon" style="left:48px; top:150px;">
+        <div class="bubble ring-blue">
+          <img src="assets/inside-adventure.png" alt="Inside Adventure" />
+        </div>
+        <p class="label purple">INSIDE<br/>ADVENTURE</p>
+      </div>
+
+      <!-- SALUTE: destra alto -->
+      <div class="icon" style="right:48px; top:150px;">
+        <div class="bubble ring-blue">
+          <img src="assets/esperienze-teatrali.png" alt="Esperienze teatrali" />
+        </div>
+        <p class="label blue">Esperienze<br/>teatrali</p>
+      </div>
+
+      <!-- LAVORO: sinistra -->
+      <div class="icon" style="left:48px; top:360px;">
+        <div class="bubble ring-red">
+          <img src="assets/rails4b.png" alt="Rails4b" />
+        </div>
+        <p class="label red">Rails4b</p>
+      </div>
+
+      <!-- LAVORO: centro -->
+      <div class="icon" style="left:50%; top:410px; transform:translateX(-50%); width:220px;">
+        <div class="bubble ring-red">
+          <img src="assets/canta-che-ti-passa.png" alt="Canta che ti passa" />
+        </div>
+        <p class="label red">Canta che<br/>ti passa</p>
+      </div>
+
+      <!-- LAVORO: destra -->
+      <div class="icon" style="right:48px; top:360px;">
+        <div class="bubble ring-red">
+          <img src="assets/genera-impresa.png" alt="Genera Impresa" />
+        </div>
+        <p class="label red">genera<br/>impresa</p>
+      </div>
+
+      <!-- FORMAZIONE: sinistra -->
+      <div class="icon" style="left:48px; top:560px;">
+        <div class="bubble ring-green">
+          <img src="assets/sovranita-leggi-naturali.png" alt="Sovranità leggi naturali" />
+        </div>
+        <p class="label green small">Sovranità<br/>leggi naturali</p>
+      </div>
+
+      <!-- FORMAZIONE: destra -->
+      <div class="icon" style="right:48px; top:560px;">
+        <div class="bubble ring-green">
+          <img src="assets/calendario-stagionale.png" alt="Calendario stagionale" />
+        </div>
+        <p class="label green small">Calendario<br/>stagionale</p>
+      </div>
+
+      <!-- Centro basso: mano / simbolo -->
+      <div class="icon" style="left:50%; top:610px; transform:translateX(-50%);">
+        <div class="bubble ring-purple">
+          <img src="assets/giardino-mano.png" alt="Simbolo Il giardino del corpo" />
+        </div>
+      </div>
+
+      <div class="footer-script">Il giardino del corpo</div>
+
+      <!-- Bottom: 1impegno -->
+      <div class="icon" style="left:50%; bottom:22px; transform:translateX(-50%);">
+        <div class="bubble ring-green">
+          <img src="assets/1impegno.png" alt="1impegno.it" />
+        </div>
+        <p class="label tiny" style="color:#111;">1impegno.it</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
