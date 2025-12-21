@@ -14,15 +14,10 @@ end
 
 module MarkdownHelper
   YOUTUBE_SHORTCODE_RE = /\[youtube\s+([^\]]+)\]/.freeze
+  YOUTUBE_TOKEN_RE = /\[\[YOUTUBE:(.+?)\]\]/.freeze
 
   def markdown(text)
     return "".html_safe if text.blank?  # ← niente parentesi extra qui
-
-    safe_text = text.to_s.gsub(YOUTUBE_SHORTCODE_RE) do
-      attrs = Regexp.last_match(1)
-      embed = build_youtube_embed(attrs)
-      embed || ""
-    end
 
     renderer = MarkdownRenderer.new(
       filter_html:   true,  # 🔒 blocca HTML crudo
@@ -42,7 +37,17 @@ module MarkdownHelper
       footnotes:          true
     )
 
-    html = md.render(safe_text)
+    source = text.to_s.gsub(YOUTUBE_SHORTCODE_RE) do
+      attrs = Regexp.last_match(1)
+      token_payload = normalize_youtube_attrs(attrs)
+      token_payload ? "[[YOUTUBE:#{token_payload}]]" : ""
+    end
+
+    html = md.render(source)
+    html = html.gsub(YOUTUBE_TOKEN_RE) do
+      attrs = Regexp.last_match(1)
+      build_youtube_embed(attrs) || ""
+    end
     sanitize(
       html,
       tags:        permitted_tags,
@@ -83,9 +88,20 @@ module MarkdownHelper
     %(<iframe width="560" height="315" src="#{src}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>)
   end
 
+  def normalize_youtube_attrs(attrs)
+    id = extract_attr(attrs, "id")
+    list = extract_attr(attrs, "list")
+    return if id.blank? && list.blank?
+
+    parts = []
+    parts << %(id="#{id}") if id.present?
+    parts << %(list="#{list}") if list.present?
+    parts.join(" ")
+  end
+
   def extract_attr(text, name)
-    match = text.match(/#{Regexp.escape(name)}="([^"]+)"/)
-    match && match[1]
+    match = text.match(/#{Regexp.escape(name)}=(?:"([^"]+)"|([^\s]+))/)
+    match && (match[1] || match[2])
   end
 
   def sanitize_youtube_token(token)
