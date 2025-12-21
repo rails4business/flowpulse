@@ -14,7 +14,8 @@ end
 
 module MarkdownHelper
   YOUTUBE_SHORTCODE_RE = /\[youtube\s+([^\]]+)\]/.freeze
-  YOUTUBE_TOKEN_RE = /\[\[YOUTUBE:(.+?)\]\]/.freeze
+  YOUTUBE_TOKEN_ID_RE = /\[\[YOUTUBE_ID:([A-Za-z0-9_-]{6,})\]\]/.freeze
+  YOUTUBE_TOKEN_LIST_RE = /\[\[YOUTUBE_LIST:([A-Za-z0-9_-]{6,})\]\]/.freeze
 
   def markdown(text)
     return "".html_safe if text.blank?  # ← niente parentesi extra qui
@@ -39,14 +40,17 @@ module MarkdownHelper
 
     source = text.to_s.gsub(YOUTUBE_SHORTCODE_RE) do
       attrs = Regexp.last_match(1)
-      token_payload = normalize_youtube_attrs(attrs)
-      token_payload ? "[[YOUTUBE:#{token_payload}]]" : ""
+      youtube_token_for(attrs) || ""
     end
 
     html = md.render(source)
-    html = html.gsub(YOUTUBE_TOKEN_RE) do
-      attrs = Regexp.last_match(1)
-      build_youtube_embed(attrs) || ""
+    html = html.gsub(YOUTUBE_TOKEN_ID_RE) do
+      video_id = Regexp.last_match(1)
+      build_youtube_embed(%(id="#{video_id}")) || ""
+    end
+    html = html.gsub(YOUTUBE_TOKEN_LIST_RE) do
+      list_id = Regexp.last_match(1)
+      build_youtube_embed(%(list="#{list_id}")) || ""
     end
     sanitize(
       html,
@@ -88,15 +92,22 @@ module MarkdownHelper
     %(<iframe width="560" height="315" src="#{src}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>)
   end
 
-  def normalize_youtube_attrs(attrs)
+  def youtube_token_for(attrs)
     id = extract_attr(attrs, "id")
     list = extract_attr(attrs, "list")
     return if id.blank? && list.blank?
 
-    parts = []
-    parts << %(id="#{id}") if id.present?
-    parts << %(list="#{list}") if list.present?
-    parts.join(" ")
+    if id.present?
+      video_id = sanitize_youtube_token(id)
+      return unless video_id
+
+      return "[[YOUTUBE_ID:#{video_id}]]"
+    end
+
+    list_id = sanitize_youtube_token(list)
+    return unless list_id
+
+    "[[YOUTUBE_LIST:#{list_id}]]"
   end
 
   def extract_attr(text, name)
