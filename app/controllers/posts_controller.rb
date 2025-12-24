@@ -1,13 +1,13 @@
 class PostsController < ApplicationController
-  allow_unauthenticated_access only: %i[show mark_done]
+  allow_unauthenticated_access only: %i[show mark_done pricing]
 
   before_action :set_post,         only: %i[edit update destroy]
-  before_action :set_post_public,  only: %i[show mark_done]
-  before_action :set_superadmin,   except: %i[show mark_done]
+  before_action :set_post_public,  only: %i[show mark_done pricing]
+  before_action :set_superadmin,   except: %i[show mark_done pricing]
 
   helper_method :sort_column, :sort_direction
 
-  layout "application", except: %i[show]
+  layout "application", except: %i[show pricing]
 
   # ----------------------------------------------------
   # MARK_DONE → registra l'evento di esercizio completato
@@ -119,6 +119,20 @@ class PostsController < ApplicationController
     request.variant = slug.present? ? slug.to_sym : nil
 
     Rails.logger.info "🧩 Variant attiva: #{request.variant.inspect}"
+  end
+
+  # -----------------------------
+  # GET /posts/:id/pricing (pubblico)
+  # -----------------------------
+  def pricing
+    @taxbranch      = @post.taxbranch
+    @taxbranch_node = @post.taxbranch
+    @services       = @taxbranch.services.order(:name)
+
+    slug = @taxbranch&.slug_category&.parameterize&.underscore
+    request.variant = slug.present? ? slug.to_sym : nil
+
+    Rails.logger.info "🧩 Variant attiva (pricing): #{request.variant.inspect}"
   end
 
   # GET /posts/new

@@ -1,10 +1,6 @@
 class Domain < ApplicationRecord
   store_accessor :aree_ruoli
   belongs_to :taxbranch
-  has_many :rails4b_taxbranches,
-           class_name: "Taxbranch",
-           foreign_key: :rails4b_target_domain_id,
-           dependent: :nullify
   #  belongs_to :owner, class_name: "Lead", optional: true
 
   validates :host, presence: true, uniqueness: true

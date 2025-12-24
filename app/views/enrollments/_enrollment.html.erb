@@ -32,6 +32,10 @@
     <%= enrollment.mode %>
   </div>
   <div>
+    <strong class="block font-medium mb-1">Phase:</strong>
+    <%= enrollment.phase.presence || "—" %>
+  </div>
+  <div>
     <strong class="block font-medium mb-1">Request kind:</strong>
     <%= enrollment.request_kind %>
   </div>

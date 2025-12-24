@@ -47,6 +47,19 @@ class Enrollment < ApplicationRecord
     candidatura: 2 # l'utente fa richiesta autonoma
   }
 
+   enum :phase, {
+    problema: 0,
+    obiettivo: 1,
+    previsione: 2,
+    responsabile_progettazione: 3,
+    step_necessari: 4,
+    impegno: 5,
+    realizzazione: 6,
+    test: 7,
+    attivo: 8,
+    chiuso: 9
+  }, prefix: true
+
   def requester
     requested_by_lead || datacontact
   end

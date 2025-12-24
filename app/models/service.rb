@@ -16,6 +16,22 @@ class Service < ApplicationRecord
 
   before_validation :ensure_slug!
 
+  PHASES = {
+    problema: 0,
+    obiettivo: 1,
+    previsione: 2,
+    responsabile_progettazione: 3,
+    step_necessari: 4,
+    impegno: 5,
+    realizzazione: 6,
+    test: 7,
+    attivo: 8,
+    chiuso: 9
+  }.freeze
+
+  enum :enrollable_from_phase, PHASES, prefix: true
+  enum :enrollable_until_phase, PHASES, prefix: true
+
   def allowed_roles=(value)
     self[:allowed_roles] = normalize_role_list(value)
   end

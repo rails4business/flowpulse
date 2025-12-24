@@ -21,6 +21,15 @@
             Slug: <code class="bg-slate-100 px-2 py-0.5 rounded"><%= @journey.slug %></code>
           </p>
 
+          <% if @journey.phase.present? %>
+            <p class="text-xs text-slate-500 mt-2">
+              Fase:
+              <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                <%= @journey.phase.humanize %>
+              </span>
+            </p>
+          <% end %>
+
           <div class="mt-2 flex flex-wrap items-center gap-2">
             <%= link_to "Modifica journey", 
                   edit_journey_path(@journey),
@@ -108,7 +117,7 @@
 
           <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm space-y-3">
             <h2 class="text-sm font-semibold text-slate-800">Rami associati</h2>
-            <div class="grid gap-3 md:grid-cols-3 text-sm">
+            <div class="grid gap-3 md:grid-cols-1 text-sm">
               <div>
                 <p class="text-xs uppercase tracking-wide text-slate-500">Frontline</p>
                 <% if @frontline_branch.present? %>
@@ -117,30 +126,6 @@
                               class: "text-blue-600 hover:underline" %>
                 <% else %>
                   <p class="text-slate-500">Nessun ramo pubblico associato.</p>
-                <% end %>
-              </div>
-              <div>
-                <p class="text-xs uppercase tracking-wide text-slate-500">Rails4B</p>
-                <% if @rails4b_branches.any? %>
-                  <ul class="space-y-1">
-                    <% @rails4b_branches.each do |branch| %>
-                      <li><%= link_to branch.display_label, superadmin_taxbranch_path(branch), class: "text-blue-600 hover:underline" %></li>
-                    <% end %>
-                  </ul>
-                <% else %>
-                  <p class="text-slate-500">Nessun ramo officina collegato.</p>
-                <% end %>
-              </div>
-              <div>
-                <p class="text-xs uppercase tracking-wide text-slate-500">Genera Impresa</p>
-                <% if @generaimpresa_branches.any? %>
-                  <ul class="space-y-1">
-                    <% @generaimpresa_branches.each do |branch| %>
-                      <li><%= link_to branch.display_label, superadmin_taxbranch_path(branch), class: "text-blue-600 hover:underline" %></li>
-                    <% end %>
-                  </ul>
-                <% else %>
-                  <p class="text-slate-500">Nessuna campagna collegata.</p>
                 <% end %>
               </div>
             </div>

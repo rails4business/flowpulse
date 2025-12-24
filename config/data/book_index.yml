@@ -1,8 +1,8 @@
-- header: true
-  title: "Il corpo un mondo da scoprire"
-  description: "Dalla scuola sulla postura, all’agriturismo rigenerativo il giardino del corpo, una scuola per lo sviluppo armonico dell’essere umano!"
-  slug: "il-corpo-un-mondo-da-scoprire"
-  color: "neutro"
+# config/data/book_index.yml
+# 
+#  title: "Il corpo un mondo da scoprire"
+#  description: "Dall'esperienza sul corpo con la scuola sulla postura, verso l’agriturismo rigenerativo il giardino del corpo, con gli eventi per lo sviluppo armonico dell’essere umano!"
+
   
 - header: true
   title: "INTRODUZIONE"
@@ -224,6 +224,11 @@
   slug: "eventi-tra-natura-e-territorio"
   color: "viola"
 
+- header: false
+  title: "Il calendario contadino e le stagioni"
+  description: "Ritrovare equilibrio attraverso le attività legate alla natura e le stagioni"
+  slug: "il-calendario-contadino-e-le-stagioni"
+  color: "viola"
 
 
 # 🅿️🅿 AZZURRO → PROFESSIONISTI
@@ -250,11 +255,6 @@
   slug: "porta-postura-corretta-nel-tuo-studio"
   color: "blu"
 
-- header: false
-  title: "Porta postura corretta nel tuo studio"
-  description: "Fai conoscere ai tuoi pazienti e clienti le metodiche posturali e la fisiologia"
-  slug: "porta-postura-corretta-nel-tuo-studio"
-  color: "blu"
 
 
 - header: false
@@ -339,6 +339,8 @@
   description: "Aiutaci a portare il progetto sul territorio organizzando eventi ed esperienze"
   slug: "come-costruire-eventi-ed-esperienze"
   color: "viola"
+
+
 
 
 - header: true

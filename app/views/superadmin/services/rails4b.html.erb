@@ -41,23 +41,6 @@
     </div>
   </div>
 
-  <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold text-slate-900 mb-3">Rami Rails4B collegati</h2>
-    <% if @rails4b_branches.any? %>
-      <ul class="space-y-2 text-sm">
-        <% @rails4b_branches.each do |branch| %>
-          <li>
-            <%= link_to branch.display_label,
-                        superadmin_taxbranch_path(branch),
-                        class: "text-blue-600 hover:underline" %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p class="text-sm text-slate-500">Nessun ramo officina associato a questo servizio.</p>
-    <% end %>
-  </div>
-
   <div class="grid gap-6 lg:grid-cols-2">
     <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <h2 class="text-lg font-semibold text-slate-900 mb-4">Journeys in lavorazione</h2>

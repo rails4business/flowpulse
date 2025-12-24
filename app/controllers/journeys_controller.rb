@@ -138,6 +138,10 @@ class JourneysController < ApplicationController
   # GET /journeys/new
   def new
     @journey = Current.user.lead.journeys.build
+    @journey.taxbranch_id = params[:taxbranch_id] if params[:taxbranch_id].present?
+    if params[:phase].present? && Journey.phases.key?(params[:phase].to_sym)
+      @journey.phase = params[:phase]
+    end
   end
 
   # GET /journeys/1/edit
@@ -197,13 +201,11 @@ class JourneysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def journey_params
-      params.expect(journey: [ :title, :slug, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_ideate, :start_realized, :start_erogation, :complete, :kind, :allows_invite, :allows_request ])
+      params.expect(journey: [ :title, :slug, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_ideate, :start_realized, :start_erogation, :complete, :kind, :allows_invite, :allows_request, :phase ])
     end
 
     def load_branch_links
-      @frontline_branch = @journey.taxbranch if @journey.taxbranch&.frontline?
-      @rails4b_branches = Taxbranch.where(branch_kind: Taxbranch.branch_kinds[:rails4b], rails4b_target_journey_id: @journey.id)
-      @generaimpresa_branches = Taxbranch.where(branch_kind: Taxbranch.branch_kinds[:generaimpresa], generaimpresa_target_journey_id: @journey.id)
+      @frontline_branch = @journey.taxbranch
     end
 
     def load_production_stats

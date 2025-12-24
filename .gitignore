@@ -33,5 +33,9 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
+# Local docs (manual instructions, not for repo)
+/docs/manual_import_export_db.md
+
 /app/assets/builds/*
 !/app/assets/builds/.keep
+/config/data/book_official/

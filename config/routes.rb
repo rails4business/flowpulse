@@ -34,6 +34,18 @@ Rails.application.routes.draw do
     resources :eventdates, only: :index
   end
 
+  get "taxbranches/:id/phase/index", to: "phase#index", as: :taxbranch_phase_index
+  get "taxbranches/:id/phase/problema", to: "phase#problema", as: :taxbranch_phase_problema
+  get "taxbranches/:id/phase/obiettivo", to: "phase#obiettivo", as: :taxbranch_phase_obiettivo
+  get "taxbranches/:id/phase/previsione", to: "phase#previsione", as: :taxbranch_phase_previsione
+  get "taxbranches/:id/phase/responsabile_progettazione", to: "phase#responsabile_progettazione", as: :taxbranch_phase_responsabile_progettazione
+  get "taxbranches/:id/phase/step_necessari", to: "phase#step_necessari", as: :taxbranch_phase_step_necessari
+  get "taxbranches/:id/phase/impegno", to: "phase#impegno", as: :taxbranch_phase_impegno
+  get "taxbranches/:id/phase/realizzazione", to: "phase#realizzazione", as: :taxbranch_phase_realizzazione
+  get "taxbranches/:id/phase/test", to: "phase#test", as: :taxbranch_phase_test
+  get "taxbranches/:id/phase/attivo", to: "phase#attivo", as: :taxbranch_phase_attivo
+  get "taxbranches/:id/phase/chiuso", to: "phase#chiuso", as: :taxbranch_phase_chiuso
+
 
 
   resources :eventdates  do
@@ -52,7 +64,6 @@ Rails.application.routes.draw do
     end
     resources :domains do
       member do
-        get :rails4b
         get :generaimpresa
       end
     end
@@ -85,10 +96,11 @@ Rails.application.routes.draw do
   end
 
 
- resources :posts do
+resources :posts do
     # Aggiunge una rotta POST per un membro specifico (un singolo post)
     # L'URL sarà /posts/:id/mark_done (ad esempio, /posts/6/mark_done)
     post :mark_done, on: :member # <--- QUESTA È LA ROTTA CORRETTA
+    get :pricing, on: :member
   end
 
 

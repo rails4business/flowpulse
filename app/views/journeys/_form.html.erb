@@ -146,6 +146,14 @@
           {},
           class: "block w-full rounded-md border px-3 py-2 shadow-sm" %>
   </div>
+
+  <div class="my-4">
+    <%= form.label :phase, "Fase", class: "block text-sm font-medium mb-1" %>
+    <%= form.select :phase,
+          Journey.phases.keys.map { |p| [p.humanize, p] },
+          { include_blank: "Seleziona fase" },
+          class: "block w-full rounded-md border px-3 py-2 shadow-sm" %>
+  </div>
  
 
   <div class="my-5">

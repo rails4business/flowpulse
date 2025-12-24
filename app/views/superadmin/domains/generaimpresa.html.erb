@@ -57,50 +57,6 @@
     </div>
   </div>
 
-  <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
-    <h2 class="text-xl font-semibold text-slate-900">Rami dedicati</h2>
-    <div class="grid gap-4 md:grid-cols-2 text-sm">
-      <div class="rounded-lg border border-slate-100 bg-slate-50 p-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">Rails4B (Officina)</p>
-        <% if @rails4b_branches.any? %>
-          <ul class="space-y-1">
-            <% @rails4b_branches.each do |branch| %>
-              <li>
-                <%= link_to branch.display_label,
-                            superadmin_taxbranch_path(branch),
-                            class: "text-blue-600 hover:underline" %>
-                <% if branch.rails4b_target_service.present? %>
-                  <span class="text-slate-500 text-xs">· <%= branch.rails4b_target_service.name %></span>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="text-slate-500">Nessun ramo officina collegato.</p>
-        <% end %>
-      </div>
-      <div class="rounded-lg border border-slate-100 bg-slate-50 p-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">Genera Impresa (Funding)</p>
-        <% if @generaimpresa_branches.any? %>
-          <ul class="space-y-1">
-            <% @generaimpresa_branches.each do |branch| %>
-              <li>
-                <%= link_to branch.display_label,
-                            superadmin_taxbranch_path(branch),
-                            class: "text-blue-600 hover:underline" %>
-                <% if branch.generaimpresa_target_service.present? %>
-                  <span class="text-slate-500 text-xs">· <%= branch.generaimpresa_target_service.name %></span>
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="text-slate-500">Nessuna campagna Genera Impresa collegata.</p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
   <% if @main_taxbranch.present? %>
     <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       <h2 class="text-xl font-semibold text-slate-900">Rami pubblici</h2>

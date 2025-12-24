@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_22_121647) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -174,6 +174,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
     t.bigint "mycontact_id", null: false
     t.text "notes"
     t.string "participant_role"
+    t.integer "phase", default: 0, null: false
     t.decimal "price_dash", precision: 16, scale: 8
     t.decimal "price_euro", precision: 10, scale: 2
     t.integer "request_kind", default: 0, null: false
@@ -238,6 +239,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
     t.bigint "lead_id", null: false
     t.jsonb "meta", default: {}, null: false
     t.text "notes"
+    t.integer "phase", default: 0, null: false
     t.decimal "price_estimate_dash", precision: 16, scale: 8
     t.decimal "price_estimate_euro", precision: 8, scale: 2
     t.integer "progress"
@@ -340,8 +342,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
     t.boolean "allows_invite", default: true, null: false
     t.boolean "allows_request", default: true, null: false
     t.boolean "auto_certificate"
+    t.text "content_md"
     t.datetime "created_at", null: false
     t.text "description"
+    t.integer "enrollable_from_phase"
+    t.integer "enrollable_until_phase"
+    t.string "image_url"
+    t.integer "included_in_service_id"
     t.bigint "lead_id", null: false
     t.integer "max_tickets"
     t.jsonb "meta", default: {}, null: false
@@ -389,23 +396,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
 
   create_table "taxbranches", force: :cascade do |t|
     t.string "ancestry"
-    t.integer "branch_kind", default: 1, null: false
     t.datetime "created_at", null: false
-    t.integer "generaimpresa_target_domain_id"
-    t.integer "generaimpresa_target_journey_id"
-    t.integer "generaimpresa_target_service_id"
     t.boolean "home_nav"
     t.bigint "lead_id", null: false
     t.bigint "link_child_taxbranch_id"
     t.jsonb "meta"
     t.string "notes"
     t.jsonb "permission_access_roles", default: [], null: false
+    t.integer "phase", default: 0, null: false
     t.integer "position"
     t.boolean "positioning_tag_public", default: false, null: false
     t.datetime "published_at"
-    t.integer "rails4b_target_domain_id"
-    t.integer "rails4b_target_journey_id"
-    t.integer "rails4b_target_service_id"
     t.datetime "scheduled_at"
     t.boolean "service_certificable"
     t.string "slug", null: false
@@ -414,15 +415,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
-    t.index ["generaimpresa_target_domain_id"], name: "index_taxbranches_on_generaimpresa_target_domain_id"
-    t.index ["generaimpresa_target_journey_id"], name: "index_taxbranches_on_generaimpresa_target_journey_id"
-    t.index ["generaimpresa_target_service_id"], name: "index_taxbranches_on_generaimpresa_target_service_id"
     t.index ["lead_id"], name: "index_taxbranches_on_lead_id"
     t.index ["link_child_taxbranch_id"], name: "index_taxbranches_on_link_child_taxbranch_id"
     t.index ["positioning_tag_public"], name: "index_taxbranches_on_positioning_tag_public"
-    t.index ["rails4b_target_domain_id"], name: "index_taxbranches_on_rails4b_target_domain_id"
-    t.index ["rails4b_target_journey_id"], name: "index_taxbranches_on_rails4b_target_journey_id"
-    t.index ["rails4b_target_service_id"], name: "index_taxbranches_on_rails4b_target_service_id"
     t.index ["slug"], name: "index_taxbranches_on_slug", unique: true
     t.index ["slug_category", "slug_label", "slug"], name: "index_taxbranches_on_cat_label_slug_unique", unique: true
   end
@@ -489,17 +484,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_16_033955) do
   add_foreign_key "payments", "payments", column: "parent_payment_id"
   add_foreign_key "posts", "leads"
   add_foreign_key "services", "leads"
+  add_foreign_key "services", "services", column: "included_in_service_id"
   add_foreign_key "services", "taxbranches"
   add_foreign_key "sessions", "users"
   add_foreign_key "tag_positionings", "leads"
   add_foreign_key "tag_positionings", "taxbranches"
-  add_foreign_key "taxbranches", "domains", column: "generaimpresa_target_domain_id"
-  add_foreign_key "taxbranches", "domains", column: "rails4b_target_domain_id"
-  add_foreign_key "taxbranches", "journeys", column: "generaimpresa_target_journey_id"
-  add_foreign_key "taxbranches", "journeys", column: "rails4b_target_journey_id"
   add_foreign_key "taxbranches", "leads"
-  add_foreign_key "taxbranches", "services", column: "generaimpresa_target_service_id"
-  add_foreign_key "taxbranches", "services", column: "rails4b_target_service_id"
   add_foreign_key "taxbranches", "taxbranches", column: "link_child_taxbranch_id"
   add_foreign_key "users", "certificates", column: "active_certificate_id"
   add_foreign_key "users", "leads"

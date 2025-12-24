@@ -2,7 +2,7 @@ module Superadmin
   class DomainsController < ApplicationController
     include RequireSuperadmin
 
-  before_action :set_domain, only: %i[ show edit update destroy rails4b generaimpresa ]
+  before_action :set_domain, only: %i[ show edit update destroy generaimpresa ]
 
   # GET /domains or /domains.json
   def index
@@ -13,27 +13,11 @@ module Superadmin
   def show
   end
 
-  def rails4b
-    @rails4b_taxbranches = @domain.rails4b_taxbranches.includes(:journeys)
-  end
-
   def generaimpresa
     @main_taxbranch = @domain.taxbranch
     subtree_ids = @main_taxbranch&.subtree_ids || []
     @services_scope = subtree_ids.any? ? Service.where(taxbranch_id: subtree_ids) : Service.none
     @journeys_scope = subtree_ids.any? ? Journey.where(taxbranch_id: subtree_ids) : Journey.none
-    @rails4b_branches =
-      if subtree_ids.any?
-        Taxbranch.where(branch_kind: Taxbranch.branch_kinds[:rails4b], rails4b_target_domain_id: @domain.id)
-      else
-        Taxbranch.none
-      end
-    @generaimpresa_branches =
-      if subtree_ids.any?
-        Taxbranch.where(branch_kind: Taxbranch.branch_kinds[:generaimpresa], generaimpresa_target_domain_id: @domain.id)
-      else
-        Taxbranch.none
-      end
     journey_ids = @journeys_scope.pluck(:id)
     service_ids = @services_scope.pluck(:id)
     commitments_scope =

@@ -11,27 +11,6 @@
     </div>
   <% end %>
 
-  <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm space-y-2">
-    <%= f.label :branch_kind, "Tipo di taxbranch", class: "block text-sm font-semibold text-slate-700" %>
-    <% kind_options = Taxbranch.branch_kinds.keys.map do |kind|
-         label =
-           case kind.to_sym
-           when :frontline     then "Frontline · Ramo pubblico"
-           when :rails4b       then "Rails4B · Officina"
-           when :generaimpresa then "Genera Impresa · Funding"
-           else kind.to_s.humanize
-           end
-         [label, kind]
-       end %>
-    <%= f.select :branch_kind,
-                 kind_options,
-                 {},
-                 class: "w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-    <p class="text-xs text-slate-500">
-      Frontline = ramo pubblico; Rails4B = officina interna; Genera Impresa = campagna di funding/sponsor.
-    </p>
-  </div>
-
   <%= hidden_field_tag :children_id, params[:children_id] if params[:children_id].present? %>
 
   <% if @taxbranch.persisted? %>
@@ -108,7 +87,7 @@
     <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
       Stato editoriale & visibilità
     </p>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
       <div>
         <%= f.label :status, "Stato editoriale", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.select :status,
@@ -141,6 +120,17 @@
                      {},
                      class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:visibility].any?}" %>
         <% taxbranch.errors.full_messages_for(:visibility).each do |m| %>
+          <p class="mt-1 text-xs text-red-600"><%= m %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :phase, "Fase", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :phase,
+                     Taxbranch.phases.keys.map { |p| [p.humanize, p] },
+                     { include_blank: "—" },
+                     class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:phase].any?}" %>
+        <% taxbranch.errors.full_messages_for(:phase).each do |m| %>
           <p class="mt-1 text-xs text-red-600"><%= m %></p>
         <% end %>
       </div>
@@ -297,81 +287,6 @@
           <% end %>
         </div>
 
-        <% rails4b_active = taxbranch.rails4b? %>
-        <div class="rounded-lg border border-slate-200 p-3 space-y-3">
-          <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
-            <span>Collegamento Rails4B / Officina</span>
-            <% unless rails4b_active %>
-              <span class="text-xs text-slate-500">(imposta il tipo su “Rails4B” per renderlo attivo)</span>
-            <% end %>
-          </div>
-
-          <div>
-            <%= f.label :rails4b_target_domain_id, "Dominio target (Officina)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= f.text_field :rails4b_target_domain_id,
-                  list: "taxbranch-domains",
-                  class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
-                  placeholder: "ID dominio (auto-completato dall'host)" %>
-            <p class="mt-1 text-xs text-slate-500">
-              Digita l'ID o inizia a scrivere l'host: le opzioni vengono proposte automaticamente.
-            </p>
-          </div>
-
-          <div class="grid gap-4 md:grid-cols-2">
-            <div>
-              <%= f.label :rails4b_target_service_id, "Service collegato", class: "block text-sm font-medium text-gray-700 mb-1" %>
-              <%= f.text_field :rails4b_target_service_id,
-                    list: "taxbranch-services",
-                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
-                    placeholder: "ID service (auto-completato dallo slug)" %>
-            </div>
-            <div>
-              <%= f.label :rails4b_target_journey_id, "Journey collegato", class: "block text-sm font-medium text-gray-700 mb-1" %>
-              <%= f.text_field :rails4b_target_journey_id,
-                    list: "taxbranch-journeys",
-                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
-                    placeholder: "ID journey (auto-completato dallo slug)" %>
-            </div>
-          </div>
-        </div>
-
-        <% funding_active = taxbranch.generaimpresa? %>
-        <div class="rounded-lg border border-slate-200 p-3 space-y-3">
-          <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
-            <span>Collegamento Genera Impresa</span>
-            <% unless funding_active %>
-              <span class="text-xs text-slate-500">(imposta il tipo su “Genera Impresa” per usarlo)</span>
-            <% end %>
-          </div>
-
-          <div>
-            <%= f.label :generaimpresa_target_domain_id, "Dominio finanziato", class: "block text-sm font-medium text-gray-700 mb-1" %>
-            <%= f.text_field :generaimpresa_target_domain_id,
-                  list: "taxbranch-domains",
-                  class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
-                  placeholder: "ID dominio (auto-completato dall'host)" %>
-          </div>
-
-          <div class="grid gap-4 md:grid-cols-2">
-            <div>
-              <%= f.label :generaimpresa_target_service_id, "Service finanziato", class: "block text-sm font-medium text-gray-700 mb-1" %>
-              <%= f.text_field :generaimpresa_target_service_id,
-                    list: "taxbranch-services",
-                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
-                    placeholder: "ID service (auto-completato dallo slug)" %>
-            </div>
-            <div>
-              <%= f.label :generaimpresa_target_journey_id, "Journey finanziato", class: "block text-sm font-medium text-gray-700 mb-1" %>
-              <%= f.text_field :generaimpresa_target_journey_id,
-                    list: "taxbranch-journeys",
-                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500",
-                    placeholder: "ID journey (auto-completato dallo slug)" %>
-            </div>
-          </div>
-          <p class="mt-1 text-xs text-slate-500">
-            Usa questi campi per collegare il ramo Genera Impresa al percorso o servizio da finanziare.
-          </p>
-        </div>
       </div>
     </div>
   </section>
@@ -385,20 +300,5 @@
           class: "inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-white font-medium shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" %>
   </div>
 
-  <datalist id="taxbranch-domains">
-    <% @available_domains.each do |domain| %>
-      <option value="<%= domain.id %>"><%= domain.host %></option>
-    <% end %>
-  </datalist>
-  <datalist id="taxbranch-services">
-    <% @available_services.each do |service| %>
-      <option value="<%= service.id %>"><%= service.slug.presence || service.name %></option>
-    <% end %>
-  </datalist>
-  <datalist id="taxbranch-journeys">
-    <% @available_journeys.each do |journey| %>
-      <option value="<%= journey.id %>"><%= journey.slug.presence || journey.title %></option>
-    <% end %>
-  </datalist>
 <% end %>
 </div>

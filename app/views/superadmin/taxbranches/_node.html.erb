@@ -91,9 +91,16 @@
              else node.visibility.to_s.titleize
              end %>
 
-        <span class="ml-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-          <%= human_visibility %>
-        </span>
+        <% if node.public_node? && node.post.present? %>
+          <%= link_to post_path(node.post),
+                      class: "ml-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100" do %>
+            <%= human_visibility %>
+          <% end %>
+        <% else %>
+          <span class="ml-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+            <%= human_visibility %>
+          </span>
+        <% end %>
 
         <!-- Etichetta -->
         <%= link_to "id: #{node.id} - #{node.slug_label}",

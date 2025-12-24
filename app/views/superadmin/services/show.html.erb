@@ -18,10 +18,19 @@
           Journey collegati: <%= @service.journeys.count %>
         </span>
         <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 font-semibold text-slate-700">
-          Eventi pianificati: <%= @service.eventdates.count %>
+          Eventi pianificati: <%#= @service.eventdates.count %>
         </span>
       </div>
     </div>
+
+    <% if @service.content_md.present? %>
+      <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">Contenuto</p>
+        <div class="prose-lite text-sm text-slate-700">
+          <%= markdown(@service.content_md) %>
+        </div>
+      </div>
+    <% end %>
 
     <div class="grid gap-4 md:grid-cols-2">
       <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
@@ -38,6 +47,22 @@
         <% else %>
           <p class="mt-2 text-sm text-slate-500">Nessun taxbranch associato.</p>
         <% end %>
+      </div>
+      <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+        <p class="text-xs uppercase tracking-wide text-slate-500">Fase di enroll</p>
+        <p class="mt-2 text-sm text-slate-700">
+          <% if @service.enrollable_from_phase.present? || @service.enrollable_until_phase.present? %>
+            <span class="font-semibold">
+              <%= @service.enrollable_from_phase&.humanize || "Sempre" %>
+            </span>
+            →
+            <span class="font-semibold">
+              <%= @service.enrollable_until_phase&.humanize || "Nessun limite" %>
+            </span>
+          <% else %>
+            Sempre disponibile
+          <% end %>
+        </p>
       </div>
       <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
         <p class="text-xs uppercase tracking-wide text-slate-500">Ruoli coinvolti</p>
@@ -63,56 +88,6 @@
     </div>
   </div>
 
-  <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <p class="text-sm font-semibold text-slate-800 mb-3">Rami collegati</p>
-    <div class="grid gap-4 md:grid-cols-3 text-sm">
-      <div class="rounded-lg border border-slate-100 bg-slate-50 p-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500">Frontline</p>
-        <% if @frontline_branch.present? %>
-          <p class="mt-1">
-            <%= link_to @frontline_branch.display_label,
-                        superadmin_taxbranch_path(@frontline_branch),
-                        class: "text-blue-600 hover:underline" %>
-          </p>
-        <% else %>
-          <p class="mt-1 text-slate-500">Nessun ramo pubblico associato.</p>
-        <% end %>
-      </div>
-      <div class="rounded-lg border border-slate-100 bg-slate-50 p-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500">Rails4B</p>
-        <% if @rails4b_branches.any? %>
-          <ul class="mt-1 space-y-1">
-            <% @rails4b_branches.each do |branch| %>
-              <li>
-                <%= link_to branch.display_label,
-                            superadmin_taxbranch_path(branch),
-                            class: "text-blue-600 hover:underline" %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="mt-1 text-slate-500">Nessun ramo Officina collegato.</p>
-        <% end %>
-      </div>
-      <div class="rounded-lg border border-slate-100 bg-slate-50 p-3">
-        <p class="text-xs uppercase tracking-wide text-slate-500">Genera Impresa</p>
-        <% if @generaimpresa_branches.any? %>
-          <ul class="mt-1 space-y-1">
-            <% @generaimpresa_branches.each do |branch| %>
-              <li>
-                <%= link_to branch.display_label,
-                            superadmin_taxbranch_path(branch),
-                            class: "text-blue-600 hover:underline" %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="mt-1 text-slate-500">Nessuna campagna Genera Impresa collegata.</p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
   <div class="grid gap-4 md:grid-cols-3">
     <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
       <p class="text-xs uppercase tracking-wide text-amber-800">Costi officina</p>
@@ -133,6 +108,10 @@
   <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
     <p class="text-sm font-semibold text-slate-800 mb-3">Azioni rapide</p>
     <div class="flex flex-col sm:flex-row flex-wrap gap-3">
+      <%= link_to "Nuovo servizio",
+                  (@service.taxbranch.present? ? new_superadmin_taxbranch_service_path(@service.taxbranch) : new_superadmin_service_path),
+                  class: "inline-flex items-center justify-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500" %>
+    
       <%= link_to "Area Rails4B",
                   rails4b_superadmin_service_path(@service),
                   class: "inline-flex items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800" %>
@@ -143,8 +122,13 @@
                   edit_superadmin_service_path(@service),
                   class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-800 border border-slate-200 shadow-sm hover:bg-slate-50" %>
       <%= link_to "Torna all'elenco",
-                  superadmin_services_path,
+                  (@service.taxbranch.present? ? superadmin_taxbranch_services_path(@service.taxbranch) : superadmin_services_path),
                   class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-800 border border-slate-200 shadow-sm hover:bg-slate-50" %>
+      <% if @service.taxbranch.present? %>
+        <%= link_to "Torna al branch",
+                    superadmin_taxbranch_path(@service.taxbranch),
+                    class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-800 border border-slate-200 shadow-sm hover:bg-slate-50" %>
+      <% end %>
       <%= button_to "Elimina",
                     [:superadmin, @service],
                     method: :delete,
@@ -158,6 +142,11 @@
     <details open class="space-y-3">
       <summary class="cursor-pointer text-sm font-semibold text-slate-800">Dettaglio tecnico</summary>
       <%= render @service %>
+      <% if (public_post = @service.taxbranch&.post).present? %>
+        <%= link_to "Mostra",
+                    pricing_post_path(public_post),
+                    class: "inline-flex items-center justify-center rounded-md bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800 shadow-sm hover:bg-emerald-200" %>
+      <% end %>
     </details>
   </div>
 </div>

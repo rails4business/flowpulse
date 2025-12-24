@@ -11,7 +11,7 @@
   <% end %>
 
   
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
      <% if taxbranch.parent_id.present? %>
     <%= f.hidden_field :parent_id, value: taxbranch.parent_id %>
   <% end %>
@@ -24,12 +24,20 @@
       <%= f.label :position, "Posizione", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= f.number_field :position, class: "w-full border rounded px-3 py-2" %>
     </div>
+
+    <div>
+      <%= f.label :phase, "Fase", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :phase,
+            Taxbranch.phases.keys.map { |p| [p.humanize, p] },
+            { include_blank: "—" },
+            class: "w-full border rounded px-3 py-2" %>
+    </div>
     
    
   </div>
   
-
  
+   
    
     <div>
     <%= f.label :notes, "Note interne", class: "block text-sm font-medium text-gray-700 mb-1" %>

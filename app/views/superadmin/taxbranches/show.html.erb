@@ -8,7 +8,8 @@
       ["Post", edit_superadmin_taxbranch_path(@taxbranch)],
       ["Journey", journeys_superadmin_taxbranch_path(@taxbranch)],
       ["Services", superadmin_taxbranch_services_path(@taxbranch)],
-      ["🌐 Tag", positioning_superadmin_taxbranch_path(@taxbranch)]
+      ["🌐 Tag", positioning_superadmin_taxbranch_path(@taxbranch)],
+      ["Phase", taxbranch_phase_index_path(@taxbranch)]
     ] %>
 
     <% tabs.each do |label, path| %>
@@ -61,7 +62,7 @@
 <br>
 
 <!-- PANNELLO STATO / VISIBILITÀ / PUBLICATION -->
-  <div class="mb-6 grid gap-4 md:grid-cols-3">
+  <div class="mb-6 grid gap-4 md:grid-cols-4">
   <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
     <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
       Stato editoriale
@@ -110,12 +111,37 @@
           else @taxbranch.visibility.to_s.titleize
           end %>
 
-      <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
-        <%= human_visibility %>
-      </span>
+      <% if @taxbranch.public_node? && @taxbranch.post.present? %>
+        <%= link_to post_path(@taxbranch.post),
+                    class: "inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700 hover:bg-slate-200" do %>
+          <%= human_visibility %>
+        <% end %>
+      <% else %>
+        <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+          <%= human_visibility %>
+        </span>
+      <% end %>
     </p>
     <p class="mt-2 text-xs text-slate-500">
       Controlla chi può vedere i contenuti di questo ramo (post, percorsi, ecc.).
+    </p>
+  </div>
+
+  <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+      Fase
+    </p>
+    <p class="mt-1 text-sm">
+      <% if @taxbranch.phase.present? %>
+        <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+          <%= @taxbranch.phase.humanize %>
+        </span>
+      <% else %>
+        <span class="text-slate-400">Non impostata</span>
+      <% end %>
+    </p>
+    <p class="mt-2 text-xs text-slate-500">
+      Fase di progetto usata per abilitare i servizi collegati.
     </p>
   </div>
 
@@ -136,30 +162,7 @@
   </div>
   </div>
 
-  <div class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
-      Tipo di ramo
-    </p>
-    <p class="mt-1 text-sm">
-      <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold text-slate-800">
-        <%= @taxbranch.branch_kind.humanize %>
-      </span>
-    </p>
-    <p class="mt-2 text-xs text-slate-500">
-      <% case @taxbranch.branch_kind.to_sym
-         when :frontline %>
-        Ramo pubblico utilizzato per l’erogazione del servizio agli utenti finali.
-      <% when :rails4b %>
-        Ramo dell’officina Rails4B, dedicato a progettazione e prototipazione.
-      <% when :generaimpresa %>
-        Ramo Genera Impresa: usalo per campagne di funding e governance del progetto.
-      <% else %>
-        Configurazione personalizzata.
-      <% end %>
-    </p>
-  </div>
-
-  <% if @taxbranch.generaimpresa? && (diagram_code = @taxbranch.post&.mermaid).present? %>
+  <% if (diagram_code = @taxbranch.post&.mermaid).present? %>
     <div class="mb-6">
       <%= render "shared/mermaid_diagram",
                 mermaid: diagram_code,
@@ -199,64 +202,6 @@
   <% end %>
 </div>
 
-<div class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
-    Collegamenti Officina / Genera Impresa
-  </p>
-  <div class="mt-3 grid gap-4 md:grid-cols-2 text-sm">
-    <div>
-      <p class="font-semibold text-slate-900 mb-1">Rails4B</p>
-      <% if @taxbranch.rails4b_target_domain.present? || @taxbranch.rails4b_target_service.present? || @taxbranch.rails4b_target_journey.present? %>
-        <% if (domain = @taxbranch.rails4b_target_domain).present? %>
-          <p class="text-slate-600">
-            Dominio:
-            <%= link_to(domain.title.presence || domain.host, superadmin_domain_path(domain), class: "text-blue-600 hover:underline") %>
-          </p>
-        <% end %>
-        <% if (service = @taxbranch.rails4b_target_service).present? %>
-          <p class="text-slate-600">
-            Service:
-            <%= link_to(service.name.presence || "Service ##{service.id}", superadmin_service_path(service), class: "text-blue-600 hover:underline") %>
-          </p>
-        <% end %>
-        <% if (journey = @taxbranch.rails4b_target_journey).present? %>
-          <p class="text-slate-600">
-            Journey:
-            <%= link_to(journey.title.presence || "Journey ##{journey.id}", journey_path(journey), class: "text-blue-600 hover:underline") %>
-          </p>
-        <% end %>
-      <% else %>
-        <p class="text-slate-500">Nessun collegamento definito.</p>
-      <% end %>
-    </div>
-    <div>
-      <p class="font-semibold text-slate-900 mb-1">Genera Impresa</p>
-      <% if @taxbranch.generaimpresa_target_domain.present? || @taxbranch.generaimpresa_target_service.present? || @taxbranch.generaimpresa_target_journey.present? %>
-        <% if (domain = @taxbranch.generaimpresa_target_domain).present? %>
-          <p class="text-slate-600">
-            Dominio:
-            <%= link_to(domain.title.presence || domain.host, superadmin_domain_path(domain), class: "text-blue-600 hover:underline") %>
-          </p>
-        <% end %>
-        <% if (service = @taxbranch.generaimpresa_target_service).present? %>
-          <p class="text-slate-600">
-            Service:
-            <%= link_to(service.name.presence || "Service ##{service.id}", superadmin_service_path(service), class: "text-blue-600 hover:underline") %>
-          </p>
-        <% end %>
-        <% if (journey = @taxbranch.generaimpresa_target_journey).present? %>
-          <p class="text-slate-600">
-            Journey:
-            <%= link_to(journey.title.presence || "Journey ##{journey.id}", journey_path(journey), class: "text-blue-600 hover:underline") %>
-          </p>
-        <% end %>
-      <% else %>
-        <p class="text-slate-500">Nessun collegamento definito.</p>
-      <% end %>
-    </div>
-  </div>
-</div>
-
 
 <!-- FORM RAPIDO PER MODIFICARE STATO / VISIBILITÀ / PUBLISHED_AT -->
 <div class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -268,7 +213,7 @@
                 url: superadmin_taxbranch_path(@taxbranch),
                 method: :patch,
                 local: true,
-                class: "grid gap-4 md:grid-cols-4 items-end" do |f| %>
+                class: "grid gap-4 md:grid-cols-5 items-end" do |f| %>
 
     <div>
       <%= f.label :status, "Stato", class: "block text-xs font-medium text-slate-600" %>
@@ -288,6 +233,14 @@
                      ["Pubblico",         :public_node]
                    ],
                    { selected: @taxbranch.visibility },
+                   class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :phase, "Fase", class: "block text-xs font-medium text-slate-600" %>
+      <%= f.select :phase,
+                   Taxbranch.phases.keys.map { |p| [p.humanize, p] },
+                   { include_blank: "—", selected: @taxbranch.phase },
                    class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
     </div>
 

@@ -41,33 +41,6 @@
     <p class="text-xs text-amber-800 mt-1">Tempo: <%= (@production_minutes.to_f / 60).round(1) %> h</p>
   </div>
 
-  <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
-    <div>
-      <h2 class="text-lg font-semibold text-slate-900">Rami Rails4B collegati</h2>
-      <% if @rails4b_branches.any? %>
-        <ul class="space-y-2 text-sm mt-2">
-          <% @rails4b_branches.each do |branch| %>
-            <li><%= link_to branch.display_label, superadmin_taxbranch_path(branch), class: "text-blue-600 hover:underline" %></li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="text-sm text-slate-500 mt-2">Nessun ramo officina associato a questo journey.</p>
-      <% end %>
-    </div>
-    <div>
-      <h2 class="text-lg font-semibold text-slate-900">Campagne Genera Impresa collegate</h2>
-      <% if @generaimpresa_branches.any? %>
-        <ul class="space-y-2 text-sm mt-2">
-          <% @generaimpresa_branches.each do |branch| %>
-            <li><%= link_to branch.display_label, superadmin_taxbranch_path(branch), class: "text-blue-600 hover:underline" %></li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="text-sm text-slate-500 mt-2">Nessuna campagna Genera Impresa collegata.</p>
-      <% end %>
-    </div>
-  </div>
-
   <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
     <h2 class="text-lg font-semibold text-slate-900 mb-4">Eventi del journey</h2>
     <% if @eventdates.any? %>

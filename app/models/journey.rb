@@ -1,5 +1,17 @@
 class Journey < ApplicationRecord
-   belongs_to :taxbranch, optional: true
+  enum :phase, {
+    problema: 0,
+    obiettivo: 1,
+    previsione: 2,
+    responsabile_progettazione: 3,
+    step_necessari: 4,
+    impegno: 5,
+    realizzazione: 6,
+    test: 7,
+    attivo: 8,
+    chiuso: 9
+  }, prefix: true
+  belongs_to :taxbranch, optional: true
   belongs_to :service,   optional: true
   belongs_to :lead,      optional: true
 
@@ -31,7 +43,8 @@ class Journey < ApplicationRecord
   enum :kind, {
     draft: 0,          # lo sto pensando
     template: 1,       # è il modello valido
-    instance_cycle: 2  # ciclo reale basato su un template
+    instance_cycle: 2,  # ciclo reale basato su un template
+    unico: 3 # una volta
   }
 
   store_accessor :meta, :color, :visibility, :tags

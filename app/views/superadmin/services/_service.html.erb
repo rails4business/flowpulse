@@ -1,98 +1,31 @@
-<div id="<%= dom_id service %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= service.name %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Slug:</strong>
-    <code class="text-xs bg-slate-100 px-2 py-1 rounded"><%= service.slug %></code>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= service.description %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Ruoli ammessi:</strong>
-    <% if service.allowed_roles.present? %>
-      <ul class="list-disc ml-5 text-sm text-slate-700 space-y-0.5">
-        <% service.allowed_roles.each do |role| %>
-          <li><%= role %></li>
-        <% end %>
-      </ul>
-    <% else %>
-      <span class="text-sm text-slate-500">Nessuna restrizione.</span>
-    <% end %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Ruoli rilasciati:</strong>
-    <% if service.output_roles.present? %>
-      <ul class="list-disc ml-5 text-sm text-slate-700 space-y-0.5">
-        <% service.output_roles.each do |role| %>
-          <li><%= role %></li>
-        <% end %>
-      </ul>
-    <% else %>
-      <span class="text-sm text-slate-500">Non specificato.</span>
-    <% end %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">N eventdates planned:</strong>
-    <%= service.n_eventdates_planned %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Price ticket euro:</strong>
-    <%= service.price_enrollment_euro %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Price ticket dash:</strong>
-    <%= service.price_ticket_dash %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Min tickets:</strong>
-    <%= service.min_tickets %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Max tickets:</strong>
-    <%= service.max_tickets %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Open by journey:</strong>
-    <%= service.open_by_journey? ? "Yes" : "No" %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Certificazione automatica:</strong>
-    <%= service.auto_certificate? ? "Sì" : "No" %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Verifica booking:</strong>
-    <%= service.require_booking_verification? ? "Richiesta" : "Non necessaria" %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Verifica finale:</strong>
-    <%= service.require_enrollment_verification? ? "Richiesta" : "Non necessaria" %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Ruoli verificatori:</strong>
-    <% if service.verifier_roles.present? %>
-      <ul class="list-disc ml-5 text-sm text-slate-700 space-y-0.5">
-        <% service.verifier_roles.each do |role| %>
-          <li><%= role %></li>
-        <% end %>
-      </ul>
-    <% else %>
-      <span class="text-sm text-slate-500">Nessun ruolo specificato.</span>
-    <% end %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Taxbranch:</strong>
-    <%= service.taxbranch_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Lead:</strong>
-    <%= service.lead_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Meta:</strong>
-    <%= service.meta %>
+<div id="<%= dom_id service %>" class="w-full max-w-sm my-5">
+  <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div class="mb-3 overflow-hidden rounded-lg bg-slate-100 aspect-square">
+      <% if service.image_url.present? %>
+        <img src="<%= service.image_url %>" alt="<%= service.name %>" class="h-full w-full object-cover" />
+      <% else %>
+        <div class="flex h-full items-center justify-center text-slate-300">
+          <svg class="h-12 w-12" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <rect x="12" y="12" width="40" height="40" rx="12" stroke="currentColor" stroke-width="2"></rect>
+            <circle cx="32" cy="32" r="10" stroke="currentColor" stroke-width="2"></circle>
+          </svg>
+        </div>
+      <% end %>
+    </div>
+    <div class="space-y-2">
+      <h3 class="text-lg font-semibold text-slate-900"><%= service.name %></h3>
+      <% if service.description.present? %>
+        <p class="text-sm text-slate-600"><%= service.description %></p>
+      <% end %>
+      <% if service.price_enrollment_euro.present? %>
+        <p class="text-sm font-semibold text-slate-800">
+          <% if service.price_enrollment_euro.to_f.zero? %>
+            Gratuito
+          <% else %>
+            <%= number_to_currency(service.price_enrollment_euro, unit: "€") %>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
   </div>
 </div>
