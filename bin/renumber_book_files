@@ -18,7 +18,7 @@
 # - sort by prefix then name
 # - rename to continuous sequence (001, 002, ...)
 # - do a two-phase rename via temporary names to avoid collisions
-
+# ruby bin/renumber_book_files config/data/book_official --apply
 require "fileutils"
 
 folder = ARGV.find { |a| !a.start_with?("--") } || "book"
