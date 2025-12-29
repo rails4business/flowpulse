@@ -94,3 +94,9 @@ Il professionista responsabile chiude il percorso.
 
 Feedback paziente e feedback professionisti.
 
+
+- i passaggi 
+
+Aprire un percorso  e i programmi e le varie regole 1 responsabile percorso
+
+apre il suo programma e fa aprire il programma agli altri

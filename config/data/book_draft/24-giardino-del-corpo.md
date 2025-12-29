@@ -26,3 +26,8 @@ un pò anche come i vecchi monasteri costruiamo il modelle e nel frattempo una c
 sono gli eventi e gli incontri e iniziare a raccogliere le risorse e costruire con flowpulse un sistema di persone che va in questa direzione partendo dalla salute dalla scuola sulla postura fino all'agriturismo rigenerativo
 
 per questo ecco che si può inizare da eventi ed epserienze: 
+
+
+
+
+ 

@@ -8,7 +8,7 @@
   <% parent_branch = @post.taxbranch.parent %>
   <% child_cta_taxbranch = @post.taxbranch.children.find { |child| child.post.present? && child.visible_and_published_for?(@post.lead) } %>
   <% child_cta_post = child_cta_taxbranch&.post %>
-  <% hero_image_url = "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png" %>
+  <% hero_image_url = @post.thumb_url.presence || @post.cover_url.presence %>
 
   <% raw_markdown = markdown(@post.content_md.to_s) %>
   <% preview_plain = strip_tags(raw_markdown) %>
@@ -40,7 +40,16 @@
           </div>
         </div>
         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-          <img src="<%= @post.thumb_url.presence || @post.cover_url.presence || hero_image_url %>" alt="<%= @post.title %>" class="rounded-3xl border border-slate-100 object-cover shadow-lg dark:border-slate-800">
+          <% if hero_image_url.present? %>
+            <img src="<%= hero_image_url %>" alt="<%= @post.title %>" class="rounded-3xl border border-slate-100 object-cover shadow-lg dark:border-slate-800">
+          <% else %>
+            <div class="w-full aspect-[4/3] rounded-3xl border border-slate-100 bg-slate-50 shadow-lg dark:border-slate-800 dark:bg-slate-900 flex items-center justify-center">
+              <svg class="h-20 w-20 text-slate-300 dark:text-slate-600" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <rect x="12" y="12" width="40" height="40" rx="12" stroke="currentColor" stroke-width="2"></rect>
+                <circle cx="32" cy="32" r="10" stroke="currentColor" stroke-width="2"></circle>
+              </svg>
+            </div>
+          <% end %>
        </div>
      </div>
    </section>

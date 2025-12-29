@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# se vuoi ordinare index  è in bin
 # bin/rails book:generate_md
 namespace :book do
   desc "Genera file markdown numerati nella cartella book"

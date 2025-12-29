@@ -50,41 +50,41 @@
     </div>
 
     <!-- Related posts -->
-    <% if @parent_taxbranch.children.any? %>
-  <div class="pt-8 my-12 border-t border-slate-200 dark:bg-slate-950 dark:text-white"></div>
+    <% if  0 == 1 #  @parent_taxbranch.children.any? %>
+      <div class="pt-8 my-12 border-t border-slate-200 dark:bg-slate-950 dark:text-white"></div>
 
-  <section class="space-y-8">
-    <h2 class="text-xl font-semibold text-slate-800 dark:text-white">
-      Articoli correlati
-    </h2>
+      <section class="space-y-8">
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-white">
+          Articoli correlati
+        </h2>
 
-    <% @parent_taxbranch.children.each do |child| %>
-      <% related = child.post %>
-      <% next if related.blank? %>
-      <% next if related.taxbranch.blank? %>
-      <% next unless related.taxbranch.visible_and_published_for?(@post.lead) %>
+        <% @parent_taxbranch.children.each do |child| %>
+          <% related = child.post %>
+          <% next if related.blank? %>
+          <% next if related.taxbranch.blank? %>
+          <% next unless related.taxbranch.visible_and_published_for?(@post.lead) %>
 
-      <article class="card p-4 rounded-lg border border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:bg-slate-950 dark:text-white">
-        <time datetime="<%= related.taxbranch.published_at&.to_date %>"
-              class="block text-xs uppercase tracking-wide text-slate-500 dark:text-white">
-          <%= related.taxbranch.published_at&.strftime("%d %b %Y") %>
-        </time>
+          <article class="card p-4 rounded-lg border border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:bg-slate-950 dark:text-white">
+            <time datetime="<%= related.taxbranch.published_at&.to_date %>"
+                  class="block text-xs uppercase tracking-wide text-slate-500 dark:text-white">
+              <%= related.taxbranch.published_at&.strftime("%d %b %Y") %>
+            </time>
 
-        <h3 class="mt-1 text-lg font-semibold leading-snug">
-          <%= link_to related, class: "hover:underline decoration-2 underline-offset-2" do %>
-            <%= related.title %>
-          <% end %>
-        </h3>
+            <h3 class="mt-1 text-lg font-semibold leading-snug">
+              <%= link_to related, class: "hover:underline decoration-2 underline-offset-2" do %>
+                <%= related.title %>
+              <% end %>
+            </h3>
 
-        <% if related.description.present? %>
-          <p class="mt-2 text-slate-700 dark:text-white">
-            <%= related.description %>
-          </p>
+            <% if related.description.present? %>
+              <p class="mt-2 text-slate-700 dark:text-white">
+                <%= related.description %>
+              </p>
+            <% end %>
+          </article>
         <% end %>
-      </article>
+      </section>
     <% end %>
-  </section>
-<% end %>
 
 
     <!-- Footer -->

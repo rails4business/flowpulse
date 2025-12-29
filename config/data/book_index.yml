@@ -3,12 +3,20 @@
 #  title: "Il corpo un mondo da scoprire"
 #  description: "Dall'esperienza sul corpo con la scuola sulla postura, verso l’agriturismo rigenerativo il giardino del corpo, con gli eventi per lo sviluppo armonico dell’essere umano!"
 
-  
+
+
 - header: true
   title: "INTRODUZIONE"
   description: "Per colleghi, pazienti, amici e compagni di viaggio"
   slug: "introduzione-pc-gdc"
   color: "neutro"
+
+- header: false
+  title: "Come leggere questo libro"
+  description: "Un percorso per la salute... e un avventura"
+  slug: "come-leggere-questo-libro"
+  color: "neutro"
+
 
 - header: false
   title: "Un viaggio dalla postura, fino al territorio?"
@@ -18,9 +26,9 @@
 
 
 - header: true
-  title: "PARTE I – INIZIAMO DA QUALCOSA DI SEMPLICE  "
+  title: "PARTE I – un semplice programma per iniziare"
   description: "Un primo percorso semplice per mettere in pratica alcuni esercizi sulla postura"
-  slug: "parte-1-cura-dolore-salute"
+  slug: "parte-1-un-semplice-programma-per-iniziare"
   color: "blu"
 
 - header: false
@@ -212,10 +220,18 @@
   slug: "presentazione-del-libro-e-del-progetto"
   color: "viola"
 
+
+
 - header: false
   title: "Eventi/seminari a tema"
   description: "Organizziamo eventi e seminari a tema sulla postura, la fisiologia, la salute e il benessere integrato e sui modelli tra fisiologia ed evoluzione armonica dell'essere umano"
   slug: "eventi-seminari-a-tema"
+  color: "viola"
+
+- header: false
+  title: "L'importanza dei luoghi"
+  description: "Organizziamo eventi e seminari a tema sulla postura, la fisiologia, la salute e il benessere integrato e sui modelli tra fisiologia ed evoluzione armonica dell'essere umano"
+  slug: "importanza-dei-luoghi"
   color: "viola"
 
 - header: false
@@ -245,15 +261,20 @@
   title: "Professionisti sanitari e del benessere"
   description: "Perchè collaborare con PosturaCorretta come professionista sanitario o del benessere"
   slug: "professionisti-sanitari-e-del-benessere"
-  color: "rosso"
-
+  color: "blu-scuro"
+  
+- header: false
+  title: "Facciamo evolvere il modo di fare ricerca"
+  description: "La ricerca che nasce dai feedback dei percorsi svolti in studio con le persone"
+  slug: "facciamo-evolvere-il-modo-di-fare-ricerca"
+  color: "blu-scuro"
 
 
 - header: false
   title: "Porta postura corretta nel tuo studio"
-  description: "Fai conoscere ai tuoi pazienti e clienti le metodiche posturali e la fisiologia"
+  description: "Attiva i servizi e i percorsi posturacorretta e portali ai tuoi pazienti/clienti"
   slug: "porta-postura-corretta-nel-tuo-studio"
-  color: "blu"
+  color: "blu-scuro"
 
 
 
@@ -261,26 +282,26 @@
   title: "Fai conoscere le metodiche posturali che utilizzi"
   description: "Tramite posturacorretta potrai far conoscere le metodiche posturali e la fisiologia che utilizzi nel tuo studio"
   slug: "fai-conoscere-le-metodich-posturali-che-utilizzi"
-  color: "blu"
+  color: "blu-scuro"
 
 - header: false
   title: "Diventa Divulgatore Youtube e Social"
   description: "Diventa un divulgatore delle metodiche posturali e della fisiologia attraverso i canali social di PosturaCorretta"
   slug: "diventa-divulgatore-youtube-e-social"
-  color: "blu"
+  color: "blu-scuro"
 
 
 - header: false
   title: "Differenza tra professionista e insegnanti"
   description: "Organizzare salute, lavoro e formazione attraverso processi e tecnologia"
   slug:  "differenza-tra-professionista-e-insegnanti"
-  color: "blu"
+  color: "blu-scuro"
 
 - header: false
   title: "🅿️ 👩🏼‍⚕️ I ruoli nella scuola Postura e fisiologia"
   description: "Diventa insegnante tutor o team-manager nella scuola sulla postura e la fisiologia"
-  slug: "ruoli-nell-scuola-postura-corretta"
-  color: "blu"
+  slug: "ruoli-nella-scuola-postura-corretta"
+  color: "blu-scuro"
 
 
 
@@ -288,7 +309,13 @@
   title: "Creare percorsi integrati con PosturaCorretta"
   description: "Collaborare conoscendo e rispettando i ruoli della propria professione e di quella di chi collabora con te, seguendo le linee guida etiche"
   slug: "creare-percorsi-integrati-con-postura-corretta"
-  color: "blu"
+  color: "blu-scuro"
+
+- header: false
+  title: "Esempi concreti"
+  description: Cosa succede oggi e cosa può succedere quando PosturaCorretta funziona davvero"
+  slug: "esempi-concreti"
+  color: "blu-scuro"
 
 
 
@@ -302,9 +329,9 @@
   color: "arancione"
 
 - header: false
-  title: "🟠 🧑🏻‍🎨 🧑‍💻 Entra a far parte dei creator"
+  title: "🟠 🧑🏻‍🎨 🧑‍💻 Entra a far parte dei digital"
   description: "Come è possibile lavorare per costruire progetti in modo collaborativo all'interno di Flowpulse"
-  slug: "entra-a-far-parte-dei-creator"
+  slug: "entra-a-far-parte-dei-digital"
   color: "arancione"
 
 - header: false

@@ -1,11 +1,11 @@
 ---
-title: "🟠 🧑🏻‍🎨 🧑‍💻 Entra a far parte dei creator"
+title: "🟠 🧑🏻‍🎨 🧑‍💻 Entra a far parte dei digital"
 description: "Come è possibile lavorare per costruire progetti in modo collaborativo all'interno di Flowpulse"
-slug: "entra-a-far-parte-dei-creator"
+slug: "entra-a-far-parte-dei-digital"
 color: "arancione"
 ---
 
-# 🟠 🧑🏻‍🎨 🧑‍💻 Entra a far parte dei creator
+# 🟠 🧑🏻‍🎨 🧑‍💻 Entra a far parte dei digital
 
 Passiamo ai collaboratori digital
 

@@ -8,6 +8,7 @@ color: "rosso"
 # 🔴 Stop al dolore Curare una patologia
 
 
+# ---> la dose minima efficace team ferris
 
 
 Negli anni di lavoro come fisioterapista ho scoperto una cosa fondamentale:la patologia, per quanto dolorosa e limitante, diventa per molti la prima occasione per intraprendere un percorso di salute.
