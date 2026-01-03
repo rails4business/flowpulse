@@ -17,7 +17,20 @@ class Datacontact < ApplicationRecord
            class_name: "Enrollment",
            foreign_key: :invited_by_lead_id
 
+
   def full_name
-    [ first_name, last_name ].compact.join(" ")
+    [ first_name, last_name ].compact.join(" ").presence
+  end
+
+  def display_label
+    full_name || email || phone || "Contatto"
+  end
+
+  def owned_by?(lead)
+    lead.present? && lead_id == lead.id
+  end
+
+  def referent_is?(lead)
+    lead.present? && referent_lead_id == lead.id
   end
 end

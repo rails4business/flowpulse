@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Layout spostabile – 3 pezzi + cerchi sotto</title>
+
+  <style>
+    :root{
+      --crown:  #8E24AA;
+      --third:  #3949AB;
+      --throat: #1E88E5;
+      --heart:  #43A047;
+      --solar:  #FDD835;
+      --sacral: #FB8C00;
+      --root:   #E53935;
+
+      --bg:#fff;
+
+      --size: min(480px, 58vmin, 78vw);
+      --step: 0.058;
+      --white: 5.3px;
+      --radius: 20px;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--bg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      overflow:hidden; /* così trascini senza “saltare” la pagina */
+    }
+
+    /* “tavolo da lavoro” */
+    .board{
+      position:relative;
+      width:100vw;
+      height:100vh;
+    }
+
+    /* unità comune */
+    .unit{ --h: calc(var(--size) * var(--step)); }
+
+    /* pezzi spostabili */
+    .piece{
+      position:absolute;
+      width: var(--size);
+      cursor: grab;
+      user-select:none;
+      touch-action:none;
+    }
+    .piece:active{ cursor: grabbing; }
+
+    /* livelli */
+    #circles{ z-index: 1; }
+    #claims{  z-index: 3; }
+    #areas{   z-index: 3; }
+
+    /* PIRAMIDI */
+    .piramide{
+      display:flex;
+      flex-direction:column;
+      gap: var(--white);
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.10));
+    }
+    .bar{
+      height: var(--h);
+      width: var(--w, 100%);
+      border-radius: var(--radius);
+      display:flex;
+      align-items:center;
+      padding: 0 22px;
+      font-weight: 900;
+      font-size: clamp(14px, calc(var(--h) * 0.38), 30px);
+      line-height: 1;
+      overflow:hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .darkText{ color:#1f1f1f; }
+    .lightText{ color:#fff; }
+
+    /* barra superiore non a piramide */
+    #claims .bar{ width: 100%; }
+
+    /* ambiti: scalini a sinistra */
+    #areas .bar{
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    /* CERCHI */
+    .stage{
+      width: var(--size);
+      aspect-ratio: 1/1;
+      position:relative;
+    }
+    .ring{
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+      box-shadow: 0 0 0 var(--white) #fff inset;
+    }
+    .r1{ background:var(--crown);  inset: 0%;  }
+    .r2{ background:var(--third);  inset: 7%;  }
+    .r3{ background:var(--throat); inset: 14%; }
+    .r4{ background:var(--heart);  inset: 21%; }
+    .r5{ background:var(--solar);  inset: 28%; }
+    .r6{ background:var(--sacral); inset: 35%; }
+    .r7{ background:var(--root);   inset: 42%; }
+
+    /* posizioni iniziali (poi puoi trascinare) */
+    #claims{ left: 4vw;  top: 2vh; }
+    #circles{ left: 30vw; top: 24vh; }
+    #areas{  left: 4vw;  top: 62vh; }
+
+    /* mini maniglia visiva (facoltativa) */
+    .handle{
+      position:absolute;
+      top:-14px;
+      left:0;
+      font-size:12px;
+      color:#444;
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:999px;
+      padding:6px 10px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+      user-select:none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="board unit">
+
+    <!-- AFFERMAZIONI (sopra) -->
+    <section id="claims" class="piece" data-key="claims" aria-label="Affermazioni">
+  
+      <div class="piramide">
+        <div class="bar lightText" style="--w:100%; background:var(--crown);">Ho il diritto di conoscere, di connettermi con il tutto e di avere consapevolezza universale</div>
+        <div class="bar lightText" style="--w:96%;  background:var(--third);">Ho il diritto, di percepire oltre l’ovvio, di vedere la verità, di essere intuitivo, </div>
+        <div class="bar lightText" style="--w:92%;  background:var(--throat);">Ho il diritto di parlare la mia verità, di esprimermi liberamente e di ascoltare</div>
+        <div class="bar lightText" style="--w:88%;  background:var(--heart);">Ho il diritto di amare ed essere amato, di ricevere e offrire amore, compassione e perdono</div>
+        <div class="bar darkText"  style="--w:84%;  background:var(--solar);">Ho il diritto di agire, di avere potere personale, di prendere decisioni</div>
+        <div class="bar lightText" style="--w:80%;  background:var(--sacral);">Ho il diritto di provare gioia e piacere, di essere creativo e di seguire i miei desideri</div>
+        <div class="bar lightText" style="--w:76%;  background:var(--root);">Ho il diritto di esistere, di essere qui, di avere ciò di cui ho bisogno per vivere</div>
+      </div>
+      
+      
+    </section>
+
+    <!-- CERCHI (sempre sotto) -->
+    <section id="circles" class="piece" data-key="circles" aria-label="Cerchi concentrici">
+
+      <div class="stage">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <div class="ring r4"></div>
+        <div class="ring r5"></div>
+        <div class="ring r6"></div>
+        <div class="ring r7"></div>
+      </div>
+    </section>
+
+    <!-- AMBITI (sopra) -->
+    <section id="areas" class="piece" data-key="areas" aria-label="Ambiti">
+
+      <div class="piramide">
+        <div class="bar lightText" style="--w:76%;  background:var(--root);">Cura • Patologie • Riabilitazione</div>
+        <div class="bar lightText" style="--w:80%;  background:var(--sacral);">Lavoro • Prevenzione • Performances</div>
+        <div class="bar darkText"  style="--w:84%;  background:var(--solar);">Fitness</div>
+        <div class="bar lightText" style="--w:88%;  background:var(--heart);">Benessere • Discipline bionaturali</div>
+        <div class="bar lightText" style="--w:92%;  background:var(--throat);">Educazione • Riscoprire la fisiologia</div>
+        <div class="bar lightText" style="--w:96%;  background:var(--third);">Servizi alla persona • Estetica</div>
+        <div class="bar lightText" style="--w:100%; background:var(--crown);">Evoluzione armonica • Territorio • Stile di vita</div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Drag + salva posizione in localStorage
+    const pieces = document.querySelectorAll(".piece");
+
+    function loadPos(el){
+      const key = el.dataset.key;
+      const raw = localStorage.getItem("pos:" + key);
+      if(!raw) return;
+      try{
+        const {left, top} = JSON.parse(raw);
+        if(typeof left === "number") el.style.left = left + "px";
+        if(typeof top  === "number") el.style.top  = top  + "px";
+      }catch(e){}
+    }
+
+    function savePos(el){
+      const key = el.dataset.key;
+      const left = el.offsetLeft;
+      const top  = el.offsetTop;
+      localStorage.setItem("pos:" + key, JSON.stringify({left, top}));
+    }
+
+    pieces.forEach(loadPos);
+
+    pieces.forEach(el => {
+      let startX=0, startY=0, startLeft=0, startTop=0, dragging=false;
+
+      const onDown = (ev) => {
+        dragging = true;
+        el.style.zIndex = el.id === "circles" ? 1 : 4; // mentre trascini sta sopra (tranne cerchi)
+        const p = ev.touches ? ev.touches[0] : ev;
+        startX = p.clientX;
+        startY = p.clientY;
+        startLeft = el.offsetLeft;
+        startTop  = el.offsetTop;
+        ev.preventDefault();
+      };
+
+      const onMove = (ev) => {
+        if(!dragging) return;
+        const p = ev.touches ? ev.touches[0] : ev;
+        const dx = p.clientX - startX;
+        const dy = p.clientY - startY;
+        el.style.left = (startLeft + dx) + "px";
+        el.style.top  = (startTop  + dy) + "px";
+      };
+
+      const onUp = () => {
+        if(!dragging) return;
+        dragging = false;
+        // ripristina z-index “regole”
+        el.style.zIndex = (el.id === "circles") ? 1 : 3;
+        savePos(el);
+      };
+
+      el.addEventListener("mousedown", onDown);
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+
+      el.addEventListener("touchstart", onDown, {passive:false});
+      window.addEventListener("touchmove", onMove, {passive:false});
+      window.addEventListener("touchend", onUp);
+    });
+  </script>
+</body>
+</html>
+
+

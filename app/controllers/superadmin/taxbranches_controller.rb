@@ -1,8 +1,9 @@
 module Superadmin
   class TaxbranchesController < ApplicationController
     include RequireSuperadmin
+
     before_action :set_taxbranch, only: %i[
-      show edit update destroy journeys
+      show edit update destroy journeys positioning set_link_child
       move_down move_up move_right move_left
     ]
     before_action :load_domains, only: %i[new edit create update]
@@ -161,17 +162,21 @@ end
     rows = @taxbranch.tag_positionings
     counts = rows.group(:name, :category).count
     @items = counts.map { |(name, cat), n| { text: name, count: n, cat: cat } }
+       @tags_by_category = @taxbranch.tag_positionings.order(:category, :name).group_by(&:category)
   end
 
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_taxbranch
-    @taxbranch =
-      if defined?(Taxbranch.friendly)
-        Taxbranch.friendly.find(params[:id])
-      else
-        Taxbranch.find_by(id: params[:id]) || Taxbranch.find_by(slug: params[:id])
-      end
+        @taxbranch =
+          if Taxbranch.respond_to?(:friendly)
+            Taxbranch.friendly.find(params[:id])
+          else
+            Taxbranch.find_by(id: params[:id]) || Taxbranch.find_by(slug: params[:id])
+          end
+
+        redirect_to superadmin_taxbranches_path, alert: "Taxbranch non trovato." if @taxbranch.nil?
+
   rescue ActiveRecord::RecordNotFound
     redirect_to superadmin_taxbranches_path, alert: "Taxbranch non trovato."
   end

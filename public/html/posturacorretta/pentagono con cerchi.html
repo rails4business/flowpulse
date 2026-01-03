@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Aree della Salute – Pentagono</title>
+
+<style>
+:root{
+  --bg:#0b0f14;
+  --text:#ffffff;
+
+  --rosso:#dc2626;
+  --giallo:#facc15;
+  --viola:#2e1065;
+  --azzurro:#38bdf8;
+  --verde:#22c55e;
+  --blu-scuro:#0f172a;
+}
+
+body{
+  margin:0;
+  display:grid;
+  place-items:center;
+  background: radial-gradient(1000px 700px at 50% 30%, rgba(255,255,255,.08), transparent 60%), var(--bg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
+}
+
+svg{
+  width: min(1000px, 96vw);
+  height: auto;
+}
+
+/* STRUTTURA */
+.pentagon{
+  stroke: rgba(255,255,255,.9);
+  stroke-width: 5;
+  fill: none;
+}
+
+.ray{
+  stroke: rgba(255,255,255,.75);
+  stroke-width: 4;
+}
+
+.node circle{
+  stroke: rgba(255,255,255,.95);
+  stroke-width: 5;
+  filter: drop-shadow(0 16px 32px rgba(0,0,0,.55));
+}
+
+text{
+  fill:white;
+  text-anchor:middle;
+  dominant-baseline:middle;
+  font-weight:600;
+  letter-spacing:.3px;
+}
+
+.label-main{ font-size:18px; }
+.label-small{ font-size:14px; opacity:.9; }
+</style>
+</head>
+
+<body>
+
+<svg viewBox="0 0 1000 720">
+
+  <!-- PENTAGONO -->
+  <path class="pentagon"
+    d="M 500 110
+       L 740 300
+       L 650 580
+       L 350 580
+       L 260 300 Z"/>
+
+  <!-- RAGGI -->
+  <line class="ray" x1="500" y1="110" x2="500" y2="360"/>
+  <line class="ray" x1="740" y1="300" x2="500" y2="360"/>
+  <line class="ray" x1="650" y1="580" x2="500" y2="360"/>
+  <line class="ray" x1="350" y1="580" x2="500" y2="360"/>
+  <line class="ray" x1="260" y1="300" x2="500" y2="360"/>
+
+  <!-- NODI -->
+  <g class="node">
+    <circle cx="500" cy="110" r="85" fill="var(--giallo)"/>
+    <text x="500" y="100" class="label-main">Nutrire</text>
+    <text x="500" y="125" class="label-small">il corpo</text>
+  </g>
+
+  <g class="node">
+    <circle cx="740" cy="300" r="85" fill="var(--azzurro)"/>
+    <text x="740" y="285" class="label-main">Recupero</text>
+    <text x="740" y="310" class="label-small">terapie manuali</text>
+  </g>
+
+  <g class="node">
+    <circle cx="650" cy="580" r="85" fill="var(--viola)"/>
+    <text x="650" y="565" class="label-main">Movimento</text>
+    <text x="650" y="590" class="label-small">allenamento</text>
+  </g>
+
+  <g class="node">
+    <circle cx="350" cy="580" r="85" fill="var(--verde)"/>
+    <text x="350" y="565" class="label-main">Emotivo</text>
+    <text x="350" y="590" class="label-small">mentale</text>
+  </g>
+
+  <g class="node">
+    <circle cx="260" cy="300" r="85" fill="var(--rosso)"/>
+    <text x="260" y="285" class="label-main">Piante</text>
+    <text x="260" y="310" class="label-small">integratori • farmaci</text>
+  </g>
+
+  <!-- CENTRO -->
+  <g class="node">
+    <circle cx="500" cy="360" r="110" fill="var(--blu-scuro)"/>
+	 <text x="500" y="335" class="label-main">Educazione Fisiologia</text>
+    <text x="500" y="365" class="label-main">Metodiche Posturali </text>
+    <text x="500" y="395" class="label-main">coscienza corporea</text>
+  </g>
+
+</svg>
+
+</body>
+</html>

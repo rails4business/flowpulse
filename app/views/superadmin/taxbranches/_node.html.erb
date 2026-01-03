@@ -91,7 +91,7 @@
              else node.visibility.to_s.titleize
              end %>
 
-        <% if node.public_node? && node.post.present? %>
+        <% if node.public_node? && node.post&.persisted? %>
           <%= link_to post_path(node.post),
                       class: "ml-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100" do %>
             <%= human_visibility %>
