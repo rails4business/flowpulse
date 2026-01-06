@@ -16,11 +16,24 @@
 # - Confronta conteggi e slugs (ordine incluso)
 # - Se --write: riscrive book_index.yml usando i dati dei .md (con backup)
 
-# ruby sync_book_index.rb config/data/book_index.yml config/data/book_official
+# ruby sync_book_index.rb ../config/data/book_index.yml ../config/data/book_official
 
 # 2) se il report è ok e vuoi aggiornare davvero
-# ruby sync_book_index.rb config/data/book_index.yml config/data/book_official --write
+# ruby sync_book_index.rb ../config/data/book_index.yml ../config/data/book_official --write
 
+#!/usr/bin/env ruby
+# sync_book_index.rb
+#
+# Uso:
+#   ruby sync_book_index.rb path/book_index.yml path/book_official_dir [--write]
+#
+# Regole:
+# - Fonte di verità = file .md in book_official_dir
+# - Ordine = prefisso numerico 001-, 002-, ...
+# - header = SOLO dal nome file:
+#     se basename matcha /^\d+[-_]parte[-_]/ => header true
+#     altrimenti => header false
+# - --write riscrive book_index.yml (con backup), NON modifica mai i .md
 
 require "yaml"
 require "fileutils"
@@ -37,12 +50,6 @@ def read_text(path)
 end
 
 def parse_front_matter(md_text, file:)
-  # Cerca front matter del tipo:
-  # ---
-  # key: value
-  # ---
-  #
-  # Restituisce hash YAML oppure {} se non trovato
   if md_text =~ /\A---\s*\n(.*?)\n---\s*\n/m
     fm = Regexp.last_match(1)
     begin
@@ -58,7 +65,6 @@ end
 def md_files_sorted(dir)
   files = Dir.glob(File.join(dir, "**", "*.md")).select { |p| File.file?(p) }
 
-  # Ordina per prefisso numerico se presente (001-...), altrimenti per path
   files.sort_by do |path|
     base = File.basename(path)
     if base =~ /\A(\d+)[-_]/
@@ -69,9 +75,15 @@ def md_files_sorted(dir)
   end
 end
 
-def normalize_entry_hash(h)
+# header SOLO dal nome file: 0XX-parte-... => true
+def header_from_filename(path)
+  base = File.basename(path).downcase
+  !!(base =~ /\A\d+[-_]parte[-_]/)
+end
+
+def normalize_entry_hash(h, forced_header: nil)
   {
-    "header" => h["header"] == true,
+    "header" => forced_header.nil? ? (h["header"] == true) : forced_header,
     "title" => (h["title"] || "").to_s.strip,
     "description" => (h["description"] || "").to_s.strip,
     "slug" => (h["slug"] || "").to_s.strip,
@@ -93,9 +105,9 @@ def extract_entries_from_md(dir)
       next
     end
 
-    e = normalize_entry_hash(fm)
+    forced_header = header_from_filename(file)
+    e = normalize_entry_hash(fm, forced_header: forced_header)
 
-    # campi minimi necessari
     req = %w[title slug]
     bad = req.select { |k| e[k].nil? || e[k].empty? }
     missing_fields << [file, bad] if bad.any?
@@ -117,16 +129,12 @@ def load_book_index(path)
 end
 
 def file_preamble_before_list(yml_text)
-  # Teniamo tutto quello che sta prima della prima voce "- "
-  # (utile per commenti e header del file).
   idx = yml_text.index(/^\s*-\s+/)
   return "" if idx.nil?
   yml_text[0...idx].rstrip + "\n\n"
 end
 
 def yaml_for_entries(entries)
-  # YAML “pulito” stile che hai già: array di mappe
-  # (Ruby YAML tende a formattare con ---; evitiamo e scriviamo a mano).
   out = +""
   entries.each do |e|
     out << "- header: #{e["header"] ? "true" : "false"}\n"
@@ -157,7 +165,8 @@ die("Cartella non trovata: #{official_dir}") unless Dir.exist?(official_dir)
 puts "== Sync book_index.yml <-> book_official =="
 puts "Index:    #{index_path}"
 puts "Official: #{official_dir}"
-puts "Mode:     #{write ? "WRITE (aggiorna file)" : "DRY RUN (solo confronto)"}"
+puts "Mode:     #{write ? "WRITE (aggiorna index da .md)" : "DRY RUN (solo confronto)"}"
+puts "Source of truth: .md (l'index non modifica mai i file .md)"
 puts
 
 index_entries = load_book_index(index_path)
@@ -180,7 +189,6 @@ if missing_fields.any?
   end
 end
 
-# Duplicati slug nei md
 dupes = slug_dupes(md_entries)
 if dupes.any?
   puts
@@ -191,7 +199,6 @@ end
 
 puts
 
-# Confronto slugs (ordine incluso)
 index_slugs = index_entries.map { |e| e["slug"] }
 md_slugs = md_entries.map { |e| e["slug"] }
 
@@ -214,7 +221,6 @@ max = [index_slugs.size, md_slugs.size].max
   puts
 end
 
-# Confronto set (slugs mancanti / extra)
 only_in_index = index_slugs - md_slugs
 only_in_md = md_slugs - index_slugs
 
@@ -238,12 +244,11 @@ else
   puts "⚠️  Differenze trovate tra index e .md (vedi sopra)."
 end
 
-# Scrittura file se richiesto
 if write
   yml_text = read_text(index_path)
   preamble = file_preamble_before_list(yml_text)
 
-  new_body = yaml_for_entries(md_entries)
+  new_body = yaml_for_entries(md_entries) # header già calcolato dai nomi file
   new_text = preamble + new_body
 
   backup_path = index_path + ".bak"
@@ -251,6 +256,6 @@ if write
   File.write(index_path, new_text)
 
   puts
-  puts "✅ Aggiornato: #{index_path}"
-  puts "🧷 Backup:     #{backup_path}"
+  puts "✅ Aggiornato (MD → index): #{index_path}"
+  puts "🧷 Backup:               #{backup_path}"
 end

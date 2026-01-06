@@ -1,11 +1,13 @@
 ---
-title: "PARTE V – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE"
+title: "PARTE VI – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE"
 description: "In un mondo che cambia, imparare e lavorare diventano un unico processo"
-slug: "parte-5-lavoro-formazione-convergenza"
+slug: "parte-6-lavoro-formazione-convergenza"
 color: "arancione"
 ---
 
-# PARTE IV – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE
+# PARTE VI – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE
+
+## In un mondo che cambia, imparare e lavorare diventano un unico processo
 
 Inside adventure poi flowpulse si mette per i collaboratori e in inside adventure si mette l'idea di flowpulse così abbiamo un ponte che va dalla:
 

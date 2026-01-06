@@ -1,7 +1,7 @@
 ---
-title: "PARTE I – PREVENZIONE"
+title: "PARTE I – CORSI"
 description: "Corsi per varie categorie, lavorative attività"
-slug: "parte-1-prevenzione"
+slug: "parte-1-CORSI"
 color: "blu"
 ---
 

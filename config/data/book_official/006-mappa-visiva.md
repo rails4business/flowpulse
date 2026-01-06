@@ -7,6 +7,10 @@ color: "neutro"
 
 # mappa visiva:
 
+CORSI
+CREA IL TUO PERCORSO
+OLTRE LA POSTURA
+
 ## Parti del libro
 
 1. Per iniziare il percorso:

@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>
+      Dashboard — WeekPlan / Ruoli / Attività / Processi / Obiettivi
+    </title>
+
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #111b2e;
+        --panel2: #0f172a;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --line: rgba(255, 255, 255, 0.1);
+        --chip: rgba(255, 255, 255, 0.08);
+        --ok: #22c55e;
+        --warn: #f59e0b;
+        --bad: #ef4444;
+        --blue: #60a5fa;
+        --violet: #a78bfa;
+        --green: #34d399;
+        --red: #fb7185;
+        --orange: #fbbf24;
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial;
+        background: radial-gradient(
+            1200px 800px at 20% 10%,
+            rgba(96, 165, 250, 0.15),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 700px at 80% 0%,
+            rgba(167, 139, 250, 0.12),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 700px at 60% 90%,
+            rgba(52, 211, 153, 0.1),
+            transparent 55%
+          ),
+          var(--bg);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 18px 16px 32px;
+      }
+      header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 14px 10px;
+        border: 1px solid var(--line);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        border-radius: var(--radius);
+        backdrop-filter: blur(8px);
+      }
+      .title h1 {
+        font-size: 18px;
+        margin: 0 0 6px;
+      }
+      .title p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      button,
+      .btn {
+        appearance: none;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+      }
+      button:hover,
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.09);
+      }
+      .btn-ghost {
+        background: transparent;
+      }
+      .btn-primary {
+        background: rgba(96, 165, 250, 0.18);
+        border-color: rgba(96, 165, 250, 0.35);
+      }
+      .btn-primary:hover {
+        background: rgba(96, 165, 250, 0.24);
+      }
+      .pill {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 7px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--blue);
+        display: inline-block;
+      }
+      .dot.red {
+        background: var(--red);
+      }
+      .dot.green {
+        background: var(--green);
+      }
+      .dot.violet {
+        background: var(--violet);
+      }
+      .dot.orange {
+        background: var(--orange);
+      }
+
+      /* Tabs */
+      .tabs {
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .tabbar {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .tab {
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .tab[aria-selected="true"] {
+        color: var(--text);
+        border-color: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      /* Panels / Layout */
+      .panel {
+        display: none;
+        padding: 14px;
+      }
+      .panel.active {
+        display: block;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 12px;
+      }
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: var(--radius);
+        padding: 12px;
+      }
+      .card h2 {
+        margin: 0 0 10px;
+        font-size: 14px;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: -6px;
+        margin-bottom: 10px;
+        line-height: 1.35;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .row + .row {
+        margin-top: 8px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .kpi {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      @media (max-width: 820px) {
+        .kpi {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      .kpi .box {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 16px;
+        padding: 10px;
+      }
+      .kpi .num {
+        font-size: 18px;
+        font-weight: 900;
+        margin: 2px 0 2px;
+      }
+      .kpi .lbl {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .tag {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        background: var(--chip);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        color: var(--muted);
+        gap: 8px;
+        align-items: center;
+        white-space: nowrap;
+      }
+      .tag strong {
+        color: var(--text);
+      }
+      .tag .mini {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--blue);
+      }
+      .tag.red .mini {
+        background: var(--red);
+      }
+      .tag.green .mini {
+        background: var(--green);
+      }
+      .tag.violet .mini {
+        background: var(--violet);
+      }
+      .tag.orange .mini {
+        background: var(--orange);
+      }
+
+      /* Tables (simple) */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 14px;
+      }
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 10px 10px;
+        text-align: left;
+        font-size: 13px;
+        vertical-align: top;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.02em;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .status .s {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--warn);
+      }
+      .status.ok .s {
+        background: var(--ok);
+      }
+      .status.bad .s {
+        background: var(--bad);
+      }
+      .status.warn .s {
+        background: var(--warn);
+      }
+
+      /* Weekplan board */
+      .week {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+      }
+      @media (max-width: 980px) {
+        .week {
+          grid-template-columns: 1fr;
+        }
+      }
+      .day {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: var(--radius);
+        padding: 10px;
+        min-height: 240px;
+      }
+      .day h3 {
+        margin: 0 0 8px;
+        font-size: 13px;
+      }
+      .slot {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      }
+      .slot:first-of-type {
+        border-top: none;
+        padding-top: 0;
+      }
+      .slot .when {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+      .item {
+        margin-top: 6px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 14px;
+        padding: 8px 9px;
+      }
+      .item .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .item .name {
+        font-weight: 900;
+        font-size: 12px;
+      }
+      .item .meta {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+      }
+      .chip {
+        padding: 5px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 11px;
+        color: var(--muted);
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .chip .c {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--blue);
+      }
+      .chip.red .c {
+        background: var(--red);
+      }
+      .chip.green .c {
+        background: var(--green);
+      }
+      .chip.violet .c {
+        background: var(--violet);
+      }
+      .chip.orange .c {
+        background: var(--orange);
+      }
+
+      /* Forms */
+      .form-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .field {
+        flex: 1;
+        min-width: 220px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0 0 6px;
+        font-weight: 800;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 11px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(15, 23, 42, 0.65);
+        color: var(--text);
+        outline: none;
+      }
+      textarea {
+        min-height: 94px;
+        resize: vertical;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+        line-height: 1.35;
+      }
+      .footer-note {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="title">
+          <h1>Dashboard Operativa</h1>
+          <p>
+            WeekPlan • Ruoli • Attività • Processi (Journey) • Obiettivi — una
+            vista unica per “ripetere bene” e lasciare spazio a ricerca, clinica
+            e creazione.
+          </p>
+          <div
+            style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap"
+          >
+            <span class="pill"><span class="dot"></span>Contenuti</span>
+            <span class="pill"><span class="dot red"></span>Clinica</span>
+            <span class="pill"
+              ><span class="dot green"></span>Benessere/Diario</span
+            >
+            <span class="pill"
+              ><span class="dot orange"></span>Piattaforma</span
+            >
+            <span class="pill"
+              ><span class="dot violet"></span>Territorio/Eventi</span
+            >
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="btnExport">Esporta JSON</button>
+          <button class="btn btn-ghost" id="btnReset">Reset demo</button>
+          <button class="btn btn-primary" id="btnSave">Salva</button>
+        </div>
+      </header>
+
+      <section class="tabs" id="tabs">
+        <div class="tabbar" role="tablist" aria-label="Sezioni dashboard">
+          <div
+            class="tab"
+            role="tab"
+            tabindex="0"
+            aria-selected="true"
+            data-tab="weekplan"
+          >
+            WeekPlan
+          </div>
+          <div
+            class="tab"
+            role="tab"
+            tabindex="-1"
+            aria-selected="false"
+            data-tab="ruoli"
+          >
+            Ruoli
+          </div>
+          <div
+            class="tab"
+            role="tab"
+            tabindex="-1"
+            aria-selected="false"
+            data-tab="attivita"
+          >
+            Attività
+          </div>
+          <div
+            class="tab"
+            role="tab"
+            tabindex="-1"
+            aria-selected="false"
+            data-tab="processi"
+          >
+            Processi (Journey)
+          </div>
+          <div
+            class="tab"
+            role="tab"
+            tabindex="-1"
+            aria-selected="false"
+            data-tab="obiettivi"
+          >
+            Obiettivi
+          </div>
+        </div>
+
+        <!-- WEEKPLAN -->
+        <div
+          class="panel active"
+          id="panel-weekplan"
+          role="tabpanel"
+          aria-label="WeekPlan"
+        >
+          <div class="grid">
+            <div class="card">
+              <h2>Settimana (slot)</h2>
+              <p class="sub">
+                Esempio sostenibile: contenuto madre, clinica, formazione
+                insegnanti, community, micro-release.
+              </p>
+
+              <div class="week" id="weekGrid">
+                <!-- Injected by JS -->
+              </div>
+
+              <p class="footer-note">
+                Suggerimento: mantieni fissi 2–3 blocchi “non negoziabili”
+                (Clinica + Formazione + Pubblicazione) e lascia un buffer ogni 2
+                giorni.
+              </p>
+            </div>
+
+            <div class="card">
+              <h2>Focus della settimana</h2>
+              <p class="sub">3 obiettivi max + 1 micro-release.</p>
+
+              <div class="kpi" style="margin-bottom: 12px">
+                <div class="box">
+                  <div class="lbl">Contenuti madre</div>
+                  <div class="num" id="kpiMaster">2</div>
+                  <div class="small">Target: 2 / settimana</div>
+                </div>
+                <div class="box">
+                  <div class="lbl">Micro-contenuti</div>
+                  <div class="num" id="kpiMicro">5</div>
+                  <div class="small">Target: 3–7 / settimana</div>
+                </div>
+                <div class="box">
+                  <div class="lbl">Slot clinica</div>
+                  <div class="num" id="kpiClinic">2</div>
+                  <div class="small">Target: 1–3 / settimana</div>
+                </div>
+                <div class="box">
+                  <div class="lbl">Micro-release</div>
+                  <div class="num" id="kpiRelease">1</div>
+                  <div class="small">Target: 1 / settimana</div>
+                </div>
+              </div>
+
+              <div
+                class="card"
+                style="padding: 10px; background: rgba(255, 255, 255, 0.03)"
+              >
+                <div class="row">
+                  <div>
+                    <div style="font-weight: 900">Obiettivi attivi</div>
+                    <div class="small">
+                      Ordine e chiarezza prima del volume.
+                    </div>
+                  </div>
+                  <span class="status warn"
+                    ><span class="s"></span>in corso</span
+                  >
+                </div>
+
+                <div
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                  "
+                  id="activeGoalsChips"
+                >
+                  <!-- chips -->
+                </div>
+              </div>
+
+              <div style="margin-top: 12px">
+                <h2 style="margin-bottom: 8px">Aggiungi slot</h2>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Giorno</label>
+                    <select id="slotDay"></select>
+                  </div>
+                  <div class="field">
+                    <label>Slot</label>
+                    <select id="slotTime">
+                      <option value="Mattina">Mattina</option>
+                      <option value="Tarda mattina">Tarda mattina</option>
+                      <option value="Pomeriggio">Pomeriggio</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Titolo</label>
+                    <input
+                      id="slotTitle"
+                      placeholder="Es. Contenuto madre #1 (Parte V)"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Area</label>
+                    <select id="slotArea">
+                      <option value="Contenuti">Contenuti</option>
+                      <option value="Clinica">Clinica</option>
+                      <option value="Formazione">Formazione</option>
+                      <option value="Community">Community</option>
+                      <option value="Piattaforma">Piattaforma</option>
+                      <option value="Territorio">Territorio</option>
+                    </select>
+                  </div>
+                </div>
+                <button class="btn btn-primary" id="btnAddSlot">
+                  Aggiungi
+                </button>
+                <div class="hint">
+                  Gli slot finiscono in localStorage. È una dashboard
+                  “offline-first”.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RUOLI -->
+        <div class="panel" id="panel-ruoli" role="tabpanel" aria-label="Ruoli">
+          <div class="grid">
+            <div class="card">
+              <h2>Ruoli essenziali (MVP)</h2>
+              <p class="sub">
+                Parti dai ruoli che tengono in vita il sistema. Poi aggiungi
+                specializzazioni.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ruolo</th>
+                    <th>Responsabilità</th>
+                    <th>Output</th>
+                    <th>Delegabile</th>
+                  </tr>
+                </thead>
+                <tbody id="rolesTable"></tbody>
+              </table>
+
+              <p class="footer-note">
+                Regola pratica: se un ruolo non ha un “output misurabile”, è una
+                sensazione, non un ruolo.
+              </p>
+            </div>
+
+            <div class="card">
+              <h2>Crea / modifica ruolo</h2>
+              <p class="sub">Usa descrizioni brevi e operative.</p>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Nome ruolo</label>
+                  <input id="roleName" placeholder="Es. Editor/Publisher" />
+                </div>
+                <div class="field">
+                  <label>Delegabile</label>
+                  <select id="roleDelegable">
+                    <option value="Sì">Sì</option>
+                    <option value="Parziale">Parziale</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Responsabilità (1 riga)</label>
+                  <input
+                    id="roleResp"
+                    placeholder="Es. Pubblicare e mantenere ordine editoriale"
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Output (misurabile)</label>
+                  <textarea
+                    id="roleOutput"
+                    placeholder="- Pagina pubblicata\n- Indice aggiornato\n- 5 shorts schedulati"
+                  ></textarea>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="btnAddRole">
+                Aggiungi ruolo
+              </button>
+              <div class="hint">
+                I ruoli sono un dizionario: pochi, chiari, con output.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATTIVITA -->
+        <div
+          class="panel"
+          id="panel-attivita"
+          role="tabpanel"
+          aria-label="Attività"
+        >
+          <div class="grid">
+            <div class="card">
+              <h2>Attività ricorrenti</h2>
+              <p class="sub">
+                Quello che ripeti con priorità e frequenza. Le procedure (SOP)
+                si attaccano qui.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Attività</th>
+                    <th>Ruolo</th>
+                    <th>Frequenza</th>
+                    <th>Priorità</th>
+                    <th>SOP</th>
+                  </tr>
+                </thead>
+                <tbody id="tasksTable"></tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <h2>Crea attività</h2>
+              <p class="sub">Se è ricorrente, merita una SOP.</p>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Nome attività</label>
+                  <input
+                    id="taskName"
+                    placeholder="Es. Pubblicare contenuto madre"
+                  />
+                </div>
+                <div class="field">
+                  <label>Ruolo owner</label>
+                  <select id="taskRole"></select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Frequenza</label>
+                  <select id="taskFreq">
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Ad hoc">Ad hoc</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Priorità</label>
+                  <select id="taskPrio">
+                    <option value="P1">P1</option>
+                    <option value="P2">P2</option>
+                    <option value="P3">P3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>SOP (slug o link interno)</label>
+                  <input
+                    id="taskSop"
+                    placeholder="Es. sop-pubblicare-capitolo"
+                    class="mono"
+                  />
+                  <div class="hint">
+                    Esempio: `sop-pubblicare-capitolo` oppure URL/route interna.
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="btnAddTask">
+                Aggiungi attività
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROCESSI (JOURNEY) -->
+        <div
+          class="panel"
+          id="panel-processi"
+          role="tabpanel"
+          aria-label="Processi (Journey)"
+        >
+          <div class="grid">
+            <div class="card">
+              <h2>Processi (Journey)</h2>
+              <p class="sub">
+                Percorsi operativi: “da evento a risultato”. Collegano ruoli,
+                attività e obiettivi.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Journey</th>
+                    <th>Tipo</th>
+                    <th>Owner</th>
+                    <th>Step chiave</th>
+                    <th>Stato</th>
+                  </tr>
+                </thead>
+                <tbody id="journeysTable"></tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <h2>Crea Journey</h2>
+              <p class="sub">
+                Definisci 3–7 step. Se diventa lungo, hai appena scoperto che va
+                spezzato.
+              </p>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Nome Journey</label>
+                  <input
+                    id="journeyName"
+                    placeholder="Es. Pubblicazione capitolo (MD → sito)"
+                  />
+                </div>
+                <div class="field">
+                  <label>Tipo</label>
+                  <select id="journeyType">
+                    <option value="Processo">Processo</option>
+                    <option value="Percorso">Percorso</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Owner</label>
+                  <select id="journeyOwner"></select>
+                </div>
+                <div class="field">
+                  <label>Stato</label>
+                  <select id="journeyStatus">
+                    <option value="idea">idea</option>
+                    <option value="attivo">attivo</option>
+                    <option value="ottimizzare">ottimizzare</option>
+                    <option value="delegabile">delegabile</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Step (uno per riga)</label>
+                  <textarea
+                    id="journeySteps"
+                    placeholder="- Input\n- Produzione\n- QA\n- Pubblicazione\n- Distribuzione"
+                  ></textarea>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="btnAddJourney">
+                Aggiungi Journey
+              </button>
+              <div class="hint">
+                Questa tab diventa potentissima quando inizi a legare “Journey ↔
+                SOP ↔ Ruolo”.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OBIETTIVI -->
+        <div
+          class="panel"
+          id="panel-obiettivi"
+          role="tabpanel"
+          aria-label="Obiettivi"
+        >
+          <div class="grid">
+            <div class="card">
+              <h2>Obiettivi (backlog)</h2>
+              <p class="sub">
+                Massimo 3 obiettivi attivi per ciclo. Il resto è backlog.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Obiettivo</th>
+                    <th>Area</th>
+                    <th>Owner</th>
+                    <th>Priorità</th>
+                    <th>Stato</th>
+                  </tr>
+                </thead>
+                <tbody id="goalsTable"></tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <h2>Crea obiettivo</h2>
+              <p class="sub">
+                Legalo a un’area e a un owner. Poi attacca SOP e Journey.
+              </p>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Nome obiettivo</label>
+                  <input
+                    id="goalName"
+                    placeholder="Es. Pagina Stop al Dolore + CTA"
+                  />
+                </div>
+                <div class="field">
+                  <label>Owner</label>
+                  <select id="goalOwner"></select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Area</label>
+                  <select id="goalArea">
+                    <option value="Contenuti">Contenuti</option>
+                    <option value="Clinica">Clinica</option>
+                    <option value="Formazione">Formazione</option>
+                    <option value="Community">Community</option>
+                    <option value="Piattaforma">Piattaforma</option>
+                    <option value="Territorio">Territorio</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Priorità</label>
+                  <select id="goalPrio">
+                    <option value="P1">P1</option>
+                    <option value="P2">P2</option>
+                    <option value="P3">P3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Stato</label>
+                  <select id="goalStatus">
+                    <option value="attivo">attivo</option>
+                    <option value="backlog">backlog</option>
+                    <option value="completato">completato</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Nota</label>
+                  <input
+                    id="goalNote"
+                    placeholder="Es. Target: 1 pagina + 1 video + 5 shorts"
+                  />
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="btnAddGoal">
+                Aggiungi obiettivo
+              </button>
+              <div class="hint">
+                Tip: rendi “attivo” solo ciò che puoi davvero completare entro
+                1–2 settimane.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      // ---------- Storage helpers ----------
+      const STORAGE_KEY = "pc_dashboard_v1";
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      }
+
+      function saveState(state) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state, null, 2));
+      }
+
+      function resetState() {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+
+      // ---------- Demo seed ----------
+      const seed = {
+        weekplan: {
+          Lunedi: [
+            {
+              time: "Mattina",
+              title: "Contenuto madre #1 (Parte V)",
+              area: "Contenuti",
+              tags: ["Pubblicazione", "Blu"],
+            },
+            {
+              time: "Tarda mattina",
+              title: "Micro-release (index / template)",
+              area: "Piattaforma",
+              tags: ["Rails", "Ops"],
+            },
+            {
+              time: "Pomeriggio",
+              title: "Formazione insegnanti (materiali)",
+              area: "Formazione",
+              tags: ["Kit", "Standard"],
+            },
+          ],
+          Martedi: [
+            {
+              time: "Mattina",
+              title: "Clinica / Studio (sedute)",
+              area: "Clinica",
+              tags: ["Cash", "Casi reali"],
+            },
+            {
+              time: "Pomeriggio",
+              title: "Diario casi (30 min) + spunto contenuto",
+              area: "Clinica",
+              tags: ["Ricerca", "Note"],
+            },
+          ],
+          Mercoledi: [
+            {
+              time: "Mattina",
+              title: "Repurpose: 5 estratti/shorts",
+              area: "Contenuti",
+              tags: ["Social", "Clip"],
+            },
+            {
+              time: "Tarda mattina",
+              title: "Community & Lead (DM/commenti)",
+              area: "Community",
+              tags: ["CTA", "Onboarding"],
+            },
+            {
+              time: "Pomeriggio",
+              title: "Professionisti/partner (rete)",
+              area: "Community",
+              tags: ["Collaborazioni", "Parte VIII"],
+            },
+          ],
+          Giovedi: [
+            {
+              time: "Mattina",
+              title: "Clinica / Studio (sedute)",
+              area: "Clinica",
+              tags: ["Cash", "Protocollo"],
+            },
+            {
+              time: "Pomeriggio",
+              title: "Contenuto leggero (newsletter/pagina)",
+              area: "Contenuti",
+              tags: ["Semplifica", "Sintesi"],
+            },
+          ],
+          Venerdi: [
+            {
+              time: "Mattina",
+              title: "Formazione insegnanti (lezione/tutoraggio)",
+              area: "Formazione",
+              tags: ["Qualità", "Esame"],
+            },
+            {
+              time: "Tarda mattina",
+              title: "QA + ordine indice + pubblicazione",
+              area: "Contenuti",
+              tags: ["Index", "Publisher"],
+            },
+            {
+              time: "Pomeriggio",
+              title: "Review settimanale + planning",
+              area: "Piattaforma",
+              tags: ["Priorità", "Buffer"],
+            },
+          ],
+        },
+        roles: [
+          {
+            name: "Founder/Direttore",
+            resp: "Priorità, visione, contenuto madre",
+            output:
+              "- 2 contenuti madre/sett.\n- decisioni prodotto\n- standard metodo",
+            delegable: "No",
+          },
+          {
+            name: "Clinico (Fisio)",
+            resp: "Sedute + casi reali + consegne",
+            output: "- sedute completate\n- note caso anonime\n- follow-up",
+            delegable: "Parziale",
+          },
+          {
+            name: "Trainer (Insegnanti)",
+            resp: "Formazione e standard didattici",
+            output: "- lezioni\n- kit didattico\n- check qualità",
+            delegable: "Parziale",
+          },
+          {
+            name: "Editor/Publisher",
+            resp: "Revisione e pubblicazione",
+            output: "- pagine pubblicate\n- indice coerente\n- QA",
+            delegable: "Sì",
+          },
+          {
+            name: "Content Ops",
+            resp: "Estratti, scheduling, cover",
+            output: "- 5 shorts/sett.\n- cover/descrizioni\n- calendario",
+            delegable: "Sì",
+          },
+          {
+            name: "Community & Lead",
+            resp: "Risposte + onboarding + CRM",
+            output: "- contatti aggiornati\n- call prenotate\n- follow-up",
+            delegable: "Sì",
+          },
+          {
+            name: "Dev/Platform",
+            resp: "Micro-release settimanale",
+            output: "- 1 feature piccola\n- bugfix\n- automazioni",
+            delegable: "Sì",
+          },
+        ],
+        tasks: [
+          {
+            name: "Pubblicare contenuto madre",
+            role: "Founder/Direttore",
+            freq: "Weekly",
+            prio: "P1",
+            sop: "sop-creare-e-pubblicare-contenuto-madre",
+          },
+          {
+            name: "Repurpose (5 estratti)",
+            role: "Content Ops",
+            freq: "Weekly",
+            prio: "P1",
+            sop: "sop-repurpose-estratti",
+          },
+          {
+            name: "Community & Lead (DM/commenti)",
+            role: "Community & Lead",
+            freq: "Weekly",
+            prio: "P2",
+            sop: "sop-onboarding-lead",
+          },
+          {
+            name: "Diario casi (anon)",
+            role: "Clinico (Fisio)",
+            freq: "Weekly",
+            prio: "P1",
+            sop: "sop-diario-caso",
+          },
+          {
+            name: "Micro-release",
+            role: "Dev/Platform",
+            freq: "Weekly",
+            prio: "P2",
+            sop: "sop-micro-release",
+          },
+        ],
+        journeys: [
+          {
+            name: "Pubblicazione capitolo (MD → sito)",
+            type: "Processo",
+            owner: "Editor/Publisher",
+            status: "attivo",
+            steps: [
+              "Seleziona capitolo",
+              "Revisione (titoli, slug, link)",
+              "QA (render, link, immagini)",
+              "Pubblica",
+              "Aggiorna index",
+              "Distribuisci",
+            ],
+          },
+          {
+            name: "Onboarding Lead (DM → primo passo)",
+            type: "Percorso",
+            owner: "Community & Lead",
+            status: "attivo",
+            steps: [
+              "Ricevi contatto",
+              "Classifica bisogno",
+              "Propone prossimo passo",
+              "Conferma",
+              "Traccia su CRM",
+              "Follow-up",
+            ],
+          },
+        ],
+        goals: [
+          {
+            name: "Parte V — Postura e Fisiologia (pagine chiave)",
+            area: "Contenuti",
+            owner: "Founder/Direttore",
+            prio: "P1",
+            status: "attivo",
+            note: "2 pagine + 1 video + 5 shorts",
+          },
+          {
+            name: "Stop al Dolore — pagina + CTA",
+            area: "Contenuti",
+            owner: "Editor/Publisher",
+            prio: "P1",
+            status: "attivo",
+            note: "Pagina + link prenotazione",
+          },
+          {
+            name: "Formazione insegnanti — Kit base",
+            area: "Formazione",
+            owner: "Trainer (Insegnanti)",
+            prio: "P2",
+            status: "backlog",
+            note: "Slide + checklist + standard",
+          },
+          {
+            name: "Diario salute — MVP",
+            area: "Piattaforma",
+            owner: "Dev/Platform",
+            prio: "P2",
+            status: "backlog",
+            note: "1 pagina + eventi + note",
+          },
+        ],
+      };
+
+      // ---------- App state ----------
+      let state = loadState() || structuredClone(seed);
+
+      // ---------- Tabs ----------
+      const tabsEl = document.getElementById("tabs");
+      const tabButtons = Array.from(tabsEl.querySelectorAll(".tab"));
+      const panels = {
+        weekplan: document.getElementById("panel-weekplan"),
+        ruoli: document.getElementById("panel-ruoli"),
+        attivita: document.getElementById("panel-attivita"),
+        processi: document.getElementById("panel-processi"),
+        obiettivi: document.getElementById("panel-obiettivi"),
+      };
+
+      function setTab(key) {
+        tabButtons.forEach((btn) => {
+          const active = btn.dataset.tab === key;
+          btn.setAttribute("aria-selected", active ? "true" : "false");
+          btn.tabIndex = active ? 0 : -1;
+        });
+        Object.entries(panels).forEach(([k, el]) =>
+          el.classList.toggle("active", k === key)
+        );
+      }
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => setTab(btn.dataset.tab));
+        btn.addEventListener("keydown", (e) => {
+          if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+          const i = tabButtons.indexOf(btn);
+          const next =
+            e.key === "ArrowRight"
+              ? (i + 1) % tabButtons.length
+              : (i - 1 + tabButtons.length) % tabButtons.length;
+          tabButtons[next].focus();
+          setTab(tabButtons[next].dataset.tab);
+        });
+      });
+
+      // ---------- Render helpers ----------
+      const dayOrder = ["Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi"];
+      const areaToClass = (area) => {
+        const a = (area || "").toLowerCase();
+        if (a.includes("clinica")) return "red";
+        if (a.includes("formazione")) return "violet";
+        if (a.includes("territorio")) return "violet";
+        if (a.includes("piattaforma")) return "orange";
+        if (a.includes("community")) return "green";
+        return ""; // contenuti default blue
+      };
+
+      function escapeHtml(s) {
+        return String(s || "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      // ---------- Weekplan ----------
+      const weekGrid = document.getElementById("weekGrid");
+      const slotDaySel = document.getElementById("slotDay");
+
+      function renderWeekplan() {
+        weekGrid.innerHTML = "";
+
+        dayOrder.forEach((day) => {
+          const dayItems = state.weekplan[day] || [];
+          const grouped = {
+            Mattina: dayItems.filter((x) => x.time === "Mattina"),
+            "Tarda mattina": dayItems.filter((x) => x.time === "Tarda mattina"),
+            Pomeriggio: dayItems.filter((x) => x.time === "Pomeriggio"),
+          };
+
+          const dayEl = document.createElement("div");
+          dayEl.className = "day";
+          dayEl.innerHTML = `
+            <h3>${day}</h3>
+            ${Object.keys(grouped)
+              .map(
+                (time) => `
+              <div class="slot">
+                <div class="when">${time}</div>
+                ${grouped[time]
+                  .map(
+                    (it, idx) => `
+                  <div class="item" data-day="${day}" data-time="${time}" data-idx="${idx}">
+                    <div class="top">
+                      <div class="name">${escapeHtml(it.title)}</div>
+                      <span class="status warn"><span class="s"></span>${escapeHtml(
+                        it.area || "Area"
+                      )}</span>
+                    </div>
+                    <div class="chips">
+                      ${(it.tags || [])
+                        .slice(0, 6)
+                        .map(
+                          (t) => `
+                        <span class="chip ${areaToClass(
+                          it.area
+                        )}"><span class="c"></span>${escapeHtml(t)}</span>
+                      `
+                        )
+                        .join("")}
+                      <span class="chip" title="Rimuovi questo slot" data-remove="1">🗑 Rimuovi</span>
+                    </div>
+                  </div>
+                `
+                  )
+                  .join("")}
+                ${
+                  grouped[time].length === 0
+                    ? `<div class="small" style="margin-top:6px;">— vuoto</div>`
+                    : ``
+                }
+              </div>
+            `
+              )
+              .join("")}
+          `;
+          weekGrid.appendChild(dayEl);
+        });
+
+        // Fill day select
+        slotDaySel.innerHTML = dayOrder
+          .map((d) => `<option value="${d}">${d}</option>`)
+          .join("");
+
+        // Remove handlers
+        weekGrid.querySelectorAll('[data-remove="1"]').forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            const itemEl = e.target.closest(".item");
+            const day = itemEl.getAttribute("data-day");
+            const time = itemEl.getAttribute("data-time");
+
+            // remove correct idx inside that time group
+            // find matching entry by title+area first to be robust
+            const title = itemEl.querySelector(".name")?.textContent || "";
+            const area = itemEl.querySelector(".status")?.textContent || "";
+
+            const all = state.weekplan[day] || [];
+            const idx = all.findIndex(
+              (x) =>
+                x.time === time &&
+                x.title === title &&
+                (area.includes(x.area || "") || true)
+            );
+            if (idx >= 0) all.splice(idx, 1);
+            state.weekplan[day] = all;
+
+            renderWeekplan();
+          });
+        });
+      }
+
+      // ---------- Roles / tasks / journeys / goals ----------
+      const rolesTable = document.getElementById("rolesTable");
+      const tasksTable = document.getElementById("tasksTable");
+      const journeysTable = document.getElementById("journeysTable");
+      const goalsTable = document.getElementById("goalsTable");
+      const activeGoalsChips = document.getElementById("activeGoalsChips");
+
+      const taskRoleSel = document.getElementById("taskRole");
+      const journeyOwnerSel = document.getElementById("journeyOwner");
+      const goalOwnerSel = document.getElementById("goalOwner");
+
+      function renderRoles() {
+        rolesTable.innerHTML = state.roles
+          .map(
+            (r, i) => `
+          <tr>
+            <td style="font-weight:900">${escapeHtml(r.name)}</td>
+            <td>${escapeHtml(r.resp)}</td>
+            <td><pre class="small" style="margin:0; white-space:pre-wrap;">${escapeHtml(
+              r.output
+            )}</pre></td>
+            <td><span class="status ${
+              r.delegable === "No"
+                ? "bad"
+                : r.delegable === "Sì"
+                ? "ok"
+                : "warn"
+            }"><span class="s"></span>${escapeHtml(r.delegable)}</span></td>
+          </tr>
+        `
+          )
+          .join("");
+
+        const options = state.roles
+          .map(
+            (r) =>
+              `<option value="${escapeHtml(r.name)}">${escapeHtml(
+                r.name
+              )}</option>`
+          )
+          .join("");
+        taskRoleSel.innerHTML = options;
+        journeyOwnerSel.innerHTML = options;
+        goalOwnerSel.innerHTML = options;
+      }
+
+      function renderTasks() {
+        tasksTable.innerHTML = state.tasks
+          .map(
+            (t) => `
+          <tr>
+            <td style="font-weight:900">${escapeHtml(t.name)}</td>
+            <td>${escapeHtml(t.role)}</td>
+            <td>${escapeHtml(t.freq)}</td>
+            <td><span class="status ${
+              t.prio === "P1" ? "bad" : t.prio === "P2" ? "warn" : "ok"
+            }"><span class="s"></span>${escapeHtml(t.prio)}</span></td>
+            <td><span class="mono small">${escapeHtml(t.sop)}</span></td>
+          </tr>
+        `
+          )
+          .join("");
+      }
+
+      function renderJourneys() {
+        journeysTable.innerHTML = state.journeys
+          .map(
+            (j) => `
+          <tr>
+            <td style="font-weight:900">${escapeHtml(j.name)}</td>
+            <td>${escapeHtml(j.type)}</td>
+            <td>${escapeHtml(j.owner)}</td>
+            <td class="small">${escapeHtml(
+              (j.steps || []).slice(0, 3).join(" → ")
+            )}${(j.steps || []).length > 3 ? " …" : ""}</td>
+            <td><span class="status ${
+              j.status === "attivo"
+                ? "ok"
+                : j.status === "delegabile"
+                ? "ok"
+                : "warn"
+            }"><span class="s"></span>${escapeHtml(j.status)}</span></td>
+          </tr>
+        `
+          )
+          .join("");
+      }
+
+      function renderGoals() {
+        goalsTable.innerHTML = state.goals
+          .map(
+            (g) => `
+          <tr>
+            <td style="font-weight:900">${escapeHtml(
+              g.name
+            )}<div class="small">${escapeHtml(g.note || "")}</div></td>
+            <td>${escapeHtml(g.area)}</td>
+            <td>${escapeHtml(g.owner)}</td>
+            <td><span class="status ${
+              g.prio === "P1" ? "bad" : g.prio === "P2" ? "warn" : "ok"
+            }"><span class="s"></span>${escapeHtml(g.prio)}</span></td>
+            <td><span class="status ${
+              g.status === "completato"
+                ? "ok"
+                : g.status === "attivo"
+                ? "warn"
+                : ""
+            }"><span class="s"></span>${escapeHtml(g.status)}</span></td>
+          </tr>
+        `
+          )
+          .join("");
+
+        const active = state.goals
+          .filter((g) => g.status === "attivo")
+          .slice(0, 6);
+        activeGoalsChips.innerHTML = active
+          .map((g) => {
+            const cls = areaToClass(g.area);
+            return `<span class="tag ${cls}"><span class="mini"></span><strong>${escapeHtml(
+              g.prio
+            )}</strong> ${escapeHtml(g.name)}</span>`;
+          })
+          .join("");
+
+        // Update KPIs quick heuristic
+        document.getElementById("kpiMaster").textContent = "2";
+        document.getElementById("kpiMicro").textContent = "5";
+        document.getElementById("kpiClinic").textContent = "2";
+        document.getElementById("kpiRelease").textContent = "1";
+      }
+
+      // ---------- Actions ----------
+      document.getElementById("btnAddSlot").addEventListener("click", () => {
+        const day = document.getElementById("slotDay").value;
+        const time = document.getElementById("slotTime").value;
+        const title = document.getElementById("slotTitle").value.trim();
+        const area = document.getElementById("slotArea").value;
+
+        if (!title) return alert("Inserisci un titolo slot.");
+
+        state.weekplan[day] ||= [];
+        state.weekplan[day].push({ time, title, area, tags: [] });
+
+        document.getElementById("slotTitle").value = "";
+        renderWeekplan();
+      });
+
+      document.getElementById("btnAddRole").addEventListener("click", () => {
+        const name = document.getElementById("roleName").value.trim();
+        const delegable = document.getElementById("roleDelegable").value;
+        const resp = document.getElementById("roleResp").value.trim();
+        const output = document.getElementById("roleOutput").value.trim();
+
+        if (!name) return alert("Inserisci il nome ruolo.");
+        state.roles.push({ name, delegable, resp, output });
+        document.getElementById("roleName").value = "";
+        document.getElementById("roleResp").value = "";
+        document.getElementById("roleOutput").value = "";
+
+        renderRoles();
+      });
+
+      document.getElementById("btnAddTask").addEventListener("click", () => {
+        const name = document.getElementById("taskName").value.trim();
+        const role = document.getElementById("taskRole").value;
+        const freq = document.getElementById("taskFreq").value;
+        const prio = document.getElementById("taskPrio").value;
+        const sop = document.getElementById("taskSop").value.trim();
+
+        if (!name) return alert("Inserisci il nome attività.");
+        state.tasks.push({ name, role, freq, prio, sop });
+
+        document.getElementById("taskName").value = "";
+        document.getElementById("taskSop").value = "";
+
+        renderTasks();
+      });
+
+      document.getElementById("btnAddJourney").addEventListener("click", () => {
+        const name = document.getElementById("journeyName").value.trim();
+        const type = document.getElementById("journeyType").value;
+        const owner = document.getElementById("journeyOwner").value;
+        const status = document.getElementById("journeyStatus").value;
+        const stepsRaw = document.getElementById("journeySteps").value.trim();
+        const steps = stepsRaw
+          ? stepsRaw
+              .split("\n")
+              .map((s) => s.replace(/^\-\s*/, "").trim())
+              .filter(Boolean)
+          : [];
+
+        if (!name) return alert("Inserisci il nome Journey.");
+        state.journeys.push({ name, type, owner, status, steps });
+
+        document.getElementById("journeyName").value = "";
+        document.getElementById("journeySteps").value = "";
+
+        renderJourneys();
+      });
+
+      document.getElementById("btnAddGoal").addEventListener("click", () => {
+        const name = document.getElementById("goalName").value.trim();
+        const owner = document.getElementById("goalOwner").value;
+        const area = document.getElementById("goalArea").value;
+        const prio = document.getElementById("goalPrio").value;
+        const status = document.getElementById("goalStatus").value;
+        const note = document.getElementById("goalNote").value.trim();
+
+        if (!name) return alert("Inserisci il nome obiettivo.");
+        state.goals.push({ name, owner, area, prio, status, note });
+
+        document.getElementById("goalName").value = "";
+        document.getElementById("goalNote").value = "";
+
+        renderGoals();
+      });
+
+      document.getElementById("btnSave").addEventListener("click", () => {
+        saveState(state);
+        alert("Salvato in localStorage.");
+      });
+
+      document.getElementById("btnReset").addEventListener("click", () => {
+        if (!confirm("Reset demo? Cancella i dati in localStorage.")) return;
+        resetState();
+        state = structuredClone(seed);
+        rerenderAll();
+      });
+
+      document
+        .getElementById("btnExport")
+        .addEventListener("click", async () => {
+          const dataStr = JSON.stringify(state, null, 2);
+          try {
+            await navigator.clipboard.writeText(dataStr);
+            alert("JSON copiato negli appunti.");
+          } catch {
+            // fallback: open in new window
+            const w = window.open();
+            w.document.write(`<pre>${escapeHtml(dataStr)}</pre>`);
+          }
+        });
+
+      function rerenderAll() {
+        renderRoles();
+        renderTasks();
+        renderJourneys();
+        renderGoals();
+        renderWeekplan();
+      }
+
+      // Init
+      rerenderAll();
+    </script>
+  </body>
+</html>
