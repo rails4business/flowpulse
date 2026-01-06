@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       delete "clear_template_events"
       get :rails4b
       get :generaimpresa
+      get :impegno
     end
     resources :commitments
     resources :eventdates
@@ -60,11 +61,13 @@ Rails.application.routes.draw do
       member do
         get :rails4b
         get :generaimpresa
+        get :impegno
       end
     end
     resources :domains do
       member do
         get :generaimpresa
+        get :impegno
       end
     end
     resources :taxbranches do

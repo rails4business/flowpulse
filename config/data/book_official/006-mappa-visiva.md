@@ -7,17 +7,17 @@ color: "neutro"
 
 # mappa visiva:
 
-
 ## Parti del libro
+
 1. Per iniziare il percorso:
-    - Percorso Salute 
-      - Patologie stop al dolore 
-      - Benessere Integrato
-      -  Postura e fisiologia
-    - Lavoro
-    - Formazione apprendimento
-    - Stile di vita
-    - Eventi e territorio per plasmare abitudini e ambiente in cui viviamo
+   - Percorso Salute
+     - Patologie stop al dolore
+     - Benessere Integrato
+     - Postura e fisiologia
+   - Lavoro
+   - Formazione apprendimento
+   - Stile di vita
+   - Eventi e territorio per plasmare abitudini e ambiente in cui viviamo
 2. Sei un Professionista?
    - Professionsiti Sanitari
    - Professionisti benesssere e discipline bionaturali
@@ -26,15 +26,13 @@ color: "neutro"
    - Organizzare eventi
 
 # Indicatori di testo
-1. 📍 Tappa / Mappa  
-2.  ⚠️ Problemi incontrati  
-3. 🔍 Ricerca  
+
+1. 📍 Tappa / Mappa
+2. ⚠️ Problemi incontrati
+3. 🔍 Ricerca
 4. 🫀🧠 Il corpo come esempio
-5. 🛠 Soluzioni   
-6. 🧭 Programmi e percorsi  
-7. 📐 Linee guida   
-8. ✨ Persone stra-ordinarie  
+5. 🛠 Soluzioni
+6. 🧭 Programmi e percorsi questionari
+7. 📐 Linee guida
+8. ✨ Persone stra-ordinarie
 9. 🧗 Avventure personali
-
-
-

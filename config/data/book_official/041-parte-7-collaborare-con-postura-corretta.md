@@ -1,12 +1,11 @@
 ---
-title: "PARTE VI – COLLABORARE CON POSTURA CORRETTA"
+title: "PARTE VII – COLLABORARE CON POSTURA CORRETTA"
 description: "Come collaborare con PosturaCorretta per professionisti, aziende e partner"
-slug: "parte-6-collaborare-con-postura-corretta"
+slug: "parte-7-collaborare-con-postura-corretta"
 color: "blu"
 ---
 
 # PARTE VI – COLLABORARE CON POSTURA CORRETTA
-
 
 # Collaborare con PosturaCorretta
 
@@ -43,6 +42,7 @@ con limiti e responsabilità ben definiti.
 Opera principalmente nel mondo della **patologia**.
 
 Si occupa di:
+
 - valutazione
 - presa in carico individuale
 - gestione della fase acuta
@@ -57,6 +57,7 @@ e contribuire alla ricerca applicata.
 Opera nel mondo del **benessere e del recupero**.
 
 Si occupa di:
+
 - continuità della salute
 - equilibrio e mantenimento
 - lavoro individuale o in piccoli gruppi
@@ -70,6 +71,7 @@ Collabora nei percorsi di Benessere Integrato.
 Opera nel mondo dell’**educazione alla salute**.
 
 Si occupa di:
+
 - postura e fisiologia
 - prevenzione
 - conduzione di gruppi educativi
@@ -84,6 +86,7 @@ e non sostituisce il professionista.
 Figura di confine tra educazione e benessere.
 
 Si occupa di:
+
 - gruppi orientati alla consapevolezza corporea
 - continuità del percorso
 - integrazione delle pratiche
@@ -95,6 +98,7 @@ Si occupa di:
 Professionista sanitario con ruolo educativo specifico.
 
 Si occupa di:
+
 - gruppi legati al percorso Stop al Dolore
 - educazione nella fase di uscita dall’acuto
 - limiti chiari di intervento
@@ -106,6 +110,7 @@ Si occupa di:
 Il **tutor** ha un ruolo di **orientamento**.
 
 Si occupa di:
+
 - spiegare come funziona PosturaCorretta
 - aiutare le persone a scegliere il percorso più adatto
 - chiarire differenze tra servizi
@@ -120,6 +125,7 @@ e non prende decisioni cliniche.
 Il **coordinatore operativo** gestisce la parte organizzativa.
 
 Si occupa di:
+
 - appuntamenti
 - gruppi
 - attivazioni operative
@@ -135,6 +141,7 @@ né educativo.
 Il **divulgatore** opera sul piano culturale e informativo.
 
 Si occupa di:
+
 - comunicazione sui canali PosturaCorretta
 - divulgazione delle metodiche
 - orientamento delle persone prima dell’ingresso nel percorso
@@ -158,7 +165,6 @@ ma che **ogni funzione sia chiara e rispettata**.
 Grazie a questa struttura è possibile creare **percorsi integrati**  
 che attraversano i tre mondi del percorso di salute,  
 mantenendo sicurezza, chiarezza ed efficacia.
-
 
 È da qui che nascono i percorsi descritti nel capitolo successivo:  
 percorsi integrati, costruiti rispettando ruoli, competenze e fasi del percorso di salute.

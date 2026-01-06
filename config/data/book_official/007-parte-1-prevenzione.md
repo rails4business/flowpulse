@@ -1,18 +1,18 @@
 ---
-title: "PARTE I – INIZIAMO CON SEMPLICI CORSI  "
+title: "PARTE I – PREVENZIONE"
 description: "Corsi per varie categorie, lavorative attività"
-slug: "parte-1-cura-dolore-salute"
+slug: "parte-1-prevenzione"
 color: "blu"
 ---
 
-# PARTE I – INIZIAMO DA QUALCOSA DI SEMPLICE  
+# PARTE I – INIZIAMO DALLA PREVENZIONE
 
 In questa sezione della piattaforma troviamo i percorsi a tema sulla posturacorretta:
 
-- 60 movimenti alla scrivania 
+- 60 movimenti alla scrivania
 - PosturaCorretta per batteristi
 - Con la postura prevenzione infortuni nella pallavolo
-ecc... 
+  ecc...
 
 Questa è una sezione dove puoi trovare strumenti pratici che possono essere subito utilizzati,
-vediamo nel prossimo capitolo 60 movimenti alla scrivania come esempio è il primo corso realizzato, altri sono in cantiere... 
+vediamo nel prossimo capitolo 60 movimenti alla scrivania come esempio è il primo corso realizzato, altri sono in cantiere...
