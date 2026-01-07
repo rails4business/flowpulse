@@ -17,10 +17,14 @@
 
   <% current_filter = params[:filter].presence&.to_s %>
   <% filters = [
-       { key: nil,             label: "Tutti" },
-       { key: "draft",         label: "Draft", badge: "bg-slate-100 text-slate-700" },
-       { key: "template",      label: "Template", badge: "bg-amber-50 text-amber-800" },
-       { key: "instance_cycle", label: "Istanze", badge: "bg-emerald-50 text-emerald-800" }
+       { key: nil,                     label: "Tutti" },
+       { key: "idea",                  label: "idea", badge: "bg-blue-50 text-blue-700" },
+       { key: "task",                  label: "task", badge: "bg-amber-50 text-amber-800" },
+       { key: "milestone",             label: "milestone", badge: "bg-emerald-50 text-emerald-800" },
+       { key: "process_draft",         label: "process_draft", badge: "bg-slate-100 text-slate-700" },
+       { key: "process_template",      label: "process_template", badge: "bg-violet-50 text-violet-800" },
+       { key: "process_instance_cycle", label: "process_instance_cycle", badge: "bg-teal-50 text-teal-800" },
+       { key: "activity",              label: "activity", badge: "bg-orange-50 text-orange-800" }
      ] %>
 
   <div class="flex flex-wrap gap-2 text-xs">
@@ -65,14 +69,22 @@
             </td>
             <td class="px-4 py-3 text-xs">
               <% badge_class, badge_label =
-                   if journey.template?
-                     ["bg-amber-100 text-amber-800", "🧩 Template"]
-                   elsif journey.instance_cycle?
-                     ["bg-emerald-100 text-emerald-800", "🌱 Istanza"]
-                   elsif journey.draft?
-                     ["bg-slate-100 text-slate-700", "📝 Draft"]
+                   if journey.idea?
+                     ["bg-blue-50 text-blue-700", "idea"]
+                   elsif journey.task?
+                     ["bg-amber-50 text-amber-800", "task"]
+                   elsif journey.milestone?
+                     ["bg-emerald-50 text-emerald-800", "milestone"]
+                   elsif journey.process_draft?
+                     ["bg-slate-100 text-slate-700", "process_draft"]
+                   elsif journey.process_template?
+                     ["bg-violet-50 text-violet-800", "process_template"]
+                   elsif journey.process_instance_cycle?
+                     ["bg-teal-50 text-teal-800", "process_instance_cycle"]
+                   elsif journey.activity?
+                     ["bg-orange-50 text-orange-800", "activity"]
                    else
-                     ["bg-blue-50 text-blue-700", "🔧 Singolo"]
+                     ["bg-slate-100 text-slate-700", "—"]
                    end %>
               <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold <%= badge_class %>">
                 <%= badge_label %>

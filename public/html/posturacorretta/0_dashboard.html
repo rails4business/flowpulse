@@ -26,6 +26,23 @@
         --orange: #fbbf24;
         --radius: 18px;
       }
+      body[data-theme="light"] {
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --panel2: #f1f5f9;
+        --text: #0f172a;
+        --muted: #475569;
+        --line: rgba(15, 23, 42, 0.12);
+        --chip: rgba(15, 23, 42, 0.06);
+        --ok: #16a34a;
+        --warn: #f59e0b;
+        --bad: #dc2626;
+        --blue: #2563eb;
+        --violet: #7c3aed;
+        --green: #059669;
+        --red: #e11d48;
+        --orange: #d97706;
+      }
 
       * {
         box-sizing: border-box;
@@ -51,6 +68,24 @@
           ),
           var(--bg);
         color: var(--text);
+      }
+      body[data-theme="light"] {
+        background: radial-gradient(
+            1200px 800px at 20% 10%,
+            rgba(37, 99, 235, 0.12),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 700px at 80% 0%,
+            rgba(124, 58, 237, 0.12),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 700px at 60% 90%,
+            rgba(5, 150, 105, 0.1),
+            transparent 55%
+          ),
+          var(--bg);
       }
 
       a {
@@ -523,6 +558,9 @@
         <div class="actions">
           <button class="btn" id="btnExport">Esporta JSON</button>
           <button class="btn btn-ghost" id="btnReset">Reset demo</button>
+          <button class="btn" id="btnTheme" aria-pressed="false">
+            Tema: Scuro
+          </button>
           <button class="btn btn-primary" id="btnSave">Salva</button>
         </div>
       </header>
@@ -573,6 +611,15 @@
             data-tab="obiettivi"
           >
             Obiettivi
+          </div>
+          <div
+            class="tab"
+            role="tab"
+            tabindex="-1"
+            aria-selected="false"
+            data-tab="idee"
+          >
+            Idee
           </div>
         </div>
 
@@ -1059,12 +1106,95 @@
             </div>
           </div>
         </div>
+
+        <!-- IDEE -->
+        <div class="panel" id="panel-idee" role="tabpanel" aria-label="Idee">
+          <div class="grid">
+            <div class="card">
+              <h2>Idee in raccolta</h2>
+              <p class="sub">
+                Brain dump ordinato: qui tieni spunti grezzi da valutare.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Idea</th>
+                    <th>Area</th>
+                    <th>Owner</th>
+                    <th>Stato</th>
+                  </tr>
+                </thead>
+                <tbody id="ideasTable"></tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <h2>Registra nuova idea</h2>
+              <p class="sub">Basta 1 riga + tag minimo, poi si valuta.</p>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Titolo idea</label>
+                  <input
+                    id="ideaName"
+                    placeholder="Es. Mini guida: posture break 3 min"
+                  />
+                </div>
+                <div class="field">
+                  <label>Owner</label>
+                  <select id="ideaOwner"></select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Area</label>
+                  <select id="ideaArea">
+                    <option value="Contenuti">Contenuti</option>
+                    <option value="Clinica">Clinica</option>
+                    <option value="Formazione">Formazione</option>
+                    <option value="Community">Community</option>
+                    <option value="Piattaforma">Piattaforma</option>
+                    <option value="Territorio">Territorio</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Stato</label>
+                  <select id="ideaStatus">
+                    <option value="idea">idea</option>
+                    <option value="da validare">da validare</option>
+                    <option value="accantonata">accantonata</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label>Nota</label>
+                  <input
+                    id="ideaNote"
+                    placeholder="Es. utile per lead freddi, CTA a quiz"
+                  />
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="btnAddIdea">
+                Aggiungi idea
+              </button>
+              <div class="hint">
+                Consiglio: sposta in Obiettivi solo quando hai owner e scadenza.
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
 
     <script>
       // ---------- Storage helpers ----------
       const STORAGE_KEY = "pc_dashboard_v1";
+      const THEME_KEY = "pc_dashboard_theme";
 
       function loadState() {
         try {
@@ -1082,6 +1212,21 @@
 
       function resetState() {
         localStorage.removeItem(STORAGE_KEY);
+      }
+
+      function loadTheme() {
+        const t = localStorage.getItem(THEME_KEY);
+        return t === "light" ? "light" : "dark";
+      }
+
+      function applyTheme(theme) {
+        document.body.setAttribute("data-theme", theme);
+        const btn = document.getElementById("btnTheme");
+        if (btn) {
+          const isLight = theme === "light";
+          btn.textContent = `Tema: ${isLight ? "Chiaro" : "Scuro"}`;
+          btn.setAttribute("aria-pressed", isLight ? "true" : "false");
+        }
       }
 
       // ---------- Demo seed ----------
@@ -1322,10 +1467,27 @@
             note: "1 pagina + eventi + note",
           },
         ],
+        ideas: [
+          {
+            name: "Checklist: 5 errori postura al PC",
+            area: "Contenuti",
+            owner: "Content Ops",
+            status: "idea",
+            note: "Post social + PDF rapido",
+          },
+          {
+            name: "Mini workshop serale (45') in studio",
+            area: "Clinica",
+            owner: "Clinico (Fisio)",
+            status: "da validare",
+            note: "Testare interesse con 10 posti",
+          },
+        ],
       };
 
       // ---------- App state ----------
       let state = loadState() || structuredClone(seed);
+      state.ideas ||= [];
 
       // ---------- Tabs ----------
       const tabsEl = document.getElementById("tabs");
@@ -1336,6 +1498,7 @@
         attivita: document.getElementById("panel-attivita"),
         processi: document.getElementById("panel-processi"),
         obiettivi: document.getElementById("panel-obiettivi"),
+        idee: document.getElementById("panel-idee"),
       };
 
       function setTab(key) {
@@ -1485,11 +1648,13 @@
       const tasksTable = document.getElementById("tasksTable");
       const journeysTable = document.getElementById("journeysTable");
       const goalsTable = document.getElementById("goalsTable");
+      const ideasTable = document.getElementById("ideasTable");
       const activeGoalsChips = document.getElementById("activeGoalsChips");
 
       const taskRoleSel = document.getElementById("taskRole");
       const journeyOwnerSel = document.getElementById("journeyOwner");
       const goalOwnerSel = document.getElementById("goalOwner");
+      const ideaOwnerSel = document.getElementById("ideaOwner");
 
       function renderRoles() {
         rolesTable.innerHTML = state.roles
@@ -1524,6 +1689,7 @@
         taskRoleSel.innerHTML = options;
         journeyOwnerSel.innerHTML = options;
         goalOwnerSel.innerHTML = options;
+        ideaOwnerSel.innerHTML = options;
       }
 
       function renderTasks() {
@@ -1612,6 +1778,29 @@
         document.getElementById("kpiRelease").textContent = "1";
       }
 
+      function renderIdeas() {
+        ideasTable.innerHTML = state.ideas
+          .map(
+            (i) => `
+          <tr>
+            <td style="font-weight:900">${escapeHtml(
+              i.name
+            )}<div class="small">${escapeHtml(i.note || "")}</div></td>
+            <td>${escapeHtml(i.area)}</td>
+            <td>${escapeHtml(i.owner)}</td>
+            <td><span class="status ${
+              i.status === "idea"
+                ? "warn"
+                : i.status === "da validare"
+                ? "ok"
+                : ""
+            }"><span class="s"></span>${escapeHtml(i.status)}</span></td>
+          </tr>
+        `
+          )
+          .join("");
+      }
+
       // ---------- Actions ----------
       document.getElementById("btnAddSlot").addEventListener("click", () => {
         const day = document.getElementById("slotDay").value;
@@ -1698,6 +1887,22 @@
         renderGoals();
       });
 
+      document.getElementById("btnAddIdea").addEventListener("click", () => {
+        const name = document.getElementById("ideaName").value.trim();
+        const owner = document.getElementById("ideaOwner").value;
+        const area = document.getElementById("ideaArea").value;
+        const status = document.getElementById("ideaStatus").value;
+        const note = document.getElementById("ideaNote").value.trim();
+
+        if (!name) return alert("Inserisci il titolo idea.");
+        state.ideas.push({ name, owner, area, status, note });
+
+        document.getElementById("ideaName").value = "";
+        document.getElementById("ideaNote").value = "";
+
+        renderIdeas();
+      });
+
       document.getElementById("btnSave").addEventListener("click", () => {
         saveState(state);
         alert("Salvato in localStorage.");
@@ -1724,15 +1929,25 @@
           }
         });
 
+      document.getElementById("btnTheme").addEventListener("click", () => {
+        const next = document.body.getAttribute("data-theme") === "light"
+          ? "dark"
+          : "light";
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+
       function rerenderAll() {
         renderRoles();
         renderTasks();
         renderJourneys();
         renderGoals();
+        renderIdeas();
         renderWeekplan();
       }
 
       // Init
+      applyTheme(loadTheme());
       rerenderAll();
     </script>
   </body>

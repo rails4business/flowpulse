@@ -41,28 +41,46 @@
               </span>
             <% end %>
 
-            <%# 🎯 Badge template / istanza / singolo %>
-            <% if @journey.template? %>
-              <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
-                🧩 Template di Journey
+            <%# 🎯 Badge tipo journey %>
+            <% if @journey.process_template? %>
+              <span class="inline-flex items-center rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-800">
+                process_template
               </span>
               <%= link_to "Gestisci cicli",
                     instance_cycle_journey_path(@journey),
                     class: "inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100" %>
-            <% elsif @journey.template_journey_id.present? %>
-              <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
-                🌱 Istanza da template:
-                <%= link_to @journey.template_journey.title,
-                      journey_path(@journey.template_journey),
-                      class: "underline ml-1" %>
-              </span>
-            <% elsif @journey.draft? %>
+            <% elsif @journey.process_draft? %>
               <span class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-700">
-                📝 Journey in bozza
+                process_draft
+              </span>
+            <% elsif @journey.process_instance_cycle? %>
+              <span class="inline-flex items-center rounded-full bg-teal-100 px-3 py-1 text-xs font-semibold text-teal-800">
+                process_instance_cycle
+                <% if @journey.template_journey_id.present? %>
+                  : <%= link_to @journey.template_journey.title,
+                        journey_path(@journey.template_journey),
+                        class: "underline ml-1" %>
+                <% end %>
+              </span>
+            <% elsif @journey.idea? %>
+              <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">
+                idea
+              </span>
+            <% elsif @journey.task? %>
+              <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+                task
+              </span>
+            <% elsif @journey.milestone? %>
+              <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
+                milestone
+              </span>
+            <% elsif @journey.activity? %>
+              <span class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-800">
+                activity
               </span>
             <% else %>
               <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                🔧 Journey singolo (no template)
+                —
               </span>
             <% end %>
           </div>
@@ -133,7 +151,7 @@
         </div>
 
         <div class="shrink-0 flex flex-col items-end gap-2">
-          <% if @journey.template? %>
+          <% if @journey.process_template? %>
             <%= button_to "Crea nuovo cycle",
                 clone_cycle_journey_path(@journey),
                 method: :post,
@@ -146,7 +164,7 @@
           <% end %>
           
           <%# 🔴 Time tracking solo per journey in bozza %>
-          <% if @journey.draft? %>
+          <% if @journey.process_draft? %>
             <% open_event = @journey.eventdates.where(date_end: nil).order(:date_start).last %>
 
             <% if open_event.present? %>
@@ -326,15 +344,15 @@
     <% else %>
       <div class="flex flex-col items-center justify-center py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-white">
         <p class="text-sm text-slate-500 mb-4">
-          <% if @journey.template? %>
+          <% if @journey.process_template? %>
             Questo template non ha cicli attivi. Crea un nuovo cycle per iniziare a schedulare date.
           <% else %>
             Nessun evento collegato a questo Journey.
           <% end %>
         </p>
-        <% if @journey.template? %>
+        <% if @journey.process_template? %>
           <%= link_to "Crea nuovo cycle",
-              journeys_path(journey: { template_journey_id: @journey.id, kind: "instance_cycle" }),
+              journeys_path(journey: { template_journey_id: @journey.id, kind: "process_instance_cycle" }),
               method: :post,
               class: "inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-4 py-2 text-sm font-medium hover:bg-emerald-500",
               data: { turbo_confirm: "Creare un nuovo cycle basato su questo template?" } %>

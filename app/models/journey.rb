@@ -36,18 +36,23 @@ class Journey < ApplicationRecord
   before_validation :ensure_slug!
 
 
-
   enum :importance, { low: 0, normal: 1, high: 2, critical: 3 }
   enum :urgency,    { relaxed: 0, soon: 1, urgent: 2, asap: 3 }
   enum :energy,     { low_energy: 0, medium_energy: 1, high_energy: 2 }
   enum :kind, {
-    draft: 0,          # lo sto pensando
-    template: 1,       # è il modello valido
-    instance_cycle: 2,  # ciclo reale basato su un template
-    unico: 3 # una volta
+    idea: 0,  # solo idea
+    task: 1,  # solo task
+    milestone: 2, # solo obiettivo:
+    process_draft: 3, # attività in
+    process_template: 4,       # è il modello valido
+    process_instance_cycle: 5,  # ciclo reale basato su un template
+    activity: 6  # attività generica
   }
 
   store_accessor :meta, :color, :visibility, :tags
+
+  # Back-compat helpers for older view naming
+
 
   # 👇 aggiungiamo scope “di data”
   scope :ordered_by_created, -> { order(created_at: :desc) }

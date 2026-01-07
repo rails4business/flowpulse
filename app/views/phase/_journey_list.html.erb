@@ -23,7 +23,7 @@
             <%= link_to "Apri",
                         journey_path(journey),
                         class: "text-blue-600 hover:underline text-xs font-semibold" %>
-            <% if journey.template? %>
+            <% if journey.process_template? %>
               <%= button_to "Duplica ciclo",
                             clone_cycle_journey_path(journey),
                             method: :post,

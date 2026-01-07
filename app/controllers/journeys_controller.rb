@@ -53,7 +53,7 @@ class JourneysController < ApplicationController
     @enrollments = @journey.enrollments.includes(:contact)
   end
   def instance_cycle
-    @instance_cycles = @journey.child_journeys.instance_cycle.order(created_at: :desc)
+    @instance_cycles = @journey.child_journeys.process_instance_cycle.order(created_at: :desc)
     @template_events = @journey.eventdates.order(:date_start)
   end
 
@@ -67,7 +67,7 @@ class JourneysController < ApplicationController
       importance: template.importance,
       urgency: template.urgency,
       energy: template.energy,
-      kind: :instance_cycle
+      kind: :process_instance_cycle
     )
     if instance.save
       redirect_to instance_cycle_journey_path(template), notice: "Cycle creato dal template."
@@ -153,7 +153,7 @@ class JourneysController < ApplicationController
     if params.dig(:journey, :template_journey_id).present?
       template = Journey.find(params[:journey][:template_journey_id])
       attrs = template.slice(:title, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy)
-                      .merge(kind: :instance_cycle, template_journey: template)
+                      .merge(kind: :process_instance_cycle, template_journey: template)
       @journey = Journey.new(attrs)
     else
       @journey = Journey.new(journey_params)

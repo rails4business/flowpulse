@@ -17,14 +17,15 @@ class Eventdate < ApplicationRecord
   has_many :bookings, dependent: :destroy
 
   # 🎭 Tipologia / meta-evento
-  enum :event_type, { event: 0, idea: 1,  todo: 2, done: 3, prenotation: 4, message: 5, comment: 6  }
+  enum :event_type, { event: 0, prenotation: 1, message: 2, comment: 3, note: 4 }
+  # ✅ Stati del "diario"
+  enum :status, { pending: 0, tracking: 1, completed: 2, skipped: 3, archived: 4 }
   enum :kind_event, { session: 0, meeting: 1, online_call: 2, recording: 3 }
 
   enum :mode,       { onsite: 0, online: 1, hybrid: 2 }
   enum :visibility, { internal_date: 0, public_date: 1 }
 
- # ✅ Stati del "diario"
- enum :status, { pending: 0, tracking: 1, completed: 2, skipped: 3 }
+
 
 
   # 📅 Validazione "da calendario" – sempre sensata
