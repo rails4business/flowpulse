@@ -53,3 +53,10 @@ Ora passiamo a un nuovo livello una persona da sola può cambiare il mondo ma pu
 Conoscendo meglio le nostre parti e imparando ad utilizzare i modelli
 
 ---
+
+# Appuntamenti
+
+Se leggendo queste righe ti viene un po’ di vertigine,
+e sei sospeso tra la voglia di chiudere il libro e la curiosità di capire dove si va a parare,
+sei nel punto giusto, se la tua voglia di ricerca e le domande vincono sulla paura siamo pronti, è così che tutte le storie hanno inizio come ci spiega campbell nel viaggio dell'eroe, la vita è olografica ci dicono e il viaggio dell'eroe e il ciclo della natura delle stagioni, dell'anno ci raccontano la storia di ogni vita, che ha un inizio e una fine o se si vuole suddividere un ciclo in più parti a un inizio poi arriva una trasformazione e c'è una fine o se la vogliamo vedere su 4 parti che ha una primavera, un estate un autunno, e un inverno, tutto dipende dal tempo, dalla suddivisione che vogliamo dare.
+Questo comunque è il viaggio che ci accomuna poi ognuno ha la sua storia, e ogni storia è una verità che arrichisce quella degli altri per questo, come Insegna Georges Courchinoux prima di partire per un viaggio sarebbe giusto presentarsi magari mettendosi in cerchio, e sarebbe bello che ognuno raccontasse la sua storia, perchè no davanti a un fuoco sarebbe ancora meglio, ora questo non è possibile ma magari un giorno ci potremo incontrare in uno dei molti eventi o gruppi o magari in una delle molte scuole sulla postura o dei molti agriturismi rigenerativi che spero possano nascere grazie all'ispirazione di questo libro e magari potresti essere tu a dirigere uno di questi, così ognuno potrebbe racconterai la propria storia non davanti a uno schermo ma davanti a volti persone, usando non solo 2 sensi la vista e l'udito ma tutti i sensi di cui l'essere umano è dotato, ognuno raccontando la propria storia racconta la propria verità e può arricchire e completare quella degli altri non è solo l'IA che funziona così questo vale anche per le persone, la ricchezza nell'incontrare persone è che ognuno porta un pezzo del puzzle che potrebbe essere importante per te.

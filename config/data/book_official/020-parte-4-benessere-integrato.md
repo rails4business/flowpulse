@@ -6,3 +6,9 @@ color: "rosso"
 ---
 
 # PARTE IV – BENESSERE INTEGRATO
+
+Sistemare ciò che non va.
+
+di cosa ha bisogno per funzionare correttamente?
+
+Come funziona?

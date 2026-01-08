@@ -5,6 +5,13 @@ slug: "valutare-lo-stato-di-salute"
 color: "verde"
 ---
 
+- **Rosso** → dolore e patologia (quando serve cura e protezione)
+- **Arancione** → corsi sulla postura e prevenzione nelle attività lavorative
+- **Verde** → benessere integrato (stile di vita, continuità, prevenzione)
+- **Blu** → postura e fisiologia (imparare e riattivare)
+- **Viola** → formazione / eventi / territorio (il Giardino del Corpo)
+
+---
 
 ## Perché le cose accadono senza che ce ne accorgiamo?
 
@@ -27,6 +34,7 @@ Se qualcosa non va, lo sai.
 
 Certo abbiamo gli esami del sangue, possiamo registrare un sacco di parametri, abbiamo tanti check up che possono indicarci il nostro stato di salute, ma spesso si resta sulla chimica, e sulla biologia e il corpo non viene ancora preso in considerazione globalmente.
 Ci sono **dei segnali**, ma:
+
 - non sappiamo leggerli,
 - li prendiamo come cose normali,
 - li ignoriamo finché diventano dolore, paura, urgenza.
@@ -52,36 +60,33 @@ Ho visto tante persone impegnarsi davvero… e comunque restare ferme.
 Quasi sempre c’era almeno uno di questi errori.
 
 ## 1) Non saperne abbastanza sul tuo corpo
+
 Non serve diventare medici. Serve sapere l’essenziale per non remare contro te stesso.
 
 **Rimedio minimo:** scegli 1 tema (sonno, respiro, articolazioni, alimentazione) e studialo + applicalo per 14 giorni.
 
 ## 2) Investire male le risorse
+
 Un percorso può essere “efficace” ma troppo costoso in tempo, soldi o energia.
 Se non è sostenibile, non dura.
 
 **Rimedio minimo:** definisci quanta energia reale hai questa settimana e scegli la dose minima efficace.
 
 ## 3) Comunicazione scarsa (con te stesso e con chi ti segue)
+
 Appunti sparsi, messaggi confusi, nessun monitoraggio: così il percorso si spegne.
 
 **Rimedio minimo:** usa un diario: 3 righe al giorno + 1 check settimanale.
 
 ## 4) Sbagliare professionista o team
+
 Non perché siano “scarsi”, ma perché non sono adatti al tuo punto di partenza.
 
 **Rimedio minimo:** chiarisci il problema (con parole concrete) e chiedi: “questo è il tuo campo?
 
-
-
-
-
 # appunti
-
 
 La salute è formata da più ambiti siamo appunto abituati a pensare alla cura della patologia ma quella come abbiamo visto è agire in emergenza ci sono tanti ambiti che se non consideraimo poi ci portano ad aver bisogno dei pompieri.
 
-
-
-Questionario: 
+Questionario:
 https://docs.google.com/spreadsheets/d/13w-tqa_v1qoRqEU9JJOQXjHoClwxSn-oFVyltsJ2ZnQ/edit?usp=sharing

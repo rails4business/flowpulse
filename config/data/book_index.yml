@@ -351,16 +351,16 @@
   slug: "diventa-divulgatore-youtube-e-social"
   color: "blu"
 
-- header: false
-  title: "Differenza tra professionista e insegnanti"
-  description: "Organizzare salute, lavoro e formazione attraverso processi e tecnologia"
-  slug: "differenza-tra-professionista-e-insegnanti"
+- header: true
+  title: "PARTE IX – RUOLI NELLA SCUOLA POSTURA E FISIOLOGIA"
+  description: "Diventa insegnante, tutor o coordinatore operativo nella scuola sulla postura e la fisiologia"
+  slug: "parte-9-ruoli-nella-scuola-postura-e-fisiologia"
   color: "blu"
 
 - header: false
-  title: "🅿️ 👩🏼‍⚕️ I ruoli nella scuola Postura e fisiologia"
-  description: "Diventa insegnante, tutor o coordinatore operativo nella scuola sulla postura e la fisiologia"
-  slug: "ruoli-nella-scuola-postura-corretta"
+  title: "Il ruolo degli insegnanti"
+  description: "Organizzare salute, lavoro e formazione attraverso processi e tecnologia"
+  slug: "differenza-tra-professionista-e-insegnanti"
   color: "blu"
 
 - header: false
@@ -376,9 +376,9 @@
   color: "blu-scuro"
 
 - header: true
-  title: "PARTE IX – FLOWPULSE UNA PIATTAFORMA PER I PROGETTI"
+  title: "PARTE X – FLOWPULSE UNA PIATTAFORMA PER I PROGETTI"
   description: "Una piattaforma per organizzare salute, lavoro e formazione attraverso processi e tecnologia"
-  slug: "parte-9-flowpulse-piattaforma"
+  slug: "parte-10-flowpulse-piattaforma"
   color: "arancione"
 
 - header: false
@@ -412,9 +412,9 @@
   color: "arancione"
 
 - header: true
-  title: "PARTE X – AIUTACI AD ORGANIZZARE EVENTI ED ESPERIENZE SUL TERRITORIO"
+  title: "PARTE XI – AIUTACI AD ORGANIZZARE EVENTI ED ESPERIENZE SUL TERRITORIO"
   description: "Per associazioni, enti, biblioteche, librerie, teatri e spazi culturali"
-  slug: "parte-10-organizzare-eventi-esperienze"
+  slug: "parte-11-organizzare-eventi-esperienze"
   color: "viola"
 
 - header: false

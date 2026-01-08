@@ -5,6 +5,8 @@ slug: "60-movimenti-scrivania"
 color: "blu"
 ---
 
+Un primo corso semplice
+
 # 60 movimenti alla scrivania
 
 Be se sei una persona comune che vive tranquillamente adattato alla società moderna non ti aspetteresti tutto questo fermento, ti accontenteresti e staresti molto più tranquillo se ti presentassi il tuo programma di 60 esercizi, da unire al tuo programma di allenamento e di benessere che hai in atto.

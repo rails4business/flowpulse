@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html class="light" lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Blog - PosturaCorretta</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#11d452",
+              "background-light": "#f8fcf9",
+              "background-dark": "#102216",
+              "surface-light": "#ffffff",
+              "surface-dark": "#1a3324",
+              "text-main": "#0d1b12",
+              "text-secondary": "#4c9a66",
+            },
+            fontFamily: {
+              display: ["Lexend", "sans-serif"],
+              body: ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "1rem",
+              lg: "1.5rem",
+              xl: "2rem",
+              "2xl": "3rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display antialiased transition-colors duration-300"
+  >
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <header
+        class="sticky top-0 z-50 w-full border-b border-[#e7f3eb] dark:border-[#1e3a29] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md"
+      >
+        <div class="layout-container flex justify-center">
+          <div
+            class="flex w-full max-w-[1280px] items-center justify-between px-4 py-4 md:px-10"
+          >
+            <div class="flex items-center gap-4">
+              <div class="size-8 text-primary">
+                <svg
+                  class="h-full w-full"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+              <h2
+                class="text-lg font-bold leading-tight tracking-[-0.015em] text-text-main dark:text-white"
+              >
+                PosturaCorretta
+              </h2>
+            </div>
+            <div class="hidden flex-1 justify-end gap-8 lg:flex">
+              <nav class="flex items-center gap-6 xl:gap-9">
+                <a
+                  class="text-sm font-medium hover:text-primary transition-colors"
+                  href="#"
+                  >Libro</a
+                >
+                <a
+                  class="text-sm font-medium hover:text-primary transition-colors"
+                  href="#"
+                  >Servizi</a
+                >
+                <a
+                  class="text-sm font-medium hover:text-primary transition-colors"
+                  href="#"
+                  >Academy</a
+                >
+                <a
+                  class="text-sm font-medium hover:text-primary transition-colors"
+                  href="#"
+                  >Inside Adventure</a
+                >
+                <a class="text-sm font-medium text-primary" href="#">Blog</a>
+                <a
+                  class="text-sm font-medium hover:text-primary transition-colors"
+                  href="#"
+                  >Flowpulse</a
+                >
+              </nav>
+              <button
+                class="flex h-10 min-w-[84px] cursor-pointer items-center justify-center rounded-full bg-primary px-6 text-sm font-bold text-[#0d1b12] transition-transform hover:scale-105 active:scale-95"
+              >
+                <span class="truncate">Accedi</span>
+              </button>
+            </div>
+            <div class="flex lg:hidden">
+              <span class="material-symbols-outlined cursor-pointer text-3xl"
+                >menu</span
+              >
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="flex flex-1 flex-col items-center">
+        <section class="w-full max-w-[1280px] px-4 py-10 md:px-10 lg:py-16">
+          <div class="@container">
+            <div
+              class="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12"
+            >
+              <div
+                class="order-1 h-64 w-full overflow-hidden rounded-xl bg-gray-200 shadow-lg lg:order-2 lg:h-[500px] lg:flex-1"
+                data-alt="People practicing outdoor movement in a sunny forest clearing"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuADAbPE3y4CbeQgs1-13P8u36gA-apcvP9_fKmfv5j8XY2USZ0aqcbyq_p9oEMXVGfCA0u4dgWZnU3An5Qvw9lQyoX9qNFkAP5qLLRJKJ1rll_Ek2CdwtaPkFJbIaj2YQJ8l2PZ9UD54U6nTmBOLewU9p_Au-N6qzfiYHdW6R9bCobesdCq4y969gFUBkIovwmUI8JYbkjj487zH9CNuz0E5GR3tnkezYYl8ZghZH7EU0t_ifzuOd02BkMl07epRyhZbQwnV6RqOVs');
+                  background-size: cover;
+                  background-position: center;
+                "
+              ></div>
+              <div class="order-2 flex flex-col gap-6 lg:order-1 lg:flex-1">
+                <div class="flex flex-col gap-4 text-left">
+                  <div
+                    class="inline-flex w-fit items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary dark:bg-primary/20"
+                  >
+                    <span class="material-symbols-outlined text-[16px]"
+                      >article</span
+                    >
+                    Esplora i contenuti
+                  </div>
+                  <h1
+                    class="text-4xl font-black leading-tight tracking-[-0.033em] text-text-main dark:text-white md:text-5xl lg:text-6xl"
+                  >
+                    Blog
+                  </h1>
+                  <p
+                    class="text-base font-normal leading-relaxed text-text-main/80 dark:text-white/80 md:text-lg"
+                  >
+                    Qui trovi le novità e gli articoli e i video
+                    posturacorretta. Esplora come il movimento all'aperto
+                    migliora le capacità cognitive e la salute posturale.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-4 pt-2">
+                  <button
+                    class="flex h-12 min-w-[140px] cursor-pointer items-center justify-center rounded-full bg-primary px-8 text-base font-bold text-[#0d1b12] transition-all hover:bg-green-400 hover:shadow-lg active:scale-95"
+                  >
+                    Leggi le novità
+                  </button>
+                  <button
+                    class="flex h-12 min-w-[140px] cursor-pointer items-center justify-center rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-8 text-base font-bold text-text-main dark:text-white transition-all hover:bg-gray-50 dark:hover:bg-gray-800 active:scale-95"
+                  >
+                    Iscriviti
+                  </button>
+                </div>
+                <div
+                  class="mt-4 flex gap-8 border-t border-gray-100 dark:border-gray-800 pt-6"
+                >
+                  <div>
+                    <p
+                      class="text-2xl font-bold text-text-main dark:text-white"
+                    >
+                      100+
+                    </p>
+                    <p class="text-sm text-text-secondary dark:text-gray-400">
+                      Articoli
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      class="text-2xl font-bold text-text-main dark:text-white"
+                    >
+                      50+
+                    </p>
+                    <p class="text-sm text-text-secondary dark:text-gray-400">
+                      Video Tutorial
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      class="text-2xl font-bold text-text-main dark:text-white"
+                    >
+                      15k+
+                    </p>
+                    <p class="text-sm text-text-secondary dark:text-gray-400">
+                      Lettori Mensili
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="w-full bg-surface-light/50 dark:bg-surface-dark/30 py-8 backdrop-blur-sm"
+        >
+          <div class="layout-container mx-auto max-w-[1280px] px-4 md:px-10">
+            <div
+              class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between"
+            >
+              <div class="w-full md:max-w-md">
+                <label class="flex h-12 w-full flex-col">
+                  <div
+                    class="flex h-full w-full flex-1 items-stretch rounded-full bg-white dark:bg-surface-dark shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 transition-shadow focus-within:ring-2 focus-within:ring-primary"
+                  >
+                    <div
+                      class="flex items-center justify-center border-none bg-transparent pl-4 text-text-secondary"
+                    >
+                      <span class="material-symbols-outlined">search</span>
+                    </div>
+                    <input
+                      class="flex h-full w-full min-w-0 flex-1 resize-none border-none bg-transparent px-4 text-base font-normal leading-normal text-text-main placeholder:text-text-secondary focus:outline-0 focus:ring-0 dark:text-white dark:placeholder:text-gray-500 rounded-full"
+                      placeholder="Cerca articoli per titolo o argomento"
+                      value=""
+                    />
+                  </div>
+                </label>
+              </div>
+              <div
+                class="flex flex-wrap gap-2 md:justify-end overflow-x-auto pb-2 md:pb-0 no-scrollbar"
+              >
+                <button
+                  class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-5 transition-colors"
+                >
+                  <p class="text-sm font-medium text-[#0d1b12]">Tutti</p>
+                </button>
+                <button
+                  class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-colors hover:border-primary hover:text-primary"
+                >
+                  <p
+                    class="text-sm font-medium text-text-main dark:text-gray-300 group-hover:text-primary"
+                  >
+                    Articoli
+                  </p>
+                </button>
+                <button
+                  class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-colors hover:border-primary hover:text-primary"
+                >
+                  <p
+                    class="text-sm font-medium text-text-main dark:text-gray-300 group-hover:text-primary"
+                  >
+                    Video
+                  </p>
+                </button>
+                <button
+                  class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-colors hover:border-primary hover:text-primary"
+                >
+                  <p
+                    class="text-sm font-medium text-text-main dark:text-gray-300 group-hover:text-primary"
+                  >
+                    Fisiologia
+                  </p>
+                </button>
+                <button
+                  class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-colors hover:border-primary hover:text-primary"
+                >
+                  <p
+                    class="text-sm font-medium text-text-main dark:text-gray-300 group-hover:text-primary"
+                  >
+                    Benessere
+                  </p>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="w-full max-w-[1280px] px-4 py-12 md:px-10">
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div
+              class="@container flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_12px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-gray-800 overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                class="relative aspect-video w-full bg-cover bg-center"
+                data-alt="Group yoga session in a lush green park with sunlight filtering through trees"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB0bG4ChHrUUWtq-apN0zW8hVuXF7UHusmZCkxVq8FhqyPJWJCuojxezLQ5x0UmgU4nsITWJ_aytgsYPJPI4Lpv-E7jU0AVh96AnaPjLdggGT07IBii5wx26dDzKDqjvVLRy458EwYrtd2GCCLjD-UyDqvzyTzSGxfi--JRtEbi420huYlHTJgN4glzUd-D61S8FBWTvED-lXPU3Xa8amDJ5z6LktT7feH3z6Vu2OOO_2ztTDtft8iuGpqov1JDw5GIkob3sJT456U');
+                "
+              ></div>
+              <div class="flex flex-1 flex-col justify-between p-5">
+                <div>
+                  <div class="mb-4 flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-text-secondary"
+                      >
+                        <span class="material-symbols-outlined text-[20px]"
+                          >person</span
+                        >
+                      </div>
+                      <div class="flex flex-col">
+                        <span
+                          class="text-sm font-bold leading-tight text-text-main dark:text-white"
+                          >Dr. Marco Rossi</span
+                        >
+                        <span class="text-xs font-medium text-text-secondary"
+                          >Fisioterapista</span
+                        >
+                      </div>
+                    </div>
+                    <span
+                      class="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary dark:bg-primary/20"
+                    >
+                      Articolo
+                    </span>
+                  </div>
+                  <h3
+                    class="mb-2 text-xl font-bold leading-tight text-text-main dark:text-white"
+                  >
+                    Respirazione e Natura: Un legame profondo
+                  </h3>
+                  <p
+                    class="mb-4 text-sm leading-normal text-text-main/70 dark:text-gray-300"
+                  >
+                    Scopri come riconnettersi con la natura può migliorare
+                    significativamente la tua respirazione diaframmatica.
+                  </p>
+                </div>
+                <button
+                  class="mt-auto flex h-10 w-full items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-sm font-bold text-primary dark:text-primary transition-colors hover:bg-primary hover:text-[#0d1b12]"
+                >
+                  Leggi
+                </button>
+              </div>
+            </div>
+            <div
+              class="@container flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_12px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-gray-800 overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                class="relative aspect-video w-full bg-cover bg-center"
+                data-alt="Person stretching arms on a mountain top overlooking a valley"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_enWDXN8My9N73h5Fb8ze4ty6vfendwCyFzB_8HmHn2-Qg6sbhB5r7-8vzA6ZCRvg8ZBx3bWFuRJwDiDnC85y3fy15y_hhltZVOf9vQl6YEPoAGwF_951XNMa14qV2lDo_zrzSoCaFxCAw8ISPZhaGFqj045T0GeodCa6X6BFm67-e1FzKKW0YwBg-W1WBfK9onlbdZKxN3e9hD6LA6blhIiYYihrLCP-cPOGS3e2nbjZCOHYoVlmDv5S-hroSDjtAS-poNw5-74');
+                "
+              ></div>
+              <div class="flex flex-1 flex-col justify-between p-5">
+                <div>
+                  <div class="mb-4 flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-text-secondary"
+                      >
+                        <span class="material-symbols-outlined text-[20px]"
+                          >person</span
+                        >
+                      </div>
+                      <div class="flex flex-col">
+                        <span
+                          class="text-sm font-bold leading-tight text-text-main dark:text-white"
+                          >Giulia Bianchi</span
+                        >
+                        <span class="text-xs font-medium text-text-secondary"
+                          >Posturologa</span
+                        >
+                      </div>
+                    </div>
+                    <span
+                      class="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary dark:bg-primary/20"
+                    >
+                      Video
+                    </span>
+                  </div>
+                  <h3
+                    class="mb-2 text-xl font-bold leading-tight text-text-main dark:text-white"
+                  >
+                    Guida alla Postura Corretta
+                  </h3>
+                  <p
+                    class="mb-4 text-sm leading-normal text-text-main/70 dark:text-gray-300"
+                  >
+                    Una serie di esercizi dedicati alla salute della schiena e
+                    all'allineamento corporeo da fare ovunque.
+                  </p>
+                </div>
+                <button
+                  class="mt-auto flex h-10 w-full items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-sm font-bold text-primary dark:text-primary transition-colors hover:bg-primary hover:text-[#0d1b12]"
+                >
+                  Leggi
+                </button>
+              </div>
+            </div>
+            <div
+              class="@container flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_12px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-gray-800 overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                class="relative aspect-video w-full bg-cover bg-center"
+                data-alt="Hikers walking on a trail with backpacks in the Dolomites"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBUNBGTA5sDFFOWKYlHWI8EMc_WY5WXPNwmJ3N8q4dHDk5T1cuWQgSYQaGyJZtPhrvuLSUY7s670r9UbGfmQSplwojpXhzLgLTmpEvoE42Io23D_7r3e6smk27enHIbH5tmejHP-57h1xodVs3bUhlXtZhfZkJ48ITZv6dA-XLlVuMYNt3nhkEZgM17qj3hIDlhF1a8DJu7we2fM7_IQLxnkbrTb2xmH7PtPHgOiZqBnrr4uIPi04fZ1vYd6zrpUo_kt23ISGsKGA4');
+                "
+              ></div>
+              <div class="flex flex-1 flex-col justify-between p-5">
+                <div>
+                  <div class="mb-4 flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-text-secondary"
+                      >
+                        <span class="material-symbols-outlined text-[20px]"
+                          >person</span
+                        >
+                      </div>
+                      <div class="flex flex-col">
+                        <span
+                          class="text-sm font-bold leading-tight text-text-main dark:text-white"
+                          >Luca Verdi</span
+                        >
+                        <span class="text-xs font-medium text-text-secondary"
+                          >Guida Alpina</span
+                        >
+                      </div>
+                    </div>
+                    <span
+                      class="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary dark:bg-primary/20"
+                    >
+                      Fisiologia
+                    </span>
+                  </div>
+                  <h3
+                    class="mb-2 text-xl font-bold leading-tight text-text-main dark:text-white"
+                  >
+                    Camminata Consapevole
+                  </h3>
+                  <p
+                    class="mb-4 text-sm leading-normal text-text-main/70 dark:text-gray-300"
+                  >
+                    Impara le tecniche di camminata biomeccanica per ridurre
+                    l'affaticamento articolare durante i trekking.
+                  </p>
+                </div>
+                <button
+                  class="mt-auto flex h-10 w-full items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-sm font-bold text-primary dark:text-primary transition-colors hover:bg-primary hover:text-[#0d1b12]"
+                >
+                  Leggi
+                </button>
+              </div>
+            </div>
+            <div
+              class="@container flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_12px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-gray-800 overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                class="relative aspect-video w-full bg-cover bg-center"
+                data-alt="People sitting on a pier by a calm lake practicing breathing"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdfRlSp3wxkLgX8jEYdi3d3AUBBTL7erE7A40Z4meYReEyO1Xr64mmSLPVX_MQR07hXeL5fSevqhLlsSa5MFZOxLjkEu2IWiIeDriAp3t2dPNP5WxZu70hYOp6ytw5N25Fld_Rz80OJgt7EoolqjA4UpHxwzCIWoi9DlGEQdNYUHvljHYMHD-vJi2ICmcmu_EMWEN86iWzmld-gPGOmb4Mb2kdunC2kC1nvILK0i3ws8Iww0g6_Y-vUkxoTvt_5sdWIT6WZKNnRjM');
+                "
+              ></div>
+              <div class="flex flex-1 flex-col justify-between p-5">
+                <div>
+                  <div class="mb-4 flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-text-secondary"
+                      >
+                        <span class="material-symbols-outlined text-[20px]"
+                          >person</span
+                        >
+                      </div>
+                      <div class="flex flex-col">
+                        <span
+                          class="text-sm font-bold leading-tight text-text-main dark:text-white"
+                          >Sara Neri</span
+                        >
+                        <span class="text-xs font-medium text-text-secondary"
+                          >Psicologa</span
+                        >
+                      </div>
+                    </div>
+                    <span
+                      class="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary dark:bg-primary/20"
+                    >
+                      Articolo
+                    </span>
+                  </div>
+                  <h3
+                    class="mb-2 text-xl font-bold leading-tight text-text-main dark:text-white"
+                  >
+                    Gestire lo Stress con il Respiro
+                  </h3>
+                  <p
+                    class="mb-4 text-sm leading-normal text-text-main/70 dark:text-gray-300"
+                  >
+                    Tecniche di respirazione avanzata all'aria aperta per
+                    abbassare il cortisolo e migliorare la postura.
+                  </p>
+                </div>
+                <button
+                  class="mt-auto flex h-10 w-full items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-sm font-bold text-primary dark:text-primary transition-colors hover:bg-primary hover:text-[#0d1b12]"
+                >
+                  Leggi
+                </button>
+              </div>
+            </div>
+            <div
+              class="@container flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_12px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-gray-800 overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                class="relative aspect-video w-full bg-cover bg-center"
+                data-alt="Person performing natural movement crawl on grass"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCDHr_xvSjitk6ffn7Zh8mOxqZuh_1X9nkgzuvdSggn-JU7llpZiZXDKfjKz6mC-LwkrduCIwO0DmQV8pWi-CQiRse1OCnRchF1CW31TVHEFayrcXUgp5QvZ31fC1ih5Xa6PXPMuV-w8Bbufzh3g5N7-SYFkMHM6Y2Db8Y2YkZHQkDAXsXuB1M6iysrQyWFWGvv0PDvtOJqNPLBE9TPOpUBKuKBXiJU1B8aRJh52U5f6nQvZgGPEQgxq57rJA1J3C8X50Cmt0Egr5k');
+                "
+              ></div>
+              <div class="flex flex-1 flex-col justify-between p-5">
+                <div>
+                  <div class="mb-4 flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-text-secondary"
+                      >
+                        <span class="material-symbols-outlined text-[20px]"
+                          >person</span
+                        >
+                      </div>
+                      <div class="flex flex-col">
+                        <span
+                          class="text-sm font-bold leading-tight text-text-main dark:text-white"
+                          >Matteo Conti</span
+                        >
+                        <span class="text-xs font-medium text-text-secondary"
+                          >Movement Coach</span
+                        >
+                      </div>
+                    </div>
+                    <span
+                      class="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary dark:bg-primary/20"
+                    >
+                      Video
+                    </span>
+                  </div>
+                  <h3
+                    class="mb-2 text-xl font-bold leading-tight text-text-main dark:text-white"
+                  >
+                    Movimento Naturale: Tutorial
+                  </h3>
+                  <p
+                    class="mb-4 text-sm leading-normal text-text-main/70 dark:text-gray-300"
+                  >
+                    Riscopri i pattern di movimento primordiali: video guida su
+                    come gattonare e arrampicarsi correttamente.
+                  </p>
+                </div>
+                <button
+                  class="mt-auto flex h-10 w-full items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-sm font-bold text-primary dark:text-primary transition-colors hover:bg-primary hover:text-[#0d1b12]"
+                >
+                  Leggi
+                </button>
+              </div>
+            </div>
+            <div
+              class="@container flex flex-col rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_12px_rgba(0,0,0,0.05)] dark:shadow-none dark:border dark:border-gray-800 overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                class="relative aspect-video w-full bg-cover bg-center"
+                data-alt="Person meditating on a rock near a waterfall"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDB-Yallj8A1Wu_nRXO5V7JNCyIyK1JD5huNkL-X7AgL9YsyjGxdPlYtGVnhFsWg9nxQKIhY6m7UMgWc0nAEEvfg6DfzCCV3dzthXtWR8KXj4_RuWhecI9iSZrvvl86kcKkAYt78MtE2qJ15wkMaL79GUIkXNGSsXl4UVN_PxJEQV-A2cVn6xA0xY1zfxmT-qmK-N2r1A7fOeC_onJVwEpB5X6H90yHI9EUUWX4q6jLcVXCYYnNs5faTi02tj5q-SYTz2GYUQHdTuw');
+                "
+              ></div>
+              <div class="flex flex-1 flex-col justify-between p-5">
+                <div>
+                  <div class="mb-4 flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-text-secondary"
+                      >
+                        <span class="material-symbols-outlined text-[20px]"
+                          >person</span
+                        >
+                      </div>
+                      <div class="flex flex-col">
+                        <span
+                          class="text-sm font-bold leading-tight text-text-main dark:text-white"
+                          >Elena Risi</span
+                        >
+                        <span class="text-xs font-medium text-text-secondary"
+                          >Insegnante Yoga</span
+                        >
+                      </div>
+                    </div>
+                    <span
+                      class="mt-1 shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary dark:bg-primary/20"
+                    >
+                      Benessere
+                    </span>
+                  </div>
+                  <h3
+                    class="mb-2 text-xl font-bold leading-tight text-text-main dark:text-white"
+                  >
+                    Mindfulness &amp; Flow State
+                  </h3>
+                  <p
+                    class="mb-4 text-sm leading-normal text-text-main/70 dark:text-gray-300"
+                  >
+                    Come raggiungere lo stato di flow attraverso la meditazione
+                    in movimento ad alta quota.
+                  </p>
+                </div>
+                <button
+                  class="mt-auto flex h-10 w-full items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-sm font-bold text-primary dark:text-primary transition-colors hover:bg-primary hover:text-[#0d1b12]"
+                >
+                  Leggi
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="mt-12 flex justify-center">
+            <button
+              class="flex h-12 min-w-[200px] items-center justify-center rounded-full border border-gray-200 bg-white px-6 text-sm font-bold text-text-main transition-colors hover:border-primary hover:text-primary dark:border-gray-700 dark:bg-surface-dark dark:text-white"
+            >
+              Vedi tutti gli articoli
+            </button>
+          </div>
+        </section>
+        <section class="w-full bg-surface-light dark:bg-surface-dark py-16">
+          <div
+            class="layout-container mx-auto flex max-w-[1280px] flex-col items-center px-4 text-center md:px-10"
+          >
+            <div
+              class="mb-6 flex size-16 items-center justify-center rounded-full bg-primary/20 text-primary"
+            >
+              <span class="material-symbols-outlined text-4xl">mail</span>
+            </div>
+            <h2 class="mb-4 text-3xl font-bold text-text-main dark:text-white">
+              Non perdere il prossimo articolo
+            </h2>
+            <p class="mb-8 max-w-xl text-text-main/70 dark:text-gray-300">
+              Iscriviti alla nostra newsletter per ricevere aggiornamenti sui
+              nuovi post, video tutorial e consigli per il tuo benessere
+              naturale.
+            </p>
+            <div class="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+              <input
+                class="flex h-12 flex-1 items-center rounded-full border-gray-200 bg-white px-6 text-base outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-background-dark dark:text-white"
+                placeholder="La tua email"
+                type="email"
+              />
+              <button
+                class="h-12 rounded-full bg-primary px-8 text-base font-bold text-[#0d1b12] transition-transform hover:scale-105"
+              >
+                Iscriviti
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer
+        class="bg-background-light dark:bg-background-dark border-t border-[#e7f3eb] dark:border-[#1e3a29] py-10"
+      >
+        <div
+          class="layout-container mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-6 px-4 md:flex-row md:px-10"
+        >
+          <div class="flex items-center gap-2 text-text-main dark:text-white">
+            <div class="size-6 text-primary">
+              <svg
+                fill="none"
+                viewBox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-lg font-bold">PosturaCorretta</span>
+          </div>
+          <div
+            class="flex flex-wrap justify-center gap-8 text-sm font-medium text-text-secondary"
+          >
+            <a class="hover:text-primary" href="#">Privacy Policy</a>
+            <a class="hover:text-primary" href="#">Termini e Condizioni</a>
+            <a class="hover:text-primary" href="#">Contatti</a>
+          </div>
+          <div class="text-sm text-text-secondary">
+            © 2024 PosturaCorretta. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

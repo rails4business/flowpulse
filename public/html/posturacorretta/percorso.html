@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Percorso – Triade Sole · Luna · Ascendente</title>
+    <meta
+      name="description"
+      content="Percorso basato sulla matrice Triade (Sole–Luna–Ascendente) × Tempo (Passato–Presente–Futuro)."
+    />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+          Arial;
+        background: #0b1220;
+        color: #e8eefc;
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 32px 20px 80px;
+      }
+      h1 {
+        font-size: clamp(28px, 3vw, 42px);
+        margin-bottom: 8px;
+      }
+      h2 {
+        margin-top: 48px;
+        font-size: 26px;
+      }
+      h3 {
+        margin-top: 28px;
+        font-size: 20px;
+      }
+      p {
+        color: #cdd6f4;
+      }
+      .muted {
+        color: #9aa5ce;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 28px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+      }
+      th,
+      td {
+        padding: 14px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+        font-size: 13px;
+        text-transform: uppercase;
+        color: #a5b4fc;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin: 8px 0;
+      }
+
+      blockquote {
+        margin: 16px 0;
+        padding: 14px 18px;
+        border-left: 3px solid #7dd3fc;
+        background: rgba(125, 211, 252, 0.1);
+        border-radius: 8px;
+      }
+
+      .axis {
+        display: grid;
+        grid-template-columns: 120px 1fr 1fr 1fr;
+        gap: 0;
+        margin-top: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .axis div {
+        padding: 16px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .axis div:nth-child(4n) {
+        border-right: none;
+      }
+      .axis .head {
+        background: rgba(255, 255, 255, 0.06);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 13px;
+        color: #a5b4fc;
+      }
+      .axis .y {
+        font-weight: 600;
+        color: #7dd3fc;
+        background: rgba(125, 211, 252, 0.06);
+      }
+
+      @media (max-width: 900px) {
+        .axis {
+          grid-template-columns: 1fr;
+        }
+        .axis div {
+          border-right: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="wrap">
+      <h1>Percorso personale – Triade × Tempo</h1>
+      <p class="muted">
+        Questa pagina traduce il modello
+        <strong>Sole · Luna · Ascendente</strong> in un
+        <strong>percorso concreto</strong>, incrociando struttura interna (asse
+        Y) e linea del tempo (asse X).
+      </p>
+
+      <section class="card">
+        <h2>Il modello di riferimento</h2>
+        <ul>
+          <li>
+            <strong>Sole / SNC / Speranza</strong> → identità, direzione,
+            talento innato
+          </li>
+          <li>
+            <strong>Luna / SNV / Fede</strong> → regolazione emotiva, rapporto
+            con il mondo interno
+          </li>
+          <li>
+            <strong>Ascendente / SNP / Carità</strong> → azione, comportamento,
+            gesto osservabile, mondo esterno
+          </li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Asse X – Linea del tempo</h2>
+        <table>
+          <tr>
+            <th>Passato</th>
+            <th>Presente</th>
+            <th>Futuro</th>
+          </tr>
+          <tr>
+            <td>Da dove vengo<br />Cosa ho fatto</td>
+            <td>Dove sono ora</td>
+            <td>Cosa voglio fare<br />Dove voglio andare</td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Matrice del percorso (Triade × Tempo)</h2>
+
+        <div class="axis">
+          <div class="head"></div>
+          <div class="head">Passato</div>
+          <div class="head">Presente</div>
+          <div class="head">Futuro</div>
+
+          <div class="y">Sole<br />SNC<br />Speranza</div>
+          <div>Chi sono stato?<br />Quali talenti ho espresso o negato?</div>
+          <div>Chi sono ora?<br />Qual è la mia direzione reale?</div>
+          <div>Chi voglio diventare?<br />Quale talento voglio coltivare?</div>
+
+          <div class="y">Luna<br />SNV<br />Fede</div>
+          <div>Quali stati emotivi mi hanno guidato o bloccato?</div>
+          <div>Come sto dentro oggi?<br />Sono regolato o in allarme?</div>
+          <div>
+            Che stato interno voglio costruire?<br />Che fiducia coltivo?
+          </div>
+
+          <div class="y">Ascendente<br />SNP<br />Carità</div>
+          <div>Come ho agito nel mondo?<br />Che comportamenti ho usato?</div>
+          <div>Come agisco ora?<br />Cosa vedono gli altri?</div>
+          <div>Come voglio agire?<br />Quale gesto concreto porto fuori?</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Dinamica del percorso</h2>
+        <ol>
+          <li><strong>Riconosco chi sono</strong> (Sole – identità)</li>
+          <li><strong>Mi regolo dentro</strong> (Luna – mondo interno)</li>
+          <li>
+            <strong>Agisco nel mondo</strong> (Ascendente – comportamento)
+          </li>
+        </ol>
+
+        <blockquote>
+          Coerenza = identità (Y) × direzione nel tempo (X)
+        </blockquote>
+
+        <p class="muted">
+          Quando passato, presente e futuro sono allineati sui tre livelli, il
+          corpo smette di compensare e il percorso diventa sostenibile.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
