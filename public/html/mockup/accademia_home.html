@@ -1,0 +1,972 @@
+<!-- accademia per i professionisti -->
+<!DOCTYPE html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PosturaCorretta - Accademia</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0f85e6",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101a22",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-[#0d151c] dark:text-white antialiased transition-colors duration-200"
+  >
+    <section
+      class="max-w-[1280px] gap-4 mx-auto px-4 md:p-10 lg:px-40 lg:py-20 w-full scroll-mt-20"
+      id="corsi"
+    >
+      <div class="max-w-2xl">
+        <div
+          class="flex items-center gap-2 text-primary font-bold mb-2 uppercase tracking-wider text-sm"
+        >
+          <span class="material-symbols-outlined text-xl">looks_3</span>
+          Passo 3
+        </div>
+
+        <h3
+          class="text-3xl md:text-4xl font-black text-[#111518] dark:text-white leading-tight"
+        >
+          Accademia
+        </h3>
+
+        <p class="mt-4 text-gray-600 dark:text-gray-300 text-lg">
+          Con l'aiuto delle metodiche posturali, acquisisci consapevolezza ed
+          esplorare la tua fisiologia, per comprendere come funziona il tuo
+          corpo.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 mb-8 mt-6">
+        <div
+          class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2632] p-6 shadow-sm"
+        >
+          <div
+            class="flex items-center gap-2 text-primary font-bold mb-3 text-sm uppercase tracking-wider"
+          >
+            <span class="material-symbols-outlined text-xl">person</span>
+            Percorso utenti
+          </div>
+          <h4 class="text-xl font-black text-[#111518] dark:text-white">
+            Benessere quotidiano
+          </h4>
+          <p class="mt-3 text-gray-600 dark:text-gray-300">
+            Percorsi guidati per postura e mobilita, con esercizi e routine
+            semplici da seguire.
+          </p>
+          <div class="mt-4 flex items-center gap-2"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-1 justify-center">
+        <div class="flex flex-col flex-1">
+          <div class="flex flex-wrap gap-x-1 sm:gap-x-2 w-full">
+            <input
+              class="peer/tab1 hidden"
+              id="tab1"
+              name="tabs"
+              type="radio"
+            />
+            <label
+              class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab1:bg-white peer-checked/tab1:dark:bg-[#1a2632] peer-checked/tab1:text-primary peer-checked/tab1:border-primary order-1 flex-grow sm:flex-grow-0 text-center"
+              for="tab1"
+            >
+              Postura e Salute
+            </label>
+            <input
+              checked=""
+              class="peer/tab2 hidden"
+              id="tab2"
+              name="tabs"
+              type="radio"
+            />
+            <label
+              class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab2:bg-white peer-checked/tab2:dark:bg-[#1a2632] peer-checked/tab2:text-primary peer-checked/tab2:border-primary order-2 flex-grow sm:flex-grow-0 text-center"
+              for="tab2"
+            >
+              Igiene Posturale
+            </label>
+            <input
+              class="peer/tab3 hidden"
+              id="tab3"
+              name="tabs"
+              type="radio"
+            />
+            <label
+              class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab3:bg-white peer-checked/tab3:dark:bg-[#1a2632] peer-checked/tab3:text-primary peer-checked/tab3:border-primary order-3 flex-grow sm:flex-grow-0 text-center"
+              for="tab3"
+            >
+              Postura e Fisiologia
+            </label>
+
+            <input
+              class="peer/tab4 hidden"
+              id="tab4"
+              name="tabs"
+              type="radio"
+            />
+            <label
+              class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab4:bg-white peer-checked/tab4:dark:bg-[#1a2632] peer-checked/tab4:text-primary peer-checked/tab4:border-primary order-4 flex-grow sm:flex-grow-0 text-center"
+              for="tab4"
+            >
+              Oltre la Salute
+            </label>
+            <div
+              class="w-full order-5 border-b border-slate-200 dark:border-slate-700 mb-0 mt-[-2px] z-0"
+            ></div>
+            <div
+              class="hidden peer-checked/tab1:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+            >
+              <div class="flex flex-col gap-4">
+                <!-- Module 1 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        1
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Stop al dolore
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Dalla fase acuta alla diagnosi
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <div
+                        class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                      >
+                        <img
+                          alt="Principi di fisioterapia"
+                          class="w-full h-40 sm:h-44 object-cover"
+                          src="https://ik.imagekit.io/posturacorretta/immagini_brand/principi-fisioterapia.png?updatedAt=1763752348755"
+                        />
+                      </div>
+                      <p>
+                        La maggior parte dei professionisti lavora solo sul
+                        sistema muscolo-scheletrico. Qui si amplia lo sguardo ai
+                        cinque sistemi che puoi conoscere e aiutare.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Sistema respiratorio</li>
+                        <li>Sistema nervoso e urogenitale</li>
+                        <li>Sistema muscolo-scheletrico</li>
+                        <li>Sistema cardio-circolatorio</li>
+                        <li>Sistema linfatico e digerente</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+                <!-- Module 2 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        2
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Percorso Terapeutico efficace
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Dalla fase acuta alla diagnosi
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <div
+                        class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                      >
+                        <img
+                          alt="Principi di fisioterapia"
+                          class="w-full h-40 sm:h-44 object-cover"
+                          src="https://ik.imagekit.io/posturacorretta/immagini_brand/principi-fisioterapia.png?updatedAt=1763752348755"
+                        />
+                      </div>
+                      <p>
+                        La maggior parte dei professionisti lavora solo sul
+                        sistema muscolo-scheletrico. Qui si amplia lo sguardo ai
+                        cinque sistemi che puoi conoscere e aiutare.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Sistema respiratorio</li>
+                        <li>Sistema nervoso e urogenitale</li>
+                        <li>Sistema muscolo-scheletrico</li>
+                        <li>Sistema cardio-circolatorio</li>
+                        <li>Sistema linfatico e digerente</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div
+              class="hidden peer-checked/tab2:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+            >
+              <!-- Module 1 -->
+
+              <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="flex-1 space-y-5">
+                  <h3 class="text-2xl font-bold text-[#0d151c] dark:text-white">
+                    Fondamenti e Mobilità Articolare
+                  </h3>
+                  programma di 1 mese
+                  <p
+                    class="text-[#4b779b] dark:text-slate-400 leading-relaxed text-base sm:text-lg"
+                  >
+                    Questo percorso esplora la biomeccanica fondamentale e le
+                    tecniche essenziali per ripristinare la corretta mobilità
+                    articolare, prevenendo i disturbi muscolo-scheletrici più
+                    comuni.
+                  </p>
+                  <div
+                    class="bg-blue-50 dark:bg-slate-800/50 p-5 rounded-lg border border-blue-100 dark:border-slate-700"
+                  >
+                    <h4
+                      class="font-semibold text-[#0d151c] dark:text-white mb-3 text-sm uppercase tracking-wide"
+                    >
+                      Punti Chiave del Percorso
+                    </h4>
+                    <ul class="space-y-3">
+                      <li
+                        class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                      >
+                        <span
+                          class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                          >check_circle</span
+                        >
+                        <span>Mobilita articolare</span>
+                      </li>
+                      <li
+                        class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                      >
+                        <span
+                          class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                          >check_circle</span
+                        >
+                        <span>Togliere le tensione sui punti principali</span>
+                      </li>
+                      <li
+                        class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                      >
+                        <span
+                          class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                          >check_circle</span
+                        >
+                        <span
+                          >Riequilibrare riattivando 3 le vie di discesa</span
+                        >
+                      </li>
+                      <li
+                        class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                      >
+                        <span
+                          class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                          >check_circle</span
+                        >
+                        <span
+                          >Riattiva i Recettori sensoriali e ritrova la tua
+                          energia</span
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="pt-2">
+                    <button
+                      class="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center gap-2 shadow-sm hover:shadow-md"
+                    >
+                      Scopri il Corso Base
+                      <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                      >
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="w-full md:w-2/5 aspect-[4/3] md:aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden relative border border-slate-100 dark:border-slate-700"
+                >
+                  <div
+                    class="absolute inset-0 flex items-center justify-center bg-blue-50 dark:bg-blue-900/10 text-primary"
+                  >
+                    <img
+                      src="https://ik.imagekit.io/posturacorretta/immagini_brand/igiene-posturale.png?updatedAt=1763752348993"
+                      alt=""
+                    />
+                  </div>
+                  <div
+                    class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
+                  >
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-primary"
+                        >info</span
+                      >
+                      <span
+                        class="text-xs font-medium text-[#0d151c] dark:text-slate-200"
+                        >Ideale per terapisti, trainer educatori</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="hidden peer-checked/tab3:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+            >
+              <div class="flex flex-col gap-4">
+                <!---- PERCORSO POSTURA E FISIOLOGIA -->
+
+                <!-- Module 1 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        1
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Principi di fisioterapia
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Sistemi fisiologici • Visione integrata
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <div
+                        class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                      >
+                        <img
+                          alt="Principi di fisioterapia"
+                          class="w-full h-40 sm:h-44 object-cover"
+                          src="https://ik.imagekit.io/posturacorretta/immagini_brand/principi-fisioterapia.png?updatedAt=1763752348755"
+                        />
+                      </div>
+                      <p>
+                        La maggior parte dei professionisti lavora solo sul
+                        sistema muscolo-scheletrico. Qui si amplia lo sguardo ai
+                        cinque sistemi che puoi conoscere e aiutare.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Sistema respiratorio</li>
+                        <li>Sistema nervoso e urogenitale</li>
+                        <li>Sistema muscolo-scheletrico</li>
+                        <li>Sistema cardio-circolatorio</li>
+                        <li>Sistema linfatico e digerente</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+                <!-- Module 2 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        2
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Principi di Osteopatia
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Ascolto e percezione • Tessuti
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <div
+                        class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                      >
+                        <img
+                          alt="Principi di osteopatia"
+                          class="w-full h-40 sm:h-44 object-cover"
+                          src="https://ik.imagekit.io/posturacorretta/immagini_brand/principi-osteopatia.png?updatedAt=1763752348975"
+                        />
+                      </div>
+                      <p>
+                        Oltre i sistemi riconosciuti dalla scienza, si lavora
+                        sulle disfunzioni e sull'ascolto dei movimenti dei
+                        tessuti per aiutare la persona a star bene.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Togliere le disfunzioni</li>
+                        <li>Sistema fasciale</li>
+                        <li>Sistema viscerale</li>
+                        <li>Sistema cranio-sacrale</li>
+                        <li>Sistema neurovegetativo</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+                <!-- Module 4 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        4
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Biomeccanica Comportamentale – Metodo GDS
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Posture, emozioni, tensioni
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <div
+                        class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                      >
+                        <img
+                          alt="Metodo GDS"
+                          class="w-full h-40 sm:h-44 object-cover"
+                          src="https://ik.imagekit.io/posturacorretta/immagini_brand/metodo-gds.png?updatedAt=1763752349069"
+                        />
+                      </div>
+                      <p>
+                        La forma delle ossa rivela i modi di essere e di agire.
+                        Un approccio terapeutico che integra biomeccanica e
+                        comportamento per favorire consapevolezza e benessere.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>5 direzioni di movimento</li>
+                        <li>Flessione e catena AM</li>
+                        <li>Rotazione interna e catena AL</li>
+                        <li>Estensione e catena PM</li>
+                        <li>Rotazione esterna e catena PL</li>
+                        <li>Rigido e lasso: catena PAAP</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+                <!-- Module 5 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        5
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Ascolta il corpo con l’Osteopatia
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Percezione e ascolto
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <p>
+                        Sviluppa la capacità di ascoltare il corpo, riconoscere
+                        le tensioni sottili e leggere i segnali che guidano
+                        verso equilibrio e benessere.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Percezione dei tessuti</li>
+                        <li>Ascolto dei micro-movimenti</li>
+                        <li>Equilibrio tra strutture</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+                <!-- Module 6 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        6
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Kinesiologia: una sequenza per riattivarti
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Movimento e riattivazione
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <div
+                        class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gradient-to-br from-blue-50 via-white to-blue-100 dark:from-[#1f2937] dark:via-[#111827] dark:to-[#0f172a]"
+                      >
+                        <div
+                          class="h-40 sm:h-44 flex items-center justify-center"
+                        >
+                          <span
+                            class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-300"
+                            >Kinesiologia</span
+                          >
+                        </div>
+                      </div>
+                      <p>
+                        Una sequenza di movimento per riattivare muscoli,
+                        meridiani e organi. Un percorso guidato per riprendere
+                        energia e fluidita.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Riscaldamento e centratura</li>
+                        <li>Attivazione muscolare</li>
+                        <li>Meridiani e organi</li>
+                        <li>Rilascio finale</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+                <!-- Module 7 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        7
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Metodo Corpo e Coscienza
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Bioritmi e sistemi energetici
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <div
+                        class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700"
+                      >
+                        <img
+                          alt="Metodo Corpo e Coscienza"
+                          class="w-full h-40 sm:h-44 object-cover"
+                          src="https://ik.imagekit.io/posturacorretta/immagini_brand/corpo-e-coscienza.png?updatedAt=1763752348994"
+                        />
+                      </div>
+                      <p>
+                        Un ponte tra oriente e occidente: bioritmi e ritmi
+                        circadiani, corpo e coscienza come traduttori tra
+                        professionisti e metodiche posturali.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Tra biologia e aspetti percettivi sensoriali</li>
+                        <li>Due circolazioni: conoscere e attivare</li>
+                        <li>Coscienza corporea: tre centri di gravita</li>
+                        <li>Quattro tipi di movimento</li>
+                        <li>Cinque elementi e ritmo stagionale</li>
+                        <li>Sei coppie di meridiani circadiani</li>
+                        <li>Sette centri neurolinfatici</li>
+                        <li>Fisiologia, fenomenologia e aspetti energetici</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+                <!-- Module 8 -->
+                <details
+                  class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden open:shadow-md transition-all duration-300"
+                >
+                  <summary
+                    class="flex items-center justify-between p-6 cursor-pointer select-none"
+                  >
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="size-10 rounded-full bg-white border-2 border-primary text-primary flex items-center justify-center font-bold text-lg"
+                      >
+                        8
+                      </div>
+                      <div>
+                        <h4
+                          class="text-lg font-bold text-[#111518] dark:text-white"
+                        >
+                          Altre metodiche
+                        </h4>
+                        <p
+                          class="text-sm text-gray-500 dark:text-gray-400 hidden sm:block"
+                        >
+                          Tecniche corporee
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-gray-400 group-open:rotate-180 transition-transform duration-300"
+                      >expand_more</span
+                    >
+                  </summary>
+                  <div class="px-6 pb-6 pt-0 ml-[3.5rem]">
+                    <div
+                      class="pt-4 text-gray-600 dark:text-gray-300 space-y-3"
+                    >
+                      <p>
+                        Uno sguardo alle tecniche corporee e terapie manuali,
+                        per collegare fisiologia, postura e le cinque aree del
+                        corpo.
+                      </p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm">
+                        <li>Terapie manuali e approcci integrati</li>
+                        <li>Principi di rilascio e recupero</li>
+                        <li>Strumenti di prevenzione</li>
+                        <li>Linee guida per il lavoro quotidiano</li>
+                      </ul>
+                      <button
+                        class="mt-2 text-primary text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Info
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_right_alt</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div
+              class="hidden peer-checked/tab4:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+            >
+              <div class="flex items-center gap-3 mb-4">
+                <span
+                  class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400"
+                >
+                  Sezione
+                </span>
+                <h3 class="text-xl font-black text-[#111518] dark:text-white">
+                  Mondo del lavoro capacita cognitive e l'a.i.
+                </h3>
+              </div>
+
+              <div class="flex items-center gap-3 mb-4">
+                <span
+                  class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400"
+                >
+                  Sezione
+                </span>
+                <h3 class="text-xl font-black text-[#111518] dark:text-white">
+                  Mondo della formazione e dell'evoluzione armonica
+                </h3>
+              </div>
+
+              <div class="flex items-center gap-3 mb-4">
+                <span
+                  class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400"
+                >
+                  Sezione
+                </span>
+                <h3 class="text-xl font-black text-[#111518] dark:text-white">
+                  Le sfere dell'uomo Flowpulse e il giardino del corpo
+                </h3>
+              </div>
+
+              <div class="flex items-center gap-3 mb-4">
+                <span
+                  class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400"
+                >
+                  Sezione
+                </span>
+                <h3 class="text-xl font-black text-[#111518] dark:text-white">
+                  Eventi dal corpo al territorio, abitudini e ambiente
+                </h3>
+              </div>
+
+              <div class="flex items-center gap-3 mb-4">
+                <span
+                  class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400"
+                >
+                  Sezione
+                </span>
+                <h3 class="text-xl font-black text-[#111518] dark:text-white">
+                  Verso un agriturismo rigenerativo
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-2xl mt-8 border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#1a2632] p-6 shadow-sm"
+        id="professionisti"
+      >
+        <div
+          class="flex items-center gap-2 text-primary font-bold mb-3 text-sm uppercase tracking-wider"
+        >
+          <span class="material-symbols-outlined text-xl"
+            >workspace_premium</span
+          >
+          Percorso professionisti
+        </div>
+        <h4 class="text-xl font-black text-[#111518] dark:text-white">
+          Accademia, specializzazioni e certificazioni
+        </h4>
+        <p class="mt-3 text-gray-600 dark:text-gray-300">
+          Percorsi per professionisti divisi in livelli: blu, verde, rosso.
+        </p>
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <span
+            class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700"
+            >Blu</span
+          >
+          <span
+            class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700"
+            >Verde</span
+          >
+          <span
+            class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700"
+            >Rosso</span
+          >
+        </div>
+        <div class="mt-4 flex items-center gap-2">
+          <a
+            class="inline-flex items-center gap-1 px-4 py-2 rounded-full border border-primary text-primary text-sm font-bold hover:bg-blue-50 transition-colors"
+            href="#tab1"
+          >
+            Vedi percorsi
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </a>
+          <a
+            class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#111518] text-white text-sm font-bold hover:bg-black transition-colors"
+            href="#diventa-insegnante"
+          >
+            Diventa insegnante
+            <span class="material-symbols-outlined text-sm">school</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

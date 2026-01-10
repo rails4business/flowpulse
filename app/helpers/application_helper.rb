@@ -39,4 +39,8 @@ module ApplicationHelper
   rescue
     main_app.post_path(post)
   end
+
+  def domain_language
+    current_domain&.language.presence || "it"
+  end
 end

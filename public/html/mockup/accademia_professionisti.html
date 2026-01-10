@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PosturaCorretta - Accademia</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0f85e6",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101a22",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="font-display bg-background-light dark:bg-background-dark text-[#0d151c] dark:text-white antialiased transition-colors duration-200"
+  >
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden"
+    >
+      <div
+        class="w-full border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-[#15202b]"
+      >
+        <div class="layout-container flex h-full grow flex-col">
+          <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-2">
+            <div
+              class="layout-content-container flex flex-col max-w-[960px] flex-1"
+            >
+              <header
+                class="flex items-center justify-between whitespace-nowrap py-3"
+              >
+                <div class="flex items-center gap-8">
+                  <div
+                    class="flex items-center gap-4 text-[#0d151c] dark:text-white"
+                  >
+                    <div class="size-8 text-primary">
+                      <svg
+                        class="w-full h-full"
+                        fill="none"
+                        viewBox="0 0 48 48"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"
+                          fill="currentColor"
+                        ></path>
+                      </svg>
+                    </div>
+                    <h2
+                      class="text-lg font-bold leading-tight tracking-[-0.015em]"
+                    >
+                      PosturaCorretta
+                    </h2>
+                  </div>
+                  <div class="hidden lg:flex items-center gap-6">
+                    <a
+                      class="text-[#0d151c] dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors"
+                      href="#"
+                      >Home</a
+                    >
+                    <a
+                      class="text-[#0d151c] dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors"
+                      href="#"
+                      >Servizi</a
+                    >
+                    <a
+                      class="text-primary text-sm font-bold leading-normal"
+                      href="#"
+                      >Accademia</a
+                    >
+                    <a
+                      class="text-[#0d151c] dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors"
+                      href="#"
+                      >Inside Adventure</a
+                    >
+                    <a
+                      class="text-[#0d151c] dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary transition-colors"
+                      href="#"
+                      >Eventi</a
+                    >
+                  </div>
+                </div>
+                <div class="flex flex-1 justify-end gap-4 md:gap-8">
+                  <label
+                    class="hidden md:flex flex-col min-w-40 !h-10 max-w-64"
+                  >
+                    <div
+                      class="flex w-full flex-1 items-stretch rounded-lg h-full"
+                    >
+                      <div
+                        class="text-[#4b779b] dark:text-slate-400 flex border-none bg-[#e7eef3] dark:bg-slate-700 items-center justify-center pl-4 rounded-l-lg border-r-0"
+                      >
+                        <span class="material-symbols-outlined text-[24px]"
+                          >search</span
+                        >
+                      </div>
+                      <input
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d151c] dark:text-white focus:outline-0 focus:ring-0 border-none bg-[#e7eef3] dark:bg-slate-700 focus:border-none h-full placeholder:text-[#4b779b] dark:placeholder:text-slate-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                        placeholder="Cerca corsi..."
+                        value=""
+                      />
+                    </div>
+                  </label>
+                  <button
+                    class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-blue-600 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-colors"
+                  >
+                    <span class="truncate">Accedi</span>
+                  </button>
+                </div>
+              </header>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-background-light dark:bg-background-dark pt-4">
+        <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <div class="flex flex-wrap gap-2 px-4 py-2">
+              <a
+                class="text-[#4b779b] dark:text-slate-400 text-sm font-medium leading-normal hover:underline"
+                href="#"
+                >Home</a
+              >
+              <span
+                class="text-[#4b779b] dark:text-slate-500 text-sm font-medium leading-normal"
+                >/</span
+              >
+              <span
+                class="text-[#0d151c] dark:text-white text-sm font-medium leading-normal"
+                >Accademia</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-background-light dark:bg-background-dark">
+        <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <div class="@container">
+              <div
+                class="flex flex-col gap-6 px-4 py-10 @[480px]:gap-8 @[864px]:flex-row items-center"
+              >
+                <div
+                  class="flex flex-col gap-6 @[480px]:min-w-[400px] @[480px]:gap-8 @[864px]:justify-center flex-1"
+                >
+                  <div class="flex flex-col gap-4 text-left">
+                    <div
+                      class="inline-flex items-center gap-2 rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 w-fit"
+                    >
+                      <span
+                        class="text-xs font-bold uppercase tracking-wide text-primary"
+                        >Nuovi Corsi Disponibili</span
+                      >
+                    </div>
+                    <h1
+                      class="text-[#0d151c] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
+                    >
+                      Accademia PosturaCorretta: L'Eccellenza nella Formazione
+                    </h1>
+                    <h2
+                      class="text-[#0d151c] dark:text-slate-300 text-base font-normal leading-relaxed opacity-90"
+                    >
+                      Eleva la tua pratica professionale con una formazione
+                      scientificamente validata. Dalla biomeccanica
+                      all'applicazione clinica, la nostra accademia offre gli
+                      strumenti necessari per eccellere nella salute posturale.
+                    </h2>
+                  </div>
+                  <div class="flex flex-wrap gap-3">
+                    <button
+                      class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary hover:bg-blue-600 transition-colors text-white text-base font-bold leading-normal tracking-[0.015em]"
+                    >
+                      <span class="truncate">Esplora i Corsi</span>
+                    </button>
+                    <button
+                      class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-[#0d151c] dark:text-white text-base font-bold leading-normal tracking-[0.015em]"
+                    >
+                      <span class="truncate">Scarica Brochure</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="w-full aspect-[4/3] rounded-xl overflow-hidden shadow-xl @[480px]:h-auto @[480px]:min-w-[400px] @[864px]:w-1/2 bg-slate-200 dark:bg-slate-700 relative group"
+                >
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"
+                  ></div>
+                  <img
+                    alt="Medical professionals analyzing data on a tablet in a modern clinic"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    data-alt="Medical professionals analyzing data on a tablet in a modern clinic"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIFaWOv3vtRwFWzXAQokSLekVPRd6gV7drvX5luWQUOqNigSzgFqzP1QRUc8Kkr79dGksaRORErlt19lbQ6xO6r0hGf4xv2u1A8GQH730yUv90aL7GNndLQPIBOM3HG8eUSP3GH3oBFg8nyWxnGNoeY4uB3Tc3YP3ia7brF--sGAp3E0_XlkYqQO4U_pE7XCKm6YE_oc_9kW0vDpN0QS2_fhYYFeLH4xZyHti2836aZsPvunrbLcvDIzchichUYcwrWqCRlzJ7SWk"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="w-full bg-white dark:bg-[#15202b] border-y border-slate-100 dark:border-slate-800"
+      >
+        <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <div class="flex flex-wrap gap-4 p-4">
+              <div
+                class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-background-light dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-primary text-3xl"
+                    >school</span
+                  >
+                  <p
+                    class="text-[#0d151c] dark:text-slate-300 text-base font-medium leading-normal"
+                  >
+                    Professionisti Formati
+                  </p>
+                </div>
+                <p
+                  class="text-[#0d151c] dark:text-white tracking-tight text-3xl font-bold leading-tight pl-1"
+                >
+                  5000+
+                </p>
+              </div>
+              <div
+                class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-background-light dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-primary text-3xl"
+                    >verified</span
+                  >
+                  <p
+                    class="text-[#0d151c] dark:text-slate-300 text-base font-medium leading-normal"
+                  >
+                    Corsi Accreditati
+                  </p>
+                </div>
+                <p
+                  class="text-[#0d151c] dark:text-white tracking-tight text-3xl font-bold leading-tight pl-1"
+                >
+                  45
+                </p>
+              </div>
+              <div
+                class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-background-light dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-primary text-3xl"
+                    >history_edu</span
+                  >
+                  <p
+                    class="text-[#0d151c] dark:text-slate-300 text-base font-medium leading-normal"
+                  >
+                    Anni di Esperienza
+                  </p>
+                </div>
+                <p
+                  class="text-[#0d151c] dark:text-white tracking-tight text-3xl font-bold leading-tight pl-1"
+                >
+                  12
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-background-light dark:bg-background-dark py-10">
+        <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1 px-4"
+          >
+            <div class="flex flex-col gap-4 text-center mb-10">
+              <h2
+                class="text-[#0d151c] dark:text-white tracking-tight text-[32px] font-bold leading-tight"
+              >
+                Percorsi Formativi
+              </h2>
+              <p
+                class="text-[#4b779b] dark:text-slate-400 text-lg font-normal leading-normal"
+              >
+                Scegli la tua area di specializzazione e scopri i programmi
+                dedicati.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-x-1 sm:gap-x-2 w-full">
+              <input
+                checked=""
+                class="peer/tab1 hidden"
+                id="tab1"
+                name="tabs"
+                type="radio"
+              />
+              <label
+                class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab1:bg-white peer-checked/tab1:dark:bg-[#1a2632] peer-checked/tab1:text-primary peer-checked/tab1:border-primary order-1 flex-grow sm:flex-grow-0 text-center"
+                for="tab1"
+              >
+                Igiene Posturale
+              </label>
+              <input
+                class="peer/tab2 hidden"
+                id="tab2"
+                name="tabs"
+                type="radio"
+              />
+              <label
+                class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab2:bg-white peer-checked/tab2:dark:bg-[#1a2632] peer-checked/tab2:text-primary peer-checked/tab2:border-primary order-2 flex-grow sm:flex-grow-0 text-center"
+                for="tab2"
+              >
+                Postura e Fisiologia
+              </label>
+              <input
+                class="peer/tab3 hidden"
+                id="tab3"
+                name="tabs"
+                type="radio"
+              />
+              <label
+                class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab3:bg-white peer-checked/tab3:dark:bg-[#1a2632] peer-checked/tab3:text-primary peer-checked/tab3:border-primary order-3 flex-grow sm:flex-grow-0 text-center"
+                for="tab3"
+              >
+                Postura e 5 Aree
+              </label>
+              <input
+                class="peer/tab4 hidden"
+                id="tab4"
+                name="tabs"
+                type="radio"
+              />
+              <label
+                class="cursor-pointer px-3 sm:px-6 py-3 rounded-t-lg text-sm sm:text-base font-bold text-[#4b779b] dark:text-slate-400 bg-slate-100 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 hover:text-primary transition-colors border-b-2 border-transparent peer-checked/tab4:bg-white peer-checked/tab4:dark:bg-[#1a2632] peer-checked/tab4:text-primary peer-checked/tab4:border-primary order-4 flex-grow sm:flex-grow-0 text-center"
+                for="tab4"
+              >
+                Oltre la Salute
+              </label>
+              <div
+                class="w-full order-5 border-b border-slate-200 dark:border-slate-700 mb-0 mt-[-2px] z-0"
+              ></div>
+              <div
+                class="hidden peer-checked/tab1:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+              >
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                  <div class="flex-1 space-y-5">
+                    <h3
+                      class="text-2xl font-bold text-[#0d151c] dark:text-white"
+                    >
+                      Fondamenta e Mobilità Articolare
+                    </h3>
+                    <p
+                      class="text-[#4b779b] dark:text-slate-400 leading-relaxed text-base sm:text-lg"
+                    >
+                      Il punto di partenza per ogni professionista della
+                      postura. Questo percorso esplora la biomeccanica
+                      fondamentale e le tecniche essenziali per ripristinare la
+                      corretta mobilità articolare, prevenendo i disturbi
+                      muscolo-scheletrici più comuni.
+                    </p>
+                    <div
+                      class="bg-blue-50 dark:bg-slate-800/50 p-5 rounded-lg border border-blue-100 dark:border-slate-700"
+                    >
+                      <h4
+                        class="font-semibold text-[#0d151c] dark:text-white mb-3 text-sm uppercase tracking-wide"
+                      >
+                        Punti Chiave del Percorso
+                      </h4>
+                      <ul class="space-y-3">
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span
+                            >Analisi biomeccanica della statica e dinamica</span
+                          >
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span
+                            >Protocolli di mobilizzazione articolare e
+                            stretching</span
+                          >
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span
+                            >Strategie di prevenzione e mantenimento nel
+                            tempo</span
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="pt-2">
+                      <button
+                        class="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center gap-2 shadow-sm hover:shadow-md"
+                      >
+                        Scopri il Corso Base
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_forward</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="w-full md:w-2/5 aspect-[4/3] md:aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden relative border border-slate-100 dark:border-slate-700"
+                  >
+                    <div
+                      class="absolute inset-0 flex items-center justify-center bg-blue-50 dark:bg-blue-900/10 text-primary"
+                    >
+                      <span
+                        class="material-symbols-outlined text-[100px] md:text-[140px] opacity-20"
+                        >accessibility_new</span
+                      >
+                    </div>
+                    <div
+                      class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
+                    >
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary"
+                          >info</span
+                        >
+                        <span
+                          class="text-xs font-medium text-[#0d151c] dark:text-slate-200"
+                          >Ideale per fisioterapisti e trainer</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="hidden peer-checked/tab2:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+              >
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                  <div class="flex-1 space-y-5">
+                    <h3
+                      class="text-2xl font-bold text-[#0d151c] dark:text-white"
+                    >
+                      Visione Integrata dei 5 Sistemi
+                    </h3>
+                    <p
+                      class="text-[#4b779b] dark:text-slate-400 leading-relaxed text-base sm:text-lg"
+                    >
+                      Un approfondimento clinico su come i sistemi corporei
+                      interagiscono per mantenere l'equilibrio. Comprendi le
+                      connessioni profonde tra il sistema nervoso, muscolare,
+                      scheletrico, visivo e vestibolare.
+                    </p>
+                    <div
+                      class="bg-blue-50 dark:bg-slate-800/50 p-5 rounded-lg border border-blue-100 dark:border-slate-700"
+                    >
+                      <h4
+                        class="font-semibold text-[#0d151c] dark:text-white mb-3 text-sm uppercase tracking-wide"
+                      >
+                        Punti Chiave del Percorso
+                      </h4>
+                      <ul class="space-y-3">
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span>Neurofisiologia del controllo posturale</span>
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span
+                            >Valutazione delle entrate sensoriali (occhio,
+                            piede, bocca)</span
+                          >
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span>Integrazione delle catene miofasciali</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="pt-2">
+                      <button
+                        class="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center gap-2 shadow-sm hover:shadow-md"
+                      >
+                        Approfondisci Fisiologia
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_forward</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="w-full md:w-2/5 aspect-[4/3] md:aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden relative border border-slate-100 dark:border-slate-700"
+                  >
+                    <div
+                      class="absolute inset-0 flex items-center justify-center bg-blue-50 dark:bg-blue-900/10 text-primary"
+                    >
+                      <span
+                        class="material-symbols-outlined text-[100px] md:text-[140px] opacity-20"
+                        >psychology</span
+                      >
+                    </div>
+                    <div
+                      class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
+                    >
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary"
+                          >info</span
+                        >
+                        <span
+                          class="text-xs font-medium text-[#0d151c] dark:text-slate-200"
+                          >Focus clinico e neurologico</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="hidden peer-checked/tab3:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+              >
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                  <div class="flex-1 space-y-5">
+                    <h3
+                      class="text-2xl font-bold text-[#0d151c] dark:text-white"
+                    >
+                      Le 5 Aree della Salute Posturale
+                    </h3>
+                    <p
+                      class="text-[#4b779b] dark:text-slate-400 leading-relaxed text-base sm:text-lg"
+                    >
+                      Un approccio olistico che supera la meccanica pura. Scopri
+                      come la struttura, la biochimica, le emozioni, l'ambiente
+                      e l'energia influenzano e sono influenzati dalla postura
+                      del paziente.
+                    </p>
+                    <div
+                      class="bg-blue-50 dark:bg-slate-800/50 p-5 rounded-lg border border-blue-100 dark:border-slate-700"
+                    >
+                      <h4
+                        class="font-semibold text-[#0d151c] dark:text-white mb-3 text-sm uppercase tracking-wide"
+                      >
+                        Punti Chiave del Percorso
+                      </h4>
+                      <ul class="space-y-3">
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span
+                            >Correlazioni viscero-somatiche e nutrizione</span
+                          >
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span>Psicosomatica e linguaggio del corpo</span>
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span>Epigenetica e fattori ambientali</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="pt-2">
+                      <button
+                        class="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center gap-2 shadow-sm hover:shadow-md"
+                      >
+                        Esplora le 5 Aree
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_forward</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="w-full md:w-2/5 aspect-[4/3] md:aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden relative border border-slate-100 dark:border-slate-700"
+                  >
+                    <div
+                      class="absolute inset-0 flex items-center justify-center bg-blue-50 dark:bg-blue-900/10 text-primary"
+                    >
+                      <span
+                        class="material-symbols-outlined text-[100px] md:text-[140px] opacity-20"
+                        >pentagon</span
+                      >
+                    </div>
+                    <div
+                      class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
+                    >
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary"
+                          >info</span
+                        >
+                        <span
+                          class="text-xs font-medium text-[#0d151c] dark:text-slate-200"
+                          >Approccio multidisciplinare</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="hidden peer-checked/tab4:block w-full order-6 bg-white dark:bg-[#1a2632] rounded-b-xl rounded-tr-xl sm:rounded-tr-none border border-t-0 border-slate-200 dark:border-slate-700 p-6 sm:p-10 shadow-sm"
+              >
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                  <div class="flex-1 space-y-5">
+                    <h3
+                      class="text-2xl font-bold text-[#0d151c] dark:text-white"
+                    >
+                      Metodi per Lifestyle e Lavoro
+                    </h3>
+                    <p
+                      class="text-[#4b779b] dark:text-slate-400 leading-relaxed text-base sm:text-lg"
+                    >
+                      Porta la postura fuori dalla clinica. Impara a gestire
+                      l'ergonomia sul posto di lavoro e a migliorare le
+                      performance cognitive e lavorative attraverso il corretto
+                      allineamento corporeo.
+                    </p>
+                    <div
+                      class="bg-blue-50 dark:bg-slate-800/50 p-5 rounded-lg border border-blue-100 dark:border-slate-700"
+                    >
+                      <h4
+                        class="font-semibold text-[#0d151c] dark:text-white mb-3 text-sm uppercase tracking-wide"
+                      >
+                        Punti Chiave del Percorso
+                      </h4>
+                      <ul class="space-y-3">
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span>Ergonomia avanzata per Smart Working</span>
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span
+                            >Postura e concentrazione (Inside Adventure)</span
+                          >
+                        </li>
+                        <li
+                          class="flex items-start gap-3 text-[#0d151c] dark:text-slate-300"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-[20px] mt-0.5"
+                            >check_circle</span
+                          >
+                          <span>Gestione dello stress lavoro-correlato</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="pt-2">
+                      <button
+                        class="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold transition-colors inline-flex items-center gap-2 shadow-sm hover:shadow-md"
+                      >
+                        Vai ai Corsi Lifestyle
+                        <span class="material-symbols-outlined text-sm"
+                          >arrow_forward</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="w-full md:w-2/5 aspect-[4/3] md:aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden relative border border-slate-100 dark:border-slate-700"
+                  >
+                    <div
+                      class="absolute inset-0 flex items-center justify-center bg-blue-50 dark:bg-blue-900/10 text-primary"
+                    >
+                      <span
+                        class="material-symbols-outlined text-[100px] md:text-[140px] opacity-20"
+                        >self_improvement</span
+                      >
+                    </div>
+                    <div
+                      class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm"
+                    >
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary"
+                          >info</span
+                        >
+                        <span
+                          class="text-xs font-medium text-[#0d151c] dark:text-slate-200"
+                          >Per aziende e privati</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-white dark:bg-[#15202b] py-16">
+        <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <div class="flex items-end justify-between mb-8 px-4">
+              <div>
+                <h2
+                  class="text-[#0d151c] dark:text-white text-2xl md:text-3xl font-bold leading-tight"
+                >
+                  Corsi in Evidenza
+                </h2>
+                <p class="text-[#4b779b] dark:text-slate-400 mt-2">
+                  Le opportunità formative più richieste del momento.
+                </p>
+              </div>
+              <a
+                class="hidden md:flex items-center gap-1 text-primary font-bold hover:underline"
+                href="#"
+              >
+                Vedi tutti i corsi
+                <span class="material-symbols-outlined text-sm"
+                  >arrow_forward</span
+                >
+              </a>
+            </div>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4"
+            >
+              <div
+                class="group flex flex-col bg-background-light dark:bg-[#1a2632] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300"
+              >
+                <div class="h-48 overflow-hidden relative">
+                  <img
+                    alt="Close up of a physiotherapist examining a patient spine"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Close up of a physiotherapist examining a patient spine"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk3BGzpnkRJHYnux_rBAGTXzZxP-00A7Dx7i3kw30ZYSWyh5VNUzitKEfEPy9jzoUZdtu_9LtAGL8fQ1MPqrB3Ausp9oktSN5DfLIMTI_VD5vX93kZN6Dvp9DHIL4pbREbE47eUbcpPP8WpbKT27dUI230CB-p4Dcisu7ruCZjmLOsWFpioZ6od3jWa89SV3URhGjn4S-qy7jNi9cA31bJwcaePeqn_x5TwkSK1kNLcXxthWxgtv88nlHp9eSxJjDD5vHgEB5k_kc"
+                  />
+                  <div
+                    class="absolute top-3 right-3 bg-white dark:bg-slate-800 px-2 py-1 rounded text-xs font-bold text-[#0d151c] dark:text-white shadow-sm"
+                  >
+                    LIVELLO AVANZATO
+                  </div>
+                </div>
+                <div class="p-5 flex flex-col flex-1">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span
+                      class="text-xs font-semibold text-primary uppercase tracking-wider"
+                      >Clinico</span
+                    >
+                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400"
+                      >12 Ore</span
+                    >
+                  </div>
+                  <h3
+                    class="text-lg font-bold text-[#0d151c] dark:text-white mb-2 group-hover:text-primary transition-colors"
+                  >
+                    Valutazione Posturale Avanzata
+                  </h3>
+                  <p
+                    class="text-sm text-[#4b779b] dark:text-slate-400 mb-4 line-clamp-2"
+                  >
+                    Approfondisci le tecniche di analisi biomeccanica e
+                    diagnostica differenziale per pazienti complessi.
+                  </p>
+                  <div
+                    class="mt-auto pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between"
+                  >
+                    <span class="font-bold text-[#0d151c] dark:text-white"
+                      >€ 249</span
+                    >
+                    <button
+                      class="text-sm font-bold text-primary hover:text-blue-600 transition-colors"
+                    >
+                      Scopri di più
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="group flex flex-col bg-background-light dark:bg-[#1a2632] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300"
+              >
+                <div class="h-48 overflow-hidden relative">
+                  <img
+                    alt="Student writing notes in an anatomy class with skeleton model"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Student writing notes in an anatomy class with skeleton model"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJZpYYgQ3CqvHaiI5OExUZMa1ipyzBhbmbQc8CbK9GeawtWhO5LSFXOEAKhz7N9DQu75qUxDZXfwgckHUB_HQwsnJHKd_51GVhnaATFLM1OneAAGs-MP659s33mblTQ7I4JBSRugJE13aikPNcDtsdw_-Yz4iuizqQKmDYAPL0ojVNMs_Dw4fjxIVwa1-pqi6EHg25slWB6HA8MGdXi2Fxt2UxOz-63YjttDLStRTw0y4EvNsZq6tyl5nOMsJ14hYQ-hJ18Hmik5k"
+                  />
+                  <div
+                    class="absolute top-3 right-3 bg-white dark:bg-slate-800 px-2 py-1 rounded text-xs font-bold text-[#0d151c] dark:text-white shadow-sm"
+                  >
+                    INTERMEDIO
+                  </div>
+                </div>
+                <div class="p-5 flex flex-col flex-1">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span
+                      class="text-xs font-semibold text-primary uppercase tracking-wider"
+                      >Teorico</span
+                    >
+                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400"
+                      >8 Ore</span
+                    >
+                  </div>
+                  <h3
+                    class="text-lg font-bold text-[#0d151c] dark:text-white mb-2 group-hover:text-primary transition-colors"
+                  >
+                    Anatomia Funzionale
+                  </h3>
+                  <p
+                    class="text-sm text-[#4b779b] dark:text-slate-400 mb-4 line-clamp-2"
+                  >
+                    Un viaggio dettagliato attraverso le catene cinetiche e il
+                    loro impatto sulla postura quotidiana.
+                  </p>
+                  <div
+                    class="mt-auto pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between"
+                  >
+                    <span class="font-bold text-[#0d151c] dark:text-white"
+                      >€ 189</span
+                    >
+                    <button
+                      class="text-sm font-bold text-primary hover:text-blue-600 transition-colors"
+                    >
+                      Scopri di più
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="group flex flex-col bg-background-light dark:bg-[#1a2632] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300"
+              >
+                <div class="h-48 overflow-hidden relative">
+                  <img
+                    alt="Person working at a desk with correct ergonomic posture"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Person working at a desk with correct ergonomic posture"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTgJ09SfjEMFBbMzdQSZ_akyrUWDr92moT9Ti25Ado3ksAEIAZY1ZHCbyvylMufQQl6R0xS0j9eVtQHIf03SVn0huYjBZ830evYKjQmjri6mnI-dyzf9-f4wnhI4jfiYQGWD-iUZqcGHxR_h6QwSSSxnz4BoWMkPdbeFg2JWDbsguoniQw-1czyT9M4eogOV8_Z7Bt9KvlE1yx0CMv-yb2kng1fah8VRSWlSXL3SzW2ryJzgzLywpduJA8D8bYWfr6Qu5UPCM37_o"
+                  />
+                  <div
+                    class="absolute top-3 right-3 bg-white dark:bg-slate-800 px-2 py-1 rounded text-xs font-bold text-[#0d151c] dark:text-white shadow-sm"
+                  >
+                    WORKSHOP
+                  </div>
+                </div>
+                <div class="p-5 flex flex-col flex-1">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span
+                      class="text-xs font-semibold text-primary uppercase tracking-wider"
+                      >Pratico</span
+                    >
+                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400"
+                      >4 Ore</span
+                    >
+                  </div>
+                  <h3
+                    class="text-lg font-bold text-[#0d151c] dark:text-white mb-2 group-hover:text-primary transition-colors"
+                  >
+                    Ergonomia &amp; Smart Working
+                  </h3>
+                  <p
+                    class="text-sm text-[#4b779b] dark:text-slate-400 mb-4 line-clamp-2"
+                  >
+                    Strategie pratiche per migliorare la postura e la
+                    produttività cognitiva negli ambienti di lavoro moderni.
+                  </p>
+                  <div
+                    class="mt-auto pt-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between"
+                  >
+                    <span class="font-bold text-[#0d151c] dark:text-white"
+                      >€ 120</span
+                    >
+                    <button
+                      class="text-sm font-bold text-primary hover:text-blue-600 transition-colors"
+                    >
+                      Scopri di più
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex md:hidden justify-center mt-8">
+              <a
+                class="flex items-center gap-1 text-primary font-bold hover:underline"
+                href="#"
+              >
+                Vedi tutti i corsi
+                <span class="material-symbols-outlined text-sm"
+                  >arrow_forward</span
+                >
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-primary py-16">
+        <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1 text-center items-center"
+          >
+            <h2 class="text-white text-3xl font-bold mb-4">
+              Resta Aggiornato sul Mondo Posturale
+            </h2>
+            <p class="text-blue-100 text-lg mb-8 max-w-xl">
+              Iscriviti alla nostra newsletter per ricevere aggiornamenti sui
+              nuovi corsi, webinar gratuiti e le ultime ricerche scientifiche.
+            </p>
+            <div class="flex flex-col sm:flex-row w-full max-w-md gap-3">
+              <input
+                class="flex-1 px-4 py-3 rounded-lg border-none focus:ring-2 focus:ring-blue-300 outline-none text-[#0d151c]"
+                placeholder="La tua email professionale"
+                type="email"
+              />
+              <button
+                class="bg-[#0d151c] text-white px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 transition-opacity"
+              >
+                Iscriviti
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer
+        class="w-full bg-white dark:bg-[#15202b] border-t border-slate-200 dark:border-slate-800 py-10"
+      >
+        <div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center">
+          <div
+            class="layout-content-container flex flex-col md:flex-row justify-between items-center gap-6 max-w-[960px] flex-1"
+          >
+            <div class="flex items-center gap-2 text-[#0d151c] dark:text-white">
+              <div class="size-6 text-primary">
+                <svg
+                  class="w-full h-full"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+              <span class="font-bold text-lg">PosturaCorretta</span>
+            </div>
+            <div class="text-sm text-[#4b779b] dark:text-slate-400">
+              © 2024 PosturaCorretta. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

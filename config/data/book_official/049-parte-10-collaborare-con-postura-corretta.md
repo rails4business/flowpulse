@@ -1,11 +1,11 @@
 ---
-title: "PARTE VIII – COLLABORARE CON POSTURA CORRETTA"
+title: "PARTE X – COLLABORARE CON POSTURA CORRETTA"
 description: "Come collaborare con PosturaCorretta per professionisti, aziende e partner"
 slug: "parte-8-collaborare-con-postura-corretta"
 color: "blu"
 ---
 
-# PARTE VIII – COLLABORARE CON POSTURA CORRETTA
+# PARTE X – COLLABORARE CON POSTURA CORRETTA
 
 # Collaborare con PosturaCorretta
 

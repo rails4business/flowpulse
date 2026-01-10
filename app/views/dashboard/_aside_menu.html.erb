@@ -1,6 +1,4 @@
-
-
-   
+<% if Current.user&.superadmin? && Current.user.superadmin_mode_active? %>
   <form action="#" method="GET" class="md:hidden mb-2">
     <label for="sidebar-search" class="sr-only">Search</label>
     <div class="relative">
@@ -58,7 +56,6 @@
 
 </ul>
 
-  <% if Current.user&.superadmin? %>
     <!--- menu helper--->
   <ul class="space-y-1">
     <% current_group = nil %>

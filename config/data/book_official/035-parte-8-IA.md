@@ -1,11 +1,11 @@
 ---
-title: "PARTE VI – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE"
+title: "PARTE VIII – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE"
 description: "In un mondo che cambia, imparare e lavorare diventano un unico processo"
-slug: "parte-6-lavoro-formazione-convergenza"
+slug: "parte-8-lavoro-formazione-convergenza"
 color: "arancione"
 ---
 
-# PARTE VI – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE
+# PARTE VIII – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE
 
 ## In un mondo che cambia, imparare e lavorare diventano un unico processo
 

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html class="light" lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>1 Impegno - Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1754cf",
+              "background-light": "#f6f6f8",
+              "background-dark": "#111621",
+              "surface-light": "#ffffff",
+              "surface-dark": "#1a2233",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-[#111318] dark:text-white transition-colors duration-200"
+  >
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <!-- Top Navigation -->
+      <header
+        class="sticky top-0 z-10 w-full bg-surface-light dark:bg-surface-dark border-b border-[#f0f2f4] dark:border-gray-800"
+      >
+        <div class="max-w-[960px] mx-auto px-4 sm:px-10 py-3">
+          <div class="flex items-center justify-between">
+            <!-- Logo Section -->
+            <div class="flex items-center gap-2 text-primary">
+              <span class="material-symbols-outlined text-[24px]"
+                >event_note</span
+              >
+              <h2
+                class="text-[#111318] dark:text-white text-lg font-bold tracking-tight"
+              >
+                1 Impegno
+              </h2>
+            </div>
+            <!-- Navigation Links & Profile -->
+            <div class="flex items-center gap-6 sm:gap-8">
+              <nav class="hidden md:flex items-center gap-6">
+                <a
+                  class="text-primary text-sm font-semibold leading-normal"
+                  href="#"
+                  >Dashboard</a
+                >
+                <a
+                  class="text-[#636f88] dark:text-gray-400 hover:text-[#111318] dark:hover:text-white transition-colors text-sm font-medium leading-normal"
+                  href="#"
+                  >Calendario</a
+                >
+                <a
+                  class="text-[#636f88] dark:text-gray-400 hover:text-[#111318] dark:hover:text-white transition-colors text-sm font-medium leading-normal"
+                  href="#"
+                  >Chi Siamo</a
+                >
+              </nav>
+              <div class="flex items-center gap-3">
+                <button class="md:hidden text-[#636f88] dark:text-gray-400">
+                  <span class="material-symbols-outlined">menu</span>
+                </button>
+                <div
+                  class="bg-center bg-no-repeat bg-cover rounded-full size-9 border border-[#f0f2f4] dark:border-gray-700 shadow-sm cursor-pointer"
+                  data-alt="User profile avatar showing a smiling person"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDeUpAxO1Ii0osYL_jCMn8Zr4DURhxNRawYicFl0knEZ6C8EW0Gu-lcKhatuh5UYaVgyis5b7A7O3hSb_4MEpwjgxMbZzvLqAo5MHUHUmdl9mY0TdKXf4IVcj0T-S-KDAcx4cZcBKzDntGcoH-Q-SHaYgQqumCl0J9jYmkIe70M9e6x7mEHjgujqRqlQvQw0A0uRAwm8oRqrP8wOPmWcgs6tj5LNFYnDGIBIJNKnIHWX95aVb8O39jRdBokObGe3a0vgDFDWtvJMVl9');
+                  "
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Main Content -->
+      <main
+        class="flex-1 w-full max-w-[960px] mx-auto px-4 sm:px-10 py-8 flex flex-col gap-8"
+      >
+        <!-- Page Heading & Actions -->
+        <section
+          class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2"
+        >
+          <div class="flex flex-col gap-2">
+            <h1
+              class="text-[#111318] dark:text-white text-[32px] font-bold leading-tight tracking-tight"
+            >
+              Bentornato, Matteo.
+            </h1>
+            <p
+              class="text-[#636f88] dark:text-gray-400 text-sm font-normal leading-relaxed"
+            >
+              Oggi è Martedì, 24 Ottobre. Hai
+              <strong class="text-[#111318] dark:text-white font-semibold"
+                >5 impegni</strong
+              >
+              in programma questa settimana.
+            </p>
+          </div>
+          <div class="flex gap-3">
+            <button
+              class="flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium shadow-sm"
+            >
+              Visualizza Calendario
+            </button>
+            <button
+              class="flex items-center justify-center gap-2 rounded-lg h-10 px-5 bg-primary text-white hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm"
+            >
+              <span class="material-symbols-outlined text-[18px]">add</span>
+              <span>Nuovo Evento</span>
+            </button>
+          </div>
+        </section>
+        <!-- Quick Filters (Chips) -->
+        <section class="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+          <div class="flex gap-3 min-w-max">
+            <button
+              class="group flex h-8 items-center gap-2 rounded-full bg-[#111318] dark:bg-white px-4 transition-all"
+            >
+              <span class="text-white dark:text-[#111318] text-sm font-medium"
+                >Tutti</span
+              >
+            </button>
+            <button
+              class="group flex h-8 items-center gap-2 rounded-full bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 hover:border-primary dark:hover:border-primary px-4 transition-all"
+            >
+              <span
+                class="material-symbols-outlined text-[16px] text-emerald-600 dark:text-emerald-400"
+                >favorite</span
+              >
+              <span
+                class="text-[#636f88] dark:text-gray-300 text-sm font-medium group-hover:text-[#111318] dark:group-hover:text-white"
+                >Salute</span
+              >
+            </button>
+            <button
+              class="group flex h-8 items-center gap-2 rounded-full bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 hover:border-primary dark:hover:border-primary px-4 transition-all"
+            >
+              <span
+                class="material-symbols-outlined text-[16px] text-blue-600 dark:text-blue-400"
+                >work</span
+              >
+              <span
+                class="text-[#636f88] dark:text-gray-300 text-sm font-medium group-hover:text-[#111318] dark:group-hover:text-white"
+                >Lavoro</span
+              >
+            </button>
+            <button
+              class="group flex h-8 items-center gap-2 rounded-full bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 hover:border-primary dark:hover:border-primary px-4 transition-all"
+            >
+              <span
+                class="material-symbols-outlined text-[16px] text-amber-600 dark:text-amber-400"
+                >school</span
+              >
+              <span
+                class="text-[#636f88] dark:text-gray-300 text-sm font-medium group-hover:text-[#111318] dark:group-hover:text-white"
+                >Formazione</span
+              >
+            </button>
+          </div>
+        </section>
+        <!-- Content Sections -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Main Feed (Two thirds) -->
+          <div class="lg:col-span-8 flex flex-col gap-10">
+            <!-- Section: Salute -->
+            <div class="flex flex-col gap-4">
+              <div
+                class="flex items-center gap-2 pb-2 border-b border-[#f0f2f4] dark:border-gray-800"
+              >
+                <div
+                  class="p-1.5 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >favorite</span
+                  >
+                </div>
+                <h3 class="text-[#111318] dark:text-white text-lg font-bold">
+                  Salute &amp; Benessere
+                </h3>
+              </div>
+              <!-- Card 1 -->
+              <div
+                class="group flex flex-col sm:flex-row gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-transparent hover:border-[#f0f2f4] dark:hover:border-gray-700 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-all"
+              >
+                <div
+                  class="h-32 sm:h-24 sm:w-24 w-full shrink-0 rounded-lg bg-cover bg-center"
+                  data-alt="Close up of fresh green apples and a measuring tape representing health"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAXLnYWTSTDxZNuDeO0Vm61YTQAbILVEAkPB-6xk7kBW5hTEC967DNOqKqMW2a5hdwIQnrVgAR2R6J9L70dl8Mwoy_ScMiwEfIwYsSOynWZVyoQJj32MXrAnChHehtMlYpI0VZAZNW4r5H6p2nOd0HC8U7zgC3XADsh-KSEuRFKhP3d3rQVeNIfxoo0NQvzUZs8J6JywIZNe_fJIxqq93wSVNXJYvKI1ek45W7ZATinnSuRJqEsqzt3iVnpI3dTVF6kZ_gmgEODGFp4');
+                  "
+                ></div>
+                <div class="flex flex-col justify-between flex-1 gap-2">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <h4
+                        class="text-[#111318] dark:text-white font-bold text-base group-hover:text-primary transition-colors"
+                      >
+                        Giornata di Prevenzione
+                      </h4>
+                      <span
+                        class="inline-flex items-center rounded-md bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 ring-1 ring-inset ring-emerald-600/20"
+                        >Domani</span
+                      >
+                    </div>
+                    <p
+                      class="text-[#636f88] dark:text-gray-400 text-sm mt-1 line-clamp-2"
+                    >
+                      Check-up generale annuale e sessione informativa sulla
+                      nutrizione. Ricordati di portare i risultati precedenti.
+                    </p>
+                  </div>
+                  <div
+                    class="flex items-center gap-4 text-xs text-[#636f88] dark:text-gray-500 font-medium mt-1"
+                  >
+                    <div class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[16px]"
+                        >schedule</span
+                      >
+                      25 Ottobre • 09:00 - 12:00
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[16px]"
+                        >location_on</span
+                      >
+                      Centro Medico Salus
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div
+                class="group flex flex-col sm:flex-row gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-transparent hover:border-[#f0f2f4] dark:hover:border-gray-700 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-all"
+              >
+                <div
+                  class="h-32 sm:h-24 sm:w-24 w-full shrink-0 rounded-lg bg-cover bg-center"
+                  data-alt="People sitting in a circle on yoga mats in a park"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFcN9kjKQCZykzVhydIiKfSGBbXbuVg3THMdDcXoAutV13sAxlrhUtoBMTBzMVg7p1j-dwRGvRc1vfU3I0xtnCjsNjVeI2c2prV211n5rVnNvKZ83mpIrU67Z_nGdX9XbAPa3iuvFbE0QYjxMZTziUELpXD9IwP9Irx1le43Oz_up0qQUz8sx0mKCI83C-9IiQm-wHOMmq7r1giZ8S2BHEIvXqCR5zYQ5idqPDMcUu4nQW4hqFgLfF1_Lv9QyhO7NrZN7jCnGTxoja');
+                  "
+                ></div>
+                <div class="flex flex-col justify-between flex-1 gap-2">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <h4
+                        class="text-[#111318] dark:text-white font-bold text-base group-hover:text-primary transition-colors"
+                      >
+                        Meditazione al Parco
+                      </h4>
+                    </div>
+                    <p
+                      class="text-[#636f88] dark:text-gray-400 text-sm mt-1 line-clamp-2"
+                    >
+                      Un momento di pausa e connessione umana senza schermi.
+                      Aperto a tutti i livelli.
+                    </p>
+                  </div>
+                  <div
+                    class="flex items-center gap-4 text-xs text-[#636f88] dark:text-gray-500 font-medium mt-1"
+                  >
+                    <div class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[16px]"
+                        >schedule</span
+                      >
+                      28 Ottobre • 18:00 - 19:00
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[16px]"
+                        >location_on</span
+                      >
+                      Parco Sempione, Milano
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Section: Lavoro -->
+            <div class="flex flex-col gap-4">
+              <div
+                class="flex items-center gap-2 pb-2 border-b border-[#f0f2f4] dark:border-gray-800"
+              >
+                <div
+                  class="p-1.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >work</span
+                  >
+                </div>
+                <h3 class="text-[#111318] dark:text-white text-lg font-bold">
+                  Lavoro &amp; Networking
+                </h3>
+              </div>
+              <!-- Card 3 -->
+              <div
+                class="group flex flex-col sm:flex-row gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-transparent hover:border-[#f0f2f4] dark:hover:border-gray-700 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-all"
+              >
+                <div
+                  class="h-32 sm:h-24 sm:w-24 w-full shrink-0 rounded-lg bg-cover bg-center"
+                  data-alt="Minimalist office desk with a laptop and a coffee cup"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABRcz7DWg3bS_X84etSTXug3VS9xZ_x9Bsc34VUPTQqZt1VhR2Rb4m4bkpiL-U-U9raESyP5D_Vv9bj4-G4MKLlRsLWcB36zjiuxUKNrom0JbzazB6Bvyifk9CWGqdkCNwtE5zA05vdQGrpLLrs5aAmpD3f6y1WYl8Iz8CCUtoRTaXhf_u25UlSm_jT7LXc1CAlEmw8bX_mzN3dqzcwSA4w33yd8X8irKFP9h_1T-AclJ9x4XrpDHymHniCUghKDOtyNQAIxOXWVaQ');
+                  "
+                ></div>
+                <div class="flex flex-col justify-between flex-1 gap-2">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <h4
+                        class="text-[#111318] dark:text-white font-bold text-base group-hover:text-primary transition-colors"
+                      >
+                        Digital Strategy 2024
+                      </h4>
+                      <span
+                        class="inline-flex items-center rounded-md bg-blue-50 dark:bg-blue-900/20 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-400 ring-1 ring-inset ring-blue-700/10"
+                        >Importante</span
+                      >
+                    </div>
+                    <p
+                      class="text-[#636f88] dark:text-gray-400 text-sm mt-1 line-clamp-2"
+                    >
+                      Brainstorming di team per definire gli obiettivi del
+                      prossimo anno.
+                    </p>
+                  </div>
+                  <div
+                    class="flex items-center gap-4 text-xs text-[#636f88] dark:text-gray-500 font-medium mt-1"
+                  >
+                    <div class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[16px]"
+                        >schedule</span
+                      >
+                      30 Ottobre • 14:00 - 16:00
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[16px]"
+                        >location_on</span
+                      >
+                      Sala Conferenze A
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Section: Formazione -->
+            <div class="flex flex-col gap-4">
+              <div
+                class="flex items-center gap-2 pb-2 border-b border-[#f0f2f4] dark:border-gray-800"
+              >
+                <div
+                  class="p-1.5 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >school</span
+                  >
+                </div>
+                <h3 class="text-[#111318] dark:text-white text-lg font-bold">
+                  Formazione
+                </h3>
+              </div>
+              <!-- Empty State style card for contrast -->
+              <div
+                class="flex flex-col items-center justify-center gap-3 bg-surface-light dark:bg-surface-dark p-8 rounded-xl border border-dashed border-gray-300 dark:border-gray-700"
+              >
+                <div class="p-3 bg-[#f0f2f4] dark:bg-gray-800 rounded-full">
+                  <span
+                    class="material-symbols-outlined text-[#636f88] dark:text-gray-400"
+                    >history_edu</span
+                  >
+                </div>
+                <div class="text-center max-w-xs">
+                  <p class="text-[#111318] dark:text-white font-medium">
+                    Nessun corso in arrivo
+                  </p>
+                  <p class="text-[#636f88] dark:text-gray-400 text-sm mt-1">
+                    Perchè non organizzi un gruppo di studio o una sessione di
+                    lettura?
+                  </p>
+                </div>
+                <button
+                  class="text-primary text-sm font-semibold hover:underline mt-2"
+                >
+                  Crea sessione studio
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Sidebar (One third) -->
+          <div class="lg:col-span-4 flex flex-col gap-8">
+            <!-- Mini Calendar Widget -->
+            <div
+              class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-transparent dark:border-gray-800"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-[#111318] dark:text-white">
+                  Ottobre 2023
+                </h3>
+                <div class="flex gap-1">
+                  <button
+                    class="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                  >
+                    <span class="material-symbols-outlined text-sm"
+                      >chevron_left</span
+                    >
+                  </button>
+                  <button
+                    class="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                  >
+                    <span class="material-symbols-outlined text-sm"
+                      >chevron_right</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-7 text-center text-xs text-[#636f88] dark:text-gray-500 font-medium mb-2"
+              >
+                <div>Lu</div>
+                <div>Ma</div>
+                <div>Me</div>
+                <div>Gi</div>
+                <div>Ve</div>
+                <div>Sa</div>
+                <div>Do</div>
+              </div>
+              <div class="grid grid-cols-7 text-center text-sm gap-y-3">
+                <div class="text-gray-300 dark:text-gray-700">25</div>
+                <div class="text-gray-300 dark:text-gray-700">26</div>
+                <div class="text-gray-300 dark:text-gray-700">27</div>
+                <div class="text-gray-300 dark:text-gray-700">28</div>
+                <div class="text-gray-300 dark:text-gray-700">29</div>
+                <div class="text-[#111318] dark:text-white">30</div>
+                <div class="text-[#111318] dark:text-white">1</div>
+                <div class="text-[#111318] dark:text-white">2</div>
+                <div class="text-[#111318] dark:text-white">3</div>
+                <div class="text-[#111318] dark:text-white">4</div>
+                <div class="text-[#111318] dark:text-white">5</div>
+                <div class="text-[#111318] dark:text-white">6</div>
+                <div class="text-[#111318] dark:text-white">7</div>
+                <div class="text-[#111318] dark:text-white">8</div>
+                <div class="text-[#111318] dark:text-white">9</div>
+                <div class="text-[#111318] dark:text-white">10</div>
+                <div class="text-[#111318] dark:text-white">11</div>
+                <div class="text-[#111318] dark:text-white">12</div>
+                <div class="text-[#111318] dark:text-white">13</div>
+                <div class="text-[#111318] dark:text-white">14</div>
+                <div class="text-[#111318] dark:text-white">15</div>
+                <div class="text-[#111318] dark:text-white">16</div>
+                <div class="text-[#111318] dark:text-white">17</div>
+                <div class="text-[#111318] dark:text-white">18</div>
+                <div class="text-[#111318] dark:text-white">19</div>
+                <div class="text-[#111318] dark:text-white">20</div>
+                <div class="text-[#111318] dark:text-white">21</div>
+                <div class="text-[#111318] dark:text-white">22</div>
+                <div class="text-[#111318] dark:text-white">23</div>
+                <div class="relative z-10">
+                  <span
+                    class="bg-primary text-white rounded-full size-7 flex items-center justify-center mx-auto shadow-sm"
+                    >24</span
+                  >
+                </div>
+                <div class="relative">
+                  25
+                  <div
+                    class="absolute bottom-0 left-1/2 -translate-x-1/2 size-1 bg-emerald-500 rounded-full"
+                  ></div>
+                </div>
+                <div class="text-[#111318] dark:text-white">26</div>
+                <div class="text-[#111318] dark:text-white">27</div>
+                <div class="relative">
+                  28
+                  <div
+                    class="absolute bottom-0 left-1/2 -translate-x-1/2 size-1 bg-emerald-500 rounded-full"
+                  ></div>
+                </div>
+                <div class="text-[#111318] dark:text-white">29</div>
+                <div class="relative">
+                  30
+                  <div
+                    class="absolute bottom-0 left-1/2 -translate-x-1/2 size-1 bg-blue-500 rounded-full"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <!-- Trust/Philosophy Reminder -->
+            <div
+              class="bg-primary/5 dark:bg-primary/10 rounded-xl p-6 border border-primary/10"
+            >
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-primary mt-1"
+                  >handshake</span
+                >
+                <div>
+                  <h4 class="font-bold text-[#111318] dark:text-white text-sm">
+                    Scambio Umano
+                  </h4>
+                  <p
+                    class="text-xs text-[#636f88] dark:text-gray-400 mt-1 leading-relaxed"
+                  >
+                    1 Impegno crede nel valore dell'incontro reale. Niente
+                    gamification, niente costi nascosti. Solo tu e la tua
+                    community.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Minimal Footer -->
+      <footer
+        class="w-full border-t border-[#f0f2f4] dark:border-gray-800 bg-white dark:bg-surface-dark py-8 mt-auto"
+      >
+        <div
+          class="max-w-[960px] mx-auto px-4 sm:px-10 flex flex-col sm:flex-row justify-between items-center gap-4"
+        >
+          <p class="text-[#636f88] dark:text-gray-500 text-xs">
+            © 2023 1 Impegno. Open Source Platform.
+          </p>
+          <div class="flex gap-6">
+            <a
+              class="text-[#636f88] dark:text-gray-500 hover:text-primary dark:hover:text-white text-xs transition-colors"
+              href="#"
+              >Privacy</a
+            >
+            <a
+              class="text-[#636f88] dark:text-gray-500 hover:text-primary dark:hover:text-white text-xs transition-colors"
+              href="#"
+              >Termini</a
+            >
+            <a
+              class="text-[#636f88] dark:text-gray-500 hover:text-primary dark:hover:text-white text-xs transition-colors"
+              href="#"
+              >Manifesto</a
+            >
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="light" lang="<%= domain_language %>">
   <head>
     <!-- app/views/layouts/application.html.erb (head) -->
     <title><%= domain_title %></title>
@@ -16,6 +16,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
    
+    <%= render "shared/tailwind_head" %>
     <%= yield :head %>
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%= tag.link rel: "manifest", href: pwa_manifest_path %>
@@ -33,14 +34,11 @@
 	  <div class="antialiased ">
 	   
 	    <%= render "shared/nav_application"%>
-	   
-	    <%= render "shared/aside"%>
-		
-		
-	
-	      
 
-	     <main class="md:ml-64 h-auto pt-20">
+	    <% show_admin_aside = Current.user&.superadmin? && Current.user.superadmin_mode_active? %>
+	    <%= render "shared/aside" if show_admin_aside %>
+
+	     <main class="<%= show_admin_aside ? "md:ml-64" : "" %> h-auto pt-12">
            <%= render "shared/messages" %>
 			<%= yield :subnav_application %>
 			<div class="px-4">

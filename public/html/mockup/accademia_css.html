@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Accademia Postura e Fisiologia - PosturaCorretta</title>
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0f85e6",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101a22",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbar for tab container if needed on smaller screens */
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Simple fade-in animation for tab content */
+      .fade-in {
+        animation: fadeIn 0.4s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-[#0d151c] dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col"
+  >
+    <!-- Section Wrapper -->
+    <div class="flex flex-1 w-full justify-center py-12 md:py-20 px-4 sm:px-8">
+      <div class="flex flex-col max-w-[1200px] w-full gap-8">
+        <!-- Header Section -->
+        <div class="flex flex-col items-center text-center gap-4 mb-4">
+          <div
+            class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-2"
+          >
+            Formazione Professionale
+          </div>
+          <h2
+            class="text-[#0d151c] dark:text-white text-3xl md:text-4xl font-bold leading-tight tracking-[-0.015em]"
+          >
+            Accademia Postura e Fisiologia
+          </h2>
+          <p
+            class="text-[#4b779b] dark:text-slate-400 text-base md:text-lg font-normal leading-relaxed max-w-2xl"
+          >
+            Un percorso formativo modulare per professionisti della salute
+            dedicato all'approfondimento scientifico e all'eccellenza clinica.
+          </p>
+        </div>
+        <!-- Tabs Container -->
+        <div
+          class="w-full bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
+        >
+          <!-- Tab Navigation -->
+          <div class="border-b border-slate-200 dark:border-slate-700">
+            <nav aria-label="Tabs" class="flex overflow-x-auto hide-scrollbar">
+              <button
+                class="group relative flex-1 min-w-[160px] py-5 px-4 text-center hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors focus:outline-none"
+              >
+                <span
+                  class="text-primary text-sm md:text-base font-bold tracking-[0.015em]"
+                  >Igiene Posturale</span
+                >
+                <span
+                  class="absolute bottom-0 left-0 w-full h-[3px] bg-primary rounded-t-full"
+                ></span>
+              </button>
+              <button
+                class="group relative flex-1 min-w-[160px] py-5 px-4 text-center hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors focus:outline-none"
+              >
+                <span
+                  class="text-[#4b779b] dark:text-slate-400 group-hover:text-[#0d151c] dark:group-hover:text-slate-200 text-sm md:text-base font-medium tracking-[0.015em] transition-colors"
+                  >Postura e Fisiologia</span
+                >
+                <span
+                  class="absolute bottom-0 left-0 w-full h-[3px] bg-transparent rounded-t-full transition-colors"
+                ></span>
+              </button>
+              <button
+                class="group relative flex-1 min-w-[160px] py-5 px-4 text-center hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors focus:outline-none"
+              >
+                <span
+                  class="text-[#4b779b] dark:text-slate-400 group-hover:text-[#0d151c] dark:group-hover:text-slate-200 text-sm md:text-base font-medium tracking-[0.015em] transition-colors"
+                  >Postura e 5 Aree</span
+                >
+                <span
+                  class="absolute bottom-0 left-0 w-full h-[3px] bg-transparent rounded-t-full transition-colors"
+                ></span>
+              </button>
+              <button
+                class="group relative flex-1 min-w-[160px] py-5 px-4 text-center hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors focus:outline-none"
+              >
+                <span
+                  class="text-[#4b779b] dark:text-slate-400 group-hover:text-[#0d151c] dark:group-hover:text-slate-200 text-sm md:text-base font-medium tracking-[0.015em] transition-colors"
+                  >Oltre la Salute</span
+                >
+                <span
+                  class="absolute bottom-0 left-0 w-full h-[3px] bg-transparent rounded-t-full transition-colors"
+                ></span>
+              </button>
+            </nav>
+          </div>
+          <!-- Tab Content Panel -->
+          <div class="p-6 md:p-10 fade-in bg-white dark:bg-slate-800">
+            <div
+              class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center"
+            >
+              <!-- Left Column: Content -->
+              <div class="flex flex-col gap-6 order-2 lg:order-1">
+                <div>
+                  <h3
+                    class="text-[#0d151c] dark:text-white text-2xl md:text-3xl font-bold leading-tight mb-4"
+                  >
+                    Il Master in Igiene Posturale
+                  </h3>
+                  <p
+                    class="text-slate-600 dark:text-slate-300 text-base md:text-lg font-normal leading-relaxed"
+                  >
+                    Scopri le basi fondamentali dell'ergonomia e delle abitudini
+                    quotidiane per prevenire i disturbi muscolo-scheletrici.
+                    Questo modulo offre strumenti pratici per l'analisi e la
+                    correzione posturale in contesti lavorativi e domestici.
+                  </p>
+                </div>
+                <!-- Learning Outcomes List -->
+                <div class="flex flex-col gap-3">
+                  <h4
+                    class="text-sm uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 mb-1"
+                  >
+                    Cosa Imparerai
+                  </h4>
+                  <div class="flex items-start gap-3">
+                    <div
+                      class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center"
+                    >
+                      <span
+                        class="material-symbols-outlined text-primary text-[14px]"
+                        >check</span
+                      >
+                    </div>
+                    <span
+                      class="text-slate-700 dark:text-slate-200 text-sm md:text-base"
+                      >Valutazione ergonomica degli ambienti di lavoro</span
+                    >
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div
+                      class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center"
+                    >
+                      <span
+                        class="material-symbols-outlined text-primary text-[14px]"
+                        >check</span
+                      >
+                    </div>
+                    <span
+                      class="text-slate-700 dark:text-slate-200 text-sm md:text-base"
+                      >Strategie di correzione delle abitudini quotidiane</span
+                    >
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div
+                      class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center"
+                    >
+                      <span
+                        class="material-symbols-outlined text-primary text-[14px]"
+                        >check</span
+                      >
+                    </div>
+                    <span
+                      class="text-slate-700 dark:text-slate-200 text-sm md:text-base"
+                      >Prevenzione attiva delle patologie vertebrali</span
+                    >
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div
+                      class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center"
+                    >
+                      <span
+                        class="material-symbols-outlined text-primary text-[14px]"
+                        >check</span
+                      >
+                    </div>
+                    <span
+                      class="text-slate-700 dark:text-slate-200 text-sm md:text-base"
+                      >Protocolli di esercizi di mantenimento</span
+                    >
+                  </div>
+                </div>
+                <div class="pt-4">
+                  <button
+                    class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all shadow-sm hover:shadow-md active:scale-95"
+                  >
+                    <span>Scopri di più</span>
+                    <span class="material-symbols-outlined text-[20px]"
+                      >arrow_forward</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <!-- Right Column: Image -->
+              <div
+                class="order-1 lg:order-2 h-full min-h-[300px] lg:min-h-[400px]"
+              >
+                <div
+                  class="relative w-full h-full rounded-xl overflow-hidden shadow-lg group"
+                >
+                  <img
+                    alt="Medical professional analyzing a spine model in a modern clinic"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    data-alt="Medical professional analyzing a spine model in a modern clinic"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJQJCql9vxU11nVEwu6xS_mI7vhqBXjqZ5RgNfqjoarg5MyfhGbuAGWsCjoV2iadJPSjtPpTCXyt4UsALfAVxVQyNESepyYLQdL2Pdw4Fq2L5RD01AJv4PHJAcNjhhFNcEhkKnheOg580Sy5enrepWLqXLwHj-tmUeKNzTXvktf1HhRRVaQhuZw7EgB4w3IXayZUPKBV1e3uCM-6aQa5BOeO3OOYLa69hM6NzEaNUzUse9LpmytyfRlcBUP9uYM2VVZJV5fcKU-ps"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
+                  ></div>
+                  <!-- Optional Badge on Image -->
+                  <div class="absolute bottom-4 left-4 right-4">
+                    <div
+                      class="inline-flex items-center gap-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
+                    >
+                      <span class="material-symbols-outlined text-primary"
+                        >school</span
+                      >
+                      <span
+                        class="text-xs font-semibold text-slate-800 dark:text-slate-100"
+                        >Modulo Certificato</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Bottom Navigation Dots (Optional for visual balance) -->
+        <div class="flex justify-center gap-2 mt-2">
+          <div class="w-2 h-2 rounded-full bg-primary"></div>
+          <div
+            class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600"
+          ></div>
+          <div
+            class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600"
+          ></div>
+          <div
+            class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

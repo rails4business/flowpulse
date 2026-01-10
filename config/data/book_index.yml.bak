@@ -10,6 +10,12 @@
   color: "neutro"
 
 - header: false
+  title: "Corsi per categoria"
+  description: "Corsi per varie categorie di persone"
+  slug: "corsi-per-categoria"
+  color: "blu"
+
+- header: false
   title: "Un viaggio dalla postura, fino al territorio"
   description: "Cambiare postura, cambiare punto di vista"
   slug: "prologo"
@@ -46,24 +52,6 @@
   color: "blu"
 
 - header: false
-  title: "Corsi per attività"
-  description: "Corsi sulla prevenzione posturale per varie attività"
-  slug: "corsi-per-attivita"
-  color: "blu"
-
-- header: false
-  title: "Corsi per categoria"
-  description: "Corsi per varie categorie di persone"
-  slug: "corsi-per-categoria"
-  color: "blu"
-
-- header: false
-  title: "Corsi per dolori e patologie"
-  description: "Corsi per la gestione di dolori e patologie specifiche"
-  slug: "corsi-per-dolori-e-patologie"
-  color: "blu"
-
-- header: false
   title: "60 movimenti alla scrivania il primo corso esempio"
   description: "60 movimenti per iniziare a lavorare sulla postura in modo semplice, basta una sedia"
   slug: "60-movimenti-scrivania"
@@ -82,7 +70,7 @@
   color: "rosso"
 
 - header: false
-  title: "Dalla patologia all'evoluzione dell'uomo"
+  title: "Il tuo profilo qual è il tuo punto di partenza"
   description: "Linee guida e servizi per un percorso di cura"
   slug: "dalla-patologia-all-evoluzione-dell-uomo"
   color: "rosso"
@@ -94,9 +82,9 @@
   color: "rosso"
 
 - header: true
-  title: "PARTE III – STOP AL DOLORE"
-  description: "Patologie dolori strumenti e linee guida per uscire dalla fase acuta fase acuta"
-  slug: "parte-3-cura-dolore-salute"
+  title: "PARTE III – STRUMENTI PER CREARE UN PERCORSO"
+  description: ""
+  slug: "parte-3"
   color: "rosso"
 
 - header: false
@@ -106,33 +94,9 @@
   color: "rosso"
 
 - header: false
-  title: "🔴 Stop al dolore – Curare una patologia"
-  description: "Linee guida per affrontare una patologia, uscire dalla fase acuta e creare le condizioni per un percorso di salute"
-  slug: "stop-al-dolore"
-  color: "rosso"
-
-- header: false
-  title: "Quando i sistemi smettono di funzionare"
-  description: "La malattia come risultato di sistemi che non collaborano più"
-  slug: "quando-i-sistemi-smettono-di-funzionare"
-  color: "rosso"
-
-- header: true
-  title: "PARTE IV – BENESSERE INTEGRATO"
-  description: "Strumenti e linee guida per un percorso integrato"
-  slug: "parte-4-benessere-integrato"
-  color: "rosso"
-
-- header: false
   title: "Come costruire un percorso"
   description: "Creare un percorso integrato  per prendersi cura  della salute in autonomia o con i professionisti"
   slug: "come-costruire-un-percorso"
-  color: "verde"
-
-- header: false
-  title: "Valutare lo stato di salute"
-  description: "Prenditi cura della tua salute o dovrai prenderti cura dei tuoi dolori"
-  slug: "valutare-lo-stato-di-salute"
   color: "verde"
 
 - header: false
@@ -142,10 +106,46 @@
   color: "verde"
 
 - header: false
+  title: "Valutare lo stato di salute"
+  description: "Prenditi cura della tua salute o dovrai prenderti cura dei tuoi dolori"
+  slug: "valutare-lo-stato-di-salute"
+  color: "verde"
+
+- header: false
   title: "Le cinque aree della salute"
   description: "Cinque aree su cui agire in modo integrato per sostenere la fisiologia"
   slug: "cinque-aree-della-salute"
   color: "verde"
+
+- header: true
+  title: "PARTE IV – STOP AL DOLORE"
+  description: "Patologie dolori strumenti e linee guida per uscire dalla fase acuta fase acuta"
+  slug: "parte-4-stop-al-dolore"
+  color: "rosso"
+
+- header: false
+  title: "🔴 Stop al dolore – Curare una patologia"
+  description: "Linee guida per affrontare una patologia, uscire dalla fase acuta e creare le condizioni per un percorso di salute"
+  slug: "stop-al-dolore"
+  color: "rosso"
+
+- header: true
+  title: "PARTE V – PERCORSO TERAPEUTICO"
+  description: "Strumenti e linee guida per un percorso integrato"
+  slug: "parte-5-percorso-terapeutico"
+  color: "rosso"
+
+- header: false
+  title: "Quando i sistemi smettono di funzionare"
+  description: "La malattia come risultato di sistemi che non collaborano più"
+  slug: "quando-i-sistemi-smettono-di-funzionare"
+  color: "rosso"
+
+- header: true
+  title: "PARTE VI – PERCORSO TERAPEUTICO EFFICACE"
+  description: "Strumenti e linee guida per un percorso integrato"
+  slug: "parte-6-benessere-integrato"
+  color: "rosso"
 
 - header: true
   title: "PARTE V – 🔵 POSTURA E FISIOLOGIA"
@@ -351,16 +351,16 @@
   slug: "diventa-divulgatore-youtube-e-social"
   color: "blu"
 
-- header: false
-  title: "Differenza tra professionista e insegnanti"
-  description: "Organizzare salute, lavoro e formazione attraverso processi e tecnologia"
-  slug: "differenza-tra-professionista-e-insegnanti"
+- header: true
+  title: "PARTE IX – RUOLI NELLA SCUOLA POSTURA E FISIOLOGIA"
+  description: "Diventa insegnante, tutor o coordinatore operativo nella scuola sulla postura e la fisiologia"
+  slug: "parte-9-ruoli-nella-scuola-postura-e-fisiologia"
   color: "blu"
 
 - header: false
-  title: "🅿️ 👩🏼‍⚕️ I ruoli nella scuola Postura e fisiologia"
-  description: "Diventa insegnante, tutor o coordinatore operativo nella scuola sulla postura e la fisiologia"
-  slug: "ruoli-nella-scuola-postura-corretta"
+  title: "Il ruolo degli insegnanti"
+  description: "Organizzare salute, lavoro e formazione attraverso processi e tecnologia"
+  slug: "differenza-tra-professionista-e-insegnanti"
   color: "blu"
 
 - header: false
@@ -376,9 +376,9 @@
   color: "blu-scuro"
 
 - header: true
-  title: "PARTE IX – FLOWPULSE UNA PIATTAFORMA PER I PROGETTI"
+  title: "PARTE X – FLOWPULSE UNA PIATTAFORMA PER I PROGETTI"
   description: "Una piattaforma per organizzare salute, lavoro e formazione attraverso processi e tecnologia"
-  slug: "parte-9-flowpulse-piattaforma"
+  slug: "parte-10-flowpulse-piattaforma"
   color: "arancione"
 
 - header: false
@@ -412,9 +412,9 @@
   color: "arancione"
 
 - header: true
-  title: "PARTE X – AIUTACI AD ORGANIZZARE EVENTI ED ESPERIENZE SUL TERRITORIO"
+  title: "PARTE XI – AIUTACI AD ORGANIZZARE EVENTI ED ESPERIENZE SUL TERRITORIO"
   description: "Per associazioni, enti, biblioteche, librerie, teatri e spazi culturali"
-  slug: "parte-10-organizzare-eventi-esperienze"
+  slug: "parte-11-organizzare-eventi-esperienze"
   color: "viola"
 
 - header: false

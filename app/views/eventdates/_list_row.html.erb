@@ -1,43 +1,67 @@
 <% status_label, status_classes = eventdate_status_badge(eventdate) %>
 
-<tr class="align-top">
-  <td class="px-4 py-3">
-    <div class="flex items-center gap-3">
-      <div class="text-center px-2 py-1 rounded-lg bg-slate-100">
-        <div class="text-lg font-bold text-slate-900 leading-tight">
-          <%= eventdate.date_start ? l(eventdate.date_start, format: "%d") : "--" %>
+<div class="group flex flex-col sm:flex-row gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-transparent hover:border-[#f0f2f4] dark:hover:border-gray-700 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-all">
+  <div class="flex flex-col justify-between flex-1 gap-2">
+    <div>
+      <div class="flex justify-between items-start gap-3">
+        <div class="flex flex-col">
+          <h4 class="text-[#111318] dark:text-white font-bold text-base group-hover:text-red-600 transition-colors">
+            <%= link_to eventdate_label(eventdate), eventdate_path(eventdate) %>
+          </h4>
+          <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 uppercase tracking-wide">
+              <%= eventdate.event_type %>
+            </span>
+            <% tax_label = eventdate_taxbranch_label(eventdate) %>
+            <% if tax_label.present? %>
+              <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                <%= tax_label %>
+              </span>
+            <% end %>
+          </div>
         </div>
-        <div class="text-[11px] uppercase tracking-wide text-slate-500">
-          <%= eventdate.date_start ? l(eventdate.date_start, format: "%b") : "" %>
-        </div>
+        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold <%= status_classes %>">
+          <%= status_label %>
+        </span>
       </div>
-      <div class="text-sm text-slate-700">
-        <p class="font-semibold">
-          <%= link_to eventdate_label(eventdate), eventdate_path(eventdate), class: "hover:text-blue-600" %>
+      <% if eventdate.location.present? %>
+        <p class="text-[#636f88] dark:text-gray-400 text-sm mt-2 line-clamp-2">
+          <%= eventdate.location %>
         </p>
-        <p class="text-xs text-slate-500">
+      <% end %>
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-3 text-xs text-[#636f88] dark:text-gray-500 font-medium mt-1">
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">schedule</span>
           <% if eventdate.date_start.present? %>
-            <strong><%= l(eventdate.date_start, format: :time) %></strong>
+            <%= l(eventdate.date_start, format: "%d %B") %>
+            <% if eventdate.date_end.present? || eventdate.date_start.present? %>
+              •
+            <% end %>
+            <%= l(eventdate.date_start, format: :time) %>
+          <% else %>
+            Data da definire
           <% end %>
           <% if eventdate.date_end.present? %>
-            – <strong><%= l(eventdate.date_end, format: :time) %></strong>
+            - <%= l(eventdate.date_end, format: :time) %>
           <% end %>
-        </p>
+        </div>
         <% if eventdate.location.present? %>
-          <p class="text-xs text-slate-500">📍 <%= eventdate.location %></p>
+          <div class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">location_on</span>
+            <%= eventdate.location %>
+          </div>
         <% end %>
       </div>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <%= link_to "Apri",
+            eventdate_path(eventdate),
+            class: "inline-flex items-center rounded-lg border border-[#e5e7eb] dark:border-gray-700 bg-white dark:bg-[#111621] px-3 py-1.5 font-semibold hover:bg-gray-50 dark:hover:bg-gray-800" %>
+        <%= link_to "Nuovo booking",
+            new_booking_path(eventdate_id: eventdate.id),
+            class: "inline-flex items-center rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 font-semibold text-emerald-700 hover:bg-emerald-100" %>
+      </div>
     </div>
-  </td>
-  <td class="px-4 py-3 text-sm text-slate-600">
-    <%= eventdate_taxbranch_label(eventdate) %>
-  </td>
-  <td class="px-4 py-3">
-    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold <%= status_classes %>">
-      <%= status_label %>
-    </span>
-  </td>
-  <td class="px-4 py-3">
-    <%= render "eventdates/actions", eventdate: eventdate %>
-  </td>
-</tr>
+  </div>
+</div>

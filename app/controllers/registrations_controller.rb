@@ -100,7 +100,9 @@ class RegistrationsController < ApplicationController
 
   def user_params
     # se usi :email_address mantienilo qui; se usi :email, adegua
-    params.require(:user).permit(:name, :surname, :phone, :email_address, :password, :password_confirmation)
+    allowed = [ :name, :surname, :phone, :email_address, :password, :password_confirmation ]
+    allowed << :superadmin_mode_active if Current.user&.superadmin?
+    params.require(:user).permit(*allowed)
   end
 
   def lead_params

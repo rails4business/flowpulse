@@ -17,7 +17,7 @@ class Eventdate < ApplicationRecord
   has_many :bookings, dependent: :destroy
 
   # 🎭 Tipologia / meta-evento
-  enum :event_type, { event: 0, prenotation: 1, message: 2, comment: 3, note: 4 }
+  enum :event_type, { check: 0,  event: 1, prenotation: 2, message: 3, comment: 4, note: 5 }
   # ✅ Stati del "diario"
   enum :status, { pending: 0, tracking: 1, completed: 2, skipped: 3, archived: 4 }
   enum :kind_event, { session: 0, meeting: 1, online_call: 2, recording: 3 }

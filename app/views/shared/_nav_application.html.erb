@@ -600,6 +600,20 @@
                           edit_registration_path,
                           class: "block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" %>
             </li>
+              <% if Current.user&.superadmin? %>
+                <li class="px-4 py-2">
+                  <%= form_with scope: :user, url: registration_path, method: :patch, class: "flex items-center justify-between gap-3" do |u| %>
+                    <span class="text-sm text-gray-600 dark:text-gray-300">Superadmin attivo</span>
+                    <label class="inline-flex items-center gap-2">
+                      <%= u.check_box :superadmin_mode_active,
+                            { checked: Current.user.superadmin_mode_active,
+                              class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600",
+                              onchange: "this.form.submit()" } %>
+                    </label>
+                  <% end %>
+                </li>
+              <% end %>
+       
             </ul>
             <!--ul
               class="py-1 text-gray-700 dark:text-gray-300"
