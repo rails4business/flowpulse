@@ -43,9 +43,9 @@ class Journey < ApplicationRecord
     idea: 0,  # solo idea
     task: 1,  # solo task
     milestone: 2, # solo obiettivo:
-    process_draft: 3, # attività in
-    process_template: 4,       # è il modello valido
-    process_instance_cycle: 5,  # ciclo reale basato su un template
+    process: 3, # attività in
+    cycle_template: 4,       # è il modello valido
+    cycle_instance: 5,  # ciclo reale basato su un template
     activity: 6  # attività generica
   }
 

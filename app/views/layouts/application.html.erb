@@ -40,10 +40,10 @@
 
 	     <main class="<%= show_admin_aside ? "md:ml-64" : "" %> h-auto pt-12">
            <%= render "shared/messages" %>
-			<%= yield :subnav_application %>
-			<div class="px-4">
+			    <%= yield :subnav_application %>
+		
 					
-				
+				<div class="px-4">
 	          <%= yield %>
 			  </div>
 	     </main>

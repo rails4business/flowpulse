@@ -21,9 +21,9 @@
        { key: "idea",                  label: "idea", badge: "bg-blue-50 text-blue-700" },
        { key: "task",                  label: "task", badge: "bg-amber-50 text-amber-800" },
        { key: "milestone",             label: "milestone", badge: "bg-emerald-50 text-emerald-800" },
-       { key: "process_draft",         label: "process_draft", badge: "bg-slate-100 text-slate-700" },
-       { key: "process_template",      label: "process_template", badge: "bg-violet-50 text-violet-800" },
-       { key: "process_instance_cycle", label: "process_instance_cycle", badge: "bg-teal-50 text-teal-800" },
+       { key: "process",               label: "process", badge: "bg-slate-100 text-slate-700" },
+       { key: "cycle_template",        label: "cycle_template", badge: "bg-violet-50 text-violet-800" },
+       { key: "cycle_instance",        label: "cycle_instance", badge: "bg-teal-50 text-teal-800" },
        { key: "activity",              label: "activity", badge: "bg-orange-50 text-orange-800" }
      ] %>
 
@@ -75,12 +75,12 @@
                      ["bg-amber-50 text-amber-800", "task"]
                    elsif journey.milestone?
                      ["bg-emerald-50 text-emerald-800", "milestone"]
-                   elsif journey.process_draft?
-                     ["bg-slate-100 text-slate-700", "process_draft"]
-                   elsif journey.process_template?
-                     ["bg-violet-50 text-violet-800", "process_template"]
-                   elsif journey.process_instance_cycle?
-                     ["bg-teal-50 text-teal-800", "process_instance_cycle"]
+                   elsif journey.process?
+                     ["bg-slate-100 text-slate-700", "process"]
+                   elsif journey.cycle_template?
+                     ["bg-violet-50 text-violet-800", "cycle_template"]
+                   elsif journey.cycle_instance?
+                     ["bg-teal-50 text-teal-800", "cycle_instance"]
                    elsif journey.activity?
                      ["bg-orange-50 text-orange-800", "activity"]
                    else
