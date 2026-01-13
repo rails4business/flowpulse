@@ -1,87 +1,44 @@
-<% content_for :title, "Genera Impresa · #{@domain.title.presence || @domain.host}" %>
+<% content_for :title, "Generaimpresa · #{@domain.title.presence || @domain.host}" %>
 
 <div class="space-y-6">
   <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h1 class="text-3xl font-bold text-slate-900">Dashboard Genera Impresa</h1>
+    <h1 class="text-3xl font-bold text-slate-900">Generaimpresa</h1>
     <p class="text-sm text-slate-600 mt-1">
-      Indicatori sintetici su servizi pubblici e prototipi collegati al dominio <strong><%= @domain.title.presence || @domain.host %></strong>.
+      Statistiche aggregate per il dominio <strong><%= @domain.title.presence || @domain.host %></strong>.
     </p>
     <%= link_to "← Torna al dominio",
                 superadmin_domain_path(@domain),
                 class: "inline-flex items-center text-sm font-medium text-blue-600 hover:underline mt-3" %>
   </div>
 
-  <div class="grid gap-4 md:grid-cols-4">
-    <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Servizi pubblici</p>
-      <p class="mt-2 text-3xl font-bold text-slate-900"><%= @services_scope.count %></p>
-    </div>
-    <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Journey attivi</p>
-      <p class="mt-2 text-3xl font-bold text-slate-900"><%= @journeys_scope.count %></p>
-    </div>
-    <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Iscrizioni totali</p>
-      <p class="mt-2 text-3xl font-bold text-slate-900"><%= @enrollments_count %></p>
-    </div>
-    <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Certificati emessi</p>
-      <p class="mt-2 text-3xl font-bold text-slate-900"><%= @certificates_count %></p>
-    </div>
-  </div>
-
   <div class="grid gap-4 md:grid-cols-3">
-    <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-amber-800">Costi officina (Rails4B)</p>
-      <p class="mt-2 text-3xl font-bold text-amber-900">
-        <%= number_to_currency(@production_cost_euro, unit: "€") %>
-      </p>
-      <p class="text-xs text-amber-800 mt-1">
-        Tempo impegnato: <%= (@production_minutes.to_f / 60).round(1) %> h
-      </p>
+    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-xs uppercase tracking-wide text-slate-500">Iscrizioni</p>
+      <p class="text-2xl font-semibold text-slate-900"><%= @enrollments_count %></p>
     </div>
-    <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-emerald-800">Ricavi da iscrizioni</p>
-      <p class="mt-2 text-3xl font-bold text-emerald-900">
-        <%= number_to_currency(@enrollment_revenue_euro, unit: "€") %>
-      </p>
+    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-xs uppercase tracking-wide text-slate-500">Certificati</p>
+      <p class="text-2xl font-semibold text-slate-900"><%= @certificates_count %></p>
     </div>
-    <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-emerald-800">Ricavi da booking</p>
-      <p class="mt-2 text-3xl font-bold text-emerald-900">
-        <%= number_to_currency(@booking_revenue_euro, unit: "€") %>
-      </p>
-      <p class="text-xs text-emerald-800 mt-1">
-        Totale pubblico: <strong><%= number_to_currency(@public_revenue_euro, unit: "€") %></strong>
-      </p>
+    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-xs uppercase tracking-wide text-slate-500">Costo produzione</p>
+      <p class="text-2xl font-semibold text-slate-900"><%= number_to_currency(@production_cost_euro) %></p>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-xs uppercase tracking-wide text-slate-500">Minuti produzione</p>
+      <p class="text-2xl font-semibold text-slate-900"><%= @production_minutes %></p>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-xs uppercase tracking-wide text-slate-500">Ricavi iscrizioni</p>
+      <p class="text-2xl font-semibold text-slate-900"><%= number_to_currency(@enrollment_revenue_euro) %></p>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p class="text-xs uppercase tracking-wide text-slate-500">Ricavi prenotazioni</p>
+      <p class="text-2xl font-semibold text-slate-900"><%= number_to_currency(@booking_revenue_euro) %></p>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm md:col-span-3">
+      <p class="text-xs uppercase tracking-wide text-slate-500">Ricavi pubblici totali</p>
+      <p class="text-2xl font-semibold text-slate-900"><%= number_to_currency(@public_revenue_euro) %></p>
     </div>
   </div>
-
-  <% if @main_taxbranch.present? %>
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 class="text-xl font-semibold text-slate-900">Rami pubblici</h2>
-      <% children = @main_taxbranch.children.ordered %>
-      <% if children.any? %>
-        <ul class="mt-4 space-y-3">
-          <% children.each do |child| %>
-            <li class="rounded-xl border border-slate-100 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p class="text-sm font-semibold text-slate-900"><%= child.display_label %></p>
-                <p class="text-xs text-slate-500">Stato: <%= child.status.humanize %> · Visibilità: <%= child.visibility.humanize %></p>
-              </div>
-              <%= link_to "Apri ramo",
-                          superadmin_taxbranch_path(child),
-                          class: "mt-2 sm:mt-0 inline-flex items-center rounded-md bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800" %>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="mt-2 text-sm text-slate-500">Nessun ramo figlio pubblicato.</p>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-slate-500">
-      Questo dominio non ha ancora un taxbranch principale collegato.
-    </div>
-  <% end %>
 </div>

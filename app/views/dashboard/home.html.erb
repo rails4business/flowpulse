@@ -2,6 +2,23 @@
   <%= render "shared/tailwind_head" %>
 <% end %>
 
+<% content_for :nav do %>
+  <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+    <%= link_to "Visualizza Calendario",
+          eventdates_path(on: @selected_date.strftime("%Y-%m-%d")),
+          class: "flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium shadow-sm" %>
+    <%= link_to new_eventdate_path,
+          class: "flex items-center justify-center gap-2 rounded-lg h-10 px-5 bg-red-600 text-white hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm" do %>
+      <span class="material-symbols-outlined text-[18px]">add</span>
+      <span>Nuovo Evento</span>
+    <% end %>
+    <%= link_to "Journey",
+          journeys_path,
+          class: "flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium shadow-sm" %>
+  </div>
+<% end %>
+
+
 <div class="relative min-h-screen w-full overflow-x-hidden bg-background-light dark:bg-background-dark text-[#111318] dark:text-white transition-colors duration-200">
 <div class="flex flex-col">
 
@@ -19,15 +36,7 @@
                         <%= link_to "Oggi è #{I18n.l(@today, format: "%A, %d %B")}", dashboard_home_path, class: "hover:underline" %>. Hai <strong class="text-[#111318] dark:text-white font-semibold"><%= @today_week_events_count %> impegni</strong>  questa settimana.
                     </p>
 </div>
-<div class="flex flex-col sm:flex-row gap-3 sm:items-end">
-<%= link_to "Visualizza Calendario",
-            eventdates_path(on: @selected_date.strftime("%Y-%m-%d")),
-            class: "flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium shadow-sm" %>
-<%= link_to new_eventdate_path, class: "flex items-center justify-center gap-2 rounded-lg h-10 px-5 bg-red-600 text-white hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm" do %>
-<span class="material-symbols-outlined text-[18px]">add</span>
-<span>Nuovo Evento</span>
-<% end %>
-</div>
+
 </section>
 <section class="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
 <div class="flex gap-3 min-w-max">
@@ -179,7 +188,7 @@
   <% end %>
 </div>
 </div>
-<div class="bg-primary/10 dark:bg-red-50 rounded-xl p-6 border border-red-50">
+<div class="bg-primary/10 dark:bg-surface-dark rounded-xl p-6 border border-red-50 dark:border-gray-700">
 <div class="flex items-start gap-3">
 <span class="material-symbols-outlined text-primary mt-1">handshake</span>
 <div>

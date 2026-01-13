@@ -1,0 +1,23 @@
+<% if taxbranch.present? %>
+  <nav class="-mb-px flex flex-wrap gap-x-6 gap-y-3 border-b border-slate-200" aria-label="Tabs">
+    <% tabs = [
+      ["📄 Taxbranch", superadmin_taxbranch_path(taxbranch)],
+      ["Post", edit_superadmin_taxbranch_path(taxbranch)],
+      ["Journey", journeys_superadmin_taxbranch_path(taxbranch)],
+      ["Services", superadmin_taxbranch_services_path(taxbranch)],
+      ["🌐 Tag", positioning_superadmin_taxbranch_path(taxbranch)],
+      ["Phase", taxbranch_phase_index_path(taxbranch)]
+    ] %>
+
+    <% tabs.each do |label, path| %>
+      <%= link_to label, path,
+        class: class_names(
+          "whitespace-nowrap border-b-2 pb-3 text-sm font-medium",
+          current_page?(path) ?
+            "border-blue-500 text-blue-600" :
+            "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700"
+        )
+      %>
+    <% end %>
+  </nav>
+<% end %>

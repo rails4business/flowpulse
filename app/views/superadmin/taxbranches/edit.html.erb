@@ -1,4 +1,8 @@
 <% content_for :title, "Editing taxbranch" %>
+<!-- app/views/superadmin/taxbranches/show.html.erb -->
+<% content_for :nav do %>
+  <%= render "shared/taxbranch_nav", taxbranch: @taxbranch %>
+<% end %>
 <!-- Tabs azioni -->
 <div class="border-b border-slate-200 mb-4">
   <nav class="-mb-px flex space-x-6" aria-label="Tabs">

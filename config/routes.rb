@@ -23,9 +23,6 @@ Rails.application.routes.draw do
       get "carousel"
       post "replicate_template_events"
       delete "clear_template_events"
-      get :rails4b
-      get :generaimpresa
-      get :impegno
     end
     resources :commitments
     resources :eventdates
@@ -58,14 +55,10 @@ Rails.application.routes.draw do
   # --- Admin ---
   namespace :superadmin do
     resources :services do
-      member do
-        get :rails4b
-        get :generaimpresa
-        get :impegno
-      end
     end
     resources :domains do
       member do
+        get :rails4b
         get :generaimpresa
         get :impegno
       end
@@ -88,6 +81,10 @@ Rails.application.routes.draw do
       member do
         post :approve
         post :reject
+
+        get :rails4b
+        get :generaimpresa
+        get :impegno
       end
     end
   end

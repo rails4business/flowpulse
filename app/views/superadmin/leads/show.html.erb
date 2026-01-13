@@ -11,6 +11,18 @@
 
   <%= render @lead %>
 
+  <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+    <%= link_to "Generaimpresa",
+                generaimpresa_superadmin_lead_path(@lead),
+                class: "inline-flex items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800" %>
+    <%= link_to "Rails4B",
+                rails4b_superadmin_lead_path(@lead),
+                class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-800 border border-slate-200 shadow-sm hover:bg-slate-50" %>
+    <%= link_to "1impegno",
+                impegno_superadmin_lead_path(@lead),
+                class: "inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-800 border border-slate-200 shadow-sm hover:bg-slate-50" %>
+  </div>
+
 <%= link_to "Edit this lead",
             edit_superadmin_lead_path(@lead),
             class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>

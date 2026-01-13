@@ -2,7 +2,7 @@ module Superadmin
   class DomainsController < ApplicationController
     include RequireSuperadmin
 
-  before_action :set_domain, only: %i[ show edit update destroy generaimpresa ]
+  before_action :set_domain, only: %i[ show edit update destroy rails4b generaimpresa impegno ]
 
   # GET /domains or /domains.json
   def index
@@ -11,6 +11,11 @@ module Superadmin
 
   # GET /domains/1 or /domains/1.json
   def show
+  end
+
+  def rails4b
+    @main_taxbranch = @domain.taxbranch
+    @rails4b_taxbranches = @main_taxbranch ? @main_taxbranch.subtree : []
   end
 
   def generaimpresa
@@ -50,6 +55,22 @@ module Superadmin
     @enrollment_revenue_euro = enrollment_scope.sum("COALESCE(price_euro, 0)")
     @booking_revenue_euro = booking_scope.sum("COALESCE(price_euro, 0)")
     @public_revenue_euro = @enrollment_revenue_euro + @booking_revenue_euro
+  end
+
+  def impegno
+    @main_taxbranch = @domain.taxbranch
+    subtree_ids = @main_taxbranch&.subtree_ids || []
+    commitments_scope =
+      if subtree_ids.any?
+        Commitment.joins(eventdate: :journey).where(journeys: { taxbranch_id: subtree_ids })
+      else
+        Commitment.none
+      end
+
+    @commitments_count = commitments_scope.count
+    @total_minutes = commitments_scope.sum("COALESCE(commitments.duration_minutes, 0)")
+    @total_compensation = commitments_scope.sum("COALESCE(commitments.compensation_euro, 0)")
+    @recent_commitments = commitments_scope.includes(eventdate: :journey).order(created_at: :desc).limit(10)
   end
 
   # GET /domains/new

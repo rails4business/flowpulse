@@ -44,7 +44,8 @@
       }
     </style>
   </head>
-  <body
+  
+<section
     class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300"
   >
     <div class="absolute top-0 right-0 z-30 pointer-events-none">
@@ -235,55 +236,36 @@
     >
       <span class="material-icons">dark_mode</span>
     </button>
-  </body>
+  </section>
   <script>
     document.getElementById("current-year").textContent =
       new Date().getFullYear();
   </script>
-</html>
-<!---Blog--->
-<section class=" bg-blue-50 dark:bg-gray-900" id="blog">
-
- <nav class="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-[#101a22]/90 backdrop-blur-md">
-      <div class="section-wrap py-3 flex items-center justify-between text-sm font-semibold">
-        <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#home">PosturaCorretta</a>
-        <div class="flex items-center gap-6">
-          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#home">Home</a>
-          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#blog">Blog</a>
-          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#eventi">Eventi</a>
-          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#progetto">Progetto</a>
-        </div>
-      </div>
-    </nav>
+<!---hero--->
 <nav class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-[#101a22]/90 backdrop-blur-md">
-<div class="section-wrap py-3 flex items-center justify-between">
-<div class="flex items-center">
-  <img
-    src="https://ik.imagekit.io/posturacorretta/logo_pc_scontornato.png?updatedAt=1747975596766"
-    alt="PosturaCorretta"
-    class="h-8 w-auto"
-  />
-</div>
-<div class="hidden md:flex flex-1 justify-end gap-8 items-center">
-<div class="flex items-center gap-6">
-
-<a class="text-sm font-medium hover:text-primary transition-colors text-[#0d151c] dark:text-gray-300" href="#home">home</a>
-
-<a class="text-sm font-medium hover:text-primary transition-colors text-[#0d151c] dark:text-gray-300" href="#blog">Blog</a>
-<a class="text-sm font-medium hover:text-primary transition-colors text-[#0d151c] dark:text-gray-300" href="#eventi">Eventi</a>
-
-<a class="text-sm font-medium hover:text-primary transition-colors text-[#0d151c] dark:text-gray-300" href="#progetto">Progetto</a>
-</div>
-
-</div>
-
-<!-- Mobile menu button placeholder -->
-<button class="md:hidden p-2 text-gray-600 dark:text-gray-300" aria-label="Apri menu">
-<span class="material-symbols-outlined">menu</span>
-</button>
-</div>
+  <div class="mx-auto w-full max-w-[960px] px-6 py-3 flex items-center justify-between text-sm font-semibold">
+    <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#home">
+      <img src="https://ik.imagekit.io/posturacorretta/logo_pc_scontornato.png?updatedAt=1747975596766" alt="PosturaCorretta" class="h-8 w-auto" />
+    </a>
+    <div class="hidden md:flex items-center gap-6">
+      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#home">Home</a>
+      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#blog">Blog</a>
+      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#eventi">Eventi</a>
+      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#progetto">Progetto</a>
+    </div>
+    <details class="md:hidden relative">
+      <summary class="list-none p-2 text-gray-600 dark:text-gray-300 cursor-pointer" aria-label="Apri menu">
+        <span class="material-symbols-outlined">menu</span>
+      </summary>
+      <div class="absolute right-0 mt-3 w-48 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#101a22] shadow-lg p-3 flex flex-col gap-2 text-sm">
+        <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#home">Home</a>
+        <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#blog">Blog</a>
+        <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#eventi">Eventi</a>
+        <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#progetto">Progetto</a>
+      </div>
+    </details>
+  </div>
 </nav>
-</section>
 <section class="py-20 bg-blue-50 dark:bg-gray-900" id="blog">
 <div class="section-wrap flex justify-center">
 <div class="flex flex-col max-w-[960px] flex-1">

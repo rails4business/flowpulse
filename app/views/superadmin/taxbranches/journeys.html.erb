@@ -1,5 +1,9 @@
 <% content_for :title, "Journeys" %>
 
+<% content_for :nav do %>
+  <%= render "shared/taxbranch_nav", taxbranch: @taxbranch %>
+<% end %>
+
 <div class="w-full">
 
   <% if notice.present? %>
