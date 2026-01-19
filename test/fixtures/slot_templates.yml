@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lead: one
+  title: MyString
+  description: MyText
+  day_of_week: 1
+  time_start: 2026-01-19 15:14:23
+  time_end: 2026-01-19 15:14:23
+  repeat_rule: 1
+  repeat_every: 1
+  repeat_start: 2026-01-19
+  repeat_end: 2026-01-19
+  seasons: MyString
+  jsonb: MyString
+  color_hex: MyString
+  taxbranch: one
+
+two:
+  lead: two
+  title: MyString
+  description: MyText
+  day_of_week: 1
+  time_start: 2026-01-19 15:14:23
+  time_end: 2026-01-19 15:14:23
+  repeat_rule: 1
+  repeat_every: 1
+  repeat_start: 2026-01-19
+  repeat_end: 2026-01-19
+  seasons: MyString
+  jsonb: MyString
+  color_hex: MyString
+  taxbranch: two

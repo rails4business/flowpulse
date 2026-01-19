@@ -15,13 +15,31 @@
     <%= link_to "Journey",
           journeys_path,
           class: "flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium shadow-sm" %>
-    <% weekplan_path = Current.user&.lead ? weekplan_home_path(lead_id: Current.user.lead.id) : nil %>
+    <% lead = Current.user&.lead %>
+    <% weekplan_path = lead ? weekplan_home_path(lead_id: lead.id) : nil %>
     <%= link_to(weekplan_path || "#",
           class: class_names(
             "flex items-center justify-center rounded-lg h-10 px-4 border text-sm font-medium shadow-sm transition-colors",
             weekplan_path ? "bg-white dark:bg-surface-dark border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800" : "bg-white/40 dark:bg-gray-800/40 border-transparent text-[#9aa3b2] cursor-not-allowed"
           )) do %>
       Week Plan
+    <% end %>
+    <% if lead.present? %>
+      <%= select_tag :lead_resources,
+            options_for_select(
+              [
+                ["Risorse Lead", ""],
+                ["Tempo", impegno_lead_path(lead, tab: "tempo")],
+                ["Soldi", impegno_lead_path(lead, tab: "soldi")],
+                ["Attenzione", impegno_lead_path(lead, tab: "attenzione")],
+                ["Energia", impegno_lead_path(lead, tab: "energia")],
+                ["Collaborazioni", impegno_lead_path(lead, tab: "collaborazioni")],
+                ["Profilo", impegno_lead_path(lead, tab: "profilo")]
+              ],
+              ""
+            ),
+            class: "calendar-select h-10 rounded-lg bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white px-3 text-sm font-medium shadow-sm",
+            onchange: "if (this.value) { window.location = this.value; }" %>
     <% end %>
   </div>
 <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_17_102452) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_19_141457) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -390,6 +390,38 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_17_102452) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "slot_instances", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "date_end"
+    t.datetime "date_start"
+    t.text "notes"
+    t.bigint "slot_template_id", null: false
+    t.integer "status"
+    t.datetime "updated_at", null: false
+    t.index ["slot_template_id"], name: "index_slot_instances_on_slot_template_id"
+  end
+
+  create_table "slot_templates", force: :cascade do |t|
+    t.string "color_hex"
+    t.datetime "created_at", null: false
+    t.integer "day_of_week"
+    t.text "description"
+    t.string "jsonb"
+    t.bigint "lead_id", null: false
+    t.date "repeat_end"
+    t.integer "repeat_every"
+    t.integer "repeat_rule"
+    t.date "repeat_start"
+    t.string "seasons"
+    t.bigint "taxbranch_id"
+    t.time "time_end"
+    t.time "time_start"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["lead_id"], name: "index_slot_templates_on_lead_id"
+    t.index ["taxbranch_id"], name: "index_slot_templates_on_taxbranch_id"
+  end
+
   create_table "tag_positionings", force: :cascade do |t|
     t.string "category", null: false
     t.datetime "created_at", null: false
@@ -501,6 +533,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_17_102452) do
   add_foreign_key "services", "services", column: "included_in_service_id"
   add_foreign_key "services", "taxbranches"
   add_foreign_key "sessions", "users"
+  add_foreign_key "slot_instances", "slot_templates"
+  add_foreign_key "slot_templates", "leads"
+  add_foreign_key "slot_templates", "taxbranches"
   add_foreign_key "tag_positionings", "leads"
   add_foreign_key "tag_positionings", "taxbranches"
   add_foreign_key "taxbranches", "leads"

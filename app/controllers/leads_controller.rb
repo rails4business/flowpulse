@@ -11,7 +11,29 @@ class LeadsController < ApplicationController
         .joins(:eventdate)
         .where(eventdates: { id: @eventdates.except(:order).reselect(:id) })
         .order(created_at: :desc)
+    @bookings =
+      Booking
+        .joins(:eventdate)
+        .where(eventdates: { id: @eventdates.except(:order).reselect(:id) })
+        .order(created_at: :desc)
+    @enrollments =
+      Enrollment
+        .joins(:bookings)
+        .where(bookings: { eventdate_id: @eventdates.except(:order).reselect(:id) })
+        .distinct
+        .order(created_at: :desc)
     @expense_eventdate = @eventdates.find_by(id: params[:expense_eventdate_id])
+
+    # Grouped Select Data
+    domains = Domain.includes(:taxbranch).map { |d| [d.host, d.taxbranch_id] }
+    services = Service.includes(:taxbranch).map { |s| [s.slug, s.taxbranch_id] }
+    branches = Taxbranch.limit(200).map { |t| [t.slug, t.id] }
+
+    @grouped_taxbranch_options = {
+      "Domini" => domains,
+      "Servizi" => services,
+      "Branch" => branches
+    }
   end
 
   def create_expense_check

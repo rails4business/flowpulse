@@ -61,6 +61,22 @@
           <div class="flex-1 relative grid grid-cols-7 divide-x divide-gray-100 dark:divide-gray-800 grid-lines">
             <% week_days.each_with_index do |day, idx| %>
               <div class="relative group <%= day == today ? "bg-blue-50/10 dark:bg-blue-900/5" : "" %>">
+                <% day_slots = @slot_instances.select { |s| s.date_start&.to_date == day } %>
+                <% day_slots.each do |slot| %>
+                  <% slot_start = slot.date_start || day.to_time.change(hour: 0) %>
+                  <% slot_end = slot.date_end || (slot_start + 1.hour) %>
+                  <% slot_top = (slot_start.hour * 60) + slot_start.min %>
+                  <% slot_height = [(slot_end - slot_start) / 60, 30].max.to_i %>
+                  <% slot_color = slot.slot_template&.color_hex.presence || "#94a3b8" %>
+                  <%= link_to slot_instance_path(slot),
+                              class: "absolute left-1 right-2 rounded-lg border p-2 bg-white/70 dark:bg-slate-900/40 text-[10px] text-slate-700 dark:text-slate-200 hover:shadow-md transition-shadow",
+                              style: "top: #{slot_top}px; height: #{slot_height}px; border-color: #{slot_color}; background-color: #{slot_color}22; z-index: 0;" do %>
+                    <div class="font-semibold truncate"><%= slot.slot_template&.title || "Slot" %></div>
+                    <% if slot.slot_template&.description.present? %>
+                      <div class="text-[9px] text-slate-500 dark:text-slate-300 truncate"><%= slot.slot_template.description %></div>
+                    <% end %>
+                  <% end %>
+                <% end %>
                 <% day_events = @week_events.select { |e| e.date_start&.to_date == day } %>
                 <% day_events.each do |event| %>
                   <% start_time = event.date_start || day.to_time.change(hour: 0) %>
@@ -68,7 +84,7 @@
                   <% top = (start_time.hour * 60) + start_time.min %>
                   <% height = [(end_time - start_time) / 60, 30].max.to_i %>
                   <div class="absolute left-1 right-2 rounded-lg border-l-4 p-2 shadow-sm bg-blue-100 dark:bg-blue-900/40 border-blue-500 dark:border-blue-400"
-                       style="top: <%= top %>px; height: <%= height %>px;">
+                       style="top: <%= top %>px; height: <%= height %>px; z-index: 10;">
                     <div class="text-xs font-bold text-blue-800 dark:text-blue-100 truncate">
                       <%= event.description.presence || "Evento" %>
                     </div>
@@ -143,10 +159,16 @@
                     aria: { label: "Torna a oggi" } do %>
           Oggi
         <% end %>
-        <button class="inline-flex items-center gap-2 rounded-xl h-10 px-4 bg-primary text-white text-sm font-semibold hover:bg-blue-600">
+        <%= link_to new_slot_template_path(lead_id: @lead.id, week: week_start.strftime("%Y-%m-%d")),
+                    class: "inline-flex items-center gap-2 rounded-xl h-10 px-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white text-sm font-semibold hover:bg-gray-50 dark:hover:bg-gray-700" do %>
+          <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          Nuovo slot
+        <% end %>
+        <%= link_to new_eventdate_path(lead_id: @lead.id, date_start: week_start.strftime("%Y-%m-%d")),
+                    class: "inline-flex items-center gap-2 rounded-xl h-10 px-4 bg-primary text-white text-sm font-semibold hover:bg-blue-600" do %>
           <span class="material-symbols-outlined text-[18px]">add</span>
           Nuovo evento
-        </button>
+        <% end %>
         <button class="flex size-10 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-slate-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
           <span class="material-symbols-outlined">settings</span>
         </button>

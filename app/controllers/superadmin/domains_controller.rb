@@ -111,6 +111,17 @@ module Superadmin
         .joins(:eventdate)
         .where(eventdates: { id: @eventdates.except(:order).reselect(:id) })
         .order(created_at: :desc)
+    @bookings =
+      Booking
+        .joins(:eventdate)
+        .where(eventdates: { id: @eventdates.except(:order).reselect(:id) })
+        .order(created_at: :desc)
+    @enrollments =
+      Enrollment
+        .joins(:bookings)
+        .where(bookings: { eventdate_id: @eventdates.except(:order).reselect(:id) })
+        .distinct
+        .order(created_at: :desc)
     @expense_eventdate = @eventdates.find_by(id: params[:expense_eventdate_id])
   end
 

@@ -6,6 +6,10 @@
   <% current_tab = params[:tab].presence || "tempo" %>
   <% total_euro = @commitments.sum(:compensation_euro) %>
   <% total_dash = @commitments.sum(:compensation_dash) %>
+  <% income_euro = (@bookings.sum(:price_euro) || 0) + (@enrollments.sum(:price_euro) || 0) %>
+  <% income_dash = (@bookings.sum(:price_dash) || 0) + (@enrollments.sum(:price_dash) || 0) %>
+  <% net_euro = (income_euro || 0) - (total_euro || 0) %>
+  <% net_dash = (income_dash || 0) - (total_dash || 0) %>
   <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm">
     <div class="flex flex-wrap items-center justify-between gap-4">
       <h2 class="text-lg font-semibold text-white">Impegno</h2>
@@ -32,12 +36,28 @@
       <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
         <div class="flex flex-wrap items-center gap-4 text-sm">
           <div class="rounded-lg border border-[#283039] bg-[#0b1220] px-4 py-2">
+            <p class="text-xs text-[#9dabb9]">Entrate €</p>
+            <p class="text-lg font-semibold text-white"><%= number_to_currency(income_euro || 0, unit: "€") %></p>
+          </div>
+          <div class="rounded-lg border border-[#283039] bg-[#0b1220] px-4 py-2">
             <p class="text-xs text-[#9dabb9]">Totale €</p>
             <p class="text-lg font-semibold text-white"><%= number_to_currency(total_euro || 0, unit: "€") %></p>
           </div>
           <div class="rounded-lg border border-[#283039] bg-[#0b1220] px-4 py-2">
+            <p class="text-xs text-[#9dabb9]">Entrate Dash</p>
+            <p class="text-lg font-semibold text-white"><%= income_dash || 0 %></p>
+          </div>
+          <div class="rounded-lg border border-[#283039] bg-[#0b1220] px-4 py-2">
             <p class="text-xs text-[#9dabb9]">Totale Dash</p>
             <p class="text-lg font-semibold text-white"><%= total_dash || 0 %></p>
+          </div>
+          <div class="rounded-lg border border-[#283039] bg-[#0b1220] px-4 py-2">
+            <p class="text-xs text-[#9dabb9]">Netto €</p>
+            <p class="text-lg font-semibold text-white"><%= number_to_currency(net_euro || 0, unit: "€") %></p>
+          </div>
+          <div class="rounded-lg border border-[#283039] bg-[#0b1220] px-4 py-2">
+            <p class="text-xs text-[#9dabb9]">Netto Dash</p>
+            <p class="text-lg font-semibold text-white"><%= net_dash || 0 %></p>
           </div>
         </div>
         <%= button_to create_expense_check_superadmin_domain_path(@domain),

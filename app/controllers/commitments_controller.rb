@@ -3,6 +3,7 @@ class CommitmentsController < ApplicationController
   before_action :set_eventdate, only: %i[new create]
   before_action :set_commitment, only: %i[ show edit update destroy ]
   before_action :set_journey
+  before_action :load_grouped_taxbranch_options, only: %i[new edit create update]
 
   # GET /commitments or /commitments.json
   def index
@@ -95,5 +96,17 @@ class CommitmentsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def commitment_params
       params.expect(commitment: [ :taxbranch_id, :eventdate_id, :role_name, :area, :role_count, :compensation_euro, :compensation_dash, :duration_minutes, :importance, :urgency, :energy, :position, :commitment_kind, :notes, :meta ])
+    end
+
+    def load_grouped_taxbranch_options
+      domains = Domain.includes(:taxbranch).map { |d| [d.host, d.taxbranch_id] }
+      services = Service.includes(:taxbranch).map { |s| [s.slug, s.taxbranch_id] }
+      branches = Taxbranch.limit(200).map { |t| [t.slug, t.id] }
+  
+      @grouped_taxbranch_options = {
+        "Domini" => domains,
+        "Servizi" => services,
+        "Branch" => branches
+      }
     end
 end

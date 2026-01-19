@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :slot_instances
+  resources :slot_templates
   resources :certificates
   resources :mycontacts do
     collection do

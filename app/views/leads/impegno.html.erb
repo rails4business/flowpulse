@@ -46,19 +46,19 @@
     <div class="p-6">
       <% if current_tab == "soldi" %>
         <%
-          # Financial Summary Calculation
-          weeks = all_expenses.group_by { |c| c.eventdate&.date_start&.beginning_of_week || Date.current.beginning_of_week }
           current_week_start = Date.current.beginning_of_week
-          current_week_expenses = weeks[current_week_start] || []
-          
-          is_expense = ->(c) { c.eventdate&.event_type == "check" || c.eventdate&.description == "Spesa" }
-          
-          week_income = current_week_expenses.reject(&is_expense).sum { |c| c.compensation_euro.to_f }
-          week_outcome = current_week_expenses.select(&is_expense).sum { |c| c.compensation_euro.to_f }
+          week_expenses = all_expenses.select { |c| c.eventdate&.date_start&.beginning_of_week == current_week_start }
+          week_outcome = week_expenses.sum { |c| c.compensation_euro.to_f }
+
+          week_booking_income = @bookings.select { |b| b.eventdate&.date_start&.beginning_of_week == current_week_start }
+                                       .sum { |b| b.price_euro.to_f }
+          week_enrollment_income = @enrollments.select { |e| e.created_at&.to_date&.beginning_of_week == current_week_start }
+                                               .sum { |e| e.price_euro.to_f }
+          week_income = week_booking_income + week_enrollment_income
           week_balance = week_income - week_outcome
 
-          total_euro_income = all_expenses.reject(&is_expense).sum { |c| c.compensation_euro.to_f }
-          total_euro_outcome = all_expenses.select(&is_expense).sum { |c| c.compensation_euro.to_f }
+          total_euro_income = (@bookings.sum(:price_euro) || 0) + (@enrollments.sum(:price_euro) || 0)
+          total_euro_outcome = all_expenses.sum { |c| c.compensation_euro.to_f }
           total_euro_balance = total_euro_income - total_euro_outcome
         %>
 
@@ -120,6 +120,7 @@
         </div>
 
         <!-- Expenses Table -->
+        <% is_expense = ->(c) { c.eventdate&.event_type == "check" || c.eventdate&.description == "Spesa" } %>
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-left">
             <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
@@ -275,6 +276,25 @@
           <%= form.hidden_field :eventdate_id, value: @expense_eventdate.id %>
           
           <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Destinazione (Dominio / Servizio / Branch)</label>
+            <% taxbranch_options = @grouped_taxbranch_options.values.flatten %>
+            <%= form.hidden_field :taxbranch_id, id: "expense-taxbranch-id" %>
+            <%= text_field_tag :taxbranch_query,
+                  nil,
+                  list: "expense-taxbranch-options",
+                  placeholder: "Cerca destinazione...",
+                  autocomplete: "off",
+                  class: "block w-full rounded-lg border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+                  data: { taxbranch_target: "input" } %>
+            <datalist id="expense-taxbranch-options">
+              <% taxbranch_options.each do |label, id| %>
+                <option value="<%= label %>" data-id="<%= id %>"></option>
+              <% end %>
+            </datalist>
+            <p class="text-xs text-slate-500 mt-1">Seleziona a chi imputare la spesa.</p>
+          </div>
+
+          <div>
             <%= form.label :role_name, "Descrizione / Voce", class: "block text-sm font-medium text-slate-700 mb-1" %>
             <%= form.text_field :role_name,
                                 placeholder: "Es. Ristorante, Taxi, Software...",
@@ -325,5 +345,21 @@
         <% end %>
       </div>
     </div>
+    <script>
+      (() => {
+        const input = document.querySelector("#expense-taxbranch-options");
+        const field = document.querySelector("input[list='expense-taxbranch-options']");
+        const hidden = document.getElementById("expense-taxbranch-id");
+        if (!field || !hidden || !input) return;
+
+        const syncHidden = () => {
+          const option = input.querySelector(`option[value='${field.value}']`);
+          hidden.value = option ? option.dataset.id : "";
+        };
+
+        field.addEventListener("change", syncHidden);
+        field.addEventListener("input", syncHidden);
+      })();
+    </script>
   <% end %>
 </div>

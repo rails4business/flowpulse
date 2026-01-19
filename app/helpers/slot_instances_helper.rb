@@ -1,0 +1,2 @@
+module SlotInstancesHelper
+end

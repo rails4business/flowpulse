@@ -29,5 +29,11 @@ class WeekplanController < ApplicationController
         .where(lead_id: @lead.id)
         .where(date_start: @week_start.beginning_of_day..@week_end.end_of_day)
         .order(:date_start)
+    @slot_instances =
+      SlotInstance
+        .joins(:slot_template)
+        .where(slot_templates: { lead_id: @lead.id })
+        .where(date_start: @week_start.beginning_of_day..@week_end.end_of_day)
+        .order(:date_start)
   end
 end
