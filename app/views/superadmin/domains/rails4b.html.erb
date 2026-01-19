@@ -6,31 +6,7 @@
 
 
 <div class="space-y-6">
-  <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm">
-    <nav class="text-xs text-[#9dabb9] mb-3">
-      <%= link_to "Domains",
-                  superadmin_domains_path,
-                  class: "hover:text-white" %>
-      <span class="mx-1">/</span>
-      <%= link_to (@domain.title.presence || @domain.host),
-                  superadmin_domain_path(@domain),
-                  class: "hover:text-white" %>
-      <span class="mx-1">/</span>
-      <%= link_to "Generaimpresa",
-                  generaimpresa_superadmin_domain_path(@domain),
-                  class: "hover:text-white" %>
-      <span class="mx-1">/</span>
-      <span class="text-white">Rails4B</span>
-    </nav>
-    <h1 class="text-3xl font-bold text-white">Rails4B</h1>
-    <p class="text-sm text-[#9dabb9] mt-1">
-      Rails come collegamenti tra servizi del dominio <strong><%= @domain.title.presence || @domain.host %></strong>.
-    </p>
-    <%= link_to "← Torna al dominio",
-                superadmin_domain_path(@domain),
-                class: "inline-flex items-center text-sm font-medium text-primary hover:underline mt-3" %>
-</div>
-
+  
 <%= turbo_frame_tag "modal" %>
 
 <div data-controller="modals">
@@ -61,7 +37,7 @@
                 <% function_journeys = service.journeys.select(&:journey_function?) %>
                 <% selected_journey_id = selected_journeys[service.id.to_s] %>
                 <% selected_journey = function_journeys.find { |j| j.id.to_s == selected_journey_id.to_s } if selected_journey_id.present? %>
-                <% selected_journey ||= service.journey_function_active_template || service.journey_function_active || function_journeys.max_by(&:updated_at) %>
+                <% selected_journey ||= service.journey_function_active || service.journey_function_active_template || function_journeys.max_by(&:updated_at) %>
                 <div class="flex flex-col gap-3">
                   <div class="relative z-10">
                     <%= render "superadmin/domains/route_service_card", 

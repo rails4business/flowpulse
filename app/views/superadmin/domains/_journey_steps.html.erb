@@ -22,12 +22,39 @@
               <%= done ? "check" : "schedule" %>
             </span>
           </span>
-          <div class="rounded-md border border-<%= tone %>-500/10 bg-[#0f172a] px-3 py-2">
             <div class="flex items-start justify-between gap-2">
-              <p class="font-semibold text-white leading-snug">
-                <%= eventdate.description.presence || "Senza descrizione" %>
-              </p>
-              <div class="flex items-center gap-2">
+              <div class="min-w-0 flex-1">
+                <p class="font-semibold text-white leading-snug">
+                  <%= eventdate.description.presence || "Senza descrizione" %>
+                </p>
+                <div class="mt-1 flex flex-wrap items-center gap-2 text-[10px] text-<%= tone %>-200/60">
+                  <% if eventdate.time_duration.present? %>
+                    <span class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[10px]">timer</span>
+                      <strong class="text-<%= tone %>-100"><%= eventdate.time_duration %></strong>
+                      <%= eventdate.unit_duration.present? ? eventdate.unit_duration.humanize.downcase : "min" %>
+                    </span>
+                  <% end %>
+                  
+                  <% if eventdate.date_start.present? %>
+                    <span class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[10px]">event</span>
+                      <%= l(eventdate.date_start, format: "%d %b %H:%M") %>
+                      <% if eventdate.date_end.present? %>
+                        → <%= l(eventdate.date_end, format: "%H:%M") %>
+                      <% end %>
+                    </span>
+                  <% end %>
+                  
+                  <% if eventdate.journey_role.present? %>
+                    <span class="rounded-full border border-<%= tone %>-500/20 px-2 py-0.5 ml-1">
+                      <%= eventdate.journey_role %>
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-2 shrink-0">
                 <span class="shrink-0 rounded-full border border-<%= tone %>-500/20 px-2 py-0.5 text-[10px] text-<%= tone %>-200/70">
                   <%= done ? "Completato" : "In attesa" %>
                 </span>
@@ -39,10 +66,7 @@
                 <% end %>
               </div>
             </div>
-            <%= render "superadmin/domains/journey_eventdate_meta",
-                       eventdate: eventdate,
-                       tone: tone %>
-          </div>
+
           <%= render "superadmin/domains/journey_step_commitments",
                      eventdate: eventdate,
                      tone: tone %>

@@ -100,11 +100,41 @@ module Superadmin
             "eventdates.taxbranch_id IN (:ids) OR journeys.taxbranch_id IN (:ids) OR journeys.end_taxbranch_id IN (:ids) OR services.taxbranch_id IN (:ids)",
             ids: subtree_ids
           )
+          .select("eventdates.*")
           .distinct
-          .order(date_start: :desc)
+          .order(Arel.sql("eventdates.date_start DESC NULLS LAST"))
       else
         Eventdate.none
       end
+    @commitments =
+      Commitment
+        .joins(:eventdate)
+        .where(eventdates: { id: @eventdates.except(:order).reselect(:id) })
+        .order(created_at: :desc)
+    @expense_eventdate = @eventdates.find_by(id: params[:expense_eventdate_id])
+  end
+
+  def create_expense_check
+    lead = @domain.taxbranch&.lead || Current.user&.lead
+    unless lead.present?
+      redirect_to impegno_superadmin_domain_path(@domain, tab: "soldi"),
+                  alert: "Lead non trovato per creare la spesa."
+      return
+    end
+
+    eventdate = Eventdate.create!(
+      lead: lead,
+      taxbranch: @domain.taxbranch,
+      description: "Spesa",
+      event_type: :check,
+      status: :completed,
+      date_start: Time.current
+    )
+
+    redirect_to impegno_superadmin_domain_path(@domain, tab: "soldi", expense_eventdate_id: eventdate.id, expense_modal: 1)
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to impegno_superadmin_domain_path(@domain, tab: "soldi"),
+                alert: e.message
   end
 
   def create_station

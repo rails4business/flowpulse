@@ -44,20 +44,7 @@
           <span class="material-symbols-outlined #{current_page?(impegno_superadmin_domain_path(@domain)) ? "text-primary" : "text-white"}">local_shipping</span>
           <p class="text-white text-sm font-medium">1impegno</p>
         <% end %>
-        <% lead_impegno_path = @domain.taxbranch&.lead ? impegno_superadmin_lead_path(@domain.taxbranch.lead) : nil %>
-        <% fallback_path = impegno_superadmin_domain_path(@domain) %>
-        <% target_path = lead_impegno_path || fallback_path %>
-        <% is_active = current_page?(target_path) %>
-        <%= link_to target_path,
-                    class: class_names(
-                      "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors",
-                      lead_impegno_path.nil? ? "opacity-60 cursor-not-allowed" : "hover:bg-[#283039]",
-                      is_active ? "bg-primary/20 border border-primary/30" : nil
-                    ) do %>
-          <span class="material-symbols-outlined #{is_active ? "text-primary" : "text-white"}">person</span>
-          <p class="text-white text-sm font-medium">Collaboratori</p>
-        <% end %>
-        <% lead_weekplan_path = @domain.taxbranch&.lead ? weekplan_lead_path(@domain.taxbranch.lead) : nil %>
+        <% lead_weekplan_path = @domain.taxbranch&.lead ? weekplan_home_path(lead_id: @domain.taxbranch.lead.id) : nil %>
         <% weekplan_path = lead_weekplan_path || superadmin_domains_path %>
         <% weekplan_active = lead_weekplan_path && current_page?(lead_weekplan_path) %>
         <%= link_to weekplan_path,
@@ -68,6 +55,18 @@
                     ) do %>
           <span class="material-symbols-outlined #{weekplan_active ? "text-primary" : "text-white"}">edit_calendar</span>
           <p class="text-white text-sm font-medium">Week Plan</p>
+        <% end %>
+        <% lead_profile_path = @domain.taxbranch&.lead ? impegno_lead_path(@domain.taxbranch.lead, tab: "profilo") : nil %>
+        <% profile_path = lead_profile_path || superadmin_domains_path %>
+        <% profile_active = lead_profile_path && current_page?(lead_profile_path) %>
+        <%= link_to profile_path,
+                    class: class_names(
+                      "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors",
+                      lead_profile_path.nil? ? "opacity-60 cursor-not-allowed" : "hover:bg-[#283039]",
+                      profile_active ? "bg-primary/20 border border-primary/30" : nil
+                    ) do %>
+          <span class="material-symbols-outlined #{profile_active ? "text-primary" : "text-white"}">account_circle</span>
+          <p class="text-white text-sm font-medium">Profile</p>
         <% end %>
       <% else %>
         <%= link_to superadmin_domains_path,

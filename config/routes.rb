@@ -13,9 +13,11 @@ Rails.application.routes.draw do
   resources :enrollments
   resources :datacontacts
   resources :commitments
+  get "weekplan/home", to: "weekplan#home", as: :weekplan_home
   resources :leads, only: [] do
     member do
-      get :weekplan
+      get :impegno
+      post :create_expense_check
     end
   end
   get "/book_index.json", to: "book_index#show"
@@ -74,6 +76,7 @@ Rails.application.routes.draw do
         get :generaimpresa
         get :journey_map
         get :impegno
+        post :create_expense_check
         post :create_station
         post :create_railservice
       end

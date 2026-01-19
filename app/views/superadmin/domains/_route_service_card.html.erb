@@ -56,7 +56,10 @@
             <% template_params = selected_journeys.merge(service.id.to_s => active_template.id).to_h %>
             <div class="flex items-center justify-between gap-2 rounded border border-blue-500/20 bg-blue-500/5 px-2 py-1.5">
               <div class="flex items-center gap-2 overflow-hidden">
-                <span class="material-symbols-outlined text-[14px] text-blue-400">content_copy</span>
+                <%= link_to rails4b_superadmin_domain_path(domain, route: route, selected_journeys: template_params),
+                            class: "shrink-0 flex items-center justify-center text-blue-400 hover:text-white" do %>
+                  <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                <% end %>
                 <div class="flex flex-col min-w-0">
                   <span class="text-[9px] uppercase font-semibold text-blue-300/70">Template Attivo</span>
                   <%= link_to active_template.title.presence || active_template.slug,
@@ -71,7 +74,10 @@
             <% active_params = selected_journeys.merge(service.id.to_s => active_function.id).to_h %>
             <div class="flex items-center justify-between gap-2 rounded border border-emerald-500/20 bg-emerald-500/5 px-2 py-1.5">
               <div class="flex items-center gap-2 overflow-hidden">
-                <span class="material-symbols-outlined text-[14px] text-emerald-400">play_circle</span>
+                <%= link_to rails4b_superadmin_domain_path(domain, route: route, selected_journeys: active_params),
+                            class: "shrink-0 flex items-center justify-center text-emerald-400 hover:text-white" do %>
+                  <span class="material-symbols-outlined text-[14px]">play_circle</span>
+                <% end %>
                 <div class="flex flex-col min-w-0">
                   <span class="text-[9px] uppercase font-semibold text-emerald-300/70">In Corso</span>
                   <%= link_to active_function.title.presence || active_function.slug,

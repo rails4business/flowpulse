@@ -1,4 +1,5 @@
 class CommitmentsController < ApplicationController
+  layout -> { turbo_frame_request? ? "modal" : "application" }
   before_action :set_eventdate, only: %i[new create]
   before_action :set_commitment, only: %i[ show edit update destroy ]
   before_action :set_journey
