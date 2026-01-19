@@ -1,0 +1,109 @@
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:64: warning: already initialized constant Gem::Platform::JAVA
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:259: warning: previous definition of JAVA was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:65: warning: already initialized constant Gem::Platform::MSWIN
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:260: warning: previous definition of MSWIN was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:66: warning: already initialized constant Gem::Platform::MSWIN64
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:261: warning: previous definition of MSWIN64 was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:67: warning: already initialized constant Gem::Platform::MINGW
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:262: warning: previous definition of MINGW was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:68: warning: already initialized constant Gem::Platform::X64_MINGW
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:264: warning: previous definition of X64_MINGW was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:70: warning: already initialized constant Gem::Platform::UNIVERSAL_MINGW
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:265: warning: previous definition of UNIVERSAL_MINGW was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:71: warning: already initialized constant Gem::Platform::WINDOWS
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:266: warning: previous definition of WINDOWS was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:72: warning: already initialized constant Gem::Platform::X64_LINUX
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:267: warning: previous definition of X64_LINUX was here
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bundler-2.6.9/lib/bundler/rubygems_ext.rb:73: warning: already initialized constant Gem::Platform::X64_LINUX_MUSL
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/site_ruby/3.4.0/rubygems/platform.rb:268: warning: previous definition of X64_LINUX_MUSL was here
+
+(process:96890): VIPS-WARNING **: 11:17:55.431: unable to load "/opt/homebrew/Cellar/vips/8.17.3/lib/vips-modules-8.17/vips-openslide.dylib" -- dlopen(/opt/homebrew/Cellar/vips/8.17.3/lib/vips-modules-8.17/vips-openslide.dylib, 0x0009): Library not loaded: /opt/homebrew/opt/libxml2/lib/libxml2.2.dylib
+  Referenced from: <577A47E9-00A0-3CE5-AF6A-70504E8CBC70> /opt/homebrew/Cellar/openslide/4.0.0/lib/libopenslide.1.dylib
+  Reason: tried: '/opt/homebrew/opt/libxml2/lib/libxml2.2.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/homebrew/opt/libxml2/lib/libxml2.2.dylib' (no such file), '/opt/homebrew/opt/libxml2/lib/libxml2.2.dylib' (no such file), '/opt/homebrew/Cellar/libxml2/2.15.1_1/lib/libxml2.2.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/homebrew/Cellar/libxml2/2.15.1_1/lib/libxml2.2.dylib' (no such file), '/opt/homebrew/Cellar/libxml2/2.15.1_1/lib/libxml2.2.dylib' (no such file)
+Creating test data...
+ERROR: PG::NotNullViolation: ERROR:  null value in column "lead_id" of relation "taxbranches" violates not-null constraint
+DETAIL:  Failing row contains (361, null, null, test/station-a, test, Station A, null, 4, null, 2026-01-16 10:17:56.230158, 2026-01-16 10:17:56.230158, f, null, null, 0, 0, null, null, null, [], 0, null, null).
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/postgresql/database_statements.rb:167:in 'PG::Connection#exec'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/postgresql/database_statements.rb:167:in 'ActiveRecord::ConnectionAdapters::PostgreSQL::DatabaseStatements#perform_query'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:571:in 'block (2 levels) in ActiveRecord::ConnectionAdapters::DatabaseStatements#raw_execute'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract_adapter.rb:1081:in 'block in ActiveRecord::ConnectionAdapters::AbstractAdapter#with_raw_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/concurrency/null_lock.rb:9:in 'ActiveSupport::Concurrency::NullLock#synchronize'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract_adapter.rb:1050:in 'ActiveRecord::ConnectionAdapters::AbstractAdapter#with_raw_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:570:in 'block in ActiveRecord::ConnectionAdapters::DatabaseStatements#raw_execute'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/notifications/instrumenter.rb:58:in 'ActiveSupport::Notifications::Instrumenter#instrument'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract_adapter.rb:1201:in 'ActiveRecord::ConnectionAdapters::AbstractAdapter#log'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:569:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#raw_execute'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:613:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#internal_execute'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:555:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#internal_exec_query'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:162:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#exec_insert'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/postgresql/database_statements.rb:47:in 'ActiveRecord::ConnectionAdapters::PostgreSQL::DatabaseStatements#exec_insert'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:200:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#insert'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/query_cache.rb:25:in 'ActiveRecord::ConnectionAdapters::AbstractAdapter#insert'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/persistence.rb:257:in 'ActiveRecord::Persistence::ClassMethods#_insert_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/persistence.rb:957:in 'block in ActiveRecord::Persistence#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb:457:in 'ActiveRecord::ConnectionAdapters::ConnectionPool#with_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_handling.rb:313:in 'ActiveRecord::ConnectionHandling#with_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/persistence.rb:954:in 'ActiveRecord::Persistence#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/counter_cache.rb:226:in 'ActiveRecord::CounterCache#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/locking/optimistic.rb:84:in 'ActiveRecord::Locking::Optimistic#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/encryption/encryptable_record.rb:184:in 'ActiveRecord::Encryption::EncryptableRecord#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/attribute_methods/dirty.rb:240:in 'ActiveRecord::AttributeMethods::Dirty#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/callbacks.rb:445:in 'block in ActiveRecord::Callbacks#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:110:in 'ActiveSupport::Callbacks#run_callbacks'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:916:in 'Taxbranch#_run_create_callbacks!'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/callbacks.rb:445:in 'ActiveRecord::Callbacks#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/timestamp.rb:116:in 'ActiveRecord::Timestamp#_create_record'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/persistence.rb:925:in 'ActiveRecord::Persistence#create_or_update'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/callbacks.rb:441:in 'block in ActiveRecord::Callbacks#create_or_update'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:121:in 'block in ActiveSupport::Callbacks#run_callbacks'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/autosave_association.rb:406:in 'ActiveRecord::AutosaveAssociation#around_save_collection_association'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:130:in 'block in ActiveSupport::Callbacks#run_callbacks'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:141:in 'ActiveSupport::Callbacks#run_callbacks'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:916:in 'Taxbranch#_run_save_callbacks!'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/callbacks.rb:441:in 'ActiveRecord::Callbacks#create_or_update'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/timestamp.rb:127:in 'ActiveRecord::Timestamp#create_or_update'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/persistence.rb:424:in 'ActiveRecord::Persistence#save!'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/validations.rb:54:in 'ActiveRecord::Validations#save!'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:385:in 'block in ActiveRecord::Transactions#save!'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:438:in 'block (3 levels) in ActiveRecord::Transactions#with_transaction_returning_status'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:376:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#transaction'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:434:in 'block (2 levels) in ActiveRecord::Transactions#with_transaction_returning_status'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb:485:in 'ActiveRecord::ConnectionAdapters::ConnectionPool#with_pool_transaction_isolation_level'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:430:in 'block in ActiveRecord::Transactions#with_transaction_returning_status'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb:457:in 'ActiveRecord::ConnectionAdapters::ConnectionPool#with_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_handling.rb:313:in 'ActiveRecord::ConnectionHandling#with_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:429:in 'ActiveRecord::Transactions#with_transaction_returning_status'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:385:in 'ActiveRecord::Transactions#save!'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/suppressor.rb:56:in 'ActiveRecord::Suppressor#save!'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/persistence.rb:55:in 'ActiveRecord::Persistence::ClassMethods#create!'
+/Users/marcobeffa/CODE_NOW/rails4b_2025/flowpulse/reproduce_subway_map.rb:7:in 'block in <main>'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/transaction.rb:648:in 'block in ActiveRecord::ConnectionAdapters::TransactionManager#within_new_transaction'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/concurrency/null_lock.rb:9:in 'ActiveSupport::Concurrency::NullLock#synchronize'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/transaction.rb:645:in 'ActiveRecord::ConnectionAdapters::TransactionManager#within_new_transaction'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:386:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#within_new_transaction'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/database_statements.rb:378:in 'ActiveRecord::ConnectionAdapters::DatabaseStatements#transaction'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:234:in 'block (2 levels) in ActiveRecord::Transactions::ClassMethods#transaction'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb:485:in 'ActiveRecord::ConnectionAdapters::ConnectionPool#with_pool_transaction_isolation_level'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:233:in 'block in ActiveRecord::Transactions::ClassMethods#transaction'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_adapters/abstract/connection_pool.rb:463:in 'ActiveRecord::ConnectionAdapters::ConnectionPool#with_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/connection_handling.rb:313:in 'ActiveRecord::ConnectionHandling#with_connection'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activerecord-8.1.1/lib/active_record/transactions.rb:232:in 'ActiveRecord::Transactions::ClassMethods#transaction'
+/Users/marcobeffa/CODE_NOW/rails4b_2025/flowpulse/reproduce_subway_map.rb:4:in '<main>'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/commands/runner/runner_command.rb:44:in 'Kernel.load'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/commands/runner/runner_command.rb:44:in 'block in Rails::Command::RunnerCommand#perform'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/activesupport-8.1.1/lib/active_support/execution_wrapper.rb:91:in 'ActiveSupport::ExecutionWrapper.wrap'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/commands/runner/runner_command.rb:70:in 'Rails::Command::RunnerCommand#conditional_executor'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/commands/runner/runner_command.rb:43:in 'Rails::Command::RunnerCommand#perform'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/thor-1.4.0/lib/thor/command.rb:28:in 'Thor::Command#run'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/thor-1.4.0/lib/thor/invocation.rb:127:in 'Thor::Invocation#invoke_command'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/command/base.rb:176:in 'Rails::Command::Base#invoke_command'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/thor-1.4.0/lib/thor.rb:538:in 'Thor.dispatch'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/command/base.rb:71:in 'Rails::Command::Base.perform'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/command.rb:65:in 'block in Rails::Command.invoke'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/command.rb:143:in 'Rails::Command.with_argv'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/command.rb:63:in 'Rails::Command.invoke'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/commands.rb:18:in '<main>'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/3.4.0/bundled_gems.rb:82:in 'Kernel.require'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/3.4.0/bundled_gems.rb:82:in 'block (2 levels) in Kernel#replace_require'
+/Users/marcobeffa/.local/share/mise/installs/ruby/3.4.7/lib/ruby/gems/3.4.0/gems/bootsnap-1.18.6/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:in 'Kernel#require'
+bin/rails:4:in '<main>'

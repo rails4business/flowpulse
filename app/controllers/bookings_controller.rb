@@ -87,6 +87,6 @@ class BookingsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def booking_params
-      params.expect(booking: [ :service_id, :eventdate_id, :mycontact_id, :enrollment_id, :commitment_id, :status, :mode, :participant_role, :requested_by_lead_id, :invited_by_lead_id, :price_euro, :price_dash, :notes, :meta ])
+      params.expect(booking: [ :service_id, :eventdate_id, :mycontact_id, :enrollment_id, :commitment_id, :status, :mode, :participant_role, :requested_by_lead_id, :invited_by_lead_id, :price_euro, :price_dash, :notes, :meta, :journey_role ])
     end
 end

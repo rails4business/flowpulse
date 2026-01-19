@@ -10,11 +10,23 @@ class Service < ApplicationRecord
   has_many :bookings, dependent: :nullify
   has_many :certificates, dependent: :restrict_with_exception
 
+  # Subway Map Associations
+  # Next stops (Outgoing)
+  has_many :outgoing_journeys, through: :taxbranch, source: :journeys
+  has_many :destination_taxbranches, through: :outgoing_journeys, source: :end_taxbranch
+  has_many :next_services, through: :destination_taxbranches, source: :service
+
+  # Previous stops (Incoming)
+  has_many :incoming_journeys, through: :taxbranch, source: :incoming_journeys
+  has_many :origin_taxbranches, through: :incoming_journeys, source: :taxbranch
+  has_many :previous_services, through: :origin_taxbranches, source: :service
+
   store_accessor :meta, :tags, :category
 
   validates :slug, presence: true, uniqueness: true
 
   before_validation :ensure_slug!
+  before_save :ensure_taxbranch_category
 
   PHASES = {
     problema: 0,
@@ -56,6 +68,40 @@ class Service < ApplicationRecord
     Array(verifier_roles).join("\n")
   end
 
+  def builders_roles=(value)
+    self[:builders_roles] = normalize_role_list(value)
+  end
+
+  def drivers_roles=(value)
+    self[:drivers_roles] = normalize_role_list(value)
+  end
+
+  def builders_roles_text
+    Array(builders_roles).join("\n")
+  end
+
+  def drivers_roles_text
+    Array(drivers_roles).join("\n")
+  end
+
+  def journey_function_active
+    journeys
+      .select(&:journey_function?)
+      .reject { |journey| journey.kind == "cycle_template" }
+      .select { |journey| journey.end_at.blank? }
+      .max_by { |journey| journey.start_at || journey.created_at }
+  end
+
+
+
+  def journey_function_active_template
+    journeys
+      .select(&:journey_function?)
+      .select { |journey| journey.kind == "cycle_template" }
+      .select { |journey| journey.end_at.blank? }
+      .max_by { |journey| journey.start_at || journey.created_at }
+  end
+
   private
 
   def ensure_slug!
@@ -63,6 +109,13 @@ class Service < ApplicationRecord
 
     base = (name.presence || "service-#{SecureRandom.hex(3)}").parameterize
     self.slug = base.presence || "service-#{SecureRandom.hex(3)}"
+  end
+
+  def ensure_taxbranch_category
+    return unless taxbranch
+    return if taxbranch.slug_category == "service"
+
+    taxbranch.update(slug_category: "service")
   end
 
   def normalize_role_list(value)

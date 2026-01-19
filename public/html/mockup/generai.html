@@ -1,4 +1,569 @@
 <!DOCTYPE html>
+
+<html class="dark" lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>GeneraImpresa - Mappa Stazioni</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              display: ["Manrope"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      .bg-grid {
+        background-image: radial-gradient(circle, #283039 1px, transparent 1px);
+        background-size: 30px 30px;
+      }
+      .subway-line-glow {
+        filter: drop-shadow(0 0 4px currentColor);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden"
+  >
+    <div class="relative flex h-screen w-full flex-col">
+      <!-- Top Navigation Bar -->
+      <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#283039] px-6 py-3 bg-background-light dark:bg-background-dark"
+      >
+        <div class="flex items-center gap-8">
+          <div class="flex items-center gap-4 text-white">
+            <div class="size-6 text-primary">
+              <svg
+                fill="none"
+                viewbox="0 0 48 48"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                ></path>
+                <path
+                  clip-rule="evenodd"
+                  d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <h2
+              class="text-white text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              GeneraImpresa
+            </h2>
+          </div>
+          <div class="flex items-center gap-6">
+            <a
+              class="text-white/60 hover:text-white text-sm font-medium transition-colors"
+              href="#"
+              >Dashboard</a
+            >
+            <a
+              class="text-white text-sm font-semibold border-b-2 border-primary pb-1"
+              href="#"
+              >Mappa Stazioni</a
+            >
+            <a
+              class="text-white/60 hover:text-white text-sm font-medium transition-colors"
+              href="#"
+              >Analisi Processi</a
+            >
+            <a
+              class="text-white/60 hover:text-white text-sm font-medium transition-colors"
+              href="#"
+              >Collaboratori</a
+            >
+          </div>
+        </div>
+        <div class="flex flex-1 justify-end gap-4 items-center">
+          <label class="flex flex-col min-w-40 h-9 max-w-64">
+            <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+              <div
+                class="text-[#9dabb9] flex border-none bg-[#283039] items-center justify-center pl-3 rounded-l-lg"
+              >
+                <span class="material-symbols-outlined text-xl">search</span>
+              </div>
+              <input
+                class="form-input flex w-full min-w-0 flex-1 border-none bg-[#283039] text-white focus:ring-0 h-full placeholder:text-[#9dabb9] px-3 rounded-r-lg text-sm"
+                placeholder="Cerca stazioni o flussi..."
+              />
+            </div>
+          </label>
+          <button
+            class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-bold tracking-[0.015em]"
+          >
+            <span>Deploy Map</span>
+          </button>
+          <button
+            class="flex items-center justify-center rounded-lg h-9 px-4 bg-[#283039] text-white text-sm font-bold"
+          >
+            <span>Salva</span>
+          </button>
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 border border-[#283039]"
+            data-alt="User avatar placeholder"
+            style="
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8AZsgBZOjmxU8IpBPgmYdnGIa4357Q9c_lrIYEQfo9FgxcVs2_b-RQKEirkUZLih-UbmVLUIJwvnV9bFDXC5fQZAWNaywlaM167yAEHrJutyyn7eOPdeeLPbeSjXP6puZBtm_AKDzwSBSkH-2RFfsyo8m9jvN0sH7tCkScEKtHD6zmy5wRTEIdZZGViLLrP1iHi6yH3LyPlkXhGeHLXz-wvhyRiSk9X1ON-zUgCcTONR9YOMXmDTqUD5sqS4ii_vlMCEPoK0ViHQ');
+            "
+          ></div>
+        </div>
+      </header>
+      <div class="flex flex-1 overflow-hidden">
+        <!-- Left Sidebar: Palette -->
+        <aside
+          class="w-64 border-r border-[#283039] flex flex-col bg-background-light dark:bg-background-dark p-4 shrink-0"
+        >
+          <div class="flex flex-col gap-6 h-full">
+            <div>
+              <h1 class="text-white text-base font-bold leading-normal mb-1">
+                Station Palette
+              </h1>
+              <p class="text-[#9dabb9] text-xs font-normal">
+                Trascina gli elementi sulla griglia
+              </p>
+            </div>
+            <div class="flex flex-col gap-2">
+              <div
+                class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/20 border border-primary/30 cursor-pointer"
+              >
+                <span class="material-symbols-outlined text-primary"
+                  >diamond</span
+                >
+                <p class="text-white text-sm font-medium">Headquarters</p>
+              </div>
+              <div
+                class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#283039] transition-colors cursor-pointer group"
+              >
+                <span
+                  class="material-symbols-outlined text-white group-hover:text-primary"
+                  >square</span
+                >
+                <p class="text-white text-sm font-medium">Department</p>
+              </div>
+              <div
+                class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#283039] transition-colors cursor-pointer group"
+              >
+                <span
+                  class="material-symbols-outlined text-white group-hover:text-primary"
+                  >circle</span
+                >
+                <p class="text-white text-sm font-medium">Client Point</p>
+              </div>
+              <div
+                class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#283039] transition-colors cursor-pointer group"
+              >
+                <span
+                  class="material-symbols-outlined text-white group-hover:text-primary"
+                  >local_shipping</span
+                >
+                <p class="text-white text-sm font-medium">Logistics</p>
+              </div>
+              <div
+                class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-[#283039] transition-colors cursor-pointer group"
+              >
+                <span
+                  class="material-symbols-outlined text-white group-hover:text-primary"
+                  >hexagon</span
+                >
+                <p class="text-white text-sm font-medium">Partner</p>
+              </div>
+            </div>
+            <div class="mt-4">
+              <h3
+                class="text-[#9dabb9] text-xs font-bold uppercase tracking-wider px-3 mb-2"
+              >
+                Linee di Business
+              </h3>
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-3 px-3 py-2">
+                  <div
+                    class="w-4 h-1 bg-primary rounded-full shadow-[0_0_8px_#137fec]"
+                  ></div>
+                  <span class="text-white text-xs font-medium"
+                    >Core Stream</span
+                  >
+                </div>
+                <div class="flex items-center gap-3 px-3 py-2">
+                  <div
+                    class="w-4 h-1 bg-pink-500 rounded-full shadow-[0_0_8px_#ec4899]"
+                  ></div>
+                  <span class="text-white text-xs font-medium">Marketing</span>
+                </div>
+                <div class="flex items-center gap-3 px-3 py-2">
+                  <div
+                    class="w-4 h-1 bg-emerald-400 rounded-full shadow-[0_0_8px_#34d399]"
+                  ></div>
+                  <span class="text-white text-xs font-medium">Logistica</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-auto">
+              <button
+                class="flex w-full items-center justify-center gap-2 rounded-lg h-10 px-4 bg-[#1380ec] text-white text-sm font-bold transition-all hover:bg-[#1380ec]/90"
+              >
+                <span class="material-symbols-outlined text-sm">add</span>
+                <span>Nuova Stazione</span>
+              </button>
+            </div>
+          </div>
+        </aside>
+        <!-- Main Workspace: Canvas -->
+        <main
+          class="flex-1 relative overflow-hidden bg-background-dark bg-grid"
+        >
+          <!-- Toolbar Overlay -->
+          <div
+            class="absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-background-dark/80 backdrop-blur-md border border-[#283039] rounded-xl px-4 py-2 flex items-center gap-4 shadow-2xl"
+          >
+            <div class="flex gap-1">
+              <button
+                class="p-2 text-[#9dabb9] hover:text-white transition-colors"
+                title="Sposta"
+              >
+                <span class="material-symbols-outlined">open_with</span>
+              </button>
+              <button
+                class="p-2 text-primary bg-primary/10 rounded-lg"
+                title="Disegna Linea"
+              >
+                <span class="material-symbols-outlined">polyline</span>
+              </button>
+              <button
+                class="p-2 text-[#9dabb9] hover:text-white transition-colors"
+                title="Elimina"
+              >
+                <span class="material-symbols-outlined">delete_sweep</span>
+              </button>
+              <button
+                class="p-2 text-[#9dabb9] hover:text-white transition-colors"
+                title="Zoom Avanti"
+              >
+                <span class="material-symbols-outlined">zoom_in</span>
+              </button>
+            </div>
+            <div class="h-6 w-px bg-[#283039]"></div>
+            <button
+              class="flex items-center gap-2 px-3 py-1.5 bg-primary rounded-lg text-white text-xs font-bold transition-all"
+            >
+              <span class="material-symbols-outlined text-base">edit</span>
+              <span>Line Editor</span>
+            </button>
+          </div>
+          <!-- Canvas Content (Subway Map Representation) -->
+          <svg class="w-full h-full cursor-crosshair">
+            <!-- Lines -->
+            <path
+              class="subway-line-glow text-primary"
+              d="M 150 200 L 400 200 Q 500 200 500 300 L 500 500"
+              fill="none"
+              stroke="#137fec"
+              stroke-linecap="round"
+              stroke-width="6"
+            ></path>
+            <path
+              class="subway-line-glow text-primary"
+              d="M 500 500 L 800 500"
+              fill="none"
+              stroke="#137fec"
+              stroke-linecap="round"
+              stroke-width="6"
+            ></path>
+            <path
+              class="subway-line-glow text-pink-500"
+              d="M 400 200 L 400 450 Q 400 550 300 550 L 100 550"
+              fill="none"
+              stroke="#ec4899"
+              stroke-linecap="round"
+              stroke-width="6"
+            ></path>
+            <!-- Station Nodes -->
+            <!-- HQ -->
+            <g class="cursor-pointer" transform="translate(150, 200)">
+              <rect
+                class="rounded"
+                fill="#101922"
+                height="30"
+                stroke="#137fec"
+                stroke-width="3"
+                transform="rotate(45)"
+                width="30"
+                x="-15"
+                y="-15"
+              ></rect>
+              <text
+                class="text-xs font-bold font-display select-none"
+                fill="white"
+                text-anchor="middle"
+                y="35"
+              >
+                MILANO HQ
+              </text>
+              <circle fill="white" r="4"></circle>
+            </g>
+            <!-- Dept -->
+            <g class="cursor-pointer" transform="translate(400, 200)">
+              <rect
+                fill="#101922"
+                height="24"
+                stroke="#137fec"
+                stroke-width="3"
+                width="24"
+                x="-12"
+                y="-12"
+              ></rect>
+              <text
+                class="text-xs font-semibold font-display select-none"
+                fill="white"
+                text-anchor="middle"
+                y="35"
+              >
+                Vendite
+              </text>
+              <circle fill="#137fec" r="4"></circle>
+            </g>
+            <!-- Logistics -->
+            <g class="cursor-pointer" transform="translate(500, 500)">
+              <rect
+                fill="#101922"
+                height="24"
+                rx="4"
+                stroke="#137fec"
+                stroke-width="3"
+                width="24"
+                x="-12"
+                y="-12"
+              ></rect>
+              <text
+                class="text-xs font-semibold font-display select-none"
+                fill="white"
+                text-anchor="middle"
+                y="35"
+              >
+                Magazzino
+              </text>
+              <circle fill="#137fec" r="4"></circle>
+              <!-- Status Badge -->
+              <circle
+                cx="15"
+                cy="-15"
+                fill="#fbbf24"
+                r="6"
+                stroke="#101922"
+                stroke-width="2"
+              ></circle>
+            </g>
+            <!-- Client Point -->
+            <g class="cursor-pointer" transform="translate(800, 500)">
+              <circle
+                fill="#101922"
+                r="12"
+                stroke="#137fec"
+                stroke-width="3"
+              ></circle>
+              <text
+                class="text-xs font-semibold font-display select-none"
+                fill="white"
+                text-anchor="middle"
+                y="35"
+              >
+                Cliente Finale
+              </text>
+              <circle fill="white" r="4"></circle>
+            </g>
+            <!-- Marketing Start -->
+            <g class="cursor-pointer" transform="translate(100, 550)">
+              <circle
+                fill="#101922"
+                r="12"
+                stroke="#ec4899"
+                stroke-width="3"
+              ></circle>
+              <text
+                class="text-xs font-semibold font-display select-none"
+                fill="white"
+                text-anchor="middle"
+                y="35"
+              >
+                Social Hub
+              </text>
+            </g>
+          </svg>
+          <!-- Zoom Controls Overlay -->
+          <div class="absolute bottom-6 right-6 flex flex-col gap-2 z-10">
+            <div
+              class="flex flex-col bg-background-dark/80 backdrop-blur-md border border-[#283039] rounded-lg overflow-hidden shadow-xl"
+            >
+              <button
+                class="p-2.5 text-white hover:bg-primary/20 transition-colors"
+              >
+                <span class="material-symbols-outlined">add</span>
+              </button>
+              <div class="h-px bg-[#283039]"></div>
+              <button
+                class="p-2.5 text-white hover:bg-primary/20 transition-colors"
+              >
+                <span class="material-symbols-outlined">remove</span>
+              </button>
+            </div>
+            <button
+              class="p-2.5 bg-background-dark/80 backdrop-blur-md border border-[#283039] rounded-lg text-white hover:bg-primary/20 shadow-xl transition-colors"
+            >
+              <span class="material-symbols-outlined">navigation</span>
+            </button>
+          </div>
+        </main>
+        <!-- Right Sidebar: Properties Inspector -->
+        <aside
+          class="w-80 border-l border-[#283039] flex flex-col bg-background-light dark:bg-background-dark shrink-0"
+        >
+          <div class="p-4 border-b border-[#283039]">
+            <h3
+              class="text-white text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              Proprietà Stazione
+            </h3>
+          </div>
+          <div class="flex-1 overflow-y-auto p-4 space-y-6">
+            <!-- Selection Header -->
+            <div class="flex items-center gap-4 bg-[#283039] p-4 rounded-xl">
+              <div
+                class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined text-3xl"
+                  >local_shipping</span
+                >
+              </div>
+              <div>
+                <h4 class="text-white font-bold">Magazzino Centrale</h4>
+                <p class="text-[#9dabb9] text-xs">ID: ST-00452-LOG</p>
+              </div>
+            </div>
+            <!-- Form Fields -->
+            <div class="space-y-4">
+              <div class="flex flex-col gap-1.5">
+                <label
+                  class="text-[#9dabb9] text-xs font-bold uppercase tracking-wider"
+                  >Nome Stazione</label
+                >
+                <input
+                  class="w-full bg-[#1c2127] border-none rounded-lg text-white text-sm focus:ring-1 focus:ring-primary"
+                  type="text"
+                  value="Magazzino Centrale"
+                />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label
+                  class="text-[#9dabb9] text-xs font-bold uppercase tracking-wider"
+                  >Responsabile</label
+                >
+                <div
+                  class="flex items-center gap-2 bg-[#1c2127] px-3 py-2 rounded-lg"
+                >
+                  <div
+                    class="size-6 rounded-full bg-cover"
+                    data-alt="Avatar of responsible person"
+                    style="
+                      background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCG7edNIlcEk_pRc0zUo1-S92qmz1fe_V7A5NcChSY0F4bgrwTvx-q4Zlw_l2wgnhkO7tFjpjrcItkme_ar6YJ4x58AtsuAvWuBB1LpPXbIwDlMKoNnUNq-9FDTHkPEtvihbElUktvIFx7dl9KFbWoYv4x9sUbljVmo6O_3y-kJTveBfwMHRrPLyiHTuq188wD2ZT-xJ5OvSxo_G1RdZkdvgZkP9SSdx-bQNycjxNt2R-35s7v87-kOeBEKIkxfA9xq5u75bk2ukCU');
+                    "
+                  ></div>
+                  <span class="text-white text-sm">Marco Rossi</span>
+                  <span
+                    class="material-symbols-outlined text-sm ml-auto text-[#9dabb9]"
+                    >expand_more</span
+                  >
+                </div>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label
+                  class="text-[#9dabb9] text-xs font-bold uppercase tracking-wider"
+                  >Status Operativo</label
+                >
+                <div class="flex gap-2">
+                  <button
+                    class="flex-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold py-2 rounded-lg"
+                  >
+                    Attivo
+                  </button>
+                  <button
+                    class="flex-1 bg-amber-500/20 border border-amber-500/50 text-amber-400 text-xs font-bold py-2 rounded-lg"
+                  >
+                    Bottleneck
+                  </button>
+                </div>
+              </div>
+              <div class="pt-4 border-t border-[#283039]">
+                <label
+                  class="text-[#9dabb9] text-xs font-bold uppercase tracking-wider block mb-2"
+                  >Metriche KPI</label
+                >
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="bg-[#1c2127] p-3 rounded-lg">
+                    <p class="text-[#9dabb9] text-[10px] font-bold">
+                      TEMPO MEDIO
+                    </p>
+                    <p class="text-white text-lg font-bold">14.2h</p>
+                  </div>
+                  <div class="bg-[#1c2127] p-3 rounded-lg">
+                    <p class="text-[#9dabb9] text-[10px] font-bold">
+                      EFFICIENZA
+                    </p>
+                    <p class="text-emerald-400 text-lg font-bold">92%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 bg-[#1c2127] border-t border-[#283039]">
+            <button
+              class="w-full flex items-center justify-center h-10 rounded-lg bg-[#283039] text-white text-sm font-bold hover:bg-[#343e49] transition-colors"
+            >
+              Configura Automazioni
+            </button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>
+<!DOCTYPE html>
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
@@ -124,26 +689,17 @@
 
       <div class="card">
         <div class="mermaid">
-          flowchart LR
-          %% Nodi principali (pipeline)
-          A[Previsione] --> B[Amministrazione] --> C[Copy e messaggio] --> D[Articoli blog]
-          D --> E[Instagram / YouTube Shorts] --> F[YouTube video lungo]
-
-          %% Uscite finali (porte)
-          F --> G{Dove porta?}
-          G --> G1[Corsi Postura Corretta]
-          G --> G2[Percorso Salute]
-          G --> G3[Accademia]
-          G --> G4[Collabora]
-          G --> G5[Esplora]
-
-          %% Stile minimale
-          classDef step fill:#ffffff0d,stroke:#ffffff22,color:#ffffff,rx:12,ry:12;
-          classDef gate fill:#ffffff14,stroke:#ffffff33,color:#ffffff,rx:14,ry:14;
-          classDef door fill:#ffffff0d,stroke:#ffffff22,color:#ffffff,rx:12,ry:12;
-          class A,B,C,D,E,F step;
-          class G gate;
-          class G1,G2,G3,G4,G5 door;
+          flowchart LR %% Nodi principali (pipeline) A[Previsione] -->
+          B[Amministrazione] --> C[Copy e messaggio] --> D[Articoli blog] D -->
+          E[Instagram / YouTube Shorts] --> F[YouTube video lungo] %% Uscite
+          finali (porte) F --> G{Dove porta?} G --> G1[Corsi Postura Corretta] G
+          --> G2[Percorso Salute] G --> G3[Accademia] G --> G4[Collabora] G -->
+          G5[Esplora] %% Stile minimale classDef step
+          fill:#ffffff0d,stroke:#ffffff22,color:#ffffff,rx:12,ry:12; classDef
+          gate fill:#ffffff14,stroke:#ffffff33,color:#ffffff,rx:14,ry:14;
+          classDef door
+          fill:#ffffff0d,stroke:#ffffff22,color:#ffffff,rx:12,ry:12; class
+          A,B,C,D,E,F step; class G gate; class G1,G2,G3,G4,G5 door;
         </div>
 
         <div class="hint">

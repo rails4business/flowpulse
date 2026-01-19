@@ -50,6 +50,6 @@ class PhaseController < ApplicationController
 
   def load_phase(phase_key)
     @phase_key = phase_key
-    @journeys = @taxbranch.journeys.where(phase: phase_key).order(updated_at: :desc)
+    @journeys = @taxbranch.journeys.where(journeys_status: phase_key).order(updated_at: :desc)
   end
 end

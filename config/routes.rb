@@ -13,6 +13,11 @@ Rails.application.routes.draw do
   resources :enrollments
   resources :datacontacts
   resources :commitments
+  resources :leads, only: [] do
+    member do
+      get :weekplan
+    end
+  end
   get "/book_index.json", to: "book_index#show"
   resources :journeys  do
     member do
@@ -21,6 +26,8 @@ Rails.application.routes.draw do
       post "start_tracking"
       post "stop_tracking"
       get "carousel"
+      get "rails4b"
+      get "generaimpresa"
       post "replicate_template_events"
       delete "clear_template_events"
     end
@@ -55,12 +62,20 @@ Rails.application.routes.draw do
   # --- Admin ---
   namespace :superadmin do
     resources :services do
+      member do
+        get :rails4b
+        get :generaimpresa
+        get :servicemaps
+      end
     end
     resources :domains do
       member do
         get :rails4b
         get :generaimpresa
+        get :journey_map
         get :impegno
+        post :create_station
+        post :create_railservice
       end
     end
     resources :taxbranches do

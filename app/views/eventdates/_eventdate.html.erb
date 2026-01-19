@@ -38,8 +38,12 @@
       </div>
       <div>
         <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">Meta</dt>
-        <dd class="mt-1 text-sm text-slate-800"><%= eventdate.meta.presence || "-" %></dd>
-      </div>
+    <dd class="mt-1 text-sm text-slate-800"><%= eventdate.meta.presence || "-" %></dd>
+  </div>
+  <div>
+    <dt class="text-xs uppercase tracking-wide text-slate-500">Ruolo journey</dt>
+    <dd class="mt-1 text-sm text-slate-800"><%= eventdate.journey_role.presence || "-" %></dd>
+  </div>
     </dl>
   </section>
 

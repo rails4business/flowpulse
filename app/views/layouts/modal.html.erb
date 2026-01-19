@@ -1,0 +1,14 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+    <div class="w-full max-w-3xl rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-2xl">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h2 class="text-lg font-semibold text-white"><%= content_for?(:title) ? yield(:title) : "Dettagli" %></h2>
+        <%= link_to "Chiudi",
+                    request.referer || "/",
+                    data: { turbo_frame: "_top" },
+                    class: "text-sm font-medium text-[#9dabb9] hover:text-white" %>
+      </div>
+      <%= yield %>
+    </div>
+  </div>
+<% end %>

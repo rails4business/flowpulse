@@ -189,6 +189,7 @@ end
     params.expect(taxbranch: [
       :lead_id, :notes, :slug, :slug_category, :slug_label,
       :ancestry, :position, :meta, :parent_id, :home_nav,
+      :x_coordinated, :y_coordinated,
       :positioning_tag_public, :service_certificable,
       :status, :visibility, :phase, :published_at, :scheduled_at,
       :permission_access_roles, { permission_access_roles: [] }

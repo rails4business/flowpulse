@@ -20,6 +20,10 @@
     <%= booking.commitment_id %>
   </div>
   <div>
+    <strong class="block font-medium mb-1">Journey role:</strong>
+    <%= booking.journey_role.presence || "—" %>
+  </div>
+  <div>
     <strong class="block font-medium mb-1">Status:</strong>
     <%= booking.status %>
   </div>

@@ -83,6 +83,22 @@
               <span class="text-slate-500">Non specificati</span>
             <% end %>
           </div>
+          <div>
+            <span class="font-semibold">Costruttori:</span>
+            <% if @service.builders_roles.present? %>
+              <span class="text-slate-700"><%= @service.builders_roles.join(", ") %></span>
+            <% else %>
+              <span class="text-slate-500">Non specificati</span>
+            <% end %>
+          </div>
+          <div>
+            <span class="font-semibold">Erogatori:</span>
+            <% if @service.drivers_roles.present? %>
+              <span class="text-slate-700"><%= @service.drivers_roles.join(", ") %></span>
+            <% else %>
+              <span class="text-slate-500">Non specificati</span>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

@@ -16,6 +16,10 @@
     <%= enrollment.role_name %>
   </div>
   <div>
+    <strong class="block font-medium mb-1">Journey role:</strong>
+    <%= enrollment.journey_role.presence || "—" %>
+  </div>
+  <div>
     <strong class="block font-medium mb-1">Ruolo di ingresso:</strong>
     <%= enrollment.participant_role.presence || "—" %>
   </div>

@@ -21,6 +21,20 @@
     <%= form.text_field :journey_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:journey_id].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:journey_id].any?}] %>
   </div>
 
+  <% journey_for_roles = Journey.find_by(id: (enrollment.journey_id || params[:journey_id])) %>
+  <div class="my-5">
+    <%= form.label :journey_role, "Ruolo Journey" %>
+    <% roles = Array(journey_for_roles&.journey_roles) %>
+    <% if roles.any? %>
+      <%= form.select :journey_role,
+            options_for_select(roles, enrollment.journey_role),
+            { include_blank: "—" },
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:journey_role].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:journey_role].any?}] %>
+    <% else %>
+      <%= form.text_field :journey_role, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:journey_role].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:journey_role].any?}] %>
+    <% end %>
+  </div>
+
   <div class="my-5">
     <%= form.label :contact_id %>
     <%= form.text_field :contact_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": enrollment.errors[:contact_id].none?, "border-red-400 focus:outline-red-600": enrollment.errors[:contact_id].any?}] %>

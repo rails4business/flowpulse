@@ -107,6 +107,30 @@
     </p>
   </div>
 
+  <div class="my-5">
+    <%= form.label :builders_roles, "Ruoli costruttori (uno per riga)" %>
+    <%= form.text_area :builders_roles,
+          value: service.builders_roles_text,
+          rows: 3,
+          placeholder: "Es.\nContent creator\nEditor",
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:builders_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:builders_roles].any?}] %>
+    <p class="mt-1 text-xs text-slate-500">
+      Ruoli interni che costruiscono e gestiscono i canali.
+    </p>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :drivers_roles, "Ruoli erogatori (uno per riga)" %>
+    <%= form.text_area :drivers_roles,
+          value: service.drivers_roles_text,
+          rows: 3,
+          placeholder: "Es.\nTutor\nInsegnante",
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:drivers_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:drivers_roles].any?}] %>
+    <p class="mt-1 text-xs text-slate-500">
+      Ruoli che erogano e guidano il servizio sul campo.
+    </p>
+  </div>
+
   <div class="grid gap-4 my-5 md:grid-cols-3">
     <div class="flex items-center gap-2">
       <%= form.check_box :auto_certificate,

@@ -9,8 +9,9 @@ class Taxbranch < ApplicationRecord
   has_one  :post, inverse_of: :taxbranch, dependent: :destroy
   has_many :domains, dependent: :destroy
   has_many :eventdates, dependent: :destroy
-  has_many :services, dependent: :nullify
+  has_one :service, dependent: :nullify
   has_many :journeys, dependent: :destroy
+  has_many :incoming_journeys, class_name: "Journey", foreign_key: :end_taxbranch_id, dependent: :nullify
   has_many :certificates, dependent: :restrict_with_exception
 
   # 🔗 Self-link: un taxbranch può fare da "link" verso un altro taxbranch
@@ -67,6 +68,13 @@ class Taxbranch < ApplicationRecord
   scope :ordered,        -> { order(:position, :slug_label) }
   scope :positioning_on, -> { where(positioning_tag_public: true) }
   scope :home_nav, -> { where(home_nav: true) }
+
+  # 🚉 Service Stations: Taxbranches that host a Service
+  scope :service_stations, -> { joins(:service) }
+
+  def service_station?
+    service.present?
+  end
 
   # 🧠 Suggerimenti categorie (cached)
   def self.category_suggestions

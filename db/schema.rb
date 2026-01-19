@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_17_102452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,6 +58,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
     t.bigint "enrollment_id"
     t.bigint "eventdate_id", null: false
     t.bigint "invited_by_lead_id"
+    t.string "journey_role"
     t.jsonb "meta", default: {}
     t.integer "mode", default: 0, null: false
     t.bigint "mycontact_id", null: false
@@ -169,6 +170,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
     t.datetime "created_at", null: false
     t.bigint "invited_by_lead_id"
     t.bigint "journey_id"
+    t.string "journey_role"
     t.jsonb "meta", default: {}
     t.integer "mode", default: 0, null: false
     t.bigint "mycontact_id", null: false
@@ -200,6 +202,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
     t.text "description"
     t.integer "event_type", default: 0, null: false
     t.bigint "journey_id"
+    t.string "journey_role"
     t.integer "kind_event", default: 0, null: false
     t.bigint "lead_id", null: false
     t.string "location"
@@ -207,8 +210,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
     t.jsonb "meta"
     t.integer "mode", default: 0, null: false
     t.bigint "parent_eventdate_id"
+    t.integer "position"
     t.integer "status"
     t.bigint "taxbranch_id"
+    t.integer "time_duration"
+    t.integer "unit_duration"
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
     t.index ["journey_id"], name: "index_eventdates_on_journey_id"
@@ -231,28 +237,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
   create_table "journeys", force: :cascade do |t|
     t.boolean "allows_invite"
     t.boolean "allows_request"
-    t.datetime "complete"
     t.datetime "created_at", null: false
+    t.datetime "end_at"
+    t.integer "end_taxbranch_id"
     t.integer "energy"
     t.integer "importance"
+    t.jsonb "journey_roles", default: [], null: false
+    t.integer "journey_type", default: 0
+    t.integer "journeys_status", default: 0, null: false
     t.integer "kind", default: 0, null: false
     t.bigint "lead_id", null: false
     t.jsonb "meta", default: {}, null: false
     t.text "notes"
-    t.integer "phase", default: 0, null: false
     t.decimal "price_estimate_dash", precision: 16, scale: 8
     t.decimal "price_estimate_euro", precision: 8, scale: 2
     t.integer "progress"
     t.bigint "service_id"
     t.string "slug"
-    t.datetime "start_erogation"
-    t.datetime "start_ideate"
-    t.datetime "start_realized"
+    t.datetime "start_at"
     t.bigint "taxbranch_id"
     t.bigint "template_journey_id"
     t.string "title"
     t.datetime "updated_at", null: false
     t.integer "urgency"
+    t.index ["end_taxbranch_id"], name: "index_journeys_on_end_taxbranch_id"
     t.index ["lead_id"], name: "index_journeys_on_lead_id"
     t.index ["service_id"], name: "index_journeys_on_service_id"
     t.index ["slug"], name: "index_journeys_on_slug", unique: true
@@ -342,9 +350,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
     t.boolean "allows_invite", default: true, null: false
     t.boolean "allows_request", default: true, null: false
     t.boolean "auto_certificate"
+    t.jsonb "builders_roles", default: [], null: false
     t.text "content_md"
     t.datetime "created_at", null: false
     t.text "description"
+    t.jsonb "drivers_roles", default: [], null: false
     t.integer "enrollable_from_phase"
     t.integer "enrollable_until_phase"
     t.string "image_url"
@@ -361,6 +371,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
     t.decimal "price_ticket_dash", precision: 16, scale: 8
     t.boolean "require_booking_verification"
     t.boolean "require_enrollment_verification"
+    t.integer "service_phase"
     t.string "slug"
     t.bigint "taxbranch_id", null: false
     t.datetime "updated_at", null: false
@@ -415,6 +426,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_08_162508) do
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
+    t.integer "x_coordinated"
+    t.integer "y_coordinated"
     t.index ["lead_id"], name: "index_taxbranches_on_lead_id"
     t.index ["link_child_taxbranch_id"], name: "index_taxbranches_on_link_child_taxbranch_id"
     t.index ["positioning_tag_public"], name: "index_taxbranches_on_positioning_tag_public"

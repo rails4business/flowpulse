@@ -49,6 +49,11 @@
           <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1">
             Visibilità: <strong><%= @eventdate.visibility %></strong>
           </span>
+          <% if @eventdate.journey_role.present? %>
+            <span class="inline-flex items-center gap-1 rounded-full border border-emerald-200 px-3 py-1 text-emerald-700">
+              Ruolo journey: <strong><%= @eventdate.journey_role %></strong>
+            </span>
+          <% end %>
           <% if @eventdate.event_type == "event" %>
             <span class="inline-flex items-center gap-1 rounded-full border border-blue-200 px-3 py-1 text-blue-700">
               Kind: <strong><%= @eventdate.kind_event.humanize %></strong>

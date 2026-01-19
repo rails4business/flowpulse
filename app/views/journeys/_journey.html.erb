@@ -52,23 +52,23 @@
     <%= journey.kind %>
   </div>
   <div>
+    <strong class="block font-medium mb-1">Journey type:</strong>
+    <%= journey.journey_type %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Journey roles:</strong>
+    <%= Array(journey.journey_roles).join(", ").presence || "—" %>
+  </div>
+  <div>
     <strong class="block font-medium mb-1">Journey journey:</strong>
     <%= journey.template_journey_id %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Start ideate:</strong>
-    <%= journey.start_ideate %>
+    <strong class="block font-medium mb-1">Start at:</strong>
+    <%= journey.start_at %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Start realized:</strong>
-    <%= journey.start_realized %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Start erogation:</strong>
-    <%= journey.start_erogation %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Complete:</strong>
-    <%= journey.complete %>
+    <strong class="block font-medium mb-1">End at:</strong>
+    <%= journey.end_at %>
   </div>
 </div>

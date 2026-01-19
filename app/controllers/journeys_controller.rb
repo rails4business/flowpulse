@@ -1,4 +1,5 @@
 class JourneysController < ApplicationController
+  layout -> { turbo_frame_request? ? "modal" : "application" }
   before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking instance_cycle clone_cycle rails4b generaimpresa ]
   before_action :load_branch_links, only: %i[ show rails4b generaimpresa ]
   before_action :load_production_stats, only: %i[ show rails4b generaimpresa ]
@@ -139,8 +140,11 @@ class JourneysController < ApplicationController
   def new
     @journey = Current.user.lead.journeys.build
     @journey.taxbranch_id = params[:taxbranch_id] if params[:taxbranch_id].present?
-    if params[:phase].present? && Journey.phases.key?(params[:phase].to_sym)
-      @journey.phase = params[:phase]
+    @journey.end_taxbranch_id = params[:end_taxbranch_id] if params[:end_taxbranch_id].present?
+    @journey.service_id = params[:service_id] if params[:service_id].present?
+    phase_param = params[:journeys_status].presence || params[:phase]
+    if phase_param.present? && Journey.journeys_statuses.key?(phase_param.to_sym)
+      @journey.journeys_status = phase_param
     end
   end
 
@@ -158,6 +162,7 @@ class JourneysController < ApplicationController
     else
       @journey = Journey.new(journey_params)
     end
+    @journey.lead ||= Current.user&.lead
 
     respond_to do |format|
       if @journey.save
@@ -174,7 +179,15 @@ class JourneysController < ApplicationController
   def update
     respond_to do |format|
       if @journey.update(journey_params)
-        format.html { redirect_to @journey, notice: "Journey was successfully updated.", status: :see_other }
+        if @journey.service.present?
+          format.html do
+            redirect_to servicemaps_superadmin_service_path(@journey.service, tab: "builders"),
+                        notice: "Journey was successfully updated.",
+                        status: :see_other
+          end
+        else
+          format.html { redirect_to @journey, notice: "Journey was successfully updated.", status: :see_other }
+        end
         format.json { render :show, status: :ok, location: @journey }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -201,7 +214,7 @@ class JourneysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def journey_params
-      params.expect(journey: [ :title, :slug, :taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_ideate, :start_realized, :start_erogation, :complete, :kind, :allows_invite, :allows_request, :phase ])
+      params.expect(journey: [ :title, :slug, :taxbranch_id, :end_taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_at, :end_at, :kind, :journey_type, :journey_roles, :journey_roles_text, :allows_invite, :allows_request, :journeys_status ])
     end
 
     def load_branch_links

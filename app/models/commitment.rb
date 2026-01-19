@@ -15,7 +15,7 @@ class Commitment < ApplicationRecord
 
   delegate :journey, to: :eventdate, allow_nil: true
 
-  acts_as_list scope: :eventdate
+  acts_as_list scope: :eventdate_id
   scope :ordered, -> { order(:position) }
 
   private

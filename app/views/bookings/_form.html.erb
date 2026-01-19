@@ -154,6 +154,23 @@
 
     <div class="grid gap-6 md:grid-cols-2">
       <div>
+        <label class="block text-sm font-semibold text-slate-900 mb-2">Ruolo journey</label>
+        <% journey_roles = Array(journey&.journey_roles) %>
+        <% if journey_roles.any? %>
+          <%= form.select :journey_role,
+                options_for_select(journey_roles, booking.journey_role),
+                { include_blank: "—" },
+                class: "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        <% else %>
+          <%= form.text_field :journey_role,
+                placeholder: "Ruolo libero",
+                class: "block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      <div>
         <label class="block text-sm font-semibold text-slate-900 mb-2">Richiesto da lead</label>
         <%= form.collection_select :requested_by_lead_id,
               datacontacts_scope,

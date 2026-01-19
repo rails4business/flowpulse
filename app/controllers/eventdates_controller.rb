@@ -1,4 +1,5 @@
 class EventdatesController < ApplicationController
+  layout -> { turbo_frame_request? ? "modal" : "application" }
   before_action :set_eventdate, only: %i[ show edit update destroy ]
 
  # GET /eventdates or /eventdates.json
@@ -57,7 +58,10 @@ end
 
   # GET /eventdates/new
   def new
-    @eventdate = Eventdate.new
+    @eventdate = Eventdate.new(
+      journey_id: params[:journey_id],
+      journey_role: params[:journey_role]
+    )
   end
 
   # GET /eventdates/1/edit
@@ -113,6 +117,9 @@ end
       params.expect(eventdate: [
         :date_start,
         :date_end,
+        :time_duration,
+        :unit_duration,
+        :position,
         :taxbranch_id,
         :lead_id,
         :cycle,
@@ -124,7 +131,8 @@ end
         :allows_request,
         :event_type,
         :kind_event,
-        :parent_eventdate_id
+        :parent_eventdate_id,
+        :journey_role
       ])
     end
 

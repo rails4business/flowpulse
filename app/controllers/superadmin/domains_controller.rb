@@ -2,8 +2,8 @@ module Superadmin
   class DomainsController < ApplicationController
     include RequireSuperadmin
 
-  before_action :set_domain, only: %i[ show edit update destroy rails4b generaimpresa impegno ]
-
+  layout "generaimpresa"
+  before_action :set_domain, only: %i[ show edit update destroy rails4b generaimpresa journey_map impegno create_station ]
   # GET /domains or /domains.json
   def index
     @domains = Domain.all
@@ -15,62 +15,171 @@ module Superadmin
 
   def rails4b
     @main_taxbranch = @domain.taxbranch
-    @rails4b_taxbranches = @main_taxbranch ? @main_taxbranch.subtree : []
+    @stations = @main_taxbranch ? @main_taxbranch.children : Taxbranch.none
+    station_ids = @stations.map(&:id)
+    @station_lookup = @stations.index_by(&:id)
+    @services =
+      if station_ids.any?
+        Service.where(taxbranch_id: station_ids).includes(:taxbranch, :journeys).order(updated_at: :desc)
+      else
+        Service.none
+      end
+    @journeys =
+      if station_ids.any?
+        Journey
+          .where(taxbranch_id: station_ids)
+          .or(Journey.where(end_taxbranch_id: station_ids))
+          .includes(:eventdates)
+          .order(updated_at: :desc)
+      else
+        Journey.none
+      end
+    @selected_journey = @journeys.find_by(id: params[:journey_id])
+    @service_lookup = @services.index_by(&:id)
+    @journey_lookup = @journeys.index_by(&:id)
+    @route_items = parse_route_items(params[:route])
   end
 
   def generaimpresa
     @main_taxbranch = @domain.taxbranch
-    subtree_ids = @main_taxbranch&.subtree_ids || []
-    @services_scope = subtree_ids.any? ? Service.where(taxbranch_id: subtree_ids) : Service.none
-    @journeys_scope = subtree_ids.any? ? Journey.where(taxbranch_id: subtree_ids) : Journey.none
-    journey_ids = @journeys_scope.pluck(:id)
-    service_ids = @services_scope.pluck(:id)
-    commitments_scope =
-      if journey_ids.any?
-        Commitment.joins(eventdate: :journey).where(journeys: { id: journey_ids })
+    @stations = @main_taxbranch ? @main_taxbranch.children : Taxbranch.none
+    station_ids = @stations.map(&:id)
+    @services =
+      if station_ids.any?
+        Service.where(taxbranch_id: station_ids).includes(:taxbranch).order(updated_at: :desc)
       else
-        Commitment.none
+        Service.none
       end
-    @enrollments_count = if subtree_ids.any?
-                           Enrollment.joins(journey: :taxbranch).where(taxbranches: { id: subtree_ids }).count
-                         else
-                           0
-                         end
-    @certificates_count = if subtree_ids.any?
-                            Certificate.where(taxbranch_id: subtree_ids).count
-                          else
-                            0
-                          end
-    @production_cost_euro = commitments_scope.sum("COALESCE(commitments.compensation_euro, 0)")
-    @production_minutes = commitments_scope.sum("COALESCE(commitments.duration_minutes, 0)")
-
-    enrollment_scope = Enrollment.none
-    enrollment_scope = enrollment_scope.or(Enrollment.where(service_id: service_ids)) if service_ids.any?
-    enrollment_scope = enrollment_scope.or(Enrollment.where(journey_id: journey_ids)) if journey_ids.any?
-    booking_scope = Booking.none
-    booking_scope = booking_scope.or(Booking.where(service_id: service_ids)) if service_ids.any?
-    booking_scope = booking_scope.or(
-      journey_ids.any? ? Booking.joins(eventdate: :journey).where(journeys: { id: journey_ids }) : Booking.none
-    )
-    @enrollment_revenue_euro = enrollment_scope.sum("COALESCE(price_euro, 0)")
-    @booking_revenue_euro = booking_scope.sum("COALESCE(price_euro, 0)")
-    @public_revenue_euro = @enrollment_revenue_euro + @booking_revenue_euro
+    @stations_by_id = @stations.index_by(&:id)
+    @services_by_station = @services.group_by(&:taxbranch_id)
+    @journeys =
+      if station_ids.any?
+        Journey
+          .where(taxbranch_id: station_ids, end_taxbranch_id: station_ids)
+          .where.not(end_taxbranch_id: nil)
+          .order(updated_at: :desc)
+      else
+        Journey.none
+      end
   end
+
+  def journey_map
+    @main_taxbranch = @domain.taxbranch
+    @stations = @main_taxbranch ? @main_taxbranch.children : Taxbranch.none
+    station_ids = @stations.map(&:id)
+    @station_lookup = @stations.index_by(&:id)
+    @services =
+      if station_ids.any?
+        Service.where(taxbranch_id: station_ids).includes(:taxbranch).order(updated_at: :desc)
+      else
+        Service.none
+      end
+    @journeys =
+      if station_ids.any?
+        Journey
+          .where(taxbranch_id: station_ids)
+          .or(Journey.where(end_taxbranch_id: station_ids))
+          .includes(:eventdates)
+          .order(updated_at: :desc)
+      else
+        Journey.none
+      end
+    @selected_journey = @journeys.find_by(id: params[:journey_id])
+  end
+
+
 
   def impegno
     @main_taxbranch = @domain.taxbranch
     subtree_ids = @main_taxbranch&.subtree_ids || []
-    commitments_scope =
+    @eventdates =
       if subtree_ids.any?
-        Commitment.joins(eventdate: :journey).where(journeys: { taxbranch_id: subtree_ids })
+        Eventdate
+          .left_joins(:journey, :taxbranch, journey: :service)
+          .where(
+            "eventdates.taxbranch_id IN (:ids) OR journeys.taxbranch_id IN (:ids) OR journeys.end_taxbranch_id IN (:ids) OR services.taxbranch_id IN (:ids)",
+            ids: subtree_ids
+          )
+          .distinct
+          .order(date_start: :desc)
       else
-        Commitment.none
+        Eventdate.none
       end
+  end
 
-    @commitments_count = commitments_scope.count
-    @total_minutes = commitments_scope.sum("COALESCE(commitments.duration_minutes, 0)")
-    @total_compensation = commitments_scope.sum("COALESCE(commitments.compensation_euro, 0)")
-    @recent_commitments = commitments_scope.includes(eventdate: :journey).order(created_at: :desc).limit(10)
+  def create_station
+    station_params = params.fetch(:station, {}).permit(:name, :service_name, :slug_category, :x, :y)
+    label = station_params[:name].to_s.strip
+    service_name = station_params[:service_name].presence || label
+    slug_category = station_params[:slug_category].presence || "service"
+
+    taxbranch =
+      @domain.taxbranch.children.build(
+        lead_id: Current.user&.lead&.id,
+        slug_label: label,
+        slug_category: slug_category,
+        x_coordinated: station_params[:x],
+        y_coordinated: station_params[:y]
+      )
+
+    Taxbranch.transaction do
+      taxbranch.save!
+      Service.create!(
+        lead_id: Current.user&.lead&.id,
+        taxbranch_id: taxbranch.id,
+        name: service_name,
+        description: "Servizio demo per #{service_name}"
+      )
+    end
+
+    respond_to do |format|
+      format.json { render json: { taxbranch_id: taxbranch.id }, status: :created }
+      format.html do
+        redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1),
+                    notice: "Stazione creata."
+      end
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    respond_to do |format|
+      format.json { render json: { error: e.message }, status: :unprocessable_entity }
+      format.html do
+        redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1),
+                    alert: e.message
+      end
+    end
+  end
+
+  def create_railservice
+    @domain ||= Domain.find_by(id: params[:id] || params[:domain_id])
+    rail_params = params.fetch(:rail, {}).permit(:start_service_id, :end_service_id, :title)
+    start_service = Service.find_by(id: rail_params[:start_service_id])
+    end_service = Service.find_by(id: rail_params[:end_service_id])
+
+    if start_service.nil? || end_service.nil?
+      redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1, railservices: 1),
+                  alert: "Seleziona due services validi."
+      return
+    end
+
+    title = rail_params[:title].presence ||
+      "#{start_service.name.presence || start_service.slug} → #{end_service.name.presence || end_service.slug}"
+
+    Journey.create!(
+      title: title,
+      lead_id: Current.user&.lead&.id,
+      taxbranch_id: start_service.taxbranch_id,
+      end_taxbranch_id: end_service.taxbranch_id,
+      service_id: start_service.id,
+      kind: :process,
+      journey_type: :work,
+      journeys_status: :problema
+    )
+
+    redirect_to generaimpresa_superadmin_domain_path(@domain),
+                notice: "Railservice creato."
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1, railservices: 1),
+                alert: e.message
   end
 
   # GET /domains/new
@@ -135,6 +244,26 @@ module Superadmin
     # Only allow a list of trusted parameters through.
     def domain_params
       params.expect(domain: [ :host, :language, :title, :description, :favicon_url, :square_logo_url, :horizontal_logo_url, :provider, :taxbranch_id, :role_areas ])
+    end
+
+    def parse_route_items(route_param)
+      return [] if route_param.blank?
+      parts = route_param.to_s.split("_")
+      parts.filter_map do |part|
+        type, raw_id = part.split("-", 2)
+        id = raw_id.to_i
+        next if id.zero?
+        case type
+        when "service"
+          record = @service_lookup[id] || Service.find_by(id: id)
+          next unless record
+          { type: :service, id: id, record: record }
+        when "rail", "journey"
+          record = @journey_lookup[id] || Journey.find_by(id: id)
+          next unless record
+          { type: :rail, id: id, record: record }
+        end
+      end
     end
   end
 end

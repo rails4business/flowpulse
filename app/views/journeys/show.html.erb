@@ -21,11 +21,29 @@
             Slug: <code class="bg-slate-100 px-2 py-0.5 rounded"><%= @journey.slug %></code>
           </p>
 
-          <% if @journey.phase.present? %>
+          <% if @journey.journeys_status.present? %>
             <p class="text-xs text-slate-500 mt-2">
               Fase:
               <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
-                <%= @journey.phase.humanize %>
+                <%= @journey.journeys_status.humanize %>
+              </span>
+            </p>
+          <% end %>
+          <% if @journey.journey_type.present? %>
+            <p class="text-xs text-slate-500 mt-2">
+              Categoria:
+              <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
+                <%= @journey.journey_type.humanize %>
+              </span>
+            </p>
+          <% end %>
+          <% if @journey.journey_roles.present? %>
+            <p class="text-xs text-slate-500 mt-2">
+              Ruoli:
+              <span class="inline-flex flex-wrap gap-1">
+                <% @journey.journey_roles.each do |role| %>
+                  <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700"><%= role %></span>
+                <% end %>
               </span>
             </p>
           <% end %>
@@ -33,34 +51,40 @@
           <div class="mt-2 flex flex-wrap items-center gap-2">
             <%= link_to "Modifica journey", 
                   edit_journey_path(@journey),
-                  class: "inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-slate-900 text-white rounded-full hover:bg-slate-800" %>
+                  class: "inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-slate-900 text-white rounded-full hover:bg-slate-800",
+                  data: { turbo: false } %>
+            <%= button_to "Elimina journey",
+                  journey_path(@journey),
+                  method: :delete,
+                  data: { turbo_confirm: "Sei sicuro di voler eliminare questo journey?" },
+                  class: "inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-red-600 text-white rounded-full hover:bg-red-500" %>
 
-            <% if @journey.taxbranch&.name %>
+            <% if @journey.taxbranch.present? %>
               <span class="text-xs text-slate-500">
-                • <%= @journey.taxbranch.name %> 
+                • <%= @journey.taxbranch.display_label || @journey.taxbranch.slug_label || @journey.taxbranch.slug %>
               </span>
             <% end %>
 
             <%# 🎯 Badge tipo journey %>
-            <% if @journey.process_template? %>
+            <% if @journey.cycle_template? %>
               <span class="inline-flex items-center rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-800">
-                process_template
+                cycle_template
               </span>
               <%= link_to "Gestisci cicli",
                     instance_cycle_journey_path(@journey),
                     class: "inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100" %>
-            <% elsif @journey.process_draft? %>
-              <span class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-700">
-                process_draft
-              </span>
-            <% elsif @journey.process_instance_cycle? %>
+            <% elsif @journey.cycle_instance? %>
               <span class="inline-flex items-center rounded-full bg-teal-100 px-3 py-1 text-xs font-semibold text-teal-800">
-                process_instance_cycle
+                cycle_instance
                 <% if @journey.template_journey_id.present? %>
                   : <%= link_to @journey.template_journey.title,
                         journey_path(@journey.template_journey),
                         class: "underline ml-1" %>
                 <% end %>
+              </span>
+            <% elsif @journey.process? %>
+              <span class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-700">
+                process
               </span>
             <% elsif @journey.idea? %>
               <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">
@@ -151,7 +175,7 @@
         </div>
 
         <div class="shrink-0 flex flex-col items-end gap-2">
-          <% if @journey.process_template? %>
+          <% if @journey.cycle_template? %>
             <%= button_to "Crea nuovo cycle",
                 clone_cycle_journey_path(@journey),
                 method: :post,
@@ -164,7 +188,7 @@
           <% end %>
           
           <%# 🔴 Time tracking solo per journey in bozza %>
-          <% if @journey.process_draft? %>
+          <% if @journey.process? %>
             <% open_event = @journey.eventdates.where(date_end: nil).order(:date_start).last %>
 
             <% if open_event.present? %>
@@ -344,13 +368,13 @@
     <% else %>
       <div class="flex flex-col items-center justify-center py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-white">
         <p class="text-sm text-slate-500 mb-4">
-          <% if @journey.process_template? %>
+          <% if @journey.cycle_template? %>
             Questo template non ha cicli attivi. Crea un nuovo cycle per iniziare a schedulare date.
           <% else %>
             Nessun evento collegato a questo Journey.
           <% end %>
         </p>
-        <% if @journey.process_template? %>
+        <% if @journey.cycle_template? %>
           <%= link_to "Crea nuovo cycle",
               journeys_path(journey: { template_journey_id: @journey.id, kind: "process_instance_cycle" }),
               method: :post,

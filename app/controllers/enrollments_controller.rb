@@ -84,7 +84,7 @@ class EnrollmentsController < ApplicationController
         :service_id, :journey_id, :contact_id, :role_name, :status, :mode,
         :request_kind, :requested_by_lead_id, :invited_by_lead_id,
         :price_euro, :price_dash, :notes, :meta, :phase,
-        :participant_role, :target_role, :certified_at
+        :participant_role, :target_role, :certified_at, :journey_role
       ])
     end
 end

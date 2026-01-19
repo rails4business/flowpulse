@@ -1,51 +1,118 @@
-<% content_for :title, "Area Rails4B · #{@domain.title.presence || @domain.host}" %>
+<% content_for :title, "Rails4B · #{@domain.title.presence || @domain.host}" %>
+
+
+
+
+
 
 <div class="space-y-6">
-  <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h1 class="text-3xl font-bold text-slate-900">Area Rails4B</h1>
-    <p class="text-sm text-slate-600 mt-1">
-      Prototipi e rami di officina collegati al dominio <strong><%= @domain.title.presence || @domain.host %></strong>.
+  <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm">
+    <nav class="text-xs text-[#9dabb9] mb-3">
+      <%= link_to "Domains",
+                  superadmin_domains_path,
+                  class: "hover:text-white" %>
+      <span class="mx-1">/</span>
+      <%= link_to (@domain.title.presence || @domain.host),
+                  superadmin_domain_path(@domain),
+                  class: "hover:text-white" %>
+      <span class="mx-1">/</span>
+      <%= link_to "Generaimpresa",
+                  generaimpresa_superadmin_domain_path(@domain),
+                  class: "hover:text-white" %>
+      <span class="mx-1">/</span>
+      <span class="text-white">Rails4B</span>
+    </nav>
+    <h1 class="text-3xl font-bold text-white">Rails4B</h1>
+    <p class="text-sm text-[#9dabb9] mt-1">
+      Rails come collegamenti tra servizi del dominio <strong><%= @domain.title.presence || @domain.host %></strong>.
     </p>
     <%= link_to "← Torna al dominio",
                 superadmin_domain_path(@domain),
-                class: "inline-flex items-center text-sm font-medium text-blue-600 hover:underline mt-3" %>
-  </div>
+                class: "inline-flex items-center text-sm font-medium text-primary hover:underline mt-3" %>
+</div>
 
-  <% if @rails4b_taxbranches.any? %>
-    <div class="space-y-4">
-      <% @rails4b_taxbranches.each do |branch| %>
-        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div class="flex items-start justify-between gap-3 flex-wrap">
-            <div>
-              <p class="text-xs uppercase tracking-wide text-slate-500">Taxbranch</p>
-              <h2 class="text-xl font-semibold text-slate-900"><%= branch.display_label %></h2>
-              <p class="text-sm text-slate-500">Slug: <%= branch.slug %></p>
-            </div>
-            <%= link_to "Apri",
-                        superadmin_taxbranch_path(branch),
-                        class: "inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800" %>
-          </div>
+<%= turbo_frame_tag "modal" %>
 
-          <div class="mt-4 grid gap-4 md:grid-cols-3 text-sm text-slate-600">
-            <div>
-              <p class="font-semibold text-slate-900">Journey in lavorazione</p>
-              <p><%= branch.journeys.count %></p>
-            </div>
-            <div>
-              <p class="font-semibold text-slate-900">Stato editoriale</p>
-              <p><%= branch.status.humanize %></p>
-            </div>
-            <div>
-              <p class="font-semibold text-slate-900">Visibilità</p>
-              <p><%= branch.visibility.humanize %></p>
-            </div>
-          </div>
+<div data-controller="modals">
+
+  <% if @route_items.present? %>
+    <% selected_journeys = params.fetch(:selected_journeys, {}).to_unsafe_h rescue {} %>
+    <div class="">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <h2 class="text-lg font-semibold text-white">Tragitto selezionato</h2>
+          <p class="text-xs text-[#9dabb9]">Sequenza services ↔ railservice selezionata dalla mappa.</p>
         </div>
-      <% end %>
+        <span class="text-xs text-[#9dabb9]"><%= @route_items.size %> step</span>
+      </div>
+      <div class="relative">
+        <div class="pointer-events-none absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-[#101922] to-transparent"></div>
+        <div class="pointer-events-none absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-[#101922] to-transparent"></div>
+        <div class="flex items-start gap-0 overflow-x-auto pb-4 px-2 snap-x snap-mandatory scroll-smooth">
+          <% @route_items.each do |item| %>
+            <div class="relative flex-none px-2 min-w-[240px] group snap-center">
+              <!-- 🚅 Visual Rail Line -->
+              <!-- Positioned to align with the center of the top card (approx 60px down or centered in the first block) -->
+              <!-- Using calc to span the full width including the padding gaps -->
+              <div class="absolute top-[42px] left-0 w-full h-[4px] bg-[#283039] -z-10 group-first:rounded-l-full group-last:rounded-r-full"></div>
+
+              <% if item[:type] == :service %>
+                <% service = item[:record] %>
+                <% function_journeys = service.journeys.select(&:journey_function?) %>
+                <% selected_journey_id = selected_journeys[service.id.to_s] %>
+                <% selected_journey = function_journeys.find { |j| j.id.to_s == selected_journey_id.to_s } if selected_journey_id.present? %>
+                <% selected_journey ||= service.journey_function_active_template || service.journey_function_active || function_journeys.max_by(&:updated_at) %>
+                <div class="flex flex-col gap-3">
+                  <div class="relative z-10">
+                    <%= render "superadmin/domains/route_service_card", 
+                               service: service,
+                               domain: @domain,
+                               route: params[:route],
+                               function_journeys: function_journeys,
+                               selected_journey: selected_journey,
+                               selected_journeys: selected_journeys %>
+                  </div>
+                  <% if selected_journey.present? %>
+                    <%= render "superadmin/domains/journey_steps",
+                               journey: selected_journey,
+                               modal_id: "eventdate-journey-#{selected_journey.id}" %>
+                  <% end %>
+                </div>
+              <% else %>
+                <% journey = item[:record] %>
+                <div class="flex flex-col gap-3">
+                  <div class="relative z-10">
+                    <%= render "superadmin/domains/route_rail_card",
+                               journey: journey,
+                               service_lookup: @service_lookup,
+                               station_lookup: @station_lookup %>
+                  </div>
+                  <%= render "superadmin/domains/journey_steps",
+                             journey: journey,
+                             modal_id: "eventdate-journey-#{journey.id}" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
   <% else %>
-    <div class="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-slate-500">
-      Nessun ramo Rails4B collegato a questo dominio. Puoi impostarne uno dal form del taxbranch associato.
+    <!-- 📭 Empty State -->
+    <div class="flex flex-col items-center justify-center py-20 text-center">
+      <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#101922] border border-[#283039] mb-6">
+        <span class="material-symbols-outlined text-4xl text-[#9dabb9]">map</span>
+      </div>
+      <h2 class="text-2xl font-bold text-white mb-2">Nessun tragitto selezionato</h2>
+      <p class="text-[#9dabb9] max-w-md mx-auto mb-8">
+        Seleziona un Service di partenza e uno di arrivo dalla mappa "Generaimpresa" per visualizzare i Rails che li collegano.
+      </p>
+      
+      <%= link_to generaimpresa_superadmin_domain_path(@domain), 
+                  class: "inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20" do %>
+        <span>Vai alla Mappa</span>
+        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+      <% end %>
     </div>
   <% end %>
 </div>

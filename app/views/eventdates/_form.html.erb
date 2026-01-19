@@ -19,37 +19,73 @@
               { "border-gray-400 focus:outline-blue-600": eventdate.errors[:description].none?,
                 "border-red-400 focus:outline-red-600": eventdate.errors[:description].any? }] %>
   </div>
-  <div class="my-5">
-    <%= form.label :date_start, "Data inizio" %>
-    <%= form.datetime_field :date_start,
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:date_start].none?,
-                "border-red-400 focus:outline-red-600": eventdate.errors[:date_start].any? }] %>
-  </div>
-  
-
-  <div class="my-5">
-    <%= form.label :date_end, "Data fine" %>
-    <%= form.datetime_field :date_end,
-      class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-              { "border-gray-400 focus:outline-blue-600": eventdate.errors[:date_end].none?,
-                "border-red-400 focus:outline-red-600": eventdate.errors[:date_end].any? }] %>
-  </div>
-
-  <% if params[:journey_id] %>
-  <!-- Journey (solo se lo usi come diario / collegato a un esercizio) -->
-    <div class="my-5">
-      <%= form.label :journey_id, "Journey (opzionale)" %>
-      
-    
-        
-  
-      
-      <%= form.text_field :journey_id,
+  <div class="my-5 grid gap-4 md:grid-cols-2" data-duration-form>
+    <div>
+      <%= form.label :date_start, "Data inizio" %>
+      <%= form.datetime_field :date_start,
         class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
-                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:journey_id].none?,
-                  "border-red-400 focus:outline-red-600": eventdate.errors[:journey_id].any? }], value: params[:journey_id] %>
-                  
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:date_start].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:date_start].any? }],
+        data: { role: "duration-start" } %>
+    </div>
+    <div>
+      <%= form.label :date_end, "Data fine" %>
+      <%= form.datetime_field :date_end,
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:date_end].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:date_end].any? }],
+        data: { role: "duration-end" } %>
+    </div>
+    <div>
+      <%= form.label :time_duration, "Durata" %>
+      <%= form.number_field :time_duration,
+        min: 0,
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:time_duration].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:time_duration].any? }],
+        data: { role: "duration-value" } %>
+    </div>
+    <div>
+      <%= form.label :unit_duration, "Unita" %>
+      <%= form.select :unit_duration,
+        Eventdate.unit_durations.keys.map { |u| [u.humanize, u] },
+        { include_blank: "—" },
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                { "border-gray-400 focus:outline-blue-600": eventdate.errors[:unit_duration].none?,
+                  "border-red-400 focus:outline-red-600": eventdate.errors[:unit_duration].any? }],
+        data: { role: "duration-unit" } %>
+    </div>
+  </div>
+
+  <% journey_for_roles = Journey.find_by(id: (params[:journey_id] || eventdate.journey_id)) %>
+  <% if params[:journey_id] || eventdate.journey_id.present? %>
+  <!-- Journey (solo se lo usi come diario / collegato a un esercizio) -->
+    <div class="my-5 grid gap-4 md:grid-cols-2">
+      <div>
+        <%= form.label :journey_id, "Journey (opzionale)" %>
+        <%= form.text_field :journey_id,
+          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                  { "border-gray-400 focus:outline-blue-600": eventdate.errors[:journey_id].none?,
+                    "border-red-400 focus:outline-red-600": eventdate.errors[:journey_id].any? }],
+          value: params[:journey_id] || eventdate.journey_id %>
+      </div>
+      <div>
+        <%= form.label :journey_role, "Ruolo Journey (opzionale)" %>
+        <% roles = Array(journey_for_roles&.journey_roles) %>
+        <% if roles.any? %>
+          <%= form.select :journey_role,
+                options_for_select(roles, eventdate.journey_role),
+                { include_blank: "—" },
+                class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                        { "border-gray-400 focus:outline-blue-600": eventdate.errors[:journey_role].none?,
+                          "border-red-400 focus:outline-red-600": eventdate.errors[:journey_role].any? }] %>
+        <% else %>
+          <%= form.text_field :journey_role,
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
+                    { "border-gray-400 focus:outline-blue-600": eventdate.errors[:journey_role].none?,
+                      "border-red-400 focus:outline-red-600": eventdate.errors[:journey_role].any? }] %>
+        <% end %>
+      </div>
     </div>
   <% end %>
   <!-- Taxbranch (solo se lo usi come diario / collegato a un esercizio) -->
@@ -103,6 +139,7 @@
                 { "border-gray-400 focus:outline-blue-600": eventdate.errors[:status].none?,
                   "border-red-400 focus:outline-red-600": eventdate.errors[:status].any? }] %>
     </div>
+    <% kind_labels = { "session" => "Sessione", "meeting" => "Riunione", "online_call" => "Chiamata online", "recording" => "Registrazione" } %>
     <div>
       <%= form.label :event_type, "Tipo evento" %>
       <%= form.select :event_type,
@@ -115,7 +152,7 @@
     <div>
       <%= form.label :kind_event, "Kind" %>
       <%= form.select :kind_event,
-        Eventdate.kind_events.keys.map { |s| [s.humanize, s] },
+        Eventdate.kind_events.keys.map { |s| [kind_labels.fetch(s, s.humanize), s] },
         {},
         class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full",
                 { "border-gray-400 focus:outline-blue-600": eventdate.errors[:kind_event].none?,

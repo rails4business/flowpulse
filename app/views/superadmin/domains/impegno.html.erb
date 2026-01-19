@@ -1,51 +1,65 @@
 <% content_for :title, "1impegno · #{@domain.title.presence || @domain.host}" %>
 
 <div class="space-y-6">
-  <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h1 class="text-3xl font-bold text-slate-900">1impegno</h1>
-    <p class="text-sm text-slate-600 mt-1">
-      Impegni registrati per il dominio <strong><%= @domain.title.presence || @domain.host %></strong>.
+  <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm">
+    <nav class="text-xs text-[#9dabb9] mb-3">
+      <%= link_to "Domains", superadmin_domains_path, class: "hover:text-white" %>
+      <span class="mx-1">/</span>
+      <%= link_to @domain.title.presence || @domain.host,
+                  superadmin_domain_path(@domain),
+                  class: "hover:text-white" %>
+      <span class="mx-1">/</span>
+      <span class="text-white">Collaboratori</span>
+    </nav>
+    <h1 class="text-3xl font-bold text-white">Collaboratori</h1>
+    <p class="text-sm text-[#9dabb9] mt-1">
+      Eventdates collegati al dominio <strong><%= @domain.title.presence || @domain.host %></strong>.
     </p>
-    <%= link_to "← Torna al dominio",
-                superadmin_domain_path(@domain),
-                class: "inline-flex items-center text-sm font-medium text-blue-600 hover:underline mt-3" %>
   </div>
 
-  <div class="grid gap-4 md:grid-cols-3">
-    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Commitment</p>
-      <p class="text-2xl font-semibold text-slate-900"><%= @commitments_count %></p>
-    </div>
-    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Minuti totali</p>
-      <p class="text-2xl font-semibold text-slate-900"><%= @total_minutes %></p>
-    </div>
-    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <p class="text-xs uppercase tracking-wide text-slate-500">Compensi</p>
-      <p class="text-2xl font-semibold text-slate-900"><%= number_to_currency(@total_compensation) %></p>
-    </div>
-  </div>
-
-  <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold text-slate-900">Ultimi impegni</h2>
-    <% if @recent_commitments.any? %>
-      <div class="mt-4 divide-y divide-slate-200 text-sm">
-        <% @recent_commitments.each do |commitment| %>
-          <div class="py-3 flex items-center justify-between gap-4">
+  <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm">
+    <h2 class="text-lg font-semibold text-white">Eventdates del dominio</h2>
+    <% if @eventdates.any? %>
+      <div class="mt-4 divide-y divide-[#283039] text-sm">
+        <% @eventdates.each do |eventdate| %>
+          <div class="py-3 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p class="font-medium text-slate-900">
-                <%= commitment.eventdate&.journey&.title || "Senza journey" %>
+              <p class="font-medium text-white">
+                <%= eventdate.description.presence || "Senza descrizione" %>
               </p>
-              <p class="text-slate-500">
-                <%= commitment.eventdate&.date_start&.strftime("%d/%m/%Y") || "Data non disponibile" %>
+              <p class="text-[#9dabb9] text-xs">
+                <% if eventdate.date_start.present? %>
+                  <%= l(eventdate.date_start, format: "%d/%m/%Y %H:%M") %>
+                <% elsif eventdate.date_end.present? %>
+                  <%= l(eventdate.date_end, format: "%d/%m/%Y %H:%M") %>
+                <% else %>
+                  Data non disponibile
+                <% end %>
+                <% if eventdate.date_end.present? && eventdate.date_start.present? %>
+                  · <%= l(eventdate.date_end, format: "%d/%m/%Y %H:%M") %>
+                <% end %>
+              </p>
+              <p class="text-[#9dabb9] text-xs mt-1">
+                Journey: <%= eventdate.journey&.title || "—" %>
+                · Ruolo: <%= eventdate.journey_role.presence || "—" %>
+                · Tipo: <%= eventdate.event_type %>
               </p>
             </div>
-            <span class="text-slate-500"><%= commitment.commitment_kind.humanize %></span>
+            <div class="flex items-center gap-2 text-xs">
+              <%= link_to "Apri",
+                          eventdate_path(eventdate),
+                          class: "inline-flex items-center rounded-lg border border-[#283039] px-3 py-1 text-[#9dabb9] hover:text-white" %>
+              <% if eventdate.bookings.any? %>
+                <%= link_to "Bookings",
+                            bookings_path(eventdate_id: eventdate.id),
+                            class: "inline-flex items-center rounded-lg border border-[#283039] px-3 py-1 text-[#9dabb9] hover:text-white" %>
+              <% end %>
+            </div>
           </div>
         <% end %>
       </div>
     <% else %>
-      <p class="mt-3 text-sm text-slate-500">Nessun impegno trovato.</p>
+      <p class="mt-3 text-sm text-[#9dabb9]">Nessun eventdate trovato.</p>
     <% end %>
   </div>
 </div>
