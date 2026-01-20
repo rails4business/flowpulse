@@ -1,27 +1,155 @@
-@import "tailwindcss";
-
-
+@import "@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* --- Prose lite — dentro il build! --- */
 @layer components {
-  .prose-lite { @apply text-slate-800 leading-relaxed; }
-  .prose-lite h1 { @apply text-3xl font-bold mt-10 mb-4; }
-  .prose-lite h2 { @apply text-2xl font-semibold mt-8 mb-3; }
-  .prose-lite h3 { @apply text-xl font-semibold mt-6 mb-2; }
-  .prose-lite p  { @apply my-4; }
-  .prose-lite a  { @apply underline underline-offset-2 decoration-slate-300 hover:decoration-slate-500; }
-  .prose-lite ul { @apply list-disc pl-6 my-4; }
-  .prose-lite ol { @apply list-decimal pl-6 my-4; }
-  .prose-lite blockquote { @apply border-l-4 border-slate-300 pl-4 italic my-6 text-slate-700; }
-  .prose-lite code { @apply bg-slate-100 px-1 py-0.5 rounded text-sm; }
-  .prose-lite pre  { @apply bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto my-6; }
-  .prose-lite img  { @apply rounded-lg my-6; }
-  .prose-lite table { @apply w-full my-6 border-collapse; }
-  .prose-lite th, .prose-lite td { @apply border border-slate-200 px-3 py-2; }
+
+  /* Modern Blog Typography */
+  .prose-lite {
+    @apply text-slate-700 leading-relaxed max-w-none;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  /* Headings with gradient accents */
+  .prose-lite h1 {
+    @apply text-4xl md:text-5xl font-extrabold mt-12 mb-6 leading-tight;
+    @apply bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 bg-clip-text text-transparent;
+    letter-spacing: -0.02em;
+  }
+
+  .prose-lite h2 {
+    @apply text-3xl md:text-4xl font-bold mt-12 mb-5 leading-snug text-slate-900;
+    @apply border-b-2 border-slate-100 pb-3;
+    letter-spacing: -0.01em;
+  }
+
+  .prose-lite h3 {
+    @apply text-2xl md:text-3xl font-bold mt-10 mb-4 text-slate-900;
+    letter-spacing: -0.01em;
+  }
+
+  .prose-lite h4 {
+    @apply text-xl md:text-2xl font-semibold mt-8 mb-3 text-slate-800;
+  }
+
+  /* Paragraphs with better spacing */
+  .prose-lite p {
+    @apply my-6 text-base md:text-lg leading-relaxed text-slate-700;
+  }
+
+  /* Beautiful links */
+  .prose-lite a {
+    @apply text-blue-600 font-medium no-underline relative;
+    @apply hover:text-blue-700 transition-colors duration-200;
+    @apply after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5;
+    @apply after:bg-gradient-to-r after:from-blue-400 after:to-blue-600;
+    @apply after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left;
+  }
+
+  /* Lists with custom markers */
+  .prose-lite ul {
+    @apply list-none pl-0 my-6 space-y-3;
+  }
+
+  .prose-lite ul li {
+    @apply relative pl-7;
+  }
+
+  .prose-lite ul li::before {
+    content: "→";
+    @apply absolute left-0 text-blue-500 font-bold;
+  }
+
+  .prose-lite ol {
+    @apply list-none pl-0 my-6 space-y-3 counter-reset-item;
+  }
+
+  .prose-lite ol li {
+    @apply relative pl-8 counter-increment-item;
+  }
+
+  .prose-lite ol li::before {
+    content: counter(item) ".";
+    @apply absolute left-0 font-bold text-blue-600;
+  }
+
+  /* Stunning blockquotes */
+  .prose-lite blockquote {
+    @apply border-l-4 border-blue-500 bg-blue-50/50 pl-6 pr-4 py-4 italic my-8;
+    @apply text-slate-800 rounded-r-lg shadow-sm;
+  }
+
+  .prose-lite blockquote p {
+    @apply my-2 text-lg;
+  }
+
+  /* Inline code */
+  .prose-lite code {
+    @apply bg-slate-100 text-slate-800 px-2 py-1 rounded-md text-sm font-mono;
+    @apply border border-slate-200 shadow-sm;
+  }
+
+  /* Code blocks with syntax highlighting ready */
+  .prose-lite pre {
+    @apply bg-slate-900 text-slate-100 p-6 rounded-xl overflow-x-auto my-8;
+    @apply shadow-lg border border-slate-700;
+  }
+
+  .prose-lite pre code {
+    @apply bg-transparent border-0 p-0 text-sm shadow-none;
+  }
+
+  /* Beautiful images */
+  .prose-lite img {
+    @apply rounded-2xl my-10 shadow-xl;
+    @apply ring-1 ring-slate-200;
+  }
+
+  /* Modern tables */
+  .prose-lite table {
+    @apply w-full my-8 border-collapse rounded-lg overflow-hidden shadow-md;
+  }
+
+  .prose-lite thead {
+    @apply bg-slate-100;
+  }
+
+  .prose-lite th {
+    @apply border-b-2 border-slate-300 px-4 py-3 text-left font-bold text-slate-900;
+    @apply uppercase text-xs tracking-wider;
+  }
+
+  .prose-lite td {
+    @apply border-b border-slate-200 px-4 py-3 text-slate-700;
+  }
+
+  .prose-lite tbody tr:hover {
+    @apply bg-slate-50 transition-colors;
+  }
+
+  /* Horizontal rules */
+  .prose-lite hr {
+    @apply my-12 border-0 h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent;
+  }
+
+  /* Strong and emphasis */
+  .prose-lite strong {
+    @apply font-bold text-slate-900;
+  }
+
+  .prose-lite em {
+    @apply italic text-slate-800;
+  }
 }
 
 /* --- Minimo per evidenziare il codice se usi Rouge (senza github.css esterno) --- */
 @layer components {
-  pre code { @apply block rounded-lg p-4; }
-  pre { @apply bg-slate-900 text-slate-100; }
+  pre code {
+    @apply block rounded-lg p-4;
+  }
+
+  pre {
+    @apply bg-slate-900 text-slate-100;
+  }
 }
