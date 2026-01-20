@@ -38,15 +38,15 @@
         Sostituisci href, date, titolo ed excerpt dal tuo backend (Rails, Jekyll, ecc.).
       -->
     <% @post.taxbranch.children.sort_by { |t| t.published_at || Time.at(0) }.reverse_each do |taxbranch| %>
-  
-     <% if taxbranch.published? && taxbranch.public_node? %>
+      <% published_at = taxbranch.published_at %>
+      <% if taxbranch.published? && taxbranch.public_node? && published_at.present? && published_at <= Time.zone.now %>
 
         
      
       
       <article class="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0 dark:border-slate-800">
         <time datetime="2025-11-01" class="block text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-             <%= taxbranch.published_at.strftime("%d %b %Y") %>
+             <%= published_at.strftime("%d %b %Y") %>
         </time>
         <h2 class="mt-1 text-xl font-semibold leading-snug">
           <%= link_to taxbranch.post, class:"hover:underline decoration-2 underline-offset-2" do %>
@@ -77,4 +77,3 @@
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
-
