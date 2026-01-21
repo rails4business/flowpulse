@@ -3,6 +3,9 @@
 <% end %>
 
 <% content_for :nav do %>
+ 
+<% if Current.user&.superadmin? && Current.user&.superadmin_mode_active? %>
+ 
   <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
     <%= link_to "Visualizza Calendario",
           eventdates_path(on: @selected_date.strftime("%Y-%m-%d")),
@@ -42,6 +45,8 @@
             onchange: "if (this.value) { window.location = this.value; }" %>
     <% end %>
   </div>
+  <% end %>
+
 <% end %>
 
 
