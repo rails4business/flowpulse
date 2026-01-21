@@ -1,6 +1,6 @@
 class JourneysController < ApplicationController
   layout -> { turbo_frame_request? ? "modal" : "application" }
-  before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking instance_cycle clone_cycle rails4b generaimpresa ]
+  before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking instance_cycle clone_cycle rails4b generaimpresa impegno ]
   before_action :load_branch_links, only: %i[ show rails4b generaimpresa ]
   before_action :load_production_stats, only: %i[ show rails4b generaimpresa ]
   before_action :load_public_revenue_stats, only: %i[ show generaimpresa ]
@@ -128,12 +128,21 @@ class JourneysController < ApplicationController
     @commitments = @journey.commitments.includes(:taxbranch)
   end
 
+
   def generaimpresa
     @enrollments = @journey.enrollments.includes(:mycontact)
     @enrollments_count = @enrollments.count
     @bookings_count = @journey.bookings.count
     @certificates_count = @journey.certificates.count
     @participants_per_role = @journey.enrollments.group(:role_name).count
+  end
+
+  def impegno
+    # Calculate commitment stats for this journey
+    @commitments = @journey.commitments.includes(:eventdate).order(created_at: :desc)
+    @total_euro = @commitments.sum(:compensation_euro)
+    @total_dash = @commitments.sum(:compensation_dash)
+    @total_minutes = @commitments.sum(:duration_minutes)
   end
 
   # GET /journeys/new

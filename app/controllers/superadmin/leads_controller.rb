@@ -10,8 +10,42 @@ class Superadmin::LeadsController < ApplicationController
   end
 
   def index
-    @leads = Lead.includes(:user).order(created_at: :desc).page(params[:page])
     authorize Lead
+    
+    # Base query
+    leads_query = Lead.includes(:user).order(created_at: :desc)
+    
+    # Apply status filter
+    status_filter = params[:status].presence || "pending"
+    
+    case status_filter
+    when "pending"
+      leads_query = leads_query.joins(:user).where(users: { state_registration: :pending })
+    when "approved"
+      leads_query = leads_query.joins(:user).where(users: { state_registration: :approved })
+    when "rejected"
+      leads_query = leads_query.joins(:user).where(users: { state_registration: :rejected })
+    # "all" - no additional filter
+    end
+    
+    # Apply search if present
+    if params[:q].present?
+      search_term = "%#{params[:q]}%"
+      leads_query = leads_query.where(
+        "leads.email ILIKE ? OR leads.username ILIKE ? OR CAST(leads.id AS TEXT) LIKE ?",
+        search_term, search_term, search_term
+      )
+    end
+    
+    @leads = leads_query.page(params[:page])
+    
+    # Calculate counts for badges
+    @counts = {
+      "all" => Lead.count,
+      "pending" => Lead.joins(:user).where(users: { state_registration: :pending }).count,
+      "approved" => Lead.joins(:user).where(users: { state_registration: :approved }).count,
+      "rejected" => Lead.joins(:user).where(users: { state_registration: :rejected }).count
+    }
   end
 
   def show

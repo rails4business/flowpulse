@@ -1,82 +1,102 @@
 <%# app/views/superadmin/leads/_row.html.erb %>
 <% u = lead.user || User.find_by(email_address: lead.email) %>
 
-<tr>
-  <td class="p-3 align-top">
-    <div class="font-medium"><%= lead.username.presence || "—" %></div>
-    <div class="text-xs text-slate-500">lead_id: <%= lead.id %></div>
-    <% if u %>
-      <div class="text-xs text-slate-500">user_id: <%= u.id %></div>
-    <% end %>
+<%
+  status_str =
+    if u&.respond_to?(:state_registration)
+      u.state_registration
+    else
+      (u.nil? ? "unregistered" : "unknown")
+    end
+
+  badge_class =
+    case status_str
+    when "approved"     then "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20"
+    when "pending"      then "bg-amber-50 text-amber-700 ring-1 ring-amber-600/20"
+    when "rejected"     then "bg-red-50 text-red-700 ring-1 ring-red-600/20"
+    when "suspended"    then "bg-slate-100 text-slate-700 ring-1 ring-slate-600/20"
+    when "unregistered" then "bg-slate-50 text-slate-600 ring-1 ring-slate-500/20"
+    else                     "bg-slate-50 text-slate-600 ring-1 ring-slate-500/20"
+    end
+%>
+
+<tr class="hover:bg-slate-50/50 transition-colors">
+  <!-- Lead Info -->
+  <td class="px-4 py-3">
+    <div class="flex flex-col">
+      <span class="font-semibold text-slate-900"><%= lead.username.presence || "—" %></span>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="text-xs text-slate-500">Lead #<%= lead.id %></span>
+        <% if u %>
+          <span class="text-xs text-slate-400">•</span>
+          <span class="text-xs text-slate-500">User #<%= u.id %></span>
+        <% end %>
+      </div>
+    </div>
   </td>
 
-  <td class="p-3 align-top"><%= mail_to lead.email %></td>
+  <!-- Email -->
+  <td class="px-4 py-3">
+    <%= mail_to lead.email, lead.email, class: "text-blue-600 hover:text-blue-700 font-medium" %>
+  </td>
 
-  <%# --- Referral: mostra un codice o un link se l'utente è approvato --- %>
-  <td class="p-3 align-top text-slate-600">
+  <!-- Created At -->
+  <td class="px-4 py-3 text-slate-600">
+    <div class="flex flex-col">
+      <span class="text-sm"><%= l(lead.created_at, format: "%d %b %Y") rescue "—" %></span>
+      <span class="text-xs text-slate-400"><%= l(lead.created_at, format: "%H:%M") rescue "" %></span>
+    </div>
+  </td>
+
+  <!-- Status -->
+  <td class="px-4 py-3">
+    <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium <%= badge_class %>">
+      <%= status_str.humanize %>
+    </span>
+  </td>
+
+  <!-- Referral -->
+  <td class="px-4 py-3">
     <% referral_link =
          if u&.respond_to?(:referral_url)
            u.referral_url(host: (Current.domain&.host || "http://localhost:3000"))
          end %>
 
     <% if u&.approved? && referral_link.present? %>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 max-w-xs">
         <input type="text" readonly value="<%= referral_link %>"
-               class="w-full rounded-md border border-slate-300 px-2 py-1 text-xs">
+               class="flex-1 rounded-md border-slate-200 px-2 py-1 text-xs bg-slate-50 text-slate-600 font-mono">
         <button data-action="click->clipboard#copy"
                 data-clipboard-text-value="<%= referral_link %>"
-                class="text-xs rounded border px-2 py-1 hover:bg-slate-50">
+                class="text-xs rounded-md border border-slate-200 px-2 py-1 hover:bg-slate-50 text-slate-600 font-medium transition-colors">
           Copia
         </button>
       </div>
     <% else %>
-      — 
+      <span class="text-slate-400 text-sm">—</span>
     <% end %>
   </td>
 
-  <%# --- Stato: deriva da user.state_registration, non da state_registration.status --- %>
-  <%
-    status_str =
-      if u&.respond_to?(:state_registration)
-        u.state_registration
-      else
-        (u.nil? ? "unregistered" : "unknown")
-      end
+  <!-- Actions -->
+  <td class="px-4 py-3">
+    <div class="flex items-center justify-end gap-2">
+      <% if (Current.user&.superadmin? || Current.user&.tutor_or_manager?) && (u.nil? || u.pending?) %>
+        <%= button_to approve_superadmin_lead_path(lead),
+              method: :post,
+              form: { data: { turbo_confirm: "Confermi approvazione?" } },
+              class: "inline-flex items-center rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors" do %>
+          <span class="material-symbols-outlined text-[16px] mr-1">check_circle</span>
+          Approva
+        <% end %>
+      <% end %>
 
-    badge_class =
-      case status_str
-      when "approved"     then "bg-green-100 text-green-800 ring-green-200"
-      when "pending"      then "bg-amber-100 text-amber-800 ring-amber-200"
-      when "rejected"     then "bg-red-100 text-red-800 ring-red-200"
-      when "suspended"    then "bg-slate-200 text-slate-700 ring-slate-300"
-      when "unregistered" then "bg-slate-100 text-slate-600 ring-slate-200"
-      else                      "bg-slate-100 text-slate-600 ring-slate-200"
-      end
-  %>
-  <td class="p-3 align-top">
-    <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs ring-1 <%= badge_class %>">
-      <%= status_str.humanize %>
-    </span>
-  </td>
-
-  <%# --- Azioni --- %>
-  <td class="p-3 align-top text-right space-x-3">
-    <%# Approva: solo se mancano user o è pending %>
-   <div class="flex">
-    <% if (Current.user&.superadmin? || Current.user&.tutor_or_manager?) && (u.nil? || u.pending?) %>
-      <%= button_to "Approva",
-            approve_superadmin_lead_path(lead),
-            method: :post,
-            form: { data: { turbo_confirm: "Confermi approvazione?" } },
-            class: "inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-700 hover:bg-slate-50" %>
-    <% end %>
-
-    <%# Rimuovi %>
-    <%= button_to "Rimuovi",
-          superadmin_lead_path(lead),
-          method: :delete,
-          form: { data: { turbo_confirm: "Rimuovere questo lead?" } },
-          class: "p-4 text-red-600 hover:underline" %>
-          </div>
+      <%= button_to superadmin_lead_path(lead),
+            method: :delete,
+            form: { data: { turbo_confirm: "Rimuovere questo lead?" } },
+            class: "inline-flex items-center rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100 transition-colors" do %>
+        <span class="material-symbols-outlined text-[16px] mr-1">delete</span>
+        Rimuovi
+      <% end %>
+    </div>
   </td>
 </tr>

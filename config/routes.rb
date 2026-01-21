@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get "carousel"
       get "rails4b"
       get "generaimpresa"
+      get "impegno"
       post "replicate_template_events"
       delete "clear_template_events"
     end
