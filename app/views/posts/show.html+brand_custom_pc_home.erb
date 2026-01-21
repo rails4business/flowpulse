@@ -135,7 +135,8 @@
         class="flex flex-col gap-y-5 mb-12 md:max-w-sm rounded-2xl bg-white/60 dark:bg-slate-900/50 p-6 md:p-0 md:bg-transparent md:dark:bg-transparent"
       >
 
-        <% @post.taxbranch.children.order(position: :desc).each do |tax| %>
+        <% @post.taxbranch.children.order(position: :asc).each do |tax| %>
+         
         <a
           class="text-3xl font-bold text-primary hover:opacity-80 transition-opacity flex w-full items-center justify-between group leading-none"
           href="#"
