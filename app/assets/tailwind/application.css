@@ -114,11 +114,11 @@
     margin-bottom: 0.5em;
   }
 
-  :is(.prose-lite, .prose, .prose-slate) ul>li::marker {
+  :is(.prose-lite, .prose, .prose-slate) ul > li::marker {
     color: #d1d5db;
   }
 
-  :is(.prose-lite, .prose, .prose-slate) ol>li::marker {
+  :is(.prose-lite, .prose, .prose-slate) ol > li::marker {
     font-weight: 400;
     color: #6b7280;
   }
@@ -130,7 +130,7 @@
     color: #111827;
     border-left-width: 0.25rem;
     border-left-color: #e5e7eb;
-    quotes: "\201C" "\201D" "\2018" "\2019";
+    quotes: "\201C""\201D""\2018""\2019";
     margin-top: 1.6em;
     margin-bottom: 1.6em;
     padding-left: 1em;
@@ -205,7 +205,7 @@
     margin-bottom: 2em;
   }
 
-  :is(.prose-lite, .prose, .prose-slate) figure>* {
+  :is(.prose-lite, .prose, .prose-slate) figure > * {
     margin-top: 0;
     margin-bottom: 0;
   }
