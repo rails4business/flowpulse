@@ -1,5 +1,5 @@
 <%# app/views/posts/_body.html.erb %>
-<div class="prose-lite text-left dark:bg-slate-950 dark:text-white">
+<div class="prose prose-slate text-left dark:bg-slate-950 dark:text-white">
     <% if @post.content_md.present? %>
       <%= markdown(@post.content_md) %>
     <% elsif @post.respond_to?(:content) && @post.content.present? %>

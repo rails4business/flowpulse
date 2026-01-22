@@ -2,6 +2,61 @@
 
 <% content_for :title, @post.title.presence || "Post" %>
 
+<% content_for :head do %>
+   <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+   
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0ea5e9",
+              "background-light": "#ffffff",
+              "background-dark": "#0f172a",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .clip-diagonal {
+        clip-path: polygon(100% 0, 0 0, 100% 100%);
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+      .menu-item {
+        line-height: 1;
+        display: flex;
+        align-items: center;
+      }
+      .menu-item .material-icons {
+        line-height: 1;
+        display: inline-flex;
+      }
+    </style>
+<% end %>
 <%= render 'shared/nav_partial_post' %>
 
 <body class="min-h-full bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-white">
