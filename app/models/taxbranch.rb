@@ -48,7 +48,10 @@ class Taxbranch < ApplicationRecord
     private_node:      0,  # visibile solo a superadmin e lead proprietario
     shared_node:       1,  # visibile allo staff, ma non pubblica
     participants_only: 2,  # visibile agli utenti iscritti a un percorso
-    public_node:       3   # visibile a tutti, come pagine pubbliche e blog
+    public_node:       3,   # visibile a tutti, come pagine pubbliche e blog
+    hide_node: 4,
+    hide_children: 5,
+    hide_both: 6  #
   }
 
   enum :phase, {

@@ -70,12 +70,18 @@
       </a-->
     </div>
     <div class="hidden md:flex items-center gap-3">
-      <%= link_to "Accedi",
-                  new_session_path,
-                  class: "text-[#0d151c] dark:text-gray-300 hover:text-primary" %>
-      <%= link_to "Registrati",
-                  new_registration_path,
-                  class: "inline-flex items-center rounded-full border border-primary/40 px-4 py-2 text-primary hover:bg-primary/10 transition-colors" %>
+      <% if Current.user.present? %>
+        <%= link_to "Dashboard",
+                    dashboard_home_path,
+                    class: "inline-flex items-center rounded-full border border-primary/40 px-4 py-2 text-primary hover:bg-primary/10 transition-colors" %>
+      <% else %>
+        <%= link_to "Accedi",
+                    new_session_path,
+                    class: "text-[#0d151c] dark:text-gray-300 hover:text-primary" %>
+        <%= link_to "Registrati",
+                    new_registration_path,
+                    class: "inline-flex items-center rounded-full border border-primary/40 px-4 py-2 text-primary hover:bg-primary/10 transition-colors" %>
+      <% end %>
     </div>
     <details class="md:hidden relative">
       <summary class="list-none p-2 text-gray-600 dark:text-gray-300 cursor-pointer" aria-label="Apri menu">
@@ -91,8 +97,12 @@
       <span class="material-symbols-outlined text-[18px]">search</span>
       <span>Trova un professionista</span>
       </a-->
-        <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="<%= new_session_path %>">Accedi</a>
-        <a class="text-primary hover:text-primary/80" href="<%= new_registration_path %>">Registrati</a>
+        <% if Current.user.present? %>
+          <a class="text-primary hover:text-primary/80" href="<%= dashboard_home_path %>">Dashboard</a>
+        <% else %>
+          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="<%= new_session_path %>">Accedi</a>
+          <a class="text-primary hover:text-primary/80" href="<%= new_registration_path %>">Registrati</a>
+        <% end %>
       </div>
        
     </details>
@@ -449,7 +459,7 @@
 <div class="flex flex-col max-w-[960px] flex-1">
 <div class="flex flex-col items-center text-center md:items-start md:text-left gap-4">
   
-  <h2 class="text-3xl md:text-4xl font-black text-[#111518] dark:text-white">📈 Rubrica avanzamento progetti!</h2>
+  <h2 class="text-3xl md:text-4xl font-black text-[#111518] dark:text-white">📈 Rubrica: Le tappe del progetto!</h2>
   <p class="text-gray-600 dark:text-gray-300 max-w-2xl text-lg">
     Qui trovi aggiornamenti, roadmap e stato di avanzamento dei progetti.
   </p>
