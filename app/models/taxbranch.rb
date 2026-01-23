@@ -51,7 +51,8 @@ class Taxbranch < ApplicationRecord
     public_node:       3,   # visibile a tutti, come pagine pubbliche e blog
     hide_node: 4,
     hide_children: 5,
-    hide_both: 6  #
+    hide_both: 6,  #
+    voice_menu: 7
   }
 
   enum :phase, {
