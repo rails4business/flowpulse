@@ -35,14 +35,27 @@
             </svg>
             <span class="sr-only">Toggle sidebar</span>
           </button>
-          <a href="/" class="flex items-center justify-between mr-4">
+          <%= link_to root_path, class: "flex items-center justify-between mr-4", data: { turbo: false } do %>
+
+            
+            <% if Current.domain.horizontal_logo_url %> 
+               <img
+              src="<%= Current.domain.horizontal_logo_url  %>"
+              class="mr-3 h-8"
+              alt="Flowbite Logo"
+            />
+            <% elsif Current.domain.square_logo_url.present?  %>
+            
             <img
-              src="https://flowbite.s3.amazonaws.com/logo.svg"
+              src="<%= Current.domain.square_logo_url %>"
               class="mr-3 h-8"
               alt="Flowbite Logo"
             />
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><%= request.host %></span>
-          </a>
+           <% else %>
+           Home
+          <% end %>
+          <% end %>
 
         
         </div>
