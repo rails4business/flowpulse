@@ -1,247 +1,228 @@
 <% content_for :head do %>
-  <%= render "shared/tailwind_head" %>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2a8aea",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111921",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            bottom: 0;
+            width: 2px;
+            background-color: #e7edf3;
+        }
+    </style>
 <% end %>
 
-<% content_for :nav do %>
- 
-<% if Current.user&.superadmin? && Current.user&.superadmin_mode_active? %>
- 
-  <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
-    <%= link_to "Visualizza Calendario",
-          eventdates_path(on: @selected_date.strftime("%Y-%m-%d")),
-          class: "flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium shadow-sm" %>
-    <%= link_to new_eventdate_path,
-          class: "flex items-center justify-center gap-2 rounded-lg h-10 px-5 bg-red-600 text-white hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm" do %>
-      <span class="material-symbols-outlined text-[18px]">add</span>
-      <span>Nuovo Evento</span>
-    <% end %>
-    <%= link_to "Journey",
-          journeys_path,
-          class: "flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-medium shadow-sm" %>
-    <% lead = Current.user&.lead %>
-    <% weekplan_path = lead ? weekplan_home_path(lead_id: lead.id) : nil %>
-    <%= link_to(weekplan_path || "#",
-          class: class_names(
-            "flex items-center justify-center rounded-lg h-10 px-4 border text-sm font-medium shadow-sm transition-colors",
-            weekplan_path ? "bg-white dark:bg-surface-dark border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800" : "bg-white/40 dark:bg-gray-800/40 border-transparent text-[#9aa3b2] cursor-not-allowed"
-          )) do %>
-      Week Plan
-    <% end %>
-    <% if lead.present? %>
-      <%= select_tag :lead_resources,
-            options_for_select(
-              [
-                ["Risorse Lead", ""],
-                ["Tempo", impegno_lead_path(lead, tab: "tempo")],
-                ["Soldi", impegno_lead_path(lead, tab: "soldi")],
-                ["Attenzione", impegno_lead_path(lead, tab: "attenzione")],
-                ["Energia", impegno_lead_path(lead, tab: "energia")],
-                ["Collaborazioni", impegno_lead_path(lead, tab: "collaborazioni")],
-                ["Profilo", impegno_lead_path(lead, tab: "profilo")]
-              ],
-              ""
-            ),
-            class: "calendar-select h-10 rounded-lg bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 text-[#111318] dark:text-white px-3 text-sm font-medium shadow-sm",
-            onchange: "if (this.value) { window.location = this.value; }" %>
-    <% end %>
-  </div>
-  <% end %>
-
-<% end %>
-
-
-<div class="relative min-h-screen w-full overflow-x-hidden bg-background-light dark:bg-background-dark text-[#111318] dark:text-white transition-colors duration-200">
-<div class="flex flex-col">
-
-<div class="flex-1 w-full max-w-[960px] mx-auto px-4 sm:px-10 py-8 flex flex-col gap-8">
-<% display_name = Current.user&.lead&.name.presence || Current.user&.lead&.username.presence || Current.user&.email_address.presence || "Amico" %>
-<section class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
-<div class="flex flex-col gap-2">
-<div class="flex items-center gap-3">
-<h1 class="text-[#111318] dark:text-white text-[32px] font-bold leading-tight tracking-tight">Bentornato, <%= display_name %>.</h1>
-<span class="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 text-xs font-medium text-gray-600 dark:text-gray-300 ring-1 ring-inset ring-gray-500/10">
-                            Partecipante
-                        </span>
+<main class="bg-background-light dark:bg-background-dark font-display text-[#0e141b] transition-colors duration-200">
+<!-- Top Navigation Bar >
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf3] bg-white dark:bg-background-dark dark:border-slate-800 px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-[#0e141b] dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"></path>
+</svg>
 </div>
-<p class="text-[#636f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
-                        <%= link_to "Oggi è #{I18n.l(@today, format: "%A, %d %B")}", dashboard_home_path, class: "hover:underline" %>. Hai <strong class="text-[#111318] dark:text-white font-semibold"><%= @today_week_events_count %> impegni</strong>  questa settimana.
-                    </p>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">posturacorretta.org</h2>
 </div>
-
-</section>
-<section class="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
-<div class="flex gap-3 min-w-max">
-<button class="group flex h-8 items-center gap-2 rounded-full bg-[#111318] dark:bg-white px-4 transition-all">
-<span class="text-white dark:text-[#111318] text-sm font-medium">Tutti</span>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9 dark:text-slate-300">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Esercizi</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Prodotti</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Supporto</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-lg bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-white">
+<span class="material-symbols-outlined">notifications</span>
 </button>
-<button class="group flex h-8 items-center gap-2 rounded-full bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 hover:border-red-600 dark:hover:border-red-600 px-4 transition-all">
-<span class="material-symbols-outlined text-[16px] text-blue-600 dark:text-blue-400">favorite</span>
-<span class="text-[#636f88] dark:text-gray-300 text-sm font-medium group-hover:text-[#111318] dark:group-hover:text-white">Salute</span>
-</button>
-<button class="group flex h-8 items-center gap-2 rounded-full bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 hover:border-red-600 dark:hover:border-red-600 px-4 transition-all">
-<span class="material-symbols-outlined text-[16px] text-blue-600 dark:text-blue-400">work</span>
-<span class="text-[#636f88] dark:text-gray-300 text-sm font-medium group-hover:text-[#111318] dark:group-hover:text-white">Lavoro</span>
-</button>
-<button class="group flex h-8 items-center gap-2 rounded-full bg-white dark:bg-surface-dark border border-[#e5e7eb] dark:border-gray-700 hover:border-red-600 dark:hover:border-red-600 px-4 transition-all">
-<span class="material-symbols-outlined text-[16px] text-amber-600 dark:text-amber-400">school</span>
-<span class="text-[#636f88] dark:text-gray-300 text-sm font-medium group-hover:text-[#111318] dark:group-hover:text-white">Formazione</span>
+<button class="flex size-10 items-center justify-center rounded-lg bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-white">
+<span class="material-symbols-outlined">person</span>
 </button>
 </div>
-</section>
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-<div class="lg:col-span-8 flex flex-col gap-12">
-<div class="flex flex-col gap-6">
-<div class="flex items-end justify-between border-b border-[#f0f2f4] dark:border-gray-800 pb-3">
-<div class="flex flex-col gap-1">
-<h2 class="text-[#111318] dark:text-white text-xl font-bold tracking-tight">Eventi</h2>
-<p class="text-xs text-[#636f88] dark:text-gray-400 font-medium">Eventi del giorno selezionato</p>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User avatar of Alex" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBIFDCEKbMZ6WhSHW0SSfFw6Y8kjY-_Os94qU1n_pEjKJUREOQCMPeuPS81B7PaIhC6jnRrKbpi9EjIxdv9GD_-6U1oWzOZ_5wJJRte9AdRA5AUSYLRXtpoJRC64kn8GyC41x2O1V0ERiljtQzTLXmKZDiCEZLPRezoI5qwZ8v7gCP5WboOQyIQcbpCWabheYRDfqDkp6xP3R798guOBwbk0HCh5etucUqdcFYtUkmcSiiO4O9GPXTeLnKycOYRTQk3EeQdbjghchg");'></div>
 </div>
-<%= link_to "Gestisci tutti",
-            eventdates_path(on: @selected_date.strftime("%Y-%m-%d")),
-            class: "text-red-600 text-xs font-semibold hover:underline" %>
-</div>
-
-<% if @day_events.any? %>
-  <div class="flex flex-col gap-4">
-    <% @day_events.each do |event| %>
-      <% start_time = event.date_start&.strftime("%H:%M") %>
-      <% end_time = event.date_end&.strftime("%H:%M") %>
-      <% time_range = end_time.present? ? "#{start_time} - #{end_time}" : start_time %>
-      <div class="group flex flex-col sm:flex-row gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-transparent hover:border-[#f0f2f4] dark:hover:border-gray-700 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md transition-all">
-        <div class="flex flex-col justify-between flex-1 gap-2">
-          <div>
-            <div class="flex justify-between items-start">
-              <div class="flex flex-col">
-                <h4 class="text-[#111318] dark:text-white font-bold text-base group-hover:text-red-600 transition-colors">
-                  <%= event.description.presence || "Evento senza titolo" %>
-                </h4>
-                <div class="flex items-center gap-2 mt-1.5 flex-wrap">
-                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 uppercase tracking-wide">
-                    <%= event.event_type %>
-                  </span>
-                  <% if event.taxbranch&.slug_label || event.taxbranch&.name %>
-                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-                      <%= event.taxbranch&.slug_label || event.taxbranch&.name %>
-                    </span>
-                  <% end %>
-                </div>
-              </div>
-              <% if event.status.present? %>
-                <span class="inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-900/20 px-2 py-1 text-xs font-medium text-amber-700 dark:text-amber-400 ring-1 ring-inset ring-amber-600/20">
-                  <%= event.status %>
-                </span>
-              <% end %>
-            </div>
-            <% if event.location.present? %>
-              <p class="text-[#636f88] dark:text-gray-400 text-sm mt-2 line-clamp-2">
-                <%= event.location %>
-              </p>
-            <% end %>
-          </div>
-          <div class="flex items-center gap-4 text-xs text-[#636f88] dark:text-gray-500 font-medium mt-1">
-            <div class="flex items-center gap-1">
-              <span class="material-symbols-outlined text-[16px]">schedule</span>
-              <%= @selected_date.strftime("%d %B") %> • <%= time_range.presence || "Orario non definito" %>
-            </div>
-            <% if event.location.present? %>
-              <div class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">location_on</span>
-                <%= event.location %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
-<% else %>
-  <div class="rounded-xl border border-dashed border-[#e5e7eb] dark:border-gray-700 bg-white/70 dark:bg-surface-dark p-6 text-sm text-[#636f88] dark:text-gray-400">
-    Nessun evento per la data selezionata.
-    <%= link_to "Vai al calendario", eventdates_path(on: @selected_date.strftime("%Y-%m-%d")), class: "text-red-600 font-semibold hover:underline ml-1" %>
-  </div>
-<% end %>
-</div>
-</div>
-<div class="lg:col-span-4 flex flex-col gap-8">
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-transparent dark:border-gray-800">
-<% prev_month = @selected_date.prev_month %>
-<% next_month = @selected_date.next_month %>
-<div class="flex items-center justify-between mb-4">
-<%= form_with url: dashboard_home_path, method: :get, local: true, class: "flex items-center gap-2" do %>
-  <%= select_tag :month,
-        options_for_select(
-          Date::MONTHNAMES.compact.each_with_index.map { |n, i| [n, i + 1] },
-          @selected_date.month
-        ),
-        class: "calendar-select font-bold text-[#111318] dark:text-white bg-transparent border border-transparent rounded-md px-1 py-0.5 focus:border-slate-300 focus:bg-white dark:focus:bg-gray-800 text-sm",
-        onchange: "this.form.submit()" %>
-  <%= select_tag :year,
-        options_for_select((@selected_date.year - 10..@selected_date.year + 10).to_a, @selected_date.year),
-        class: "calendar-select font-bold text-[#111318] dark:text-white bg-transparent border border-transparent rounded-md px-1 py-0.5 focus:border-slate-300 focus:bg-white dark:focus:bg-gray-800 text-sm",
-        onchange: "this.form.submit()" %>
-  <%= hidden_field_tag :day, @selected_date.day %>
-<% end %>
-<div class="flex gap-1">
-<%= link_to dashboard_home_path(date: prev_month.strftime("%Y-%m-%d")),
-            class: "p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded",
-            aria: { label: "Mese precedente" } do %>
-  <span class="material-symbols-outlined text-sm">chevron_left</span>
-<% end %>
-<%= link_to dashboard_home_path(date: next_month.strftime("%Y-%m-%d")),
-            class: "p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded",
-            aria: { label: "Mese successivo" } do %>
-  <span class="material-symbols-outlined text-sm">chevron_right</span>
-<% end %>
-</div>
-</div>
-<div class="grid grid-cols-7 text-center text-xs text-[#636f88] dark:text-gray-500 font-medium mb-2">
-<div>Lu</div><div>Ma</div><div>Me</div><div>Gi</div><div>Ve</div><div>Sa</div><div>Do</div>
-</div>
-<% start_date = @selected_date.beginning_of_month.beginning_of_week(:monday) %>
-<% end_date = @selected_date.end_of_month.end_of_week(:monday) %>
-<div class="grid grid-cols-7 text-center text-sm gap-y-3">
-  <% (start_date..end_date).each do |day| %>
-    <% outside = day.month != @selected_date.month %>
-    <% selected = day == @selected_date %>
-    <% has_events = @event_counts_by_day[day].to_i > 0 %>
-    <div class="relative">
-      <%= link_to dashboard_home_path(date: day.strftime("%Y-%m-%d")), class: "block" do %>
-        <% if selected %>
-          <span class="bg-red-600 text-white rounded-full size-7 flex items-center justify-center mx-auto shadow-sm"><%= day.day %></span>
-        <% else %>
-          <span class="<%= outside ? "text-gray-300 dark:text-gray-700" : "text-[#111318] dark:text-white" %>"><%= day.day %></span>
-        <% end %>
-      <% end %>
-      <% if has_events %>
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 size-1 bg-blue-500 rounded-full"></div>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-</div>
-<div class="bg-primary/10 dark:bg-surface-dark rounded-xl p-6 border border-red-50 dark:border-gray-700">
-<div class="flex items-start gap-3">
-<span class="material-symbols-outlined text-primary mt-1">handshake</span>
+</header-->
+<main class="max-w-[1440px] mx-auto grid grid-cols-12 gap-8 px-10 py-8">
+<!-- Left Section: Persuasive Onboarding -->
+<section class="col-span-12 lg:col-span-3 flex flex-col gap-6 bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-[#e7edf3] dark:border-slate-800">
 <div>
-<h4 class="font-bold text-[#111318] dark:text-white text-sm">-</h4>
-<!--p class="text-xs text-[#636f88] dark:text-gray-400 mt-1 leading-relaxed">
-                                    1 Impegno crede nel valore dell'incontro reale. Niente gamification, niente costi nascosti. Solo tu e la tua community.
-                                </p-->
+<h1 class="text-[#0e141b] dark:text-white tracking-light text-2xl font-bold leading-tight pb-3">Inizia il tuo percorso</h1>
+<p class="text-[#4e6a8d] dark:text-slate-400 text-sm font-normal leading-relaxed">
+                    Speri di cambiare con l'ennesimo esame? Non ottieni risultati? La tua trasformazione inizia qui.
+                </p>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-x-3 py-2">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<p class="text-[#0e141b] dark:text-slate-200 text-sm font-medium">Semplici test</p>
+</div>
+<div class="flex items-center gap-x-3 py-2">
+<span class="material-symbols-outlined text-primary text-xl">map</span>
+<p class="text-[#0e141b] dark:text-slate-200 text-sm font-medium">Linee guida e mappe</p>
+</div>
+<div class="flex items-center gap-x-3 py-2">
+<span class="material-symbols-outlined text-primary text-xl">support_agent</span>
+<p class="text-[#0e141b] dark:text-slate-200 text-sm font-medium">Tutor dedicato</p>
+</div>
+<div class="flex items-center gap-x-3 py-2">
+<span class="material-symbols-outlined text-primary text-xl">groups</span>
+<p class="text-[#0e141b] dark:text-slate-200 text-sm font-medium">Team di professionisti</p>
+</div>
+<div class="flex items-center gap-x-3 py-2">
+<span class="material-symbols-outlined text-primary text-xl">trending_up</span>
+<p class="text-[#0e141b] dark:text-slate-200 text-sm font-medium">Progress tracking</p>
+</div>
+</div>
+<div class="pt-4">
+<button class="w-full flex items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:brightness-110 transition-all">
+<span>Inizia ora: Test mobilità</span>
+</button>
+</div>
+</section>
+<!-- Center Section: Timeline/History -->
+<section class="col-span-12 lg:col-span-6 flex flex-col gap-6">
+<h2 class="text-xl font-bold text-[#0e141b] dark:text-white px-2">Il tuo percorso</h2>
+<div class="relative flex flex-col gap-8 timeline-line">
+<!-- Timeline Item 1 -->
+<div class="relative flex gap-4">
+<div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-white">
+<span class="material-symbols-outlined text-sm">done</span>
+</div>
+<div class="flex flex-1 flex-col gap-3 rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-5 shadow-sm">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider">Oggi, <%= DateTime.now %></span>
+<h3 class="text-base font-bold text-[#0e141b] dark:text-white">Benvenuto: in posturacorretta</h3>
+</div>
+<span class="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
+<span class="material-symbols-outlined text-xs">add</span> <!-- 15 punti mobilità-->
+                            </span>
+</div>
+<p class="text-sm text-[#4e6a8d] dark:text-slate-400">Ottimo Lavoro.</p>
+<div class="flex pt-1">
+<!--button class="flex h-9 items-center justify-center rounded-lg border border-[#d0dbe7] dark:border-slate-700 px-4 text-sm font-bold text-[#0e141b] dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                Recensisci ora
+                            </button-->
+                            <button class="flex h-9 items-center justify-center rounded-lg border border-[#d0dbe7] dark:border-slate-700 px-4 text-sm font-bold text-[#0e141b] dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                            Inizia 60 movimenti alla scrivania
+                            </button>
 </div>
 </div>
 </div>
+<!-- Timeline Item 2 >
+<div class="relative flex gap-4">
+<div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-[#e7edf3] dark:bg-slate-800 text-primary">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+</div>
+<div class="flex flex-1 flex-col gap-3 rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-5 shadow-sm">
+<div>
+<span class="text-xs font-semibold text-[#4e6a8d] dark:text-slate-500 uppercase tracking-wider">Ieri</span>
+<h3 class="text-base font-bold text-[#0e141b] dark:text-white">Acquistato: Posture Pro Kit</h3>
+</div>
+<div class="flex items-center gap-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-sm font-medium text-[#0e141b] dark:text-slate-200">Il tuo ordine è in transito. Consegna prevista: Giovedì.</p>
 </div>
 </div>
 </div>
-<footer class="w-full border-t border-[#f0f2f4] dark:border-gray-800 bg-white dark:bg-surface-dark py-8 mt-auto">
-<div class="max-w-[960px] mx-auto px-4 sm:px-10 flex flex-col sm:flex-row justify-between items-center gap-4">
-<p class="text-[#636f88] dark:text-gray-500 text-xs">© 2023 Flowpulse. Open Source Platform.</p>
-<div class="flex gap-6">
-<a class="text-[#636f88] dark:text-gray-500 hover:text-red-600 dark:hover:text-white text-xs transition-colors" href="#">Privacy</a>
-<a class="text-[#636f88] dark:text-gray-500 hover:text-red-600 dark:hover:text-white text-xs transition-colors" href="#">Termini</a>
-<a class="text-[#636f88] dark:text-gray-500 hover:text-red-600 dark:hover:text-white text-xs transition-colors" href="#">Manifesto</a>
+<!-- Timeline Item 3 (Past) >
+<div class="relative flex gap-4">
+<div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#4e6a8d]">
+<span class="material-symbols-outlined text-sm">description</span>
+</div>
+<div class="flex flex-1 flex-col gap-1 rounded-xl bg-white/50 dark:bg-slate-900/20 p-5 border border-dashed border-[#e7edf3] dark:border-slate-800">
+<span class="text-xs font-semibold text-[#4e6a8d] uppercase">3 giorni fa</span>
+<h3 class="text-base font-medium text-[#4e6a8d] dark:text-slate-500">Analisi Posturale Iniziale completata</h3>
 </div>
 </div>
+</div-->
+</section>
+<!-- Right Section: Profile Widget -->
+<aside class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+<!-- Profile Card >
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-[#e7edf3] dark:border-slate-800 shadow-sm flex flex-col items-center text-center">
+<div class="relative mb-4">
+<!-- Progress Circle >
+<svg class="size-28 transform -rotate-90">
+<circle class="dark:stroke-slate-800" cx="56" cy="56" fill="transparent" r="50" stroke="#e7edf3" stroke-width="8"></circle>
+<circle cx="56" cy="56" fill="transparent" r="50" stroke="#2a8aea" stroke-dasharray="314.159" stroke-dashoffset="78.5" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold text-[#0e141b] dark:text-white leading-none">75%</span>
+<span class="text-[10px] text-[#4e6a8d] uppercase font-bold tracking-tighter">Settimana</span>
+</div>
+</div>
+<h3 class="text-lg font-bold text-[#0e141b] dark:text-white">Alex</h3>
+<span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary mb-6">
+                    Membro Premium
+                </span>
+<div class="w-full text-left space-y-4">
+<div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<p class="text-[10px] uppercase font-bold text-[#4e6a8d] mb-1">Obiettivo Attuale</p>
+<p class="text-sm font-bold text-[#0e141b] dark:text-white">7-Day Spine Alignment</p>
+</div>
+</div>
+</div>
+<!-- Next Session Card -->
+<div class="bg-primary p-6 rounded-xl text-white shadow-lg shadow-primary/20">
+<div class="flex justify-between items-start mb-4">
+<p class="text-xs font-bold uppercase tracking-wider opacity-80">CORSO <!--prossima sessione--></p>
+<span class="material-symbols-outlined opacity-80">play_circle</span>
+</div>
+<h4 class="text-xl font-bold mb-1">60 Movimenti alla scrivania</h4>
+<p class="text-sm opacity-90 mb-6">Durata stimata: 15 min</p>
+<!--button class="w-full bg-white text-primary h-11 rounded-lg font-bold text-sm hover:bg-slate-50 transition-colors shadow-sm">
+                    Continua Sessione
+                </button-->
+                <button class="w-full bg-white text-primary h-11 rounded-lg font-bold text-sm hover:bg-slate-50 transition-colors shadow-sm">
+                    Inizia
+                </button>
+</div>
+<!-- Tips Card >
+<div class="bg-white dark:bg-slate-900/50 p-5 rounded-xl border border-[#e7edf3] dark:border-slate-800">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-yellow-500 text-lg">lightbulb</span>
+<p class="text-xs font-bold text-[#0e141b] dark:text-white uppercase">Consiglio del Tutor</p>
+</div>
+<p class="text-xs text-[#4e6a8d] dark:text-slate-400 leading-relaxed italic">
+                    "Ricordati di mantenere le scapole verso il basso durante l'uso del computer per ridurre la tensione cervicale."
+                </p>
+</div>
+</aside>
+</main>
+<!-- Simple Footer for branding -->
+<footer class="max-w-[1440px] mx-auto px-10 py-12 flex flex-col items-center border-t border-[#e7edf3] dark:border-slate-800 mt-12">
+<p class="text-[#4e6a8d] text-sm">© <%= DateTime.now.year %> posturacorretta.org - La tua salute, la nostra missione.</p>
 </footer>
-</div>
-</div>
+
+
+
+<%#= render "home_dash_prov" %>

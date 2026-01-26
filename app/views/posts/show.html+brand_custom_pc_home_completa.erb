@@ -60,14 +60,26 @@
     </a>
     <div class="hidden md:flex items-center gap-6 ml-10">
       <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#home">Home</a>
-     <!--a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#blog">Blog</a>
-      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#eventi">Eventi</a>
-      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#progetto">Progetto</a>
-      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#mappa">Mappa percorso</a>
-      <a href="#trova_professionista" class="hidden md:flex bg-primary hover:bg-blue-600 text-white px-4 h-10 ml-2 rounded-full text-sm font-bold transition-all shadow-md hover:shadow-lg items-center gap-2">
-      <span class="material-symbols-outlined text-[18px]">search</span>
-      <span>Trova un professionista</span>
-      </a-->
+      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#corsi">Corsi Postura</a>
+      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#percorso">Percorso Salute</a>
+      <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="accademia">Accademia</a>
+      <div class="relative group pb-2 -mb-2">
+        <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary inline-flex items-center gap-1" href="#esplora">
+          Esplora
+          <span class="material-symbols-outlined text-[16px] opacity-70">expand_more</span>
+        </a>
+        <div class="absolute left-0 top-full mt-0 w-56 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#101a22] shadow-lg p-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto flex flex-col gap-2 text-sm z-20 transition-opacity">
+          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="accademia">Collabora</a>
+          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#blog">Blog</a>
+          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#eventi">Eventi</a>
+          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#progetto">Progetto</a>
+          <a class="text-[#0d151c] dark:text-gray-300 hover:text-primary" href="#mappa">Mappa percorso</a>
+          <a href="#trova_professionista" class="bg-primary hover:bg-blue-600 text-white px-4 h-10 rounded-full text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">search</span>
+            Trova un professionista
+          </a>
+        </div>
+      </div>
     </div>
     <div class="hidden md:flex items-center gap-3">
       <% if Current.user.present? %>

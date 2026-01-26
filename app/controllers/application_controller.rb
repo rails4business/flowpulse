@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
   # Rende policy()/policy_scope() disponibili anche nelle view
   helper_method :policy, :policy_scope
 
+  # Sempre valorizza Current.session se esiste un cookie, anche nelle pagine pubbliche.
+  before_action :resume_session
+
   # >>> Dillo a Pundit: l'utente corrente è Current.user (non current_user)
   def pundit_user
     Current.user

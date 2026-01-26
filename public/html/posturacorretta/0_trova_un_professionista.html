@@ -1,0 +1,583 @@
+<!----->
+<!DOCTYPE html>
+
+<html class="light" lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Trova un Professionista - posturacorretta.org</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2a8aea",
+              "background-light": "#f6f7f8",
+              "background-dark": "#111921",
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Manrope", sans-serif;
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-[#0e141b] dark:text-slate-50 min-h-screen flex flex-col"
+  >
+    <!-- Top Navigation Bar -->
+    <header
+      class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-background-dark px-10 py-3 z-50"
+    >
+      <div class="flex items-center gap-4 text-primary">
+        <div class="size-6">
+          <svg
+            fill="none"
+            viewbox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </div>
+        <h2
+          class="text-[#0e141b] dark:text-slate-50 text-lg font-bold leading-tight tracking-[-0.015em]"
+        >
+          posturacorretta.org
+        </h2>
+      </div>
+      <div class="flex flex-1 justify-end gap-8 items-center">
+        <nav class="hidden md:flex items-center gap-9">
+          <a
+            class="text-[#0e141b] dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
+            href="#"
+            >Home</a
+          >
+          <a
+            class="text-[#0e141b] dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
+            href="#"
+            >Articoli</a
+          >
+          <a
+            class="text-[#0e141b] dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
+            href="#"
+            >Esercizi</a
+          >
+          <a
+            class="text-[#0e141b] dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
+            href="#"
+            >Contatti</a
+          >
+        </nav>
+        <button
+          class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-[0.015em]"
+        >
+          <span class="truncate">Area Riservata</span>
+        </button>
+        <div
+          class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200"
+          data-alt="User avatar profile picture"
+          style="
+            background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCymTvrmrm3dE3gWKNkM_2XEc7nBKuLSgTAkcVSrxKkY3tNgL6ewDBh-ZBez-VfkFJ6Q47A-HDYXDbjaSlEDIWLfw6tFD3udXN0NHwGif4WhrXDAgdCzX6fEzf5j1Ba7ylEdGcoWSfpE0beFpwBDMeT1kAIxpkh9U0ow4b1vTlcPpee325PDcyQ0An0tPkr79C_VSAEsvIApyNEGd_p9n7N9D3YGFFFKqDTH4NigD9Sl-fWFc-PxuiuyhHvylD7XXcd7AuNNhCpU0o');
+          "
+        ></div>
+      </div>
+    </header>
+    <!-- Page Heading -->
+    <section
+      class="bg-white dark:bg-background-dark border-b border-[#e7edf3] dark:border-slate-800"
+    >
+      <div class="max-w-[1440px] mx-auto px-6 py-8">
+        <div class="flex flex-wrap justify-between items-end gap-6">
+          <div class="flex flex-col gap-2 max-w-2xl">
+            <h1
+              class="text-[#0e141b] dark:text-slate-50 text-4xl font-black leading-tight tracking-[-0.033em]"
+            >
+              Trova il professionista più vicino a te
+            </h1>
+            <p
+              class="text-[#4d7399] dark:text-slate-400 text-base font-normal leading-normal"
+            >
+              Tutti i professionisti presenti sono certificati dal team di
+              Postura Corretta per garantirti la massima qualità del
+              trattamento.
+            </p>
+          </div>
+          <button
+            class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-50 text-sm font-bold tracking-[0.015em] hover:bg-[#d0dbe7] transition-all"
+          >
+            <span class="truncate">Scopri la certificazione</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Main Content Area: Search, List & Map -->
+    <main
+      class="flex-1 flex flex-col max-w-[1440px] mx-auto w-full px-6 py-6 gap-6"
+    >
+      <!-- ToolBar & Filters -->
+      <div
+        class="bg-white dark:bg-background-dark p-4 rounded-xl shadow-sm border border-[#e7edf3] dark:border-slate-800 flex flex-col gap-4"
+      >
+        <div class="flex flex-wrap items-end gap-4">
+          <label class="flex flex-col min-w-[280px] flex-1">
+            <div class="flex items-center gap-2 pb-2">
+              <span class="material-symbols-outlined text-primary text-sm"
+                >location_on</span
+              >
+              <p
+                class="text-[#0e141b] dark:text-slate-50 text-sm font-bold uppercase tracking-wider"
+              >
+                Località
+              </p>
+            </div>
+            <input
+              class="form-input flex w-full rounded-lg text-[#0e141b] dark:text-slate-50 border border-[#d0dbe7] dark:border-slate-700 bg-white dark:bg-slate-900 h-14 placeholder:text-[#4d7399] p-[15px] text-base focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+              placeholder="Città o CAP (es: Milano, 20121)"
+              value=""
+            />
+          </label>
+          <label class="flex flex-col min-w-[280px] flex-1">
+            <div class="flex items-center gap-2 pb-2">
+              <span class="material-symbols-outlined text-primary text-sm"
+                >medical_services</span
+              >
+              <p
+                class="text-[#0e141b] dark:text-slate-50 text-sm font-bold uppercase tracking-wider"
+              >
+                Specializzazione
+              </p>
+            </div>
+            <input
+              class="form-input flex w-full rounded-lg text-[#0e141b] dark:text-slate-50 border border-[#d0dbe7] dark:border-slate-700 bg-white dark:bg-slate-900 h-14 placeholder:text-[#4d7399] p-[15px] text-base focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+              placeholder="Es: Fisioterapista, Osteopata"
+              value=""
+            />
+          </label>
+          <button
+            class="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-14 bg-primary text-white gap-2 text-base font-bold tracking-[0.015em] px-8 hover:brightness-110 shadow-lg shadow-primary/20 transition-all"
+          >
+            <span class="material-symbols-outlined">search</span>
+            <span class="truncate">Cerca ora</span>
+          </button>
+        </div>
+        <div class="h-px bg-[#e7edf3] dark:bg-slate-800 w-full"></div>
+        <div class="flex gap-3 flex-wrap items-center">
+          <span
+            class="text-xs font-bold text-[#4d7399] dark:text-slate-500 uppercase"
+            >Filtri rapidi:</span
+          >
+          <button
+            class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary/10 text-primary border border-primary/20 px-4 hover:bg-primary/20 transition-all"
+          >
+            <p class="text-sm font-semibold">Tutte le categorie</p>
+            <span class="material-symbols-outlined text-lg">expand_more</span>
+          </button>
+          <button
+            class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-300 px-4 hover:bg-[#d0dbe7] transition-all"
+          >
+            <p class="text-sm font-medium">Disponibilità oggi</p>
+          </button>
+          <button
+            class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-300 px-4 hover:bg-[#d0dbe7] transition-all"
+          >
+            <p class="text-sm font-medium">Video consulenza</p>
+          </button>
+        </div>
+      </div>
+      <!-- Split View: List and Map -->
+      <div class="flex-1 flex gap-6 min-h-[600px] max-h-[800px]">
+        <!-- Sidebar: Results List -->
+        <div
+          class="w-full lg:w-1/3 flex flex-col gap-4 overflow-y-auto pr-2 hide-scrollbar"
+        >
+          <div class="flex justify-between items-center px-1">
+            <p
+              class="text-[#4d7399] dark:text-slate-400 font-semibold text-sm uppercase"
+            >
+              24 professionisti trovati
+            </p>
+            <div
+              class="flex items-center gap-1 text-primary cursor-pointer hover:underline text-sm font-bold"
+            >
+              <span>Ordina per rilevanza</span>
+              <span class="material-symbols-outlined text-sm">sort</span>
+            </div>
+          </div>
+          <!-- Professional Card 1 -->
+          <div
+            class="bg-white dark:bg-background-dark border border-[#e7edf3] dark:border-slate-800 p-4 rounded-xl shadow-sm hover:border-primary/50 transition-all flex flex-col gap-4"
+          >
+            <div class="flex gap-4">
+              <div
+                class="size-20 rounded-lg bg-cover bg-center border border-slate-100"
+                data-alt="Portrait of professional therapist Dr. Marco Valenti"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAJX-pHtBDITXmvQE5aPbZKU7ImbDI6sXi-EWgeRVMAqH5gSLO3Hp1tCqQQgBpmxllT_Wjc9pQccUEJHDaT5fFF-E4Wfpfuflv_We8Eh81Yt7YNfUVA5AV50muWGrdRkEPOw5ms17DwhqQa2ol5FanI7rVAUd1GkAqpPBIfKP6zgCjWWWYmScV03iuWXHuc757aFVwkHui93TCpcoQR_Nux23dBuHYiGFuNqHWEUS5f_bjpkKCB6zyWtpiNGGah5n-1S-61rESmOVs');
+                "
+              ></div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <h3
+                    class="text-[#0e141b] dark:text-slate-50 font-bold text-lg"
+                  >
+                    Dr. Marco Valenti
+                  </h3>
+                  <div
+                    class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded uppercase"
+                  >
+                    Certificato
+                  </div>
+                </div>
+                <p class="text-primary text-sm font-semibold">
+                  Fisioterapista OMPT
+                </p>
+                <div class="flex items-center gap-1 mt-1">
+                  <span
+                    class="material-symbols-outlined text-orange-400 text-sm fill-1"
+                    >star</span
+                  >
+                  <span
+                    class="text-[#0e141b] dark:text-slate-50 text-sm font-bold"
+                    >4.9</span
+                  >
+                  <span class="text-[#4d7399] dark:text-slate-400 text-xs"
+                    >(128 recensioni)</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-2 text-[#4d7399] dark:text-slate-400 text-sm"
+            >
+              <span class="material-symbols-outlined text-base"
+                >location_on</span
+              >
+              <span>Via Dante 14, Milano (1.2 km)</span>
+            </div>
+            <div class="flex gap-2 pt-2">
+              <button
+                class="flex-1 h-10 border border-[#d0dbe7] dark:border-slate-700 text-[#0e141b] dark:text-slate-300 font-bold text-sm rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+              >
+                Vedi Profilo
+              </button>
+              <button
+                class="flex-1 h-10 bg-primary text-white font-bold text-sm rounded-lg hover:brightness-110 transition-colors"
+              >
+                Prenota
+              </button>
+            </div>
+          </div>
+          <!-- Professional Card 2 -->
+          <div
+            class="bg-white dark:bg-background-dark border border-[#e7edf3] dark:border-slate-800 p-4 rounded-xl shadow-sm hover:border-primary/50 transition-all flex flex-col gap-4"
+          >
+            <div class="flex gap-4">
+              <div
+                class="size-20 rounded-lg bg-cover bg-center border border-slate-100"
+                data-alt="Portrait of professional therapist Dr.ssa Elena Bianchi"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEuzHds-5xSN0SHE4NN30o4b5s1n5GiFJ7K1o_7xfarJP7KbUI9msSeu1l2vGj5nA2QyWGgI6t7HmaAtWMLp6z1KYXVXSabekTfG9il_5Nb-qtfNVsfWlpaTkUlazt-iNEt31_pC_uZViCqwq-IlH5FjyiNv2HUqVbS5WhYEd1FeG7M1sx18dTJBGvnVA0bCanWFEdTVJLmozZGRXVUHraLhBZ-YrkxKN11nGQgrMzQco2ruTyHR4T2x8J_dEk3TAcE007VccuTcM');
+                "
+              ></div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <h3
+                    class="text-[#0e141b] dark:text-slate-50 font-bold text-lg"
+                  >
+                    Dr.ssa Elena Bianchi
+                  </h3>
+                  <div
+                    class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded uppercase"
+                  >
+                    Certificato
+                  </div>
+                </div>
+                <p class="text-primary text-sm font-semibold">Osteopata D.O.</p>
+                <div class="flex items-center gap-1 mt-1">
+                  <span
+                    class="material-symbols-outlined text-orange-400 text-sm fill-1"
+                    >star</span
+                  >
+                  <span
+                    class="text-[#0e141b] dark:text-slate-50 text-sm font-bold"
+                    >5.0</span
+                  >
+                  <span class="text-[#4d7399] dark:text-slate-400 text-xs"
+                    >(94 recensioni)</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-2 text-[#4d7399] dark:text-slate-400 text-sm"
+            >
+              <span class="material-symbols-outlined text-base"
+                >location_on</span
+              >
+              <span>Corso Buenos Aires 45, Milano (2.8 km)</span>
+            </div>
+            <div class="flex gap-2 pt-2">
+              <button
+                class="flex-1 h-10 border border-[#d0dbe7] dark:border-slate-700 text-[#0e141b] dark:text-slate-300 font-bold text-sm rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+              >
+                Vedi Profilo
+              </button>
+              <button
+                class="flex-1 h-10 bg-primary text-white font-bold text-sm rounded-lg hover:brightness-110 transition-colors"
+              >
+                Prenota
+              </button>
+            </div>
+          </div>
+          <!-- Professional Card 3 -->
+          <div
+            class="bg-white dark:bg-background-dark border border-[#e7edf3] dark:border-slate-800 p-4 rounded-xl shadow-sm hover:border-primary/50 transition-all flex flex-col gap-4"
+          >
+            <div class="flex gap-4">
+              <div
+                class="size-20 rounded-lg bg-cover bg-center border border-slate-100"
+                data-alt="Portrait of professional therapist Dr. Roberto Gatti"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCMUoqSZSo1wrDBpA-OejcTPUunHiyzrTLOjuyoxf4fJyTl1iN45mEe6ln-ULSKJk5JVldQ96ltzdqV47npr594RtJ-jNs_Q0aYOcwbzPti0QdaQJxVy4Vs6iRhpGg_zP9X84KQgZ9g8gAhM-aFYszulRAvfWuAyjnzdSvwmCROBWA3_L3Ddf5nD3hHE2vkU2fR197QHGQLDc22MvMRJYbLhxQb7HzV90b1goj8gvnKhsIkcdZAHjQXmgHOxvtmQW9y9c1ozrecKPA');
+                "
+              ></div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <h3
+                    class="text-[#0e141b] dark:text-slate-50 font-bold text-lg"
+                  >
+                    Dr. Roberto Gatti
+                  </h3>
+                  <div
+                    class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded uppercase"
+                  >
+                    Certificato
+                  </div>
+                </div>
+                <p class="text-primary text-sm font-semibold">
+                  Posturologo &amp; Kinesiologo
+                </p>
+                <div class="flex items-center gap-1 mt-1">
+                  <span
+                    class="material-symbols-outlined text-orange-400 text-sm fill-1"
+                    >star</span
+                  >
+                  <span
+                    class="text-[#0e141b] dark:text-slate-50 text-sm font-bold"
+                    >4.8</span
+                  >
+                  <span class="text-[#4d7399] dark:text-slate-400 text-xs"
+                    >(215 recensioni)</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-2 text-[#4d7399] dark:text-slate-400 text-sm"
+            >
+              <span class="material-symbols-outlined text-base"
+                >location_on</span
+              >
+              <span>Via Torino 5, Milano (0.5 km)</span>
+            </div>
+            <div class="flex gap-2 pt-2">
+              <button
+                class="flex-1 h-10 border border-[#d0dbe7] dark:border-slate-700 text-[#0e141b] dark:text-slate-300 font-bold text-sm rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+              >
+                Vedi Profilo
+              </button>
+              <button
+                class="flex-1 h-10 bg-primary text-white font-bold text-sm rounded-lg hover:brightness-110 transition-colors"
+              >
+                Prenota
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Map Panel -->
+        <div
+          class="hidden lg:block flex-1 relative rounded-2xl overflow-hidden border border-[#e7edf3] dark:border-slate-800 shadow-xl bg-slate-200"
+        >
+          <!-- Map Background Placeholder -->
+          <div
+            class="absolute inset-0 bg-cover bg-center"
+            data-alt="Interactive map showing professional locations in Milan"
+            data-location="Milan, Italy"
+            style="
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBl0ch6-NKSWfbexYmtMPiXMqBoyJLVHwwpmXTivqqPUFynxUv-2BXPrpyKjkL0HLBnTEJ3VYlPaYBKtj8TjD0LoJhiyZT2yNKeFSP8RIDt7c3__AKymgnRWL9GsnLupnSExA8lkxwcIqloa8AwoPkv68arEOsz08TL694R8rr0vMMirpSJeUV9gHeOIYe-iIE2YBbAOu1hV_mPDjYunO58SVnmo4hG7wFBTtaIB5kqrHPNCqTjWvVERjmNei34nMGOvF0ZT8aJzXU');
+              filter: grayscale(0.2) brightness(1.05);
+            "
+          ></div>
+          <!-- Map Overlay Controls -->
+          <div class="absolute top-4 right-4 flex flex-col gap-2">
+            <button
+              class="size-10 bg-white dark:bg-background-dark rounded-lg shadow-md flex items-center justify-center text-primary hover:bg-slate-50 transition-all"
+            >
+              <span class="material-symbols-outlined">add</span>
+            </button>
+            <button
+              class="size-10 bg-white dark:bg-background-dark rounded-lg shadow-md flex items-center justify-center text-primary hover:bg-slate-50 transition-all"
+            >
+              <span class="material-symbols-outlined">remove</span>
+            </button>
+            <button
+              class="size-10 bg-white dark:bg-background-dark rounded-lg shadow-md mt-4 flex items-center justify-center text-[#4d7399] hover:bg-slate-50 transition-all"
+            >
+              <span class="material-symbols-outlined">my_location</span>
+            </button>
+          </div>
+          <!-- Mock Map Pins -->
+          <div class="absolute top-1/4 left-1/3 group cursor-pointer">
+            <div class="relative flex flex-col items-center">
+              <div
+                class="bg-primary text-white text-[10px] font-bold py-1 px-2 rounded-full shadow-lg mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+              >
+                Dr. Marco Valenti
+              </div>
+              <div
+                class="size-10 bg-primary border-4 border-white dark:border-slate-900 rounded-full flex items-center justify-center text-white shadow-xl scale-110 ring-4 ring-primary/20"
+              >
+                <span class="material-symbols-outlined text-xl"
+                  >medical_services</span
+                >
+              </div>
+              <div class="w-1 h-2 bg-primary"></div>
+            </div>
+          </div>
+          <div class="absolute top-1/2 left-1/2 group cursor-pointer">
+            <div class="relative flex flex-col items-center">
+              <div
+                class="bg-primary text-white text-[10px] font-bold py-1 px-2 rounded-full shadow-lg mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+              >
+                Dr.ssa Elena Bianchi
+              </div>
+              <div
+                class="size-8 bg-primary border-2 border-white dark:border-slate-900 rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform"
+              >
+                <span class="material-symbols-outlined text-base"
+                  >medical_services</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="absolute bottom-1/3 right-1/4 group cursor-pointer">
+            <div class="relative flex flex-col items-center">
+              <div
+                class="bg-primary text-white text-[10px] font-bold py-1 px-2 rounded-full shadow-lg mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+              >
+                Dr. Roberto Gatti
+              </div>
+              <div
+                class="size-8 bg-primary border-2 border-white dark:border-slate-900 rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform"
+              >
+                <span class="material-symbols-outlined text-base"
+                  >medical_services</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Map Legend/Bottom info -->
+          <div class="absolute bottom-6 left-6 right-6">
+            <div
+              class="bg-white/90 dark:bg-background-dark/90 backdrop-blur px-4 py-3 rounded-xl border border-white/20 shadow-2xl inline-flex items-center gap-4"
+            >
+              <div class="flex items-center gap-2">
+                <div class="size-3 bg-primary rounded-full animate-pulse"></div>
+                <span
+                  class="text-xs font-bold text-[#0e141b] dark:text-slate-200"
+                  >24 professionisti in quest'area</span
+                >
+              </div>
+              <div class="w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
+              <p
+                class="text-[11px] text-[#4d7399] dark:text-slate-400 max-w-xs leading-tight"
+              >
+                Muovi la mappa per aggiornare i risultati o clicca su un pin per
+                dettagli.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Simple Footer for Context -->
+    <footer
+      class="mt-auto border-t border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-background-dark py-10 px-6"
+    >
+      <div
+        class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6"
+      >
+        <div class="flex items-center gap-2">
+          <div class="size-5 text-slate-400">
+            <svg
+              fill="none"
+              viewbox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </div>
+          <span class="text-sm text-slate-500 font-medium"
+            >© 2024 posturacorretta.org - Tutti i diritti riservati</span
+          >
+        </div>
+        <div class="flex gap-6">
+          <a
+            class="text-xs text-slate-400 hover:text-primary transition-colors uppercase font-bold tracking-widest"
+            href="#"
+            >Privacy Policy</a
+          >
+          <a
+            class="text-xs text-slate-400 hover:text-primary transition-colors uppercase font-bold tracking-widest"
+            href="#"
+            >Termini e Condizioni</a
+          >
+          <a
+            class="text-xs text-slate-400 hover:text-primary transition-colors uppercase font-bold tracking-widest"
+            href="#"
+            >Cookie Settings</a
+          >
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

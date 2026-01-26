@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html class="light" lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Archivio Puntate: Progetto Postura | posturacorretta.org</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2a8aea",
+              "background-light": "#f6f7f8",
+              "background-dark": "#111921",
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-[#0e141b] dark:text-slate-100 transition-colors duration-200"
+  >
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <!-- Header / Navigation -->
+      <header
+        class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-solid border-[#e7edf3] dark:border-slate-800"
+      >
+        <div
+          class="max-w-[1200px] mx-auto px-6 py-3 flex items-center justify-between whitespace-nowrap"
+        >
+          <div class="flex items-center gap-8">
+            <div class="flex items-center gap-3 text-primary">
+              <div class="size-6">
+                <svg
+                  fill="none"
+                  viewbox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+              <h2
+                class="text-[#0e141b] dark:text-white text-xl font-extrabold leading-tight tracking-[-0.015em]"
+              >
+                posturacorretta.org
+              </h2>
+            </div>
+            <nav class="hidden md:flex items-center gap-6">
+              <a
+                class="text-sm font-semibold hover:text-primary transition-colors"
+                href="#"
+                >Home</a
+              >
+              <a
+                class="text-primary text-sm font-bold border-b-2 border-primary"
+                href="#"
+                >Progetto Postura</a
+              >
+              <a
+                class="text-sm font-semibold hover:text-primary transition-colors"
+                href="#"
+                >Articoli</a
+              >
+              <a
+                class="text-sm font-semibold hover:text-primary transition-colors"
+                href="#"
+                >Esercizi</a
+              >
+            </nav>
+          </div>
+          <div class="flex items-center gap-4">
+            <button
+              class="hidden sm:flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-md hover:bg-primary/90 transition-all"
+            >
+              <span>Acquista Libro</span>
+            </button>
+            <button
+              class="p-2 rounded-lg bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-100"
+              onclick="document.documentElement.classList.toggle('dark')"
+            >
+              <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <main class="flex-1 max-w-[1200px] mx-auto w-full px-6 py-8">
+        <!-- Page Heading -->
+        <div class="mb-10">
+          <div class="flex flex-wrap justify-between items-end gap-6">
+            <div class="max-w-2xl">
+              <h1
+                class="text-[#0e141b] dark:text-white text-5xl font-black leading-tight tracking-[-0.033em] mb-4"
+              >
+                Archivio Puntate: Progetto Postura
+              </h1>
+              <p
+                class="text-[#4d7399] dark:text-slate-400 text-lg font-medium leading-relaxed"
+              >
+                Esplora la nostra serie collaborativa guidata dalla ricerca
+                scientifica. Un viaggio interdisciplinare tra biomeccanica,
+                neurologia e fisiologia del movimento umano.
+              </p>
+            </div>
+            <div class="flex gap-3">
+              <button
+                class="flex items-center gap-2 rounded-lg h-11 px-6 bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-100 text-sm font-bold hover:bg-[#d0dbe7] transition-colors"
+              >
+                <span class="material-symbols-outlined text-[20px]">info</span>
+                Scopri il Progetto
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Featured Episode Section -->
+        <section class="mb-16">
+          <div
+            class="relative overflow-hidden rounded-xl bg-white dark:bg-slate-900 border border-[#e7edf3] dark:border-slate-800 shadow-sm @container"
+          >
+            <div class="flex flex-col @3xl:flex-row items-stretch">
+              <div class="w-full @3xl:w-3/5 relative min-h-[350px]">
+                <div
+                  class="absolute inset-0 bg-center bg-cover"
+                  data-alt="Fisioterapista che analizza la postura cervicale di un paziente"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_t-nRiUQDvboc5nliieikfPEZRRee3Na9wrceInFGCfDZH0IaiKs06l2JeWGRc4Wqa1g4p1YNlcKG8vhWUb_AfoBauPTRlb2vlK9Cx4h4neKYWFVMUKPF4kSwKRTDh09oPSktUq2MRboKwPMHQv95PY0q7sCwIoIJap5uQf_sMOk27R1Ln9mlbJcZUUFdYhjwfJmMa2hpktMpR7PjAmh6hdT7o8hVg3cvkxcYUWDRLa5sJSWLD5wUTJBvOCsdPE6ELy-jRO2Jqxc');
+                  "
+                ></div>
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent @3xl:bg-gradient-to-r"
+                ></div>
+                <div class="absolute top-4 left-4">
+                  <span
+                    class="bg-primary text-white text-xs font-black tracking-widest px-3 py-1 rounded-full uppercase"
+                    >Ultima Puntata</span
+                  >
+                </div>
+              </div>
+              <div
+                class="flex flex-col justify-center p-8 @3xl:p-12 w-full @3xl:w-2/5"
+              >
+                <p class="text-primary text-sm font-bold mb-2">Episodio 42</p>
+                <h2
+                  class="text-2xl @3xl:text-3xl font-extrabold text-[#0e141b] dark:text-white mb-4 leading-tight"
+                >
+                  La Biomeccanica del Tratto Cervicale
+                </h2>
+                <p class="text-sm text-[#4d7399] dark:text-slate-400 mb-2">
+                  14 Ottobre 2023 • 45 min
+                </p>
+                <p
+                  class="text-[#0e141b]/80 dark:text-slate-300 text-base leading-relaxed mb-8"
+                >
+                  Un'analisi approfondita sulla correlazione tra il rilascio
+                  miofasciale e la riduzione del dolore cronico. Presentiamo i
+                  dati clinici raccolti durante l'ultimo semestre di ricerca con
+                  l'Istituto Superiore di Posturologia.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                  <button
+                    class="flex-1 @3xl:flex-none flex items-center justify-center gap-2 rounded-lg h-12 px-8 bg-primary text-white font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                  >
+                    <span class="material-symbols-outlined">play_circle</span>
+                    Guarda Ora
+                  </button>
+                  <button
+                    class="p-3 rounded-lg border border-[#e7edf3] dark:border-slate-700 hover:bg-[#e7edf3]/50 transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-[#4d7399]"
+                      >bookmark</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="flex flex-col lg:flex-row gap-10">
+          <!-- Main Content Feed -->
+          <div class="flex-1">
+            <!-- Search & Filter Bar -->
+            <div class="mb-8 space-y-4">
+              <div class="relative">
+                <label
+                  class="flex items-center w-full h-14 bg-white dark:bg-slate-900 border border-[#e7edf3] dark:border-slate-800 rounded-xl px-4 focus-within:border-primary transition-all"
+                >
+                  <span class="material-symbols-outlined text-[#4d7399] mr-3"
+                    >search</span
+                  >
+                  <input
+                    class="w-full bg-transparent border-none focus:ring-0 text-[#0e141b] dark:text-white placeholder:text-[#4d7399] font-medium"
+                    placeholder="Cerca puntate, argomenti o ricercatori..."
+                    type="text"
+                  />
+                </label>
+              </div>
+              <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                <button
+                  class="flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-white px-5 py-2 text-sm font-bold shadow-sm"
+                >
+                  Tutte
+                </button>
+                <button
+                  class="flex shrink-0 items-center justify-center gap-2 rounded-full bg-white dark:bg-slate-800 border border-[#e7edf3] dark:border-slate-700 px-5 py-2 text-sm font-semibold hover:border-primary transition-colors"
+                >
+                  <span class="text-[#0e141b] dark:text-slate-200"
+                    >Colonna Vertebrale</span
+                  >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >keyboard_arrow_down</span
+                  >
+                </button>
+                <button
+                  class="flex shrink-0 items-center justify-center gap-2 rounded-full bg-white dark:bg-slate-800 border border-[#e7edf3] dark:border-slate-700 px-5 py-2 text-sm font-semibold hover:border-primary transition-colors"
+                >
+                  <span class="text-[#0e141b] dark:text-slate-200"
+                    >Mobilità</span
+                  >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >keyboard_arrow_down</span
+                  >
+                </button>
+                <button
+                  class="flex shrink-0 items-center justify-center gap-2 rounded-full bg-white dark:bg-slate-800 border border-[#e7edf3] dark:border-slate-700 px-5 py-2 text-sm font-semibold hover:border-primary transition-colors"
+                >
+                  <span class="text-[#0e141b] dark:text-slate-200"
+                    >Neurologia</span
+                  >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >keyboard_arrow_down</span
+                  >
+                </button>
+                <button
+                  class="flex shrink-0 items-center justify-center gap-2 rounded-full bg-white dark:bg-slate-800 border border-[#e7edf3] dark:border-slate-700 px-5 py-2 text-sm font-semibold hover:border-primary transition-colors"
+                >
+                  <span class="text-[#0e141b] dark:text-slate-200">2023</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    >calendar_month</span
+                  >
+                </button>
+              </div>
+            </div>
+            <!-- Episode List -->
+            <div class="space-y-6">
+              <!-- Episode 41 -->
+              <article
+                class="group bg-white dark:bg-slate-900 rounded-xl border border-[#e7edf3] dark:border-slate-800 p-5 flex gap-6 hover:shadow-lg transition-all"
+              >
+                <div
+                  class="hidden sm:block w-48 h-32 rounded-lg bg-center bg-cover shrink-0"
+                  data-alt="Medico che indica un'area dolorante sulla colonna vertebrale"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB7I182x_zhLUTxgKf9qarboFEwkY4R1FLKJvRWBM9w8_nFSgfQ4ndV1982q5cIKTU8eqMjgooEtcc1v6_e6xL2XB6iMoIsQW7y0A-NfypJuSkIwRVWIBFz9e9yXXDdhT6CTlKJAMp8c6C_pUspE5VZiZ1tkDL2sDKfYY1t3usDZHfQODIUOYE_vYLNpHQT3rnprUNmw9K8Av5vTTOVxwWFhcylKgulMDhZjDYhQSy4R4ERfuNQlI_hX2cKzXZJ4zS8UR9r5tHYndk');
+                  "
+                ></div>
+                <div class="flex-1 flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="text-xs font-bold text-primary uppercase tracking-wider"
+                        >Episodio 41</span
+                      >
+                      <span class="text-xs text-[#4d7399] font-medium"
+                        >28 Settembre 2023</span
+                      >
+                    </div>
+                    <h3
+                      class="text-lg font-bold text-[#0e141b] dark:text-white group-hover:text-primary transition-colors mb-2"
+                    >
+                      Protocolli di Rieducazione Temporo-Mandibolare
+                    </h3>
+                    <p
+                      class="text-sm text-[#4d7399] dark:text-slate-400 line-clamp-2"
+                    >
+                      Nuovi protocolli per la gestione dei disturbi ATM
+                      collegati alla postura del capo e del collo. Review
+                      sistematica della letteratura...
+                    </p>
+                  </div>
+                  <div class="flex justify-end mt-4">
+                    <button
+                      class="text-primary text-sm font-bold flex items-center gap-1 group/btn"
+                    >
+                      Leggi abstract
+                      <span
+                        class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-1 transition-transform"
+                        >arrow_forward</span
+                      >
+                    </button>
+                  </div>
+                </div>
+              </article>
+              <!-- Episode 40 -->
+              <article
+                class="group bg-white dark:bg-slate-900 rounded-xl border border-[#e7edf3] dark:border-slate-800 p-5 flex gap-6 hover:shadow-lg transition-all"
+              >
+                <div
+                  class="hidden sm:block w-48 h-32 rounded-lg bg-center bg-cover shrink-0"
+                  data-alt="Esercizio di equilibrio per la propriocezione"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD2-FXNvjaJLWDijY9KZXiH69av2ffeDW8JqzcSi9IBjl8U_yj59Bpp4aSF3aVbFu6TQvfU7UQS4XJIDhjDCFtTjcIF5Wfb1ikrrVe7azWPi8_HICE9vTDuuurMLMHElb5jsEHRWk9iwKJ4APlUZyIyX-31RWZIwip5QfW3rycbsDtgFBh5RhuZqeGtyaZa8rnVWzpm44mKdYk4H_ls5tNUuSC5HsgUqSIpULDFLmkR5lkiKdVRA-SJLxyTbZUVeNInabkUl3wvuAw');
+                  "
+                ></div>
+                <div class="flex-1 flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="text-xs font-bold text-primary uppercase tracking-wider"
+                        >Episodio 40</span
+                      >
+                      <span class="text-xs text-[#4d7399] font-medium"
+                        >12 Settembre 2023</span
+                      >
+                    </div>
+                    <h3
+                      class="text-lg font-bold text-[#0e141b] dark:text-white group-hover:text-primary transition-colors mb-2"
+                    >
+                      Integrazione Sensoriale e Controllo Posturale
+                    </h3>
+                    <p
+                      class="text-sm text-[#4d7399] dark:text-slate-400 line-clamp-2"
+                    >
+                      Come il sistema vestibolare e visivo influenzano la
+                      stabilità del core. Studio comparativo su atleti
+                      d'élite...
+                    </p>
+                  </div>
+                  <div class="flex justify-end mt-4">
+                    <button
+                      class="text-primary text-sm font-bold flex items-center gap-1 group/btn"
+                    >
+                      Leggi abstract
+                      <span
+                        class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-1 transition-transform"
+                        >arrow_forward</span
+                      >
+                    </button>
+                  </div>
+                </div>
+              </article>
+              <!-- Episode 39 -->
+              <article
+                class="group bg-white dark:bg-slate-900 rounded-xl border border-[#e7edf3] dark:border-slate-800 p-5 flex gap-6 hover:shadow-lg transition-all"
+              >
+                <div
+                  class="hidden sm:block w-48 h-32 rounded-lg bg-center bg-cover shrink-0"
+                  data-alt="Ricercatore che analizza dati biomeccanici su un computer"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCra5O1qe67ugnbYwf2gekegLpxAbxV2WX0Bmbi2Xk703GJXx0QQWdNv7hMjgBZ1ijBWk5rlWAGkIsYSkPPy788VA6aZMvwEgGz09od8FSjGQ4HOC29TNFywTYfVTI9Ik1eWBtZTuam2pxYktmg-4ajza5xcoFmFsaRuFaAzgFwHlcREidRgcZAcbZzLr38jxxabY_MkOdXLKED26AFgnT5ZG4SwlzAQfXFwKOO33Nqy2BxBEfzLW101d6AOVk7kzxICHeOlzuOZGk');
+                  "
+                ></div>
+                <div class="flex-1 flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="text-xs font-bold text-primary uppercase tracking-wider"
+                        >Episodio 39</span
+                      >
+                      <span class="text-xs text-[#4d7399] font-medium"
+                        >30 Agosto 2023</span
+                      >
+                    </div>
+                    <h3
+                      class="text-lg font-bold text-[#0e141b] dark:text-white group-hover:text-primary transition-colors mb-2"
+                    >
+                      Evoluzione del Cammino: Una Prospettiva Clinica
+                    </h3>
+                    <p
+                      class="text-sm text-[#4d7399] dark:text-slate-400 line-clamp-2"
+                    >
+                      Analisi cinematica della deambulazione in popolazioni
+                      sedentarie vs attive. Implicazioni per la longevità
+                      articolare...
+                    </p>
+                  </div>
+                  <div class="flex justify-end mt-4">
+                    <button
+                      class="text-primary text-sm font-bold flex items-center gap-1 group/btn"
+                    >
+                      Leggi abstract
+                      <span
+                        class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-1 transition-transform"
+                        >arrow_forward</span
+                      >
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <!-- Pagination -->
+            <div class="mt-12 flex justify-center gap-2">
+              <button
+                class="w-10 h-10 rounded-lg flex items-center justify-center bg-primary text-white font-bold"
+              >
+                1
+              </button>
+              <button
+                class="w-10 h-10 rounded-lg flex items-center justify-center bg-white dark:bg-slate-800 border border-[#e7edf3] dark:border-slate-700 text-[#0e141b] dark:text-white font-bold hover:border-primary"
+              >
+                2
+              </button>
+              <button
+                class="w-10 h-10 rounded-lg flex items-center justify-center bg-white dark:bg-slate-800 border border-[#e7edf3] dark:border-slate-700 text-[#0e141b] dark:text-white font-bold hover:border-primary"
+              >
+                3
+              </button>
+              <span class="flex items-center px-2">...</span>
+              <button
+                class="w-10 h-10 rounded-lg flex items-center justify-center bg-white dark:bg-slate-800 border border-[#e7edf3] dark:border-slate-700 text-[#0e141b] dark:text-white font-bold hover:border-primary"
+              >
+                12
+              </button>
+            </div>
+          </div>
+          <!-- Sidebar / CTA -->
+          <aside class="w-full lg:w-80 shrink-0">
+            <div class="sticky top-24 space-y-6">
+              <!-- Book Promo -->
+              <div
+                class="bg-gradient-to-br from-[#2a8aea] to-[#1a5fb4] rounded-xl p-8 text-white shadow-xl shadow-primary/20"
+              >
+                <div class="relative mb-6 flex justify-center">
+                  <div
+                    class="w-40 h-56 bg-white rounded-r-lg shadow-2xl relative overflow-hidden group"
+                  >
+                    <div
+                      class="absolute inset-0 bg-gradient-to-r from-black/10 to-transparent"
+                    ></div>
+                    <div class="p-4 flex flex-col h-full">
+                      <div
+                        class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center mb-4"
+                      >
+                        <span
+                          class="material-symbols-outlined text-primary text-[16px]"
+                          >health_and_safety</span
+                        >
+                      </div>
+                      <h4
+                        class="text-[#0e141b] text-sm font-black leading-tight mb-2"
+                      >
+                        Il Corpo, un mondo da scoprire
+                      </h4>
+                      <p
+                        class="text-[10px] text-[#4d7399] font-medium leading-tight"
+                      >
+                        Guida completa alla salute posturale moderna.
+                      </p>
+                      <div class="mt-auto border-t border-[#e7edf3] pt-2">
+                        <p class="text-[8px] text-[#0e141b]/60">
+                          posturacorretta.org
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h3
+                  class="text-xl font-extrabold mb-2 text-center leading-tight"
+                >
+                  Migliora la tua postura oggi
+                </h3>
+                <p class="text-sm text-white/80 mb-6 text-center">
+                  Ottieni la nostra guida definitiva basata sulle ultime
+                  ricerche del Progetto Postura.
+                </p>
+                <button
+                  class="w-full h-12 bg-white text-primary font-bold rounded-lg hover:bg-slate-50 transition-colors shadow-lg"
+                >
+                  Acquista il Libro
+                </button>
+              </div>
+              <!-- Newsletter -->
+              <div
+                class="bg-white dark:bg-slate-900 border border-[#e7edf3] dark:border-slate-800 rounded-xl p-6"
+              >
+                <h4 class="text-[#0e141b] dark:text-white font-bold mb-2">
+                  Non perdere le novità
+                </h4>
+                <p class="text-sm text-[#4d7399] dark:text-slate-400 mb-4">
+                  Ricevi un riassunto settimanale delle nuove ricerche.
+                </p>
+                <div class="space-y-3">
+                  <input
+                    class="w-full h-10 px-4 rounded-lg bg-[#e7edf3] dark:bg-slate-800 border-none text-sm placeholder:text-[#4d7399] focus:ring-1 focus:ring-primary"
+                    placeholder="Email"
+                    type="email"
+                  />
+                  <button
+                    class="w-full h-10 bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-white font-bold text-sm rounded-lg hover:bg-[#d0dbe7] dark:hover:bg-slate-700 transition-colors"
+                  >
+                    Iscriviti
+                  </button>
+                </div>
+              </div>
+              <!-- Tags / Categories -->
+              <div class="p-2">
+                <h4
+                  class="text-xs font-black uppercase tracking-widest text-[#4d7399] mb-4"
+                >
+                  Temi Caldi
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  <a
+                    class="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-300 hover:bg-primary hover:text-white transition-colors"
+                    href="#"
+                    >#Biohacking</a
+                  >
+                  <a
+                    class="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-300 hover:bg-primary hover:text-white transition-colors"
+                    href="#"
+                    >#Sciatica</a
+                  >
+                  <a
+                    class="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-300 hover:bg-primary hover:text-white transition-colors"
+                    href="#"
+                    >#Longevity</a
+                  >
+                  <a
+                    class="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#0e141b] dark:text-slate-300 hover:bg-primary hover:text-white transition-colors"
+                    href="#"
+                    >#Ergonomia</a
+                  >
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+      <!-- Footer -->
+      <footer
+        class="mt-20 border-t border-[#e7edf3] dark:border-slate-800 py-12 bg-white dark:bg-slate-950"
+      >
+        <div
+          class="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8"
+        >
+          <div class="flex flex-col items-center md:items-start gap-4">
+            <div class="flex items-center gap-2 text-primary">
+              <span class="material-symbols-outlined">shield</span>
+              <span
+                class="font-extrabold text-lg text-[#0e141b] dark:text-white"
+                >posturacorretta.org</span
+              >
+            </div>
+            <p class="text-sm text-[#4d7399] dark:text-slate-400">
+              © 2023 Progetto Postura. Tutti i diritti riservati.
+            </p>
+          </div>
+          <div class="flex gap-8">
+            <a class="text-sm text-[#4d7399] hover:text-primary" href="#"
+              >Privacy Policy</a
+            >
+            <a class="text-sm text-[#4d7399] hover:text-primary" href="#"
+              >Termini di Servizio</a
+            >
+            <a class="text-sm text-[#4d7399] hover:text-primary" href="#"
+              >Contatti</a
+            >
+          </div>
+          <div class="flex gap-4">
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#4d7399]"
+            >
+              <span class="material-symbols-outlined text-[18px]">share</span>
+            </button>
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#4d7399]"
+            >
+              <span class="material-symbols-outlined text-[18px]">mail</span>
+            </button>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
