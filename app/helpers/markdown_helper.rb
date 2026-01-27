@@ -35,10 +35,13 @@ module MarkdownHelper
       underline:          true,
       highlight:          true,
       quote:              true,
-      footnotes:          true
+      footnotes:          true,
+      lax_spacing:        true,
+      space_after_headers: true
     )
 
-    source = text.to_s.gsub(YOUTUBE_SHORTCODE_RE) do
+    source = text.to_s.gsub(/\r\n?/, "\n")
+    source = source.gsub(YOUTUBE_SHORTCODE_RE) do
       attrs = Regexp.last_match(1)
       youtube_token_for(attrs) || ""
     end
