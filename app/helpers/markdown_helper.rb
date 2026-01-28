@@ -40,7 +40,7 @@ module MarkdownHelper
       space_after_headers: true
     )
 
-    source = text.to_s.gsub(/\r\n?/, "\n")
+    source = normalize_markdown_lines(text.to_s)
     source = source.gsub(YOUTUBE_SHORTCODE_RE) do
       attrs = Regexp.last_match(1)
       youtube_token_for(attrs) || ""
@@ -64,6 +64,50 @@ module MarkdownHelper
   end
 
   private
+  def normalize_markdown_lines(text)
+    lines = text.to_s.gsub(/\r\n?/, "\n").split("\n", -1)
+    out = []
+    buffer = []
+    in_fence = false
+
+    flush_paragraph = lambda do
+      return if buffer.empty?
+      out << buffer.join("  \n")
+      buffer.clear
+    end
+
+    lines.each do |line|
+      if line.start_with?("```")
+        flush_paragraph.call
+        out << line
+        in_fence = !in_fence
+        next
+      end
+
+      if in_fence
+        out << line
+        next
+      end
+
+      if line.strip.empty?
+        flush_paragraph.call
+        out << ""
+        next
+      end
+
+      if line.match?(/^\s*(?:[-*+]|\\d+\.)\s+/) || line.start_with?(">") || line.start_with?("#")
+        flush_paragraph.call
+        out << line
+        next
+      end
+
+      buffer << line
+    end
+
+    flush_paragraph.call
+    out.join("\n")
+  end
+
 
   def permitted_tags
     %w[p br strong em a ul ol li pre code blockquote h1 h2 h3 h4 h5 h6
