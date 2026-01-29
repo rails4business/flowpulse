@@ -18,16 +18,13 @@ module TaxbranchesHelper
       path = idx ? path[idx..] : path
     end
 
-    # Se c'è solo un elemento (domain == node) → niente breadcrumb
-    return "" if path.size <= 1
-
-    content_tag :nav, aria: { label: "breadcrumb" }, class: "mb-2 text-sm text-gray-500" do
+    content_tag :nav, aria: { label: "breadcrumb" }, class: "mb-2 text-sm text-slate-500 dark:text-slate-400" do
       safe_join(
         path.map.with_index do |branch, i|
           last = (i == path.size - 1)
 
           if last
-            content_tag(:span, branch.display_label, class: "font-semibold text-gray-900")
+            content_tag(:span, branch.display_label, class: "font-semibold text-slate-900 dark:text-white")
           else
             link_to(branch.display_label, superadmin_taxbranch_path(branch), class: "hover:underline") +
               content_tag(:span, " / ", class: "mx-1 text-gray-400")

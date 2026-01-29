@@ -9,9 +9,9 @@
     <nav class="text-sm text-slate-600">
       <% if Current.domain&.taxbranch %>
         <%= taxbranch_breadcrumb(
-      @post.taxbranch,
-      starting_node: Current.domain&.taxbranch
-    ) %>
+              @taxbranch,
+              starting_node: Current.domain&.taxbranch
+            ) %>
       <% else %>
         <%= taxbranch_breadcrumb(@taxbranch_node) %>
       <% end %>
@@ -323,5 +323,4 @@
     </p>
   <% end %>
 </div>
-
 
