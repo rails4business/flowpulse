@@ -8,7 +8,7 @@
   <% parent_branch = @post.taxbranch.parent %>
   <% child_cta_taxbranch = @post.taxbranch.children.find { |child| child.post.present? && child.visible_and_published_for?(@post.lead) } %>
   <% child_cta_post = child_cta_taxbranch&.post %>
-  <% hero_image_url = @post.thumb_url.presence || @post.cover_url.presence %>
+  <% hero_image_url = @post.thumb_url.presence || @post.horizontal_cover_url.presence %>
 
   <% raw_markdown = markdown(@post.content_md.to_s) %>
   <% preview_plain = strip_tags(raw_markdown) %>

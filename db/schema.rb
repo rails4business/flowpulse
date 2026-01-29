@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_29_133536) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_29_144150) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -327,9 +327,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_29_133536) do
     t.string "banner_url"
     t.text "content"
     t.text "content_md"
-    t.string "cover_url"
     t.datetime "created_at", null: false
     t.text "description"
+    t.string "horizontal_cover_url"
     t.bigint "lead_id", null: false
     t.text "mermaid"
     t.jsonb "meta", default: {}
@@ -339,6 +339,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_29_133536) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.string "url_media_content"
+    t.string "vertical_cover_url"
     t.index ["lead_id"], name: "index_posts_on_lead_id"
     t.index ["meta"], name: "index_posts_on_meta", using: :gin
     t.index ["slug"], name: "index_posts_on_slug", unique: true

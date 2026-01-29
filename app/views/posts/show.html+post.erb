@@ -91,9 +91,9 @@
     <%# end %>
 
     <!-- Cover -->
-    <% if @post.cover_url.present? %>
+    <% if @post.horizontal_cover_url.present? %>
       <div class="mb-10">
-        <img src="<%= @post.cover_url %>"
+        <img src="<%= @post.horizontal_cover_url %>"
              alt="<%= @post.title %>"
              class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-sm">
       </div>

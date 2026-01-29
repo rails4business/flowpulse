@@ -176,9 +176,9 @@
                 <div class="exercise-card-media">
                   <% if has_media && (embed = media_embed(child_post.url_media_content)).present? %>
                     <%= embed %>
-                  <% elsif child_post.cover_url.present? %>
+                  <% elsif child_post.horizontal_cover_url.present? %>
                     <img
-                      src="<%= child_post.cover_url %>"
+                      src="<%= child_post.horizontal_cover_url %>"
                       alt="<%= child_post.title %>"
                     >
                   <% elsif @post.thumb_url.present? %>
