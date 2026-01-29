@@ -148,11 +148,11 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
-        <% generaimpresa_path = @lead_domain ? generaimpresa_superadmin_domain_path(@lead_domain) : superadmin_domains_path %>
+        <% generaimpresa_path = @lead_domain ? mapservice_superadmin_domain_path(@lead_domain) : superadmin_domains_path %>
         <%= link_to generaimpresa_path,
                     class: "flex items-center gap-2 rounded-xl h-10 px-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white text-sm font-semibold hover:bg-gray-50 dark:hover:bg-gray-700" do %>
           <span class="material-symbols-outlined text-[18px]">map</span>
-          Generaimpresa
+          Mapservices
         <% end %>
         <%= link_to weekplan_home_path(lead_id: @lead.id),
                     class: "inline-flex items-center justify-center rounded-xl h-10 px-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white text-sm font-semibold hover:bg-gray-50 dark:hover:bg-gray-700",

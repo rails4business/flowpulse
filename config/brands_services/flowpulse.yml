@@ -52,7 +52,7 @@ brands:
     title: "GeneraImpresa"
     description: "Strumenti e processi per fare impresa"
     image_url: "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
-    url: "domains/generaimpresa#home"
+    url: "domains/mapservice#home"
     category: "lavoro"
     visible: false
 
@@ -65,10 +65,10 @@ brands:
     visible: false
 
   - host: "rails4b.com"
-    title: "Rails4B"
+    title: "TestRoute"
     description: "Toolkit e guide per imprenditori che usano Rails"
     image_url: "https://images.pexels.com/photos/6424584/pexels-photo-6424584.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop"
-    url: "domains/rails4b#home"
+    url: "domains/testroute#home"
     category: "lavoro"
     visible: false
 

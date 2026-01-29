@@ -3,7 +3,7 @@ module Superadmin
     include RequireSuperadmin
 
   layout "generaimpresa"
-  before_action :set_domain, only: %i[ show edit update destroy rails4b generaimpresa journey_map impegno create_station ]
+  before_action :set_domain, only: %i[ show edit update destroy rails4b testroute mapservice generaimpresa journey_map impegno create_station ]
   # GET /domains or /domains.json
   def index
     @domains = Domain.all
@@ -13,7 +13,7 @@ module Superadmin
   def show
   end
 
-  def rails4b
+  def testroute
     @main_taxbranch = @domain.taxbranch
     @stations = @main_taxbranch ? @main_taxbranch.children : Taxbranch.none
     station_ids = @stations.map(&:id)
@@ -40,7 +40,11 @@ module Superadmin
     @route_items = parse_route_items(params[:route])
   end
 
-  def generaimpresa
+  def rails4b
+    redirect_to testroute_superadmin_domain_path(@domain, request.query_parameters)
+  end
+
+  def mapservice
     @main_taxbranch = @domain.taxbranch
     @stations = @main_taxbranch ? @main_taxbranch.children : Taxbranch.none
     station_ids = @stations.map(&:id)
@@ -61,6 +65,11 @@ module Superadmin
       else
         Journey.none
       end
+    render :generaimpresa
+  end
+
+  def generaimpresa
+    redirect_to mapservice_superadmin_domain_path(@domain, request.query_parameters)
   end
 
   def journey_map
@@ -176,7 +185,7 @@ module Superadmin
     respond_to do |format|
       format.json { render json: { taxbranch_id: taxbranch.id }, status: :created }
       format.html do
-        redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1),
+        redirect_to mapservice_superadmin_domain_path(@domain, edit_map: 1),
                     notice: "Stazione creata."
       end
     end
@@ -184,7 +193,7 @@ module Superadmin
     respond_to do |format|
       format.json { render json: { error: e.message }, status: :unprocessable_entity }
       format.html do
-        redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1),
+        redirect_to mapservice_superadmin_domain_path(@domain, edit_map: 1),
                     alert: e.message
       end
     end
@@ -197,7 +206,7 @@ module Superadmin
     end_service = Service.find_by(id: rail_params[:end_service_id])
 
     if start_service.nil? || end_service.nil?
-      redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1, railservices: 1),
+      redirect_to mapservice_superadmin_domain_path(@domain, edit_map: 1, railservices: 1),
                   alert: "Seleziona due services validi."
       return
     end
@@ -216,10 +225,10 @@ module Superadmin
       journeys_status: :problema
     )
 
-    redirect_to generaimpresa_superadmin_domain_path(@domain),
+    redirect_to mapservice_superadmin_domain_path(@domain),
                 notice: "Railservice creato."
   rescue ActiveRecord::RecordInvalid => e
-    redirect_to generaimpresa_superadmin_domain_path(@domain, edit_map: 1, railservices: 1),
+    redirect_to mapservice_superadmin_domain_path(@domain, edit_map: 1, railservices: 1),
                 alert: e.message
   end
 

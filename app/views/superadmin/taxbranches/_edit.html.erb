@@ -39,9 +39,15 @@
  
    
    
-    <div>
+  <div>
     <%= f.label :notes, "Note interne", class: "block text-sm font-medium text-gray-700 mb-1" %>
     <%= f.text_area :notes, rows: 3, class: "w-full border rounded px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= f.label :generaimpresa_md, "GeneraImpresa (MD interno)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_area :generaimpresa_md, rows: 8, class: "w-full border rounded px-3 py-2" %>
+    <p class="mt-1 text-xs text-gray-500">Documento interno di progettazione (non pubblico).</p>
   </div>
   <div data-controller="taxbranch-slug">
   <div class="mb-4">

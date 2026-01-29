@@ -1,4 +1,4 @@
-<% content_for :title, "Rails4B · #{@domain.title.presence || @domain.host}" %>
+<% content_for :title, "TestRoute · #{@domain.title.presence || @domain.host}" %>
 
 
 
@@ -81,10 +81,10 @@
       </div>
       <h2 class="text-2xl font-bold text-white mb-2">Nessun tragitto selezionato</h2>
       <p class="text-[#9dabb9] max-w-md mx-auto mb-8">
-        Seleziona un Service di partenza e uno di arrivo dalla mappa "Generaimpresa" per visualizzare i Rails che li collegano.
+        Seleziona un Service di partenza e uno di arrivo dalla mappa "Mapservices" per visualizzare i Rails che li collegano.
       </p>
       
-      <%= link_to generaimpresa_superadmin_domain_path(@domain), 
+      <%= link_to mapservice_superadmin_domain_path(@domain), 
                   class: "inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20" do %>
         <span>Vai alla Mappa</span>
         <span class="material-symbols-outlined text-lg">arrow_forward</span>

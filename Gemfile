@@ -77,3 +77,4 @@ gem "lexxy", "~> 0.1.4.beta" # Need to specify the version since it's a pre-rele
 gem "rouge"
 gem "redcarpet"
 gem "pundit"
+gem "csv"

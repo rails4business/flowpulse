@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_19_141457) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_28_125145) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -440,6 +440,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_19_141457) do
   create_table "taxbranches", force: :cascade do |t|
     t.string "ancestry"
     t.datetime "created_at", null: false
+    t.text "generaimpresa_md"
     t.boolean "home_nav"
     t.bigint "lead_id", null: false
     t.bigint "link_child_taxbranch_id"

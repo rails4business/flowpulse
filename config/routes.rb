@@ -75,7 +75,9 @@ Rails.application.routes.draw do
     end
     resources :domains do
       member do
+        get :testroute
         get :rails4b
+        get :mapservice
         get :generaimpresa
         get :journey_map
         get :impegno
@@ -90,6 +92,12 @@ Rails.application.routes.draw do
       member do
         get  :journeys
         get  :positioning
+        get  :generaimpresa
+        get  :rails4b
+        get  :post
+        get  :export_import
+        get  :export
+        post :import
         patch :move_up
         patch :move_down
         patch :move_left

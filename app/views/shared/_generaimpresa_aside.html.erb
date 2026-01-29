@@ -28,15 +28,15 @@
 
     <div class="flex flex-col gap-2">
       <% if @domain.present? %>
-        <%= link_to generaimpresa_superadmin_domain_path(@domain),
-                    class: "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors #{current_page?(generaimpresa_superadmin_domain_path(@domain)) ? "bg-primary/20 border border-primary/30" : "hover:bg-[#283039]"}" do %>
-          <span class="material-symbols-outlined #{current_page?(generaimpresa_superadmin_domain_path(@domain)) ? "text-primary" : "text-white"}">map</span>
-          <p class="text-white text-sm font-medium">Generaimpresa</p>
+        <%= link_to mapservice_superadmin_domain_path(@domain),
+                    class: "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors #{current_page?(mapservice_superadmin_domain_path(@domain)) ? "bg-primary/20 border border-primary/30" : "hover:bg-[#283039]"}" do %>
+          <span class="material-symbols-outlined #{current_page?(mapservice_superadmin_domain_path(@domain)) ? "text-primary" : "text-white"}">map</span>
+          <p class="text-white text-sm font-medium">Mapservices</p>
         <% end %>
-        <%= link_to rails4b_superadmin_domain_path(@domain),
-                    class: "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors #{current_page?(rails4b_superadmin_domain_path(@domain)) ? "bg-primary/20 border border-primary/30" : "hover:bg-[#283039]"}" do %>
-          <span class="material-symbols-outlined #{current_page?(rails4b_superadmin_domain_path(@domain)) ? "text-primary" : "text-white"}">polyline</span>
-          <p class="text-white text-sm font-medium">Rails4B</p>
+        <%= link_to testroute_superadmin_domain_path(@domain),
+                    class: "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors #{current_page?(testroute_superadmin_domain_path(@domain)) ? "bg-primary/20 border border-primary/30" : "hover:bg-[#283039]"}" do %>
+          <span class="material-symbols-outlined #{current_page?(testroute_superadmin_domain_path(@domain)) ? "text-primary" : "text-white"}">polyline</span>
+          <p class="text-white text-sm font-medium">TestRoute</p>
         <% end %>
 
         <%= link_to impegno_superadmin_domain_path(@domain),
@@ -72,12 +72,12 @@
         <%= link_to superadmin_domains_path,
                     class: "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors hover:bg-[#283039]" do %>
           <span class="material-symbols-outlined text-white">map</span>
-          <p class="text-white text-sm font-medium">Generaimpresa</p>
+          <p class="text-white text-sm font-medium">Mapservices</p>
         <% end %>
         <%= link_to superadmin_domains_path,
                     class: "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors hover:bg-[#283039]" do %>
           <span class="material-symbols-outlined text-white">polyline</span>
-          <p class="text-white text-sm font-medium">Rails4B</p>
+          <p class="text-white text-sm font-medium">TestRoute</p>
         <% end %>
 
         <%= link_to superadmin_domains_path,

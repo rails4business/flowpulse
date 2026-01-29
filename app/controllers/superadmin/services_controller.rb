@@ -2,7 +2,7 @@ module Superadmin
 class ServicesController < ApplicationController
   layout -> {
     next "modal" if turbo_frame_request?
-    action_name == "servicemaps" ? "generaimpresa" : "application"
+    %w[rails4b servicemaps].include?(action_name) ? "generaimpresa" : "application"
   }
   before_action :set_service, only: %i[ show edit update destroy rails4b generaimpresa servicemaps ]
   before_action :load_taxbranch, only: %i[ index new create ]
@@ -32,9 +32,8 @@ class ServicesController < ApplicationController
   end
 
   def rails4b
-    @taxbranch = @service.taxbranch
-    @journeys = @service.journeys.order(updated_at: :desc).limit(12)
-    @upcoming_eventdates = @service.eventdates.order(:date_start).limit(20)
+    load_servicemaps_data
+    render :servicemaps
   end
 
   def generaimpresa
@@ -48,32 +47,7 @@ class ServicesController < ApplicationController
   end
 
   def servicemaps
-    @main_taxbranch = @service.taxbranch
-    @builders_journeys = @service.journeys.cycle_template.includes(:eventdates)
-    @builders_journey = @builders_journeys.order(updated_at: :desc).first
-    @fallback_journey = @service.journeys.includes(:eventdates).order(updated_at: :desc).first
-    @all_service_journeys = @service.journeys.order(updated_at: :desc)
-    @drivers_journeys = @service.journeys.cycle_instance
-    journey_ids = @builders_journeys.select(:id, :taxbranch_id, :end_taxbranch_id)
-    station_ids = journey_ids.flat_map { |j| [j.taxbranch_id, j.end_taxbranch_id] }.compact.uniq
-    station_ids << @service.taxbranch_id if @service.taxbranch_id.present?
-    station_ids.uniq!
-    @stations = Taxbranch.where(id: station_ids)
-
-    @journey_counts = if station_ids.any?
-                        @builders_journeys.where(taxbranch_id: station_ids).group(:taxbranch_id).count
-                      else
-                        {}
-                      end
-    @journey_links = @builders_journeys
-      .where(taxbranch_id: station_ids, end_taxbranch_id: station_ids)
-      .where.not(end_taxbranch_id: nil)
-      .select(:id, :taxbranch_id, :end_taxbranch_id)
-
-    if @main_taxbranch&.respond_to?(:self_and_ancestors)
-      @domain = @main_taxbranch.self_and_ancestors.includes(:domains).map(&:domains).flatten.first
-    end
-    @domain ||= Domain.first
+    redirect_to rails4b_superadmin_service_path(@service), status: :moved_permanently
   end
 
   # GET /services/new
@@ -167,3 +141,31 @@ class ServicesController < ApplicationController
     end
 end
 end
+  def load_servicemaps_data
+    @main_taxbranch = @service.taxbranch
+    @builders_journeys = @service.journeys.cycle_template.includes(:eventdates)
+    @builders_journey = @builders_journeys.order(updated_at: :desc).first
+    @fallback_journey = @service.journeys.includes(:eventdates).order(updated_at: :desc).first
+    @all_service_journeys = @service.journeys.order(updated_at: :desc)
+    @drivers_journeys = @service.journeys.cycle_instance
+    journey_ids = @builders_journeys.select(:id, :taxbranch_id, :end_taxbranch_id)
+    station_ids = journey_ids.flat_map { |j| [j.taxbranch_id, j.end_taxbranch_id] }.compact.uniq
+    station_ids << @service.taxbranch_id if @service.taxbranch_id.present?
+    station_ids.uniq!
+    @stations = Taxbranch.where(id: station_ids)
+
+    @journey_counts = if station_ids.any?
+                        @builders_journeys.where(taxbranch_id: station_ids).group(:taxbranch_id).count
+                      else
+                        {}
+                      end
+    @journey_links = @builders_journeys
+      .where(taxbranch_id: station_ids, end_taxbranch_id: station_ids)
+      .where.not(end_taxbranch_id: nil)
+      .select(:id, :taxbranch_id, :end_taxbranch_id)
+
+    if @main_taxbranch&.respond_to?(:self_and_ancestors)
+      @domain = @main_taxbranch.self_and_ancestors.includes(:domains).map(&:domains).flatten.first
+    end
+    @domain ||= Domain.first
+  end

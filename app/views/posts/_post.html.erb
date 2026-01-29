@@ -33,7 +33,7 @@
   </div>
   <div>
     <strong class="block font-medium mb-1">Published at:</strong>
-    <%= post.published_at %>
+    <%= post.taxbranch&.published_at %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Taxbranch:</strong>
@@ -41,7 +41,7 @@
   </div>
   <div>
     <strong class="block font-medium mb-1">Status:</strong>
-    <%= post.status %>
+    <%= post.taxbranch&.status %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Meta:</strong>
