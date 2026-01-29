@@ -143,7 +143,7 @@
         <% if node.post&.persisted? %>
           <%= link_to post_path(node.post),
                       class: "ml-1 text-xs text-slate-600 hover:underline" do %>
-            post_id: <%= node.post.id %> · <%= node.post.title.presence&.truncate(20) || node.post.slug.truncate(20) || "Post" %>
+            post_id: <%= node.post.id %> · <%= node.post.title.presence&.truncate(20) || node.post.slug.to_s.truncate(20) || "Post" %>
           <% end %>
         <% else %>
           <span class="ml-1 text-xs text-slate-400">post_id: —</span>
@@ -278,9 +278,11 @@
 
     <%# FIGLI: visibili solo quando il <details> è aperto %>
     <% if node.children.exists? %>
+      <% children_scope = node.children.ordered %>
+      <% children_scope = children_scope.reorder(position: :desc) if node.order_des %>
       <ul class="ml-4 mt-1 space-y-1">
         <%= render partial: "node",
-                   collection: node.children.ordered,
+                   collection: children_scope,
                    as: :node,
                    locals: { expanded_ids: expanded_ids } %>
       </ul>

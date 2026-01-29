@@ -404,7 +404,7 @@ end
       :ancestry, :position, :meta, :parent_id, :home_nav,
       :x_coordinated, :y_coordinated,
       :positioning_tag_public, :service_certificable,
-      :status, :visibility, :phase, :published_at, :scheduled_at,
+      :status, :visibility, :phase, :published_at, :scheduled_at, :order_des,
       :permission_access_roles, :generaimpresa_md, { permission_access_roles: [] }
     ])
   end

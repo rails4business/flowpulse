@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_28_125145) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_29_133536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -446,6 +446,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_28_125145) do
     t.bigint "link_child_taxbranch_id"
     t.jsonb "meta"
     t.string "notes"
+    t.boolean "order_des", default: false
     t.jsonb "permission_access_roles", default: [], null: false
     t.integer "phase", default: 0, null: false
     t.integer "position"

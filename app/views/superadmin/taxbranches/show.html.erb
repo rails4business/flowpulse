@@ -127,11 +127,25 @@
       <p class="mt-2 text-xs text-slate-500">
         Controlla chi può vedere i contenuti di questo ramo (post, percorsi, ecc.).
       </p>
+      <div class="mt-2 flex items-center gap-2 text-xs text-slate-600">
+        <% order_title = @taxbranch.order_des ? "Ordine discendente" : "Ordine ascendente" %>
+        <% order_icon = @taxbranch.order_des ? "south" : "north" %>
+        <span class="text-slate-400">Ordine figli:</span>
+        <%= button_to superadmin_taxbranch_path(@taxbranch),
+                      method: :patch,
+                      params: { taxbranch: { order_des: !@taxbranch.order_des } },
+                      form_class: "inline",
+                      class: "inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700 hover:bg-slate-200",
+                      title: order_title do %>
+          <span class="material-symbols-outlined text-[12px]"><%= order_icon %></span>
+          <%= @taxbranch.order_des ? "Disc" : "Asc" %>
+        <% end %>
+      </div>
     </div>
 
     <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 flex items-center gap-1">
-       
+        <span class="material-symbols-outlined text-[14px]">flag</span>
         Fase:
         <% if @taxbranch.phase.present? %>
           <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
@@ -149,7 +163,8 @@
 
     <div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
       <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 flex items-center gap-1">
-      Pubblicato:
+        <span class="material-symbols-outlined text-[14px]">schedule</span>
+        Pubblicato:
         <% if @taxbranch.published_at.present? %>
           <%= @taxbranch.published_at.strftime("%d/%m/%Y %H:%M") %>
         <% else %>
@@ -177,7 +192,7 @@
                   url: superadmin_taxbranch_path(@taxbranch),
                   method: :patch,
                   local: true,
-                  class: "grid gap-4 md:grid-cols-5 items-end" do |f| %>
+                  class: "grid gap-4 md:grid-cols-6 items-end" do |f| %>
 
     <div>
       <%= f.label :status, "Stato", class: "block text-xs font-medium text-slate-600" %>
@@ -213,6 +228,14 @@
       <%= f.datetime_local_field :published_at,
                                  value: @taxbranch.published_at&.strftime("%Y-%m-%dT%H:%M"),
                                  class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :order_des, "Ordine figli", class: "block text-xs font-medium text-slate-600" %>
+      <%= f.select :order_des,
+                   [["Ascendente", false], ["Discendente", true]],
+                   { selected: @taxbranch.order_des },
+                   class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
     </div>
 
     <div class="md:text-right">
