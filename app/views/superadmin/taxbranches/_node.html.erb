@@ -26,19 +26,23 @@
         <% dom = node.domains.first %>
 
         <% if dom %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-            <%= link_to dom.host,
-                        superadmin_domains_path(taxbranch_id: node.id),
-                        class: "text-blue-600 hover:underline" %>
+          <span title="<%= dom.host %>" class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+            <%= link_to superadmin_domains_path(taxbranch_id: node.id),
+                        class: "text-blue-600 hover:underline inline-flex items-center gap-1" do %>
+              <span class="material-symbols-outlined text-[12px]">language</span>
+              <span class="sr-only"><%= dom.host %></span>
+            <% end %>
           </span>
         <% else %>
           <% src = node.effective_domain_taxbranch %>
 
           <% if src.present? %>
-            <span class="ml-1 inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-              <%= link_to src.display_label,
-                          superadmin_domains_path(taxbranch_id: src.id),
-                          class: "underline" %>
+            <span title="Eredita da <%= src.display_label %>" class="ml-1 inline-flex items-center rounded-full bg-green-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+              <%= link_to superadmin_domains_path(taxbranch_id: src.id),
+                          class: "underline inline-flex items-center gap-1" do %>
+                <span class="material-symbols-outlined text-[12px]">call_split</span>
+                <span class="sr-only"><%= src.display_label %></span>
+              <% end %>
             </span>
           <% elsif node.slug_category == "brand" %>
             <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
@@ -49,35 +53,56 @@
           <% end %>
         <% end %>
 
-        <!-- Categoria (badge colorato in base alla slug_category) -->
+        <!-- Position + Edit -->
+        <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600">
+          <%= node.position %>
+        </span>
+        <%= link_to edit_superadmin_taxbranch_path(node),
+                    class: "ml-1 inline-flex items-center text-slate-500 hover:text-blue-600",
+                    title: "Modifica taxbranch" do %>
+          <span class="material-symbols-outlined text-[14px]">edit</span>
+        <% end %>
+
+        <!-- Identità: tx_id + category + label -->
+        <span class="ml-1 text-[11px] text-slate-600 font-medium">
+          tx_id: <%= node.id %>
+        </span>
         <span
-          class="ml-1 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium"
+          class="ml-1 inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium"
           style="<%= pastel_style_for_category(node.slug_category) %>"
         >
           <%= node.slug_category.presence || "—" %>
         </span>
+        <%= link_to node.slug_label,
+                    superadmin_taxbranch_path(node),
+                    class: "ml-1 text-sm text-slate-800 font-medium truncate hover:underline" %>
 
-        <!-- Stato editoriale (taxbranch) -->
+        <!-- Stato editoriale (icona) -->
         <% case node.status %>
         <% when "published" %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-800">
-            Pubblicato
+          <span title="Pubblicato" class="ml-1 inline-flex items-center rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-800">
+            <span class="material-symbols-outlined text-[12px]">check_circle</span>
+            <span class="sr-only">Pubblicato</span>
           </span>
         <% when "draft" %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-800">
-            Bozza
+          <span title="Bozza" class="ml-1 inline-flex items-center rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+            <span class="material-symbols-outlined text-[12px]">edit</span>
+            <span class="sr-only">Bozza</span>
           </span>
         <% when "in_review" %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-medium text-sky-700">
-            Review
+          <span title="Review" class="ml-1 inline-flex items-center rounded-full bg-sky-100 px-1.5 py-0.5 text-[10px] font-medium text-sky-700">
+            <span class="material-symbols-outlined text-[12px]">rate_review</span>
+            <span class="sr-only">Review</span>
           </span>
         <% when "archived" %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-medium text-slate-700">
-            Archivio
+          <span title="Archivio" class="ml-1 inline-flex items-center rounded-full bg-slate-200 px-1.5 py-0.5 text-[10px] font-medium text-slate-700">
+            <span class="material-symbols-outlined text-[12px]">inventory_2</span>
+            <span class="sr-only">Archivio</span>
           </span>
         <% else %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-            <%= node.status.to_s.titleize %>
+          <span title="<%= node.status.to_s.titleize %>" class="ml-1 inline-flex items-center rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+            <span class="material-symbols-outlined text-[12px]">info</span>
+            <span class="sr-only"><%= node.status.to_s.titleize %></span>
           </span>
         <% end %>
 
@@ -91,53 +116,37 @@
              else node.visibility.to_s.titleize
              end %>
 
+        <% visibility_icon =
+             case node.visibility
+             when "private_node"      then "lock"
+             when "shared_node"       then "groups"
+             when "participants_only" then "badge"
+             when "public_node"       then "public"
+             else "info"
+             end %>
+
         <% if node.public_node? && node.post&.persisted? %>
           <%= link_to post_path(node.post),
-                      class: "ml-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100" do %>
-            <%= human_visibility %>
+                      title: human_visibility,
+                      class: "ml-1 inline-flex items-center rounded-full bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100" do %>
+            <span class="material-symbols-outlined text-[12px]"><%= visibility_icon %></span>
+            <span class="sr-only"><%= human_visibility %></span>
           <% end %>
         <% else %>
-          <span class="ml-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600">
-            <%= human_visibility %>
+          <span title="<%= human_visibility %>" class="ml-1 inline-flex items-center rounded-full bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+            <span class="material-symbols-outlined text-[12px]"><%= visibility_icon %></span>
+            <span class="sr-only"><%= human_visibility %></span>
           </span>
         <% end %>
 
-        <!-- Etichetta -->
-        <%= link_to "id: #{node.id} - #{node.slug_label}",
-                    superadmin_taxbranch_path(node),
-                    class: "text-sm text-slate-800 font-medium truncate hover:underline" %>
-
-        <!-- Link al post associato (se esiste) -->
-        <% if node&.post&.persisted? %>
-          <% is_published_public =
-               node.published? &&
-               node.public_node? &&
-               (node.published_at.nil? || node.published_at <= Time.current) %>
-
-          <% if is_published_public %>
-          
-       
-            
-      <%= link_to "📝",
-                        superadmin_taxbranch_path(node, anchor: "post-form"),
-                        title: "Modifica/crea post per questo nodo",
-                        class: "ml-1 text-slate-400 hover:text-blue-600" %>
-          
-            
-          <% else %>
-          <%= link_to "📄",
-                        post_path(node.post),
-                        title: "Vedi post pubblicato",
-                        class: "ml-1 text-emerald-600 hover:text-emerald-700" %>
-                           
-           
+        <span class="ml-2 text-slate-300">|</span>
+        <% if node.post&.persisted? %>
+          <%= link_to post_path(node.post),
+                      class: "ml-1 text-xs text-slate-600 hover:underline" do %>
+            post_id: <%= node.post.id %> · <%= node.post.title.presence || node.post.slug || "Post" %>
           <% end %>
         <% else %>
-          <%= link_to "📝",
-                      superadmin_taxbranch_path(node, anchor: "post-form"),
-                      title: "Crea post per questo nodo",
-                      class: "ml-1 text-slate-400 hover:text-blue-600" %>
-                     
+          <span class="ml-1 text-xs text-slate-400">post_id: —</span>
         <% end %>
 
         <!-- Metadati TAG / NAV -->
@@ -223,8 +232,6 @@
       <% next_node = node.lower_item  %>
 
       <div class="flex items-center gap-2 text-xs text-slate-500 shrink-0">
-        <%= link_to "✏️", edit_superadmin_taxbranch_path(node),
-              class: "hover:text-blue-600", title: "Modifica categoria" %>
         <%= link_to "＋ Figlio",
                   new_superadmin_taxbranch_path(parent_id: node.id),
                   class: "hover:text-green-700", title: "+ figlio" %>
