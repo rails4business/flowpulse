@@ -122,7 +122,9 @@
                      t.post&.persisted? &&
                      t.post&.title.present?
                    } %>
-                <% items = published + (upcoming && !published.include?(upcoming) ? [upcoming] : []) %>
+                <% items = [] %>
+                <% items << upcoming if upcoming.present? %>
+                <% items.concat(published.reject { |t| t == upcoming }) %>
                 <% items.each do |child| %>
                   <% child_post = child.post %>
                   <% next unless child_post&.persisted? %>

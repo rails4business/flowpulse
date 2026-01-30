@@ -1206,8 +1206,9 @@ SEI UN PROFESSIONISTA?</h4>
                        t.post&.persisted? &&
                        t.post&.title.present?
                      } %>
-                  <% items = published.first(2) %>
-                  <% items << upcoming if upcoming && !items.include?(upcoming) %>
+                  <% items = [] %>
+                  <% items << upcoming if upcoming.present? %>
+                  <% items.concat(published.reject { |t| t == upcoming }.first(2)) %>
 
                   <% items.each_with_index do |tax, idx| %>
                     <% post = tax.post %>
