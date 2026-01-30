@@ -103,6 +103,8 @@ Rails.application.routes.draw do
         patch :move_left
         patch :move_right
         post :set_link_child
+        delete :destroy_with_children
+        patch :reparent_children
       end
       resources :tag_positionings, only: [ :index, :create, :destroy ]
     end

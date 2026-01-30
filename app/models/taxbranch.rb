@@ -9,7 +9,7 @@ class Taxbranch < ApplicationRecord
   has_one  :post, inverse_of: :taxbranch, dependent: :destroy
   has_many :domains, dependent: :destroy
   has_many :eventdates, dependent: :destroy
-  has_one :service, dependent: :nullify
+  has_one :service, dependent: :restrict_with_error
   has_many :journeys, dependent: :destroy
   has_many :incoming_journeys, class_name: "Journey", foreign_key: :end_taxbranch_id, dependent: :nullify
   has_many :certificates, dependent: :restrict_with_exception

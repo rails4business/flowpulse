@@ -114,6 +114,12 @@
       </span>
     <% end %>
 
+    <%# badge data programmata %>
+    <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+      <span class="material-symbols-outlined text-[12px]">event</span>
+      <%= @taxbranch.scheduled_at.present? ? @taxbranch.scheduled_at.strftime("%d/%m/%Y %H:%M") : "—" %>
+    </span>
+
     <%# badge data pubblicazione %>
     <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
       <span class="material-symbols-outlined text-[12px]">schedule</span>

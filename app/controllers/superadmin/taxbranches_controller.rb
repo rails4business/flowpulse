@@ -7,7 +7,7 @@ module Superadmin
     before_action :set_taxbranch, only: %i[
       show edit update destroy journeys positioning set_link_child
       move_down move_up move_right move_left
-      generaimpresa post export_import export import rails4b
+      generaimpresa post export_import export import rails4b destroy_with_children reparent_children
     ]
     before_action :load_domains, only: %i[new edit create update]
     before_action :load_services_and_journeys, only: %i[new edit create update]
@@ -127,12 +127,47 @@ end
 
   # DELETE /taxbranches/1 or /taxbranches/1.json
   def destroy
+    return if handle_taxbranch_destroy_blockers(@taxbranch)
+
+    if @taxbranch.destroy
+      respond_to do |format|
+        format.html { redirect_to superadmin_taxbranches_path, notice: "Taxbranch was successfully destroyed.", status: :see_other }
+        format.json { head :no_content }
+      end
+    else
+      extra = @taxbranch.errors.full_messages.join(", ")
+      flash[:alert] = ("Impossibile eliminare il taxbranch. " \
+                       "Rimuovi prima: " + blockers.join(" · ") + (extra.present? ? " · #{extra}" : "")).html_safe
+      redirect_back fallback_location: superadmin_taxbranch_path(@taxbranch)
+    end
+  end
+
+  def destroy_with_children
+    return if handle_taxbranch_destroy_blockers(@taxbranch)
+
+    @taxbranch.destroy!
+    redirect_to superadmin_taxbranches_path, notice: "Taxbranch e subtree eliminati.", status: :see_other
+  end
+
+  def reparent_children
+    return if handle_taxbranch_destroy_blockers(@taxbranch)
+
+    parent = @taxbranch.parent
+    children = @taxbranch.children.ordered.to_a
+    child_ids = children.map(&:id)
+    children.each { |child| child.update(parent: parent) }
     @taxbranch.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to superadmin_taxbranches_path, notice: "Taxbranch was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    first_child = child_ids.first && Taxbranch.find_by(id: child_ids.first)
+    redirect_target =
+      if first_child.present?
+        superadmin_taxbranch_path(first_child)
+      elsif parent.present?
+        superadmin_taxbranch_path(parent)
+      else
+        superadmin_taxbranches_path
+      end
+    redirect_to(redirect_target, notice: "Taxbranch eliminato, figli spostati.", status: :see_other)
   end
   def move_up
     @taxbranch.move_higher
@@ -213,7 +248,10 @@ end
     csv = CSV.generate(headers: true) do |out|
       out << %w[
         slug slug_category slug_label parent_slug lead_id visibility status position home_nav
-        post_title post_content_md post_content post_slug post_lead_id
+        scheduled_at published_at order_des phase notes meta permission_access_roles positioning_tag_public
+        service_certificable x_coordinated y_coordinated link_child_slug
+        post_title post_description post_content_md post_content post_slug post_lead_id
+        post_thumb_url post_horizontal_cover_url post_vertical_cover_url post_banner_url post_url_media_content
       ]
       subtree.each do |tb|
         post = tb.post
@@ -227,11 +265,29 @@ end
           tb.status,
           tb.position,
           tb.home_nav,
+          tb.scheduled_at&.iso8601,
+          tb.published_at&.iso8601,
+          tb.order_des,
+          tb.phase,
+          tb.notes,
+          tb.meta&.to_json,
+          tb.permission_access_roles&.to_json,
+          tb.positioning_tag_public,
+          tb.service_certificable,
+          tb.x_coordinated,
+          tb.y_coordinated,
+          tb.link_child&.slug,
           post&.title,
+          post&.description,
           post&.content_md,
           post&.content,
           post&.slug,
-          post&.lead_id
+          post&.lead_id,
+          post&.thumb_url,
+          post&.horizontal_cover_url,
+          post&.vertical_cover_url,
+          post&.banner_url,
+          post&.url_media_content
         ]
       end
     end
@@ -250,7 +306,9 @@ end
       return
     end
 
-    rows = CSV.parse(file.read, headers: true)
+    raw = file.read
+    raw = raw.respond_to?(:encode) ? raw.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") : raw
+    rows = CSV.parse(raw, headers: true)
     results = { created: 0, updated: 0, skipped: 0, errors: [] }
     post_results = { created: 0, updated: 0, skipped: 0 }
     imported = []
@@ -258,6 +316,10 @@ end
 
     Taxbranch.transaction do
       rows.each_with_index do |row, idx|
+        row = row.to_h.transform_values do |val|
+          val.is_a?(String) ? val.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") : val
+        end
+        row = row.with_indifferent_access
         slug = row["slug"].to_s.strip
         if slug.blank?
           results[:errors] << "Riga #{idx + 2}: slug mancante."
@@ -265,14 +327,34 @@ end
         end
 
         tb = Taxbranch.find_by(slug: slug)
+        lead_id =
+          if row["lead_id"].present? && Lead.exists?(row["lead_id"])
+            row["lead_id"]
+          elsif lead_id_default.present? && Lead.exists?(lead_id_default)
+            lead_id_default
+          else
+            nil
+          end
+
         attrs = {
           slug: slug,
           slug_category: row["slug_category"].presence,
           slug_label: row["slug_label"].presence,
-          lead_id: row["lead_id"].presence || lead_id_default,
+          lead_id: lead_id,
           visibility: row["visibility"].presence,
           status: row["status"].presence,
-          home_nav: parse_bool(row["home_nav"])
+          home_nav: parse_bool(row["home_nav"]),
+          scheduled_at: row["scheduled_at"].presence,
+          published_at: row["published_at"].presence,
+          order_des: parse_bool(row["order_des"]),
+          phase: row["phase"].presence,
+          notes: row["notes"].presence,
+          meta: parse_json(row["meta"]),
+          permission_access_roles: parse_json_array(row["permission_access_roles"]),
+          positioning_tag_public: parse_bool(row["positioning_tag_public"]),
+          service_certificable: parse_bool(row["service_certificable"]),
+          x_coordinated: row["x_coordinated"].presence,
+          y_coordinated: row["y_coordinated"].presence
         }.compact
 
         if tb
@@ -295,18 +377,36 @@ end
           results[:created] += 1
         end
 
+        post_lead_id =
+          if row["post_lead_id"].present? && Lead.exists?(row["post_lead_id"])
+            row["post_lead_id"]
+          elsif lead_id_default.present? && Lead.exists?(lead_id_default)
+            lead_id_default
+          elsif tb.lead_id.present? && Lead.exists?(tb.lead_id)
+            tb.lead_id
+          else
+            nil
+          end
+
         slug_map[slug] = tb.id
         imported << {
           tb: tb,
           parent_slug: row["parent_slug"].to_s.strip.presence,
+          link_child_slug: row["link_child_slug"].to_s.strip.presence,
           row_index: idx,
           position: row["position"].to_s.strip,
           post_data: {
             title: row["post_title"].presence,
+            description: row["post_description"].presence,
             content_md: row["post_content_md"].presence,
             content: row["post_content"].presence,
             slug: row["post_slug"].presence,
-            lead_id: row["post_lead_id"].presence || lead_id_default || tb.lead_id
+            lead_id: post_lead_id,
+            thumb_url: row["post_thumb_url"].presence,
+            horizontal_cover_url: row["post_horizontal_cover_url"].presence,
+            vertical_cover_url: row["post_vertical_cover_url"].presence,
+            banner_url: row["post_banner_url"].presence,
+            url_media_content: row["post_url_media_content"].presence
           }
         }
       end
@@ -323,11 +423,20 @@ end
           end
 
         if parent_id.nil?
-          results[:errors] << "Slug parent non trovato per #{tb.slug} (#{parent_slug})."
-          next
+          parent_id = @taxbranch.id
+          results[:errors] << "Slug parent non trovato per #{tb.slug} (#{parent_slug}); assegnato a #{@taxbranch.slug}."
         end
 
         tb.update!(parent_id: parent_id)
+      end
+
+      imported.each do |item|
+        tb = item[:tb]
+        link_child_slug = item[:link_child_slug]
+        next if link_child_slug.blank?
+        link_child_id = slug_map[link_child_slug]
+        next if link_child_id.blank?
+        tb.update!(link_child_taxbranch_id: link_child_id)
       end
 
       groups = imported.group_by { |i| i[:tb].parent_id }
@@ -356,26 +465,42 @@ end
             results[:errors] << "Post già esistente per #{tb.slug}."
             next
           else
+            post_data[:title] ||= tb.slug_label
             post.assign_attributes(post_data.compact)
-            post.save!
-            post_results[:updated] += 1
+            if post.lead_id.blank?
+              results[:errors] << "Post per #{tb.slug}: lead_id mancante o non valido."
+              next
+            end
+            if post.save
+              post_results[:updated] += 1
+            else
+              results[:errors] << "Post per #{tb.slug}: #{post.errors.full_messages.join(', ')}"
+            end
           end
         else
+          post_data[:title] ||= tb.slug_label
           post = tb.build_post(post_data.compact)
-          post.save!
-          post_results[:created] += 1
+          if post.lead_id.blank?
+            results[:errors] << "Post per #{tb.slug}: lead_id mancante o non valido."
+            next
+          end
+          if post.save
+            post_results[:created] += 1
+          else
+            results[:errors] << "Post per #{tb.slug}: #{post.errors.full_messages.join(', ')}"
+          end
         end
       end
     end
 
     notice = "Import completato. Taxbranch creati: #{results[:created]}, aggiornati: #{results[:updated]}, saltati: #{results[:skipped]}. Post creati: #{post_results[:created]}, aggiornati: #{post_results[:updated]}, saltati: #{post_results[:skipped]}."
     if results[:errors].any?
-      redirect_to export_import_superadmin_taxbranch_path(@taxbranch), alert: "#{notice} Errori: #{results[:errors].join(' | ')}"
+      redirect_to superadmin_taxbranch_path(@taxbranch), alert: "#{notice} Errori: #{results[:errors].join(' | ')}"
     else
-      redirect_to export_import_superadmin_taxbranch_path(@taxbranch), notice: notice
+      redirect_to superadmin_taxbranch_path(@taxbranch), notice: notice
     end
   rescue CSV::MalformedCSVError => e
-    redirect_to export_import_superadmin_taxbranch_path(@taxbranch), alert: "CSV non valido: #{e.message}"
+    redirect_to superadmin_taxbranch_path(@taxbranch), alert: "CSV non valido: #{e.message}"
   end
 
   private
@@ -427,6 +552,61 @@ end
     else
       nil
     end
+  end
+
+  def parse_json(value)
+    return nil if value.blank?
+    JSON.parse(value.to_s)
+  rescue JSON::ParserError
+    nil
+  end
+
+  def parse_json_array(value)
+    parsed = parse_json(value)
+    return parsed if parsed.is_a?(Array)
+    return nil if value.blank?
+    value.to_s.split(/[\n,;]/).map(&:strip).reject(&:blank?)
+  end
+
+  def handle_taxbranch_destroy_blockers(taxbranch)
+    blockers = []
+    services = Service.where(taxbranch_id: taxbranch.id)
+    if services.exists?
+      services.limit(5).each do |service|
+        blockers << view_context.link_to("Service ##{service.id}", superadmin_service_path(service))
+      end
+      extra = services.count - 5
+      blockers << "(+#{extra})" if extra.positive?
+    end
+    taxbranch.post&.destroy
+    if taxbranch.journeys.exists?
+      blockers << view_context.link_to("Journeys (#{taxbranch.journeys.count})", journeys_path(taxbranch_id: taxbranch.id))
+    end
+    if taxbranch.incoming_journeys.exists?
+      blockers << view_context.link_to("Journeys in arrivo (#{taxbranch.incoming_journeys.count})", journeys_path(end_taxbranch_id: taxbranch.id))
+    end
+    domain = taxbranch.domains.first
+    if domain.present?
+      blockers << view_context.link_to("Domain ##{domain.id}", superadmin_domain_path(domain))
+    end
+    if taxbranch.eventdates.exists?
+      blockers << view_context.link_to("Eventdate (#{taxbranch.eventdates.count})", eventdates_path(taxbranch_id: taxbranch.id))
+    end
+
+    if blockers.any?
+      flash[:alert] = ("Impossibile eliminare il taxbranch finché esistono elementi collegati. " \
+                       "Rimuovi prima: " + blockers.join(" · ")).html_safe
+      if services.exists?
+        redirect_to superadmin_services_path(taxbranch_id: taxbranch.id)
+      elsif domain.present?
+        redirect_to superadmin_domain_path(domain)
+      else
+        redirect_back fallback_location: superadmin_taxbranch_path(taxbranch)
+      end
+      return true
+    end
+
+    false
   end
   end
 end

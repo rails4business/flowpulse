@@ -32,6 +32,6 @@
   <% if params[:edit] == "true" %>
     <%= render "posts/form", post: @post, taxbranch: @taxbranch %>
   <% else %>
-    <%= render "posts/show", post: @post, taxbranch: @taxbranch %>
+    <%= render "posts/show", post: @post, taxbranch: @taxbranch, admin: true %>
   <% end %>
 </div>

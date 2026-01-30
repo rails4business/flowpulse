@@ -20,7 +20,7 @@
         <% else %>
           <span>ℹ️</span>
         <% end %>
-        <span class="font-medium"><%= message %></span>
+        <span class="font-medium"><%= sanitize(message, tags: %w[a], attributes: %w[href]) %></span>
       </div>
 
       <!-- Flowbite: chiude l’elemento target -->

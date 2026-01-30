@@ -60,7 +60,7 @@
 <%= render 'shared/nav_partial_post' %>
 
 <body class="min-h-full bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-white">
-  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
     <% @parent_taxbranch = @post.taxbranch.parent %>
 
     <!-- Header -->
@@ -90,8 +90,124 @@
     </header-->
     <%# end %>
 
-    <!-- Cover -->
-    <% if @post.horizontal_cover_url.present? %>
+    <div class="flex flex-col gap-8 lg:flex-row">
+      <% if @parent_taxbranch&.slug_category == "playlist" && @parent_taxbranch&.children&.any? %>
+        <aside class="lg:w-1/4">
+          <button
+            type="button"
+            class="mb-3 inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm lg:hidden"
+            data-playlist-toggle
+          >
+            <span class="material-symbols-outlined text-[18px]">list</span>
+            Playlist
+          </button>
+          <div class="hidden lg:block" data-playlist-panel>
+            <div class="sticky top-6 rounded-xl border border-slate-200 bg-white/70 p-4 shadow-sm">
+              <h3 class="text-sm font-semibold text-slate-800 mb-3">Playlist</h3>
+              <ul class="space-y-2 text-sm">
+                <% children_scope = @parent_taxbranch.children.ordered %>
+                <% children_scope = children_scope.reorder(position: :desc) if @parent_taxbranch.order_des %>
+                <% published = children_scope.select { |t|
+                     t.public_node? &&
+                     t.published? &&
+                     t.published_at.present? &&
+                     t.published_at <= Time.current &&
+                     t.post&.persisted? &&
+                     t.post&.title.present?
+                   } %>
+                <% upcoming = children_scope.find { |t|
+                     t.public_node? &&
+                     t.scheduled_at.present? &&
+                     t.published_at.blank? &&
+                     t.post&.persisted? &&
+                     t.post&.title.present?
+                   } %>
+                <% items = published + (upcoming && !published.include?(upcoming) ? [upcoming] : []) %>
+                <% items.each do |child| %>
+                  <% child_post = child.post %>
+                  <% next unless child_post&.persisted? %>
+                  <% in_arrivo = (child == upcoming && !published.include?(child)) %>
+                  <% badge_text =
+                       if in_arrivo
+                         "In Arrivo"
+                       else
+                         child.published_at.strftime("%d %b %Y")
+                       end %>
+                  <li>
+                    <%= link_to post_path(child_post),
+                                class: "block #{child_post == @post ? 'text-primary' : 'text-slate-600 hover:text-slate-900'}" do %>
+                      <div class="text-[10px] uppercase tracking-wider text-slate-400">
+                        Puntata <%= child.position %> • <%= badge_text %>
+                      </div>
+                      <div class="truncate font-semibold">
+                        <%= child_post.title.presence || child.slug_label %>
+                      </div>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      <% end %>
+
+      <div class="flex-1 <%= @parent_taxbranch&.slug_category == 'playlist' ? '' : 'mx-auto max-w-3xl' %>">
+        <% if @parent_taxbranch&.slug_category == "playlist" %>
+          <% is_upcoming = @post.taxbranch.scheduled_at.present? && @post.taxbranch.published_at.blank? %>
+          <% episode_date = @post.taxbranch.published_at %>
+          <div class="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Puntata <%= @post.taxbranch.position %> •
+            <% if is_upcoming %>
+              In Arrivo
+            <% elsif episode_date.present? %>
+              <%= episode_date.strftime("%d %b %Y") %>
+            <% end %>
+          </div>
+        <% end %>
+        <!-- Cover / Media -->
+    <% media_url = @post.url_media_content.presence %>
+    <% if media_url.present? && (yt = extract_youtube_info(media_url)) %>
+      <div class="mb-10">
+        <button
+          type="button"
+          class="group relative w-full overflow-hidden rounded-2xl shadow-sm"
+          data-video-open
+        >
+          <img
+            src="<%= @post.horizontal_cover_url.presence || youtube_thumb(media_url) %>"
+            alt="<%= @post.title %>"
+            class="h-64 w-full object-cover sm:h-80"
+          >
+          <span class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></span>
+          <span class="absolute inset-0 flex items-center justify-center">
+            <span class="inline-flex items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg h-14 w-14 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-[28px]">play_arrow</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4" data-video-modal>
+        <div class="relative w-full max-w-4xl">
+          <button type="button" class="absolute -top-10 right-0 text-white/80 hover:text-white" data-video-close>
+            <span class="material-symbols-outlined text-[28px]">close</span>
+          </button>
+          <div class="relative w-full overflow-hidden rounded-2xl bg-black" style="aspect-ratio: 16 / 9;">
+            <% yt_src = "https://www.youtube.com/embed/#{ERB::Util.url_encode(yt[:id])}" %>
+            <% yt_src += "?start=#{yt[:start].to_i}" if yt[:start].present? %>
+            <iframe
+              class="absolute inset-0 h-full w-full"
+              src="<%= yt_src %>"
+              title="YouTube video player"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+              frameborder="0"></iframe>
+          </div>
+        </div>
+      </div>
+    <% elsif @post.horizontal_cover_url.present? %>
       <div class="mb-10">
         <img src="<%= @post.horizontal_cover_url %>"
              alt="<%= @post.title %>"
@@ -152,9 +268,49 @@
       <%= link_to "← Torna al Blog", @parent_taxbranch.post,
             class: "text-blue-600 hover:text-blue-800 hover:underline" %>
     </footer>
+      </div>
+    </div>
   </div>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script>
+    (() => {
+      const openBtn = document.querySelector("[data-video-open]");
+      const modal = document.querySelector("[data-video-modal]");
+      const closeBtn = document.querySelector("[data-video-close]");
+      if (!openBtn || !modal) return;
+
+      const open = () => {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.classList.add("overflow-hidden");
+      };
+      const close = () => {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        document.body.classList.remove("overflow-hidden");
+      };
+
+      openBtn.addEventListener("click", open);
+      closeBtn?.addEventListener("click", close);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) close();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") close();
+      });
+    })();
+  </script>
+  <script>
+    (() => {
+      const toggle = document.querySelector("[data-playlist-toggle]");
+      const panel = document.querySelector("[data-playlist-panel]");
+      if (!toggle || !panel) return;
+      toggle.addEventListener("click", () => {
+        panel.classList.toggle("hidden");
+      });
+    })();
   </script>
 </body>

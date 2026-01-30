@@ -5,7 +5,7 @@ class Service < ApplicationRecord
   belongs_to :lead, optional: true
 
   has_many :journeys, dependent: :nullify
-  has_many :eventdates, dependent: :nullify
+  has_many :eventdates, through: :journeys
   has_many :enrollments, dependent: :nullify
   has_many :bookings, dependent: :nullify
   has_many :certificates, dependent: :restrict_with_exception

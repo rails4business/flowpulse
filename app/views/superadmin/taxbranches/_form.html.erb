@@ -233,7 +233,7 @@
         </div>
 
         <div>
-          <%= f.label :slug_label, "Etichetta slug", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.label :slug_label, "Etichetta", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= f.text_field :slug_label,
                   class: "w-full rounded-md border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:slug_label].any?}",
                   data: { "taxbranch-slug-target": "label", action: "input->taxbranch-slug#update" } %>

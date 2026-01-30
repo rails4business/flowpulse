@@ -236,9 +236,13 @@
                   new_superadmin_taxbranch_path(parent_id: node.id),
                   class: "hover:text-green-700", title: "+ figlio" %>
 
-        <%= link_to "🗑️", superadmin_taxbranch_path(node),
-              data:  { turbo_method: :delete, turbo_confirm: "Sicuro di eliminare questo ramo?" },
-              class: "hover:text-red-600", title: "Elimina" %>
+        <button
+          type="button"
+          class="hover:text-red-600"
+          title="Elimina"
+          onclick="document.getElementById('delete-modal-<%= node.id %>').classList.remove('hidden')">
+          🗑️
+        </button>
 
         <span class="text-slate-300">|</span>
 
@@ -273,6 +277,38 @@
         <% else %>
           <span class="opacity-40" title="Nessun fratello precedente">➡️</span>
         <% end %>
+      </div>
+
+      <div
+        id="delete-modal-<%= node.id %>"
+        class="fixed inset-0 z-50 hidden bg-black/40 flex items-center justify-center"
+        onclick="this.classList.add('hidden')">
+        <div class="mx-4 w-full max-w-md rounded-lg bg-white p-4 shadow-lg" onclick="event.stopPropagation()">
+          <div class="mb-2 flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-800">
+              Eliminare “<%= node.display_label %>”?
+            </h2>
+            <button type="button" class="text-xs text-slate-500 hover:text-slate-700" onclick="document.getElementById('delete-modal-<%= node.id %>').classList.add('hidden')">
+              ✕
+            </button>
+          </div>
+          <p class="text-xs text-slate-500 mb-3">
+            Scegli cosa fare con i children.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <%= button_to "Elimina tutto",
+                          destroy_with_children_superadmin_taxbranch_path(node),
+                          method: :delete,
+                          class: "inline-flex items-center rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-700" %>
+            <%= button_to "Vedi elementi collegati",
+                          reparent_children_superadmin_taxbranch_path(node),
+                          method: :patch,
+                          class: "inline-flex items-center rounded-md bg-slate-900 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-800" %>
+            <button type="button" class="inline-flex items-center rounded-md border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50" onclick="document.getElementById('delete-modal-<%= node.id %>').classList.add('hidden')">
+              Annulla
+            </button>
+          </div>
+        </div>
       </div>
     </summary>
 

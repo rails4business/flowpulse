@@ -277,10 +277,17 @@ module Superadmin
 
   # DELETE /domains/1 or /domains/1.json
   def destroy
+    taxbranch = @domain.taxbranch
     @domain.destroy!
 
     respond_to do |format|
-      format.html { redirect_to superadmin_domains_path, notice: "Domain was successfully destroyed.", status: :see_other }
+      format.html do
+        if taxbranch.present?
+          redirect_to superadmin_taxbranch_path(taxbranch), notice: "Domain was successfully destroyed.", status: :see_other
+        else
+          redirect_to superadmin_domains_path, notice: "Domain was successfully destroyed.", status: :see_other
+        end
+      end
       format.json { head :no_content }
     end
   end

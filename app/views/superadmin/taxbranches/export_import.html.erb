@@ -22,6 +22,8 @@
     <div class="mt-4 flex flex-wrap gap-3">
       <%= link_to "Esporta Taxbranch (CSV)",
                   export_superadmin_taxbranch_path(@taxbranch),
+                  target: "_blank",
+                  data: { turbo: false },
                   class: "inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
     </div>
   </section>
