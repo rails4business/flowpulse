@@ -133,7 +133,7 @@
                        if in_arrivo
                          "In Arrivo"
                        else
-                         child.published_at.strftime("%d %b %Y")
+                         I18n.l(child.published_at, format: "%d %b %Y", locale: :it)
                        end %>
                   <li>
                     <%= link_to post_path(child_post),

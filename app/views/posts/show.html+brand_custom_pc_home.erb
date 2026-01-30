@@ -1218,7 +1218,7 @@ SEI UN PROFESSIONISTA?</h4>
                          if in_arrivo
                            "In Arrivo"
                          else
-                           tax.published_at.strftime("%d %b %Y")
+                           I18n.l(tax.published_at, format: "%d %b %Y", locale: :it)
                          end %>
   <% link_url =
        if post&.url_media_content.present?
@@ -1255,7 +1255,7 @@ SEI UN PROFESSIONISTA?</h4>
 
                 </div>
                 <% if published.size >= 2 && upcoming.present? %>
-                  <%= link_to "Esplora",
+                  <%= link_to "Vedi tutte",
                               post_path(Taxbranch.find_by(slug: "playlist/progetto")&.post || @post),
                               class: "inline-flex items-center rounded-xl bg-slate-900 px-6 py-3 text-white font-bold hover:opacity-90 transition-opacity" %>
                 <% end %>
