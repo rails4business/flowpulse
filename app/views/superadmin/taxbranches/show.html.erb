@@ -139,15 +139,17 @@
       <%= @taxbranch.order_des ? "Disc" : "Asc" %>
     <% end %>
 
-    <% if params[:edit_tax] == "true" %>
-      <%= link_to "Chiudi modifica",
-                  superadmin_taxbranch_path(@taxbranch, anchor: "tax-edit-form"),
-                  class: "inline-flex items-center rounded-md border border-slate-300 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50" %>
-    <% else %>
-      <%= link_to "Modifica",
-                  superadmin_taxbranch_path(@taxbranch, edit_tax: true, anchor: "tax-edit-form"),
-                  class: "inline-flex items-center rounded-md bg-slate-900 px-2.5 py-1 text-xs font-semibold text-white hover:bg-slate-800" %>
-    <% end %>
+    <div class="ml-auto flex items-center gap-2">
+      <% if params[:edit_tax] == "true" %>
+        <%= link_to "Chiudi modifica",
+                    superadmin_taxbranch_path(@taxbranch, anchor: "tax-edit-form"),
+                    class: "inline-flex items-center rounded-md border border-slate-300 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50" %>
+      <% else %>
+        <%= link_to "Modifica",
+                    superadmin_taxbranch_path(@taxbranch, edit_tax: true, anchor: "tax-edit-form"),
+                    class: "inline-flex items-center rounded-md bg-slate-900 px-2.5 py-1 text-xs font-semibold text-white hover:bg-slate-800" %>
+      <% end %>
+    </div>
   </div>
 
   <% if params[:edit_tax] == "true" %>
@@ -155,9 +157,9 @@
                   url: superadmin_taxbranch_path(@taxbranch),
                   method: :patch,
                   local: true,
-                  class: "grid gap-4 md:grid-cols-6 items-end" do |f| %>
+                  class: "flex flex-wrap md:flex-nowrap items-end gap-3" do |f| %>
 
-    <div>
+    <div class="min-w-[140px] flex-1">
       <%= f.label :status, "Stato", class: "block text-xs font-medium text-slate-600" %>
       <%= f.select :status,
                    Taxbranch.statuses.keys.map { |s| [s.humanize, s] },
@@ -165,7 +167,7 @@
                    class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
     </div>
 
-    <div>
+    <div class="min-w-[160px] flex-1">
       <%= f.label :visibility, "Visibilità", class: "block text-xs font-medium text-slate-600" %>
       <%= f.select :visibility,
                    [
@@ -178,7 +180,7 @@
                    class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
     </div>
 
-    <div>
+    <div class="min-w-[140px] flex-1">
       <%= f.label :phase, "Fase", class: "block text-xs font-medium text-slate-600" %>
       <%= f.select :phase,
                    Taxbranch.phases.keys.map { |p| [p.humanize, p] },
@@ -186,14 +188,20 @@
                    class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
     </div>
 
-    <div>
+    <div class="min-w-[200px] flex-1">
+      <%= f.label :scheduled_at, "Previsto", class: "block text-xs font-medium text-slate-600" %>
+      <%= f.datetime_local_field :scheduled_at,
+                                 value: @taxbranch.scheduled_at&.strftime("%Y-%m-%dT%H:%M"),
+                                 class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
+    </div>
+    <div class="min-w-[200px] flex-1">
       <%= f.label :published_at, "Data pubblicazione", class: "block text-xs font-medium text-slate-600" %>
       <%= f.datetime_local_field :published_at,
                                  value: @taxbranch.published_at&.strftime("%Y-%m-%dT%H:%M"),
                                  class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
     </div>
 
-    <div>
+    <div class="min-w-[150px] flex-1">
       <%= f.label :order_des, "Ordine figli", class: "block text-xs font-medium text-slate-600" %>
       <%= f.select :order_des,
                    [["Ascendente", false], ["Discendente", true]],
@@ -201,7 +209,7 @@
                    class: "mt-1 w-full rounded-lg border border-slate-300 px-2 py-1.5 text-sm" %>
     </div>
 
-    <div class="md:text-right">
+    <div class="ml-auto flex-none">
       <%= f.submit "Aggiorna",
                    class: "inline-flex items-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700" %>
     </div>
