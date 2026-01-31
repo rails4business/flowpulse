@@ -173,6 +173,11 @@
                t.published_at <= Time.current &&
                t.post&.persisted?
              } %>
+          <% upcoming_item = children_scope.find { |t|
+               t.public_node? &&
+               t.post&.persisted? &&
+               (t.published_at.blank? || t.published_at > Time.current)
+             } %>
           <% current_index = published_items.index { |t| t.id == @post.taxbranch_id } %>
           <% prev_item = if current_index && current_index > 0
                            published_items[current_index - 1]
@@ -180,22 +185,39 @@
                            published_items.last
                          end %>
           <% next_item = current_index && current_index < published_items.size - 1 ? published_items[current_index + 1] : nil %>
+          <% prev_target = prev_item %>
+          <% next_target = if next_item.present?
+                             next_item
+                           elsif !is_upcoming && upcoming_item.present?
+                             upcoming_item
+                           end %>
 
-          <% if published_items.any? %>
-            <div class="mb-6 flex items-center justify-end gap-2">
-              <% if prev_item&.post.present? %>
-                <%= link_to post_path(prev_item.post),
+          <% if published_items.any? || upcoming_item.present? %>
+            <div class="mb-6 flex items-center justify-between gap-2">
+              <% if prev_target&.post.present? %>
+                <%= link_to post_path(prev_target.post),
                             class: "inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50" do %>
                   <span class="material-symbols-outlined text-[14px]">chevron_left</span>
                   Prec
                 <% end %>
+              <% else %>
+                <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-300">
+                  <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+                  Prec
+                </span>
               <% end %>
-              <% if next_item&.post.present? %>
-                <%= link_to post_path(next_item.post),
+
+              <% if next_target&.post.present? %>
+                <%= link_to post_path(next_target.post),
                             class: "inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50" do %>
                   Succ
                   <span class="material-symbols-outlined text-[14px]">chevron_right</span>
                 <% end %>
+              <% else %>
+                <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-300">
+                  Succ
+                  <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                </span>
               <% end %>
             </div>
           <% end %>
