@@ -109,61 +109,86 @@
 </section>
 <!-- Center Section: Timeline/History -->
 <section class="col-span-12 lg:col-span-6 flex flex-col gap-6">
-<h2 class="text-xl font-bold text-[#0e141b] dark:text-white px-2">Il tuo percorso</h2>
-<div class="relative flex flex-col gap-8 timeline-line">
-<!-- Timeline Item 1 -->
-<div class="relative flex gap-4">
-<div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-white">
-<span class="material-symbols-outlined text-sm">done</span>
-</div>
-<div class="flex flex-1 flex-col gap-3 rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-5 shadow-sm">
-<div class="flex items-start justify-between">
-<div>
-<span class="text-xs font-semibold text-primary uppercase tracking-wider">Oggi, <%= DateTime.now %></span>
-<h3 class="text-base font-bold text-[#0e141b] dark:text-white">Benvenuto: in posturacorretta</h3>
-</div>
-<span class="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
-<span class="material-symbols-outlined text-xs">add</span> <!-- 15 punti mobilità-->
-                            </span>
-</div>
-<p class="text-sm text-[#4e6a8d] dark:text-slate-400">Ottimo Lavoro.</p>
-<div class="flex pt-1">
-<!--button class="flex h-9 items-center justify-center rounded-lg border border-[#d0dbe7] dark:border-slate-700 px-4 text-sm font-bold text-[#0e141b] dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                Recensisci ora
-                            </button-->
-                            <a href="https://www.youtube.com/watch?v=Zvm8MhkXuEQ&list=PLpL2gK--L98tP4ujUR79z19QO43cBkv9J" class="flex h-9 items-center justify-center rounded-lg border border-[#d0dbe7] dark:border-slate-700 px-4 text-sm font-bold text-[#0e141b] dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                            Inizia 60 movimenti alla scrivania
-                            </a>
-</div>
-</div>
-</div>
-<!-- Timeline Item 2 >
-<div class="relative flex gap-4">
-<div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-[#e7edf3] dark:bg-slate-800 text-primary">
-<span class="material-symbols-outlined text-sm">local_shipping</span>
-</div>
-<div class="flex flex-1 flex-col gap-3 rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-5 shadow-sm">
-<div>
-<span class="text-xs font-semibold text-[#4e6a8d] dark:text-slate-500 uppercase tracking-wider">Ieri</span>
-<h3 class="text-base font-bold text-[#0e141b] dark:text-white">Acquistato: Posture Pro Kit</h3>
-</div>
-<div class="flex items-center gap-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-3">
-<span class="material-symbols-outlined text-primary">info</span>
-<p class="text-sm font-medium text-[#0e141b] dark:text-slate-200">Il tuo ordine è in transito. Consegna prevista: Giovedì.</p>
-</div>
-</div>
-</div>
-<!-- Timeline Item 3 (Past) >
-<div class="relative flex gap-4">
-<div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-[#e7edf3] dark:bg-slate-800 text-[#4e6a8d]">
-<span class="material-symbols-outlined text-sm">description</span>
-</div>
-<div class="flex flex-1 flex-col gap-1 rounded-xl bg-white/50 dark:bg-slate-900/20 p-5 border border-dashed border-[#e7edf3] dark:border-slate-800">
-<span class="text-xs font-semibold text-[#4e6a8d] uppercase">3 giorni fa</span>
-<h3 class="text-base font-medium text-[#4e6a8d] dark:text-slate-500">Analisi Posturale Iniziale completata</h3>
-</div>
-</div>
-</div-->
+  <div class="flex items-center justify-between px-2">
+    <h2 class="text-xl font-bold text-[#0e141b] dark:text-white">Il tuo percorso</h2>
+    <div class="flex items-center gap-2 rounded-full bg-white dark:bg-slate-900/40 border border-[#e7edf3] dark:border-slate-800 px-1.5 py-1">
+      <%= link_to "Bookings",
+                  dashboard_home_path(tab: "bookings"),
+                  class: "px-3 py-1 text-xs font-semibold rounded-full #{@tab == 'bookings' ? 'bg-primary text-white' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400'}" %>
+      <%= link_to "Enrollments",
+                  dashboard_home_path(tab: "enrollments"),
+                  class: "px-3 py-1 text-xs font-semibold rounded-full #{@tab == 'enrollments' ? 'bg-primary text-white' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400'}" %>
+    </div>
+  </div>
+
+  <div class="relative flex flex-col gap-8 timeline-line">
+    <% if @tab == "bookings" %>
+      <% if @bookings.any? %>
+        <% @bookings.each do |booking| %>
+          <% ev = booking.eventdate %>
+          <div class="relative flex gap-4">
+            <div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-white">
+              <span class="material-symbols-outlined text-sm">event</span>
+            </div>
+            <div class="flex flex-1 flex-col gap-2 rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-5 shadow-sm">
+              <div class="flex items-start justify-between">
+                <div>
+                  <span class="text-xs font-semibold text-primary uppercase tracking-wider">
+                    <%= ev&.date_start ? I18n.l(ev.date_start, format: "%d %b %Y", locale: :it) : "Senza data" %>
+                  </span>
+                  <h3 class="text-base font-bold text-[#0e141b] dark:text-white">
+                    <%= booking.service&.name || booking.commitment&.role_name || "Booking ##{booking.id}" %>
+                  </h3>
+                </div>
+                <span class="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
+                  <%= booking.status.humanize %>
+                </span>
+              </div>
+              <% if ev&.description.present? %>
+                <p class="text-sm text-[#4e6a8d] dark:text-slate-400"><%= ev.description %></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-6 text-sm text-slate-500">
+          Nessun booking ancora.
+        </div>
+      <% end %>
+    <% else %>
+      <% if @enrollments.any? %>
+        <% @enrollments.each do |enrollment| %>
+          <div class="relative flex gap-4">
+            <div class="z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-[#e7edf3] dark:bg-slate-800 text-primary">
+              <span class="material-symbols-outlined text-sm">check_circle</span>
+            </div>
+            <div class="flex flex-1 flex-col gap-2 rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-5 shadow-sm">
+              <div class="flex items-start justify-between">
+                <div>
+                  <span class="text-xs font-semibold text-[#4e6a8d] dark:text-slate-500 uppercase tracking-wider">
+                    <%= enrollment.updated_at ? I18n.l(enrollment.updated_at, format: "%d %b %Y", locale: :it) : "—" %>
+                  </span>
+                  <h3 class="text-base font-bold text-[#0e141b] dark:text-white">
+                    <%= enrollment.service&.name || enrollment.journey&.title || "Enrollment ##{enrollment.id}" %>
+                  </h3>
+                </div>
+                <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">
+                  <%= enrollment.status.humanize %>
+                </span>
+              </div>
+              <p class="text-sm text-[#4e6a8d] dark:text-slate-400">
+                <%= enrollment.request_kind.humanize %> · <%= enrollment.mode.humanize %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="rounded-xl border border-[#e7edf3] dark:border-slate-800 bg-white dark:bg-slate-900/40 p-6 text-sm text-slate-500">
+          Nessun enrollment ancora.
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </section>
 <!-- Right Section: Profile Widget -->
 <aside class="col-span-12 lg:col-span-3 flex flex-col gap-6">
@@ -202,7 +227,7 @@
 <!--button class="w-full bg-white text-primary h-11 rounded-lg font-bold text-sm hover:bg-slate-50 transition-colors shadow-sm">
                     Continua Sessione
                 </button-->
-                <a href="https://www.youtube.com/watch?v=Zvm8MhkXuEQ&list=PLpL2gK--L98tP4ujUR79z19QO43cBkv9J" class="w-full bg-white text-primary h-11 rounded-lg font-bold text-sm hover:bg-slate-50 transition-colors shadow-sm">
+                <a href="https://www.youtube.com/watch?v=Zvm8MhkXuEQ&list=PLpL2gK--L98tP4ujUR79z19QO43cBkv9J" class="inline-flex items-center justify-center w-full h-11 px-4 rounded-lg bg-white text-primary text-sm font-bold hover:bg-slate-50 transition-colors shadow-sm">
                     Inizia
                 </a>
 </div>

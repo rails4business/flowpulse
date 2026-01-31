@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_29_144150) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -453,7 +453,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_29_144150) do
     t.integer "position"
     t.boolean "positioning_tag_public", default: false, null: false
     t.datetime "published_at"
-    t.datetime "scheduled_at"
+    t.integer "scheduled_eventdate_id"
     t.boolean "service_certificable"
     t.string "slug", null: false
     t.string "slug_category"
@@ -466,6 +466,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_29_144150) do
     t.index ["lead_id"], name: "index_taxbranches_on_lead_id"
     t.index ["link_child_taxbranch_id"], name: "index_taxbranches_on_link_child_taxbranch_id"
     t.index ["positioning_tag_public"], name: "index_taxbranches_on_positioning_tag_public"
+    t.index ["scheduled_eventdate_id"], name: "index_taxbranches_on_scheduled_eventdate_id"
     t.index ["slug"], name: "index_taxbranches_on_slug", unique: true
     t.index ["slug_category", "slug_label", "slug"], name: "index_taxbranches_on_cat_label_slug_unique", unique: true
   end

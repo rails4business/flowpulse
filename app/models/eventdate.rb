@@ -19,7 +19,7 @@ class Eventdate < ApplicationRecord
   acts_as_list scope: :journey
 
   # 🎭 Tipologia / meta-evento
-  enum :event_type, { check: 0,  event: 1, prenotation: 2, message: 3, comment: 4, note: 5 }
+  enum :event_type, { check: 0,  event: 1, prenotation: 2, message: 3, comment: 4, note: 5, taxbranch_scheduled: 6 }
   # ✅ Stati del "diario"
   enum :status, { pending: 0, tracking: 1, completed: 2, skipped: 3, archived: 4 }
   enum :kind_event, { session: 0, meeting: 1, online_call: 2, focus: 3, recovery: 4   }

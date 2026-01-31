@@ -62,6 +62,21 @@ end
       journey_id: params[:journey_id],
       journey_role: params[:journey_role]
     )
+
+    if params[:scheduled_taxbranch_id].present?
+      @eventdate.taxbranch_id = params[:scheduled_taxbranch_id]
+      @eventdate.lead_id = Current.user&.lead_id
+      @eventdate.status = :pending
+      event_param = params[:event_type].to_s
+      if event_param.present? && Eventdate.event_types.key?(event_param)
+        @eventdate.event_type = event_param
+      elsif Eventdate.event_types.key?("taxbranch_scheduled")
+        @eventdate.event_type = "taxbranch_scheduled"
+      else
+        @eventdate.event_type = :event
+      end
+      @eventdate.description ||= "Programmazione taxbranch ##{params[:scheduled_taxbranch_id]}"
+    end
   end
 
   # GET /eventdates/1/edit
@@ -74,7 +89,16 @@ end
 
     respond_to do |format|
       if @eventdate.save
-        format.html { redirect_to @eventdate, notice: "Eventdate was successfully created." }
+        if params[:scheduled_taxbranch_id].present?
+          taxbranch = Taxbranch.find_by(id: params[:scheduled_taxbranch_id])
+          taxbranch&.update(scheduled_eventdate_id: @eventdate.id)
+          format.html do
+            redirect_to superadmin_taxbranch_path(taxbranch, edit_tax: true, anchor: "tax-edit-form"),
+                        notice: "Eventdate creato e collegato."
+          end
+        else
+          format.html { redirect_to @eventdate, notice: "Eventdate was successfully created." }
+        end
         format.json { render :show, status: :created, location: @eventdate }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -122,7 +146,6 @@ end
         :position,
         :taxbranch_id,
         :lead_id,
-        :cycle,
         :status,
         :description,
         :meta,

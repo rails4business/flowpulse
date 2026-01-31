@@ -48,7 +48,7 @@
            } %>
         <% upcoming = children_scope.find { |t|
              t.public_node? &&
-             t.scheduled_at.present? &&
+             t.scheduled_eventdate&.date_start.present? &&
              t.published_at.blank? &&
              t.post&.persisted? &&
              t.post&.title.present?

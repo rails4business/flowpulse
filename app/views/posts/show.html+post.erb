@@ -117,7 +117,7 @@
                    } %>
                 <% upcoming = children_scope.find { |t|
                      t.public_node? &&
-                     t.scheduled_at.present? &&
+                     t.scheduled_eventdate&.date_start.present? &&
                      t.published_at.blank? &&
                      t.post&.persisted? &&
                      t.post&.title.present?
@@ -155,7 +155,7 @@
 
       <div class="flex-1 <%= @parent_taxbranch&.slug_category == 'playlist' ? '' : 'mx-auto max-w-3xl' %>">
         <% if @parent_taxbranch&.slug_category == "playlist" %>
-          <% is_upcoming = @post.taxbranch.scheduled_at.present? && @post.taxbranch.published_at.blank? %>
+          <% is_upcoming = @post.taxbranch.scheduled_eventdate&.date_start.present? && @post.taxbranch.published_at.blank? %>
           <% episode_date = @post.taxbranch.published_at %>
           <div class="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
             Puntata <%= @post.taxbranch.position %> •

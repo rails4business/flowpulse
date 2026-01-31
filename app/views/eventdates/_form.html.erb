@@ -1,4 +1,12 @@
 <%= form_with(model: eventdate, class: "contents") do |form| %>
+  <% if params[:scheduled_taxbranch_id].present? %>
+    <%= hidden_field_tag :scheduled_taxbranch_id, params[:scheduled_taxbranch_id] %>
+    <% if params[:event_type].present? && Eventdate.event_types.key?(params[:event_type].to_s) %>
+      <% eventdate.event_type ||= params[:event_type].to_s %>
+    <% elsif Eventdate.event_types.key?("taxbranch_scheduled") %>
+      <% eventdate.event_type ||= "taxbranch_scheduled" %>
+    <% end %>
+  <% end %>
   <% if eventdate.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
       <h2><%= pluralize(eventdate.errors.count, "error") %> prohibited this eventdate from being saved:</h2>

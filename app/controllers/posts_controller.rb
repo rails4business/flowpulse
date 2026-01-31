@@ -127,7 +127,7 @@ class PostsController < ApplicationController
   def pricing
     @taxbranch      = @post.taxbranch
     @taxbranch_node = @post.taxbranch
-    @services       = @taxbranch.services.order(:name)
+    @services       = Array(@taxbranch&.service).compact
 
     slug = @taxbranch&.slug_category&.parameterize&.underscore
     request.variant = slug.present? ? slug.to_sym : nil

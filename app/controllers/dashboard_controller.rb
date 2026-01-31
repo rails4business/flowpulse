@@ -43,6 +43,16 @@ class DashboardController < ApplicationController
       .where(date_start: month_start.beginning_of_day..month_end.end_of_day)
       .group("DATE(date_start)")
       .count
+
+    @tab = params[:tab].presence_in(%w[bookings enrollments]) || "bookings"
+    mycontact_ids = @lead.mycontacts.select(:id)
+    @bookings = Booking.includes(:eventdate, :service, :commitment, :enrollment)
+                       .where(mycontact_id: mycontact_ids)
+                       .order(created_at: :desc)
+                       .limit(20)
+    @enrollments = @lead.enrollments.includes(:service, :journey)
+                          .order(updated_at: :desc)
+                          .limit(20)
   end
 
   def superadmin

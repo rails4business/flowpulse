@@ -238,6 +238,7 @@ end
     @post = @taxbranch.post || @taxbranch.build_post(lead: Current.user&.lead)
   end
 
+
   def export_import
     @default_lead_id = Current.user&.lead_id
   end
@@ -248,7 +249,7 @@ end
     csv = CSV.generate(headers: true) do |out|
       out << %w[
         slug slug_category slug_label parent_slug lead_id visibility status position home_nav
-        scheduled_at published_at order_des phase notes meta permission_access_roles positioning_tag_public
+        scheduled_eventdate_id published_at order_des phase notes meta permission_access_roles positioning_tag_public
         service_certificable x_coordinated y_coordinated link_child_slug
         post_title post_description post_content_md post_content post_slug post_lead_id
         post_thumb_url post_horizontal_cover_url post_vertical_cover_url post_banner_url post_url_media_content
@@ -265,7 +266,7 @@ end
           tb.status,
           tb.position,
           tb.home_nav,
-          tb.scheduled_at&.iso8601,
+          tb.scheduled_eventdate_id,
           tb.published_at&.iso8601,
           tb.order_des,
           tb.phase,
@@ -344,7 +345,7 @@ end
           visibility: row["visibility"].presence,
           status: row["status"].presence,
           home_nav: parse_bool(row["home_nav"]),
-          scheduled_at: row["scheduled_at"].presence,
+          scheduled_eventdate_id: row["scheduled_eventdate_id"].presence,
           published_at: row["published_at"].presence,
           order_des: parse_bool(row["order_des"]),
           phase: row["phase"].presence,
@@ -521,6 +522,7 @@ end
 
 
 
+
    # Only allow a list of trusted parameters through.
    def taxbranch_params
     # Only allow a list of trusted parameters through.
@@ -529,7 +531,7 @@ end
       :ancestry, :position, :meta, :parent_id, :home_nav,
       :x_coordinated, :y_coordinated,
       :positioning_tag_public, :service_certificable,
-      :status, :visibility, :phase, :published_at, :scheduled_at, :order_des,
+      :status, :visibility, :phase, :published_at, :scheduled_eventdate_id, :order_des,
       :permission_access_roles, :generaimpresa_md, { permission_access_roles: [] }
     ])
   end

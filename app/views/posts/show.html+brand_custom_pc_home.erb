@@ -1201,7 +1201,7 @@ SEI UN PROFESSIONISTA?</h4>
                      } %>
                   <% upcoming = scope.find { |t|
                        t.public_node? &&
-                       t.scheduled_at.present? &&
+                       t.scheduled_eventdate&.date_start.present? &&
                        t.published_at.blank? &&
                        t.post&.persisted? &&
                        t.post&.title.present?
@@ -1298,7 +1298,7 @@ SEI UN PROFESSIONISTA?</h4>
                       ></div>
                     </div>
                     <div
-                      class="w-[200px] h-10 bg-black/20 blur-2xl rounded-full mx-auto mt-6 transform -rotate-x-12 opacity-60"
+                      class="w-[70px] h-6 bg-black/20 blur-2xl rounded-full mx-auto mt-2 transform -rotate-x-12 opacity-60"
                     ></div>
                   </div>
                   <ul
@@ -1309,38 +1309,42 @@ SEI UN PROFESSIONISTA?</h4>
                         class="material-symbols-outlined text-base text-primary"
                         >check</span
                       >
-                      Strumenti pratici per applicare la postura ogni giorno.
+                      Guida al percorso per gli utenti.
                     </li>
                     <li class="flex items-center gap-2">
                       <span
                         class="material-symbols-outlined text-base text-primary"
                         >check</span
                       >
-                      Mappa completa del progetto e dei prossimi step.
+                      Guida al percorso per i professionisti.
                     </li>
                     <li class="flex items-center gap-2">
                       <span
                         class="material-symbols-outlined text-base text-primary"
                         >check</span
                       >
-                      Contenuti validati e progressivi, facili da seguire.
+                      Mappa completa del progetto per i professionisti.
                     </li>
+                   
                   </ul>
-                  <!--div class="flex flex-col sm:flex-row gap-4 w-full mt-8">
-                    <button
+                  <div class="flex flex-col sm:flex-row gap-4 w-full mt-8">
+                    <!--button
                       class="flex-1 py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
                     >
                       <span class="material-symbols-outlined text-lg"
                         >shopping_cart</span
                       >
                       Ordina
-                    </button>
-                    <button
-                      class="flex-1 py-4 border border-primary/30 text-primary font-bold rounded-xl hover:bg-primary/10 transition-all"
-                    >
-                      Scopri di piu
-                    </button>
-                  </div-->
+                    </button-->
+                     <% if (tb = Taxbranch.find_by(slug: "book/il-corpo-un-mondo-da-scoprire"))&.post %>
+                      <%= link_to post_path(tb.post),
+                                  class: "text-center flex-1 py-4 border border-primary/30 text-primary font-bold rounded-xl hover:bg-primary/10 transition-all" do %>
+                        
+                        Scopri di più
+                      <% end %>
+                    <% end %>
+                   
+                  </div>
                 </div>
               </div>
             </section>
@@ -1433,7 +1437,7 @@ SEI UN PROFESSIONISTA?</h4>
             </div>
 
             <div
-              class="flex-grow flex flex-col relative z-10 px-6 pt-12 pb-16 max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto w-full md:pr-64 lg:pr-80 gap-10"
+              class="bg-white flex-grow flex flex-col relative z-10 px-6 pt-12 pb-16 max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto w-full md:pr-64 lg:pr-80 gap-10"
             >
               <div class="flex items-center">
                 <img
