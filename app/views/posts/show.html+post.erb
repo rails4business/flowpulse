@@ -155,7 +155,7 @@
 
       <div class="flex-1 <%= @parent_taxbranch&.slug_category == 'playlist' ? '' : 'mx-auto max-w-3xl' %>">
         <% if @parent_taxbranch&.slug_category == "playlist" %>
-          <% is_upcoming = @post.taxbranch.scheduled_eventdate&.date_start.present? && @post.taxbranch.published_at.blank? %>
+          <% is_upcoming = @post.taxbranch.published_at.blank? || @post.taxbranch.published_at > Time.current %>
           <% episode_date = @post.taxbranch.published_at %>
           <div class="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
             Puntata <%= @post.taxbranch.position %> •
@@ -165,62 +165,105 @@
               <%= episode_date.strftime("%d %b %Y") %>
             <% end %>
           </div>
+          <% children_scope = @parent_taxbranch.children.ordered %>
+          <% children_scope = children_scope.reorder(position: :desc) if @parent_taxbranch.order_des %>
+          <% published_items = children_scope.select { |t|
+               t.public_node? &&
+               t.published_at.present? &&
+               t.published_at <= Time.current &&
+               t.post&.persisted?
+             } %>
+          <% current_index = published_items.index { |t| t.id == @post.taxbranch_id } %>
+          <% prev_item = if current_index && current_index > 0
+                           published_items[current_index - 1]
+                         elsif is_upcoming
+                           published_items.last
+                         end %>
+          <% next_item = current_index && current_index < published_items.size - 1 ? published_items[current_index + 1] : nil %>
+
+          <% if published_items.any? %>
+            <div class="mb-6 flex items-center justify-end gap-2">
+              <% if prev_item&.post.present? %>
+                <%= link_to post_path(prev_item.post),
+                            class: "inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50" do %>
+                  <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+                  Prec
+                <% end %>
+              <% end %>
+              <% if next_item&.post.present? %>
+                <%= link_to post_path(next_item.post),
+                            class: "inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50" do %>
+                  Succ
+                  <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
-        <!-- Cover / Media -->
-    <% media_url = @post.url_media_content.presence %>
-    <% if media_url.present? && (yt = extract_youtube_info(media_url)) %>
-      <div class="mb-10">
-        <button
-          type="button"
-          class="group relative w-full overflow-hidden rounded-2xl shadow-sm"
-          data-video-open
-        >
-          <img
-            src="<%= @post.horizontal_cover_url.presence || youtube_thumb(media_url) %>"
-            alt="<%= @post.title %>"
-            class="h-64 w-full object-cover sm:h-80"
-          >
-          <span class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></span>
-          <span class="absolute inset-0 flex items-center justify-center">
-            <span class="inline-flex items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg h-14 w-14 group-hover:scale-105 transition-transform">
-              <span class="material-symbols-outlined text-[28px]">play_arrow</span>
-            </span>
-          </span>
-        </button>
-      </div>
+        <% unless is_upcoming %>
+          <!-- Cover / Media -->
+          <% media_url = @post.url_media_content.presence || (@post.respond_to?(:media_url) ? @post.media_url.presence : nil) %>
+          <% if media_url.present? && (yt = extract_youtube_info(media_url)) %>
+            <div class="mb-10 px-2">
+              <button
+                type="button"
+                class="group relative w-full max-w-2xl mx-auto overflow-hidden rounded-2xl shadow-sm"
+                data-video-open
+              >
+                <div class="relative w-full" style="aspect-ratio: 16 / 9;">
+                  <img
+                    src="<%= @post.horizontal_cover_url.presence || youtube_thumb(media_url) %>"
+                    alt="<%= @post.title %>"
+                    class="absolute inset-0 h-full w-full object-cover"
+                  >
+                </div>
+                <span class="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></span>
+                <span class="absolute inset-0 flex items-center justify-center">
+                  <span class="inline-flex items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg h-14 w-14 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-[28px]">play_arrow</span>
+                  </span>
+                </span>
+              </button>
+            </div>
 
-      <div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4" data-video-modal>
-        <div class="relative w-full max-w-4xl">
-          <button type="button" class="absolute -top-10 right-0 text-white/80 hover:text-white" data-video-close>
-            <span class="material-symbols-outlined text-[28px]">close</span>
-          </button>
-          <div class="relative w-full overflow-hidden rounded-2xl bg-black" style="aspect-ratio: 16 / 9;">
-            <% yt_src = "https://www.youtube.com/embed/#{ERB::Util.url_encode(yt[:id])}" %>
-            <% yt_src += "?start=#{yt[:start].to_i}" if yt[:start].present? %>
-            <iframe
-              class="absolute inset-0 h-full w-full"
-              src="<%= yt_src %>"
-              title="YouTube video player"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              referrerpolicy="strict-origin-when-cross-origin"
-              frameborder="0"></iframe>
+            <div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4" data-video-modal>
+              <div class="relative w-full max-w-4xl">
+                <button type="button" class="absolute -top-10 right-0 text-white/80 hover:text-white" data-video-close>
+                  <span class="material-symbols-outlined text-[28px]">close</span>
+                </button>
+                <div class="relative w-full overflow-hidden rounded-2xl bg-black" style="aspect-ratio: 16 / 9;">
+                  <% yt_src = "https://www.youtube.com/embed/#{ERB::Util.url_encode(yt[:id])}" %>
+                  <% yt_src += "?start=#{yt[:start].to_i}" if yt[:start].present? %>
+                  <iframe
+                    class="absolute inset-0 h-full w-full"
+                    src="<%= yt_src %>"
+                    data-video-src="<%= yt_src %>"
+                    title="YouTube video player"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    frameborder="0"></iframe>
+                </div>
+              </div>
+            </div>
+          <% elsif @post.horizontal_cover_url.present? %>
+            <div class="mb-10">
+              <img src="<%= @post.horizontal_cover_url %>"
+                   alt="<%= @post.title %>"
+                   class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-sm">
+            </div>
+          <% end %>
+
+          <!-- Body -->
+          <div class="mb-4">
+          <%= render 'posts/body' %>
           </div>
-        </div>
-      </div>
-    <% elsif @post.horizontal_cover_url.present? %>
-      <div class="mb-10">
-        <img src="<%= @post.horizontal_cover_url %>"
-             alt="<%= @post.title %>"
-             class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-sm">
-      </div>
-    <% end %>
-
-    <!-- Body -->
-    <div class="mb-4">
-    <%= render 'posts/body' %>
-    </div>
+        <% else %>
+          <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800">
+            Questa puntata non è ancora disponibile. Torna presto.
+          </div>
+        <% end %>
 
     <!-- Related posts -->
     <% if  0 == 1 #  @parent_taxbranch.children.any? %>
@@ -282,17 +325,28 @@
       const openBtn = document.querySelector("[data-video-open]");
       const modal = document.querySelector("[data-video-modal]");
       const closeBtn = document.querySelector("[data-video-close]");
+      const iframe = modal?.querySelector("iframe[data-video-src]");
       if (!openBtn || !modal) return;
 
       const open = () => {
         modal.classList.remove("hidden");
         modal.classList.add("flex");
         document.body.classList.add("overflow-hidden");
+        if (iframe) {
+          const base = iframe.getAttribute("data-video-src");
+          if (base) {
+            const joiner = base.includes("?") ? "&" : "?";
+            iframe.src = `${base}${joiner}autoplay=1`;
+          }
+        }
       };
       const close = () => {
         modal.classList.add("hidden");
         modal.classList.remove("flex");
         document.body.classList.remove("overflow-hidden");
+        if (iframe) {
+          iframe.src = "";
+        }
       };
 
       openBtn.addEventListener("click", open);

@@ -246,6 +246,7 @@ end
   def export
     subtree = @taxbranch.subtree.order(:ancestry, :position, :slug_label)
 
+    bom = "\uFEFF"
     csv = CSV.generate(headers: true) do |out|
       out << %w[
         slug slug_category slug_label parent_slug lead_id visibility status position home_nav
@@ -256,7 +257,7 @@ end
       ]
       subtree.each do |tb|
         post = tb.post
-        out << [
+        row = [
           tb.slug,
           tb.slug_category,
           tb.slug_label,
@@ -290,11 +291,12 @@ end
           post&.banner_url,
           post&.url_media_content
         ]
+        out << row.map { |val| val.is_a?(String) ? val.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") : val }
       end
     end
 
     filename = "taxbranches_subtree_#{@taxbranch.id}_#{Time.zone.now.strftime('%Y%m%d_%H%M')}.csv"
-    send_data csv, filename: filename, type: "text/csv"
+    send_data bom + csv, filename: filename, type: "text/csv; charset=utf-8"
   end
 
   def import
@@ -308,8 +310,9 @@ end
     end
 
     raw = file.read
-    raw = raw.respond_to?(:encode) ? raw.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") : raw
-    rows = CSV.parse(raw, headers: true)
+    raw = raw.force_encoding("UTF-8")
+    raw = raw.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") if raw.respond_to?(:encode)
+    rows = CSV.parse(raw, headers: true, encoding: "UTF-8")
     results = { created: 0, updated: 0, skipped: 0, errors: [] }
     post_results = { created: 0, updated: 0, skipped: 0 }
     imported = []

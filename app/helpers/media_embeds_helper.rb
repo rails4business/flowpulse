@@ -86,4 +86,10 @@ module MediaEmbedsHelper
         class: "absolute inset-0 h-full w-full")
     end
   end
+
+  def youtube_thumb(url_str)
+    info = extract_youtube_info(url_str)
+    return nil unless info
+    "https://i.ytimg.com/vi/#{ERB::Util.url_encode(info[:id])}/hqdefault.jpg"
+  end
 end
