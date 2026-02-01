@@ -9,5 +9,37 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
- @import "actiontext.css";
- @import "rouge/themes/github.css";
+@import "actiontext.css";
+@import "rouge/themes/github.css";
+
+.prose h2,
+.prose-slate h2,
+.prose-lite h2,
+.body-prose h2,
+.playlist-prose h2 {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+}
+
+.prose h3,
+.prose-slate h3,
+.prose-lite h3,
+.body-prose h3,
+.playlist-prose h3 {
+  font-size: 1.75em;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-top: 1.4em;
+  margin-bottom: 0.5em;
+}
+
+.prose p,
+.prose-slate p,
+.prose-lite p,
+.body-prose p,
+.playlist-prose p {
+  font-size: 1.2625em;
+}
