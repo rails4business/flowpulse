@@ -138,11 +138,20 @@
                   <li>
                     <%= link_to post_path(child_post),
                                 class: "block #{child_post == @post ? 'text-primary' : 'text-slate-600 hover:text-slate-900'}" do %>
-                      <div class="text-[10px] uppercase tracking-wider text-slate-400">
-                        Puntata <%= child.position %> • <%= badge_text %>
-                      </div>
-                      <div class="truncate font-semibold">
-                        <%= child_post.title.presence || child.slug_label %>
+                      <div class="flex gap-3">
+                        <% if child_post.horizontal_cover_url.present? %>
+                          <!--div class="w-20 h-14 rounded-md overflow-hidden bg-slate-200 flex-shrink-0">
+                            <img src="<%= child_post.horizontal_cover_url %>" alt="" class="w-full h-full object-cover">
+                          </div-->
+                        <% end %>
+                        <div class="min-w-0">
+                          <div class="text-[10px] uppercase tracking-wider text-slate-400">
+                            Puntata <%= child.position %> • <%= badge_text %>
+                          </div>
+                          <div class="truncate font-semibold">
+                            <%= child_post.title.presence || child.slug_label %>
+                          </div>
+                        </div>
                       </div>
                     <% end %>
                   </li>

@@ -119,7 +119,7 @@
 
 - header: true
   title: "PARTE IV – STOP AL DOLORE"
-  description: "Patologie dolori strumenti e linee guida per uscire dalla fase acuta fase acuta"
+  description: ""
   slug: "parte-4-stop-al-dolore"
   color: "rosso"
 
@@ -130,8 +130,8 @@
   color: "rosso"
 
 - header: true
-  title: "PARTE V – PERCORSO TERAPEUTICO"
-  description: "Strumenti e linee guida per un percorso integrato"
+  title: "PARTE V – PERCORSO TERAPEUTICO EFFICACE"
+  description: ""
   slug: "parte-5-percorso-terapeutico"
   color: "rosso"
 
@@ -142,15 +142,15 @@
   color: "rosso"
 
 - header: true
-  title: "PARTE VI – PERCORSO TERAPEUTICO EFFICACE"
-  description: "Strumenti e linee guida per un percorso integrato"
+  title: "PARTE VI – BENESSERE INTEGRATO"
+  description: ""
   slug: "parte-6-benessere-integrato"
   color: "rosso"
 
 - header: true
-  title: "PARTE V – 🔵 POSTURA E FISIOLOGIA"
+  title: "PARTE VII – 🔵 POSTURA E FISIOLOGIA"
   description: "Il mondo blu e la scuola sulla postura e la fisiologia"
-  slug: "parte-5-postura-fisiologia"
+  slug: "parte-7-postura-fisiologia"
   color: "blu"
 
 - header: false
@@ -208,9 +208,9 @@
   color: "blu"
 
 - header: true
-  title: "PARTE VI – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE"
+  title: "PARTE VIII – 🟠 LA POSTURA NEL MONDO DEL LAVORO E DELLA FORMAZIONE"
   description: "In un mondo che cambia, imparare e lavorare diventano un unico processo"
-  slug: "parte-6-lavoro-formazione-convergenza"
+  slug: "parte-8-lavoro-formazione-convergenza"
   color: "arancione"
 
 - header: false
@@ -238,9 +238,9 @@
   color: "arancione"
 
 - header: true
-  title: "PARTE VII – 🟣 IL GIARDINO DEL CORPO, EVENTI E TERRITORIO"
+  title: "PARTE IX – 🟣 IL GIARDINO DEL CORPO, EVENTI E TERRITORIO"
   description: "Il livello viola: esperienza, evoluzione, e il coro, ognuno mette la sua voce per creare armonia"
-  slug: "parte-7-il-giardino-del-corpo-eventi-e-territorio.md"
+  slug: "parte-9-il-giardino-del-corpo-eventi-e-territorio.md"
   color: "viola"
 
 - header: false
@@ -292,7 +292,7 @@
   color: "viola"
 
 - header: true
-  title: "PARTE VIII – COLLABORARE CON POSTURA CORRETTA"
+  title: "PARTE X – COLLABORARE CON POSTURA CORRETTA"
   description: "Come collaborare con PosturaCorretta per professionisti, aziende e partner"
   slug: "parte-8-collaborare-con-postura-corretta"
   color: "blu"

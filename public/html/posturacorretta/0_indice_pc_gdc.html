@@ -1,20 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <title>Indice – PosturaCorretta</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>Indice – PosturaCorretta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <style>
-    /* migliora la stampa */
-    @media print {
-      .no-print { display: none !important; }
-      body { background: white; }
-    }
-  </style>
+    <style>
+      /* migliora la stampa */
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+        body {
+          background: white;
+        }
+      }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -39,110 +43,118 @@
 
     <style>
       @media print {
-        .print-pagebreak { page-break-after: always; }
-        .print-shadow-none { box-shadow: none !important; }
-        body { background: white !important; }
+        .print-pagebreak {
+          page-break-after: always;
+        }
+        .print-shadow-none {
+          box-shadow: none !important;
+        }
+        body {
+          background: white !important;
+        }
       }
     </style>
-</head>
+  </head>
 
-<body class="bg-slate-50 text-slate-800">
-  
+  <body class="bg-slate-50 text-slate-800">
+    <!-- HEADER -->
+    <header class="mx-auto max-w-4xl px-4 py-8 space-y-4">
+      <div class="space-y-2">
+        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">
+          Libro · Indice ragionato
+        </p>
+        <h1 id="book-title" class="text-3xl font-bold text-slate-900">
+          Il corpo, un mondo da scoprire
+        </h1>
+        <p id="book-baseline" class="text-base text-slate-600 leading-relaxed">
+          La salute dalla postura al corpo e al territorio. Con L'Accademia
+          PosturaCorretta e il giardino del corpo, la scuola per l'evoluzione
+          armonica dell'essere umano.
+        </p>
+      </div>
 
-  <!-- HEADER -->
-  <header class="mx-auto max-w-4xl px-4 py-8 space-y-4">
-    <div class="space-y-2">
-      <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Libro · Indice ragionato</p>
-      <h1 id="book-title" class="text-3xl font-bold text-slate-900">
-        Il corpo, un mondo da scoprire
-      </h1>
-      <p id="book-baseline" class="text-base text-slate-600 leading-relaxed">
-        La salute dalla postura al corpo e al territorio.
-        Con L'Accademia PosturaCorretta e il giardino del corpo, la scuola per l'evoluzione armonica dell'essere umano.
-      </p>
-    </div>
-   
+      <div class="mt-4 no-print">
+        <a
+          href="posturacorretta_book"
+          class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+        >
+          Intro postura corretta
+        </a>
+      </div>
+    </header>
+    <section class="mx-auto max-w-4xl px-4 pb-4">
+      <div
+        id="book-summary"
+        class="prose prose-slate max-w-none text-sm leading-relaxed space-y-3"
+      >
+        <!-- Popolato via JS -->
+      </div>
+    </section>
 
-    <div class="mt-4 no-print">
-      <a href="posturacorretta_book"  class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-        Intro postura corretta 
-      </a>
-      <button onclick="window.print()"
-        class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-        Stampa / Salva PDF
-      </button>
-    </div>
-  </header>
-  <section class="mx-auto max-w-4xl px-4 pb-4">
-    <div id="book-summary" class="prose prose-slate max-w-none text-sm leading-relaxed space-y-3">
-      <!-- Popolato via JS -->
-    </div>
-  </section>
+    <!-- CONTENUTO -->
+    <main class="mx-auto max-w-4xl px-4 pb-16">
+      <div id="indice" class="space-y-6"></div>
+    </main>
 
-  <!-- CONTENUTO -->
-  <main class="mx-auto max-w-4xl px-4 pb-16">
-    <div id="indice" class="space-y-6"></div>
-  </main>
+    <script>
+      const bookIntro = {
+        title: "Il corpo, un mondo da scoprire",
+        baseline:
+          "Dall'Accademia PosturaCorretta a una scuola per l'evoluzione armonica dell'essere umano.",
+        paragraphs: [
+          "Una raccolta di parti e capitoli che guidano dalla cura del dolore alla costruzione di una cultura della salute condivisa.",
+          "Ogni sezione introduce gli strumenti, i professionisti e i principi che hanno dato vita all'ecosistema PosturaCorretta e al progetto Il Giardino del Corpo.",
+          "Questo indice è pensato per essere stampato o consultato durante i lavori redazionali: evidenzia le parti, descrive i capitoli e rimanda alle pagine di approfondimento online.",
+        ],
+      };
 
-  <script>
-    const bookIntro = {
-      title: "Il corpo, un mondo da scoprire",
-      baseline: "Dall'Accademia PosturaCorretta a una scuola per l'evoluzione armonica dell'essere umano.",
-      paragraphs: [
-        "Una raccolta di parti e capitoli che guidano dalla cura del dolore alla costruzione di una cultura della salute condivisa.",
-        "Ogni sezione introduce gli strumenti, i professionisti e i principi che hanno dato vita all'ecosistema PosturaCorretta e al progetto Il Giardino del Corpo.",
-        "Questo indice è pensato per essere stampato o consultato durante i lavori redazionali: evidenzia le parti, descrive i capitoli e rimanda alle pagine di approfondimento online."
-      ]
-    };
+      const titleEl = document.getElementById("book-title");
+      const baselineEl = document.getElementById("book-baseline");
 
-    const titleEl = document.getElementById("book-title");
-    const baselineEl = document.getElementById("book-baseline");
-   
-    const summaryEl = document.getElementById("book-summary");
+      const summaryEl = document.getElementById("book-summary");
 
-    if (titleEl) titleEl.textContent = bookIntro.title;
-    if (baselineEl) baselineEl.textContent = bookIntro.baseline;
-   
-    if (summaryEl) {
-      summaryEl.innerHTML = bookIntro.paragraphs
-        .map((paragraph) => `<p>${paragraph}</p>`)
-        .join("");
-    }
-  </script>
+      if (titleEl) titleEl.textContent = bookIntro.title;
+      if (baselineEl) baselineEl.textContent = bookIntro.baseline;
 
-  <!-- JSON via endpoint -->
-  <script>
-    const container = document.getElementById("indice");
+      if (summaryEl) {
+        summaryEl.innerHTML = bookIntro.paragraphs
+          .map((paragraph) => `<p>${paragraph}</p>`)
+          .join("");
+      }
+    </script>
 
-    const renderItem = (item) => {
-      if (item.header) {
-        const section = document.createElement("section");
-        section.className = "pt-8 border-t border-slate-200";
-        section.innerHTML = `
+    <!-- JSON via endpoint -->
+    <script>
+      const container = document.getElementById("indice");
+
+      const renderItem = (item) => {
+        if (item.header) {
+          const section = document.createElement("section");
+          section.className = "pt-8 border-t border-slate-200";
+          section.innerHTML = `
           <h2 class="text-xl font-bold text-slate-900">${item.title}</h2>
           ${item.description ? `<p class="mt-1 text-slate-600 italic">${item.description}</p>` : ""}
         `;
-        container.appendChild(section);
-      } else {
-        const card = document.createElement("article");
-        card.className = "rounded-xl border border-slate-200 bg-white p-4 shadow-sm";
-        card.innerHTML = `
+          container.appendChild(section);
+        } else {
+          const card = document.createElement("article");
+          card.className =
+            "rounded-xl border border-slate-200 bg-white p-4 shadow-sm";
+          card.innerHTML = `
           <h3 class="text-sm font-semibold text-slate-900">${item.title}</h3>
           ${item.description ? `<p class="mt-1 text-sm text-slate-600">${item.description}</p>` : ""}
         `;
-        container.appendChild(card);
-      }
-    };
+          container.appendChild(card);
+        }
+      };
 
-    fetch("/book_index.json")
-      .then(response => response.json())
-      .then(data => data.forEach(renderItem))
-      .catch(() => {
-        container.innerHTML = "<p class='text-sm text-red-600'>Impossibile caricare l'indice.</p>";
-      });
-  </script>
-
-
-
-</body>
+      fetch("/book_index.json")
+        .then((response) => response.json())
+        .then((data) => data.forEach(renderItem))
+        .catch(() => {
+          container.innerHTML =
+            "<p class='text-sm text-red-600'>Impossibile caricare l'indice.</p>";
+        });
+    </script>
+  </body>
 </html>

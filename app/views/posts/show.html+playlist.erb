@@ -66,11 +66,20 @@
               <% badge_text = in_arrivo ? "In Arrivo" : I18n.l(child.published_at, format: "%d %b %Y", locale: :it) %>
               <li>
                 <%= link_to post_path(child_post), class: "block rounded-lg px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800" do %>
-                  <div class="text-[10px] uppercase tracking-wider text-slate-400">
-                    Puntata <%= child.position %> • <%= badge_text %>
-                  </div>
-                  <div class="truncate text-sm font-semibold text-slate-700 dark:text-slate-100">
-                    <%= child_post.title.presence || child.slug_label %>
+                  <div class="flex gap-3">
+                    <% if child_post.horizontal_cover_url.present? %>
+                      <div class="w-20 h-14 rounded-md overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0">
+                        <img src="<%= child_post.horizontal_cover_url %>" alt="" class="w-full h-full object-cover">
+                      </div>
+                    <% end %>
+                    <div class="min-w-0">
+                      <div class="text-[10px] uppercase tracking-wider text-slate-400">
+                        Puntata <%= child.position %> • <%= badge_text %>
+                      </div>
+                      <div class="truncate text-sm font-semibold text-slate-700 dark:text-slate-100">
+                        <%= child_post.title.presence || child.slug_label %>
+                      </div>
+                    </div>
                   </div>
                 <% end %>
               </li>

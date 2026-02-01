@@ -173,10 +173,10 @@
       <% else %>
         <%= link_to "Accedi",
                     new_session_path,
-                    class: "text-[#0d151c] dark:text-gray-300 hover:text-primary" %>
+                    class: "text-sm font-semibold text-[#0d151c] dark:text-gray-300 hover:text-primary transition-colors" %>
         <%= link_to "Registrati",
                     new_registration_path,
-                    class: "inline-flex items-center rounded-full border border-primary/40 px-4 py-2 text-primary hover:bg-primary/10 transition-colors" %>
+                    class: "inline-flex items-center rounded-full border border-primary/40 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors" %>
       <% end %>
     </div>
               <div class="md:hidden flex items-center">
@@ -207,7 +207,7 @@
               
             </div>
           </header>
-          <main class="bg-background-light">
+          <main class="bg-blue-50">
             <div class="max-w-[1200px] mx-auto px-6 space-y-24 py-12" id="home">
             <section class="  mx-auto mb-24">
               <div class="text-center mx-auto space-y-6">
@@ -438,7 +438,7 @@
                               type="checkbox"
                             />
                             <span class="text-sm text-slate-600 dark:text-slate-400"
-                              >Oltre la postura</span
+                              >Oltre la salute</span
                             >
                           </label>
 
@@ -631,42 +631,164 @@
               </div>
         
   </section>
-  
-
+  </div>
+  </main>
+  <main class="bg-background-light">
+   <div class=" max-w-[1200px] mx-auto px-6 space-y-24 py-12" id="home">
+  <section class="mb-20">
+<div class="grid lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">verified</span>
+                        Le cose semplici sono le più efficaci.
+                    </div>
+<h2 class="text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-slate-900 dark:text-white">
+                        Dal farmaco <span class="text-primary">All'educazione alla salute</span>
+</h2>
+<p> La cura delle patologie e i farmaci sono una parte fondamentale della cura, ma sarebbe bello affiancarla ad un’educazione alla salute basata sulla fisiologia, sulla postura e sulla pratica consapevole.   </p>
+<p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
+                       Grazie all’Accademia PosturaCorretta e alla collaborazione tra persone, professionisti, centri e scuole, è possibile cambiare il modo in cui oggi vengono costruiti i percorsi sulla salute. </p> 
+<div class="flex flex-wrap gap-4 pt-4">
+<a href="#4-protagonisti" class="bg-primary text-white px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-2 hover:bg-primary/90">
+                           Scopri di più <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+<!--button class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-xl font-bold text-lg">
+                            Vai all'accademia
+                        </button-->
+</div>
+</div>
+<div class="relative">
+<div class="absolute -top-10 -left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl"></div>
+<a href="/html/posturacorretta/pentagono_5_aree_salute.html" class="block">
+  <div class="relative bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-hidden aspect-[4/3] shadow-2xl border-4 border-white dark:border-slate-900">
+    <img src="<%= image_path('posturacorretta/pentagono_5_aree.png') %>" alt="Pentagono 5 aree della salute" class="w-full h-full object-cover">
+  </div>
+</a>
+<div class="absolute -bottom-24 -right-6 bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 flex items-center gap-4">
+<div class="bg-green-500/20 text-green-500 p-3 rounded-full">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Chi ci ha scelto?</p>
+<p class="text-xl font-extrabold">+<%= Lead.count %> Utenti</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="mb-24 pt-20" id="4-protagonisti">
+<div class="text-center mb-12">
+<h3 class="text-3xl font-bold mb-4">Diventa protagonista</h3>
+<p class="text-slate-500">Scegli il tuo punto di ingresso nell'ecosistema Postura Corretta</p>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1: Persone -->
+<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">patient_list</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Persone</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Dalla cura della patologia all'educazione alla salute.</strong>
+</p>
+<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
+  <p class="mt-2">
+    Le persone non cercano solo soluzioni rapide, ma vogliono capire cosa sta succedendo al loro corpo e come costruire un percorso che duri nel tempo. Con l’educazione alla salute imparano a <strong>leggere i segnali</strong>, a conoscere la fisiologia e a <strong>partecipare attivamente</strong> al proprio percorso.
+  </p>
+</details>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Educazione salute</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Percorso Personalizzato</li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Accedi <span class="material-symbols-outlined">chevron_right</span></span>
+</a>
+<!-- Card 2: Professionista -->
+<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Professionista</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Strumenti per percorsi integrati, e formazione.</strong>
+</p>
+<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
+  <p class="mt-2">
+    I professionisti restano specialisti nel proprio ambito, ma acquisiscono una visione più ampia del percorso della persona. L’Accademia PosturaCorretta offre un <strong>linguaggio comune</strong> e linee guida per integrare cura delle patologie, con la cura della salute, e l'educazione pratica su come funziona il corpo.
+  </p>
+</details>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Valorizzare le competenze</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Linee guida per Collaborare</li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
+</a>
+<!-- Card 3: Centro Posturale -->
+<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">corporate_fare</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Centri</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Non solo prestazioni, ma continuità.</strong>
+</p>
+<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
+  <p class="mt-2">
+    I centri diventano spazi dove i percorsi prendono forma: servizi, educazione, incontri ed eventi. <strong>Luoghi di riferimento</strong> sul territorio, dove persone, professionisti e scuole possono collaborare in modo strutturato. Per erogare servizi, ospitare gruppi, trovare un riferimento sul territorio, ospitare la formazione.
+  </p>
+</details>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Riferimento per i pazienti</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Continuità nel percorso</li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
+</a>
+<!-- Card 4: Scuola e Metodica -->
+<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">school</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Professioni e Scuole</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Dialogo, integrazione e basi comuni.</strong>
+</p>
+<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
+  <p class="mt-2">
+    Esistono molte professioni, metodiche e discipline, ognuna con una propria identità e un proprio ruolo. PosturaCorretta parte da un principio semplice: lo studio della fisiologia dell’uomo è una <strong>base comune</strong>, indipendente dall’approccio o dalla specializzazione. Per questo crea uno spazio di dialogo, integrazione e ricerca, in cui le diverse professioni e scuole possono incontrarsi, farsi conoscere e collaborare, senza perdere la propria identità. L’educazione alla salute permette alle persone e ai professionisti di fare scelte più consapevoli: prima si condividono i principi fondamentali, poi ognuno può scegliere il percorso, la metodologia o il professionista più adatto. Le basi sono comuni. Le strade possono essere diverse.
+  </p>
+</details>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Presenta i tuoi professionisti</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Fai conoscere il tuo percorso </li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
+</a>
+</div>
+</section>
             <!--section class="space-y-12 pt-16" id="accademia">
               <div class="rounded-[2.5rem] border border-slate-100 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900 overflow-hidden">
                 <div class="p-8">
                   <div class="text-center space-y-4 max-w-2xl mx-auto">
                     <h2 class="text-4xl md:text-5xl font-bold">Accademia</h2>
                     <p class="text-lg text-slate-600 dark:text-slate-400">
-                     Le metodiche posturali ti accompagnano a scoprire la tua fisiologia. Una conoscenza, che ti può sostienere  nei percorsi della salute sul lavoro o nella formazione.»
+                     Le metodiche posturali ti accompagnano a scoprire la tua fisiologia. Una conoscenza, che ti può sostienere  nei percorsi della salute sul lavoro o nella formazione.
                     </p>
                   </div>
-                  <div class="mt-8 flex justify-center border-b border-slate-200 dark:border-slate-800">
-                    <div class="flex flex-wrap gap-6">
-                       <button
-                        class="pb-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 font-bold text-sm uppercase tracking-widest transition-all"
-                      >
-                        Percorso Salute
-                      </button>
-                      <button
-                        class="pb-4 border-b-2 border-primary text-primary font-bold text-sm uppercase tracking-widest transition-all"
-                      >
-                        Postura e Fisiologia
-                      </button>
-                     
-                      <button
-                        class="pb-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 font-bold text-sm uppercase tracking-widest transition-all"
-                      >
-                        5 aree salute
-                      </button>
-                      <button
-                        class="pb-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 font-bold text-sm uppercase tracking-widest transition-all"
-                      >
-                        Oltre la Postura
-                      </button>
+                    <% active_tab = params[:tab].presence || "postura" %>
+                    <div class="mt-8 flex justify-center border-b border-slate-200 dark:border-slate-800">
+                      <div class="flex flex-wrap gap-6">
+                        <%= link_to "Educazione alla salute",
+                                    url_for(tab: "postura"),
+                                    class: "pb-4 border-b-2 font-bold text-sm uppercase tracking-widest transition-all #{active_tab == 'postura' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}" %>
+                    
+                        <%= link_to "Linee guida percorso salute",
+                                    url_for(tab: "percorso"),
+                                    class: "pb-4 border-b-2 font-bold text-sm uppercase tracking-widest transition-all #{active_tab == 'percorso' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}" %>
+                                              </div>
                     </div>
-                  </div>
                 </div>
               <div
                 class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-slate-100 dark:border-slate-800"
@@ -677,7 +799,9 @@
                   <h4
                     class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8"
                   >
-                    Moduli Formativi
+                    Postura e Fisiologia
+                 
+                 
                   </h4>
                   <div class="space-y-6">
                     <div
@@ -714,6 +838,20 @@
                         Studio delle catene muscolari.
                       </p>
                     </div>
+                     <h4
+                    class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8"
+                  >
+                    5 aree della salute
+                 
+                 
+                  </h4>
+                    <h4
+                    class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8"
+                  >
+                    Oltre la salute
+                 
+                 
+                  </h4>
                   </div>
                 </div>
                 <div class="lg:col-span-8 p-8 md:p-12 space-y-10">
@@ -1175,7 +1313,7 @@ SEI UN PROFESSIONISTA?</h4>
               
             </section-->
             <section
-              class="flex flex-col lg:flex-row gap-20 py-12 border-t border-[#e7edf3] dark:border-slate-800 pt-16" id="progetto"
+              class="flex flex-col lg:flex-row gap-20 py-12 border-t border-[#e7edf3] dark:border-slate-800 pt-24" id="progetto"
             >
               <div class="flex-1 space-y-10">
                 <div class="space-y-4">
@@ -1236,20 +1374,26 @@ SEI UN PROFESSIONISTA?</h4>
                         class="absolute -left-[27px] size-4 rounded-full <%= is_published ? "bg-slate-300 dark:bg-slate-600" : "bg-primary shadow-md" %> border-4 border-white dark:border-slate-900"
                       ></div>
                       <%= link_to post do %>
-                        <div class="space-y-1">
-                          <span
-                            class="text-xs font-bold uppercase tracking-wider <%= is_published ? "text-slate-400" : "text-primary" %>"
-                          >Puntata <%= tax.position.presence || (idx + 1) %> • <%= badge_text %></span>
-                          <h4 class="font-bold text-xl">
-                            <%= post&.title.presence || tax.slug_label %>
-                          </h4>
-                          <% if post&.description.present? %>
-                            <p class="text-sm text-slate-500">
-                              <%= post.description %>
-                            </p>
+                        <div class="flex gap-3">
+                          <% if post&.horizontal_cover_url.present? %>
+                            <!--div class="w-24 h-16 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0">
+                              <img src="<%= post.horizontal_cover_url %>" alt="" class="w-full h-full object-cover">
+                            </div-->
                           <% end %>
+                          <div class="space-y-1 min-w-0">
+                            <span
+                              class="text-xs font-bold uppercase tracking-wider <%= is_published ? "text-slate-400" : "text-primary" %>"
+                            >Puntata <%= tax.position.presence || (idx + 1) %> • <%= badge_text %></span>
+                            <h4 class="font-bold text-xl">
+                              <%= post&.title.presence || tax.slug_label %>
+                            </h4>
+                            <% if post&.description.present? %>
+                              <p class="text-sm text-slate-500">
+                                <%= post.description %>
+                              </p>
+                            <% end %>
+                          </div>
                         </div>
-                       
                       <% end %>
                     </div>
                   <% end %>
@@ -1337,13 +1481,13 @@ SEI UN PROFESSIONISTA?</h4>
                       >
                       Ordina
                     </button-->
-                     <% if (tb = Taxbranch.find_by(slug: "book/il-corpo-un-mondo-da-scoprire"))&.post %>
-                      <%= link_to post_path(tb.post),
+                     <%# if (tb = Taxbranch.find_by(slug: "book/il-corpo-un-mondo-da-scoprire"))&.post %>
+                      <%#= link_to post_path(tb.post),
                                   class: "text-center flex-1 py-4 border border-primary/30 text-primary font-bold rounded-xl hover:bg-primary/10 transition-all" do %>
                         
-                        Scopri di più
-                      <% end %>
-                    <% end %>
+                   <!--  Scopri di più-->
+                      <%# end %>
+                    <%# end %>
                    
                   </div>
                 </div>

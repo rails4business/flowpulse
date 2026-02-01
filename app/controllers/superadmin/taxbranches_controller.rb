@@ -108,8 +108,8 @@ module Superadmin
       @taxbranch.save!
     end
 
-    redirect_target = @taxbranch.parent_id.present? ? superadmin_taxbranch_path(@taxbranch.parent_id) : superadmin_taxbranch_path(@taxbranch)
-    redirect_to(redirect_target, notice: "Creato.", status: :see_other)
+    redirect_to superadmin_taxbranch_path(@taxbranch),
+                notice: "Creato.", status: :see_other
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
@@ -118,8 +118,8 @@ module Superadmin
 
 def update
   if @taxbranch.update(taxbranch_params)
-    redirect_target = @taxbranch.parent_id.present? ? superadmin_taxbranch_path(@taxbranch.parent_id) : superadmin_taxbranch_path(@taxbranch)
-    redirect_to(redirect_target, notice: "Taxbranch aggiornata.", status: :see_other) # 303
+    redirect_to superadmin_taxbranch_path(@taxbranch, edit_tax: true, anchor: "tax-edit-form"),
+                notice: "Taxbranch aggiornata.", status: :see_other # 303
   else
     render :edit, status: :unprocessable_entity
   end
