@@ -674,8 +674,53 @@
 </div>
 </div>
 </div>
-</div>
+  </div>
 </section>
+<script>
+  (() => {
+    const openModal = (id) => {
+      const modal = document.querySelector(`[data-modal="${id}"]`);
+      if (!modal) return;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.classList.add("overflow-hidden");
+    };
+
+    const closeModal = (modal) => {
+      if (!modal) return;
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      document.body.classList.remove("overflow-hidden");
+    };
+
+    document.addEventListener("click", (e) => {
+      const trigger = e.target.closest("[data-modal-open]");
+      if (!trigger) return;
+      e.preventDefault();
+      e.stopPropagation();
+      openModal(trigger.dataset.modalOpen);
+    });
+
+    document.addEventListener("click", (e) => {
+      const closeTrigger = e.target.closest("[data-modal-close]");
+      if (!closeTrigger) return;
+      e.preventDefault();
+      const modal = closeTrigger.closest("[data-modal]");
+      closeModal(modal);
+    });
+
+    document.querySelectorAll("[data-modal]").forEach((modal) => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      document.querySelectorAll("[data-modal]").forEach((modal) => closeModal(modal));
+    });
+  })();
+</script>
 <section class="mb-24 pt-20" id="4-protagonisti">
 <div class="text-center mb-12">
 <h3 class="text-3xl font-bold mb-4">Diventa protagonista</h3>
@@ -683,7 +728,7 @@
 </div>
 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 <!-- Card 1: Persone -->
-<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-persone">
 <div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
 <span class="material-symbols-outlined text-3xl">patient_list</span>
 </div>
@@ -691,41 +736,39 @@
 <p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
   <strong class="text-slate-700 dark:text-slate-200">Dalla cura della patologia all'educazione alla salute.</strong>
 </p>
-<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
-  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
-  <p class="mt-2">
-    Le persone non cercano solo soluzioni rapide, ma vogliono capire cosa sta succedendo al loro corpo e come costruire un percorso che duri nel tempo. Con l’educazione alla salute imparano a <strong>leggere i segnali</strong>, a conoscere la fisiologia e a <strong>partecipare attivamente</strong> al proprio percorso.
-  </p>
-</details>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-persone">
+  Scopri di più
+</button>
 <ul class="space-y-3 mb-8">
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Educazione salute</li>
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Percorso Personalizzato</li>
 </ul>
 <span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Accedi <span class="material-symbols-outlined">chevron_right</span></span>
-</a>
+</div>
 <!-- Card 2: Professionista -->
-<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-professionista">
 <div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
 <span class="material-symbols-outlined text-3xl">medical_services</span>
 </div>
-<h4 class="text-xl font-bold mb-3">Professionista</h4>
+<h4 class="text-xl font-bold mb-3">Professionisti</h4>
 <p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
   <strong class="text-slate-700 dark:text-slate-200">Strumenti per percorsi integrati, e formazione.</strong>
 </p>
-<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
-  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
-  <p class="mt-2">
-    I professionisti restano specialisti nel proprio ambito, ma acquisiscono una visione più ampia del percorso della persona. L’Accademia PosturaCorretta offre un <strong>linguaggio comune</strong> e linee guida per integrare cura delle patologie, con la cura della salute, e l'educazione pratica su come funziona il corpo.
-  </p>
-</details>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-professionista">
+  Scopri di più
+</button>
 <ul class="space-y-3 mb-8">
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Valorizzare le competenze</li>
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Linee guida per Collaborare</li>
 </ul>
 <span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
-</a>
+</div>
 <!-- Card 3: Centro Posturale -->
-<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-centri">
 <div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
 <span class="material-symbols-outlined text-3xl">corporate_fare</span>
 </div>
@@ -733,20 +776,19 @@
 <p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
   <strong class="text-slate-700 dark:text-slate-200">Non solo prestazioni, ma continuità.</strong>
 </p>
-<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
-  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
-  <p class="mt-2">
-    I centri diventano spazi dove i percorsi prendono forma: servizi, educazione, incontri ed eventi. <strong>Luoghi di riferimento</strong> sul territorio, dove persone, professionisti e scuole possono collaborare in modo strutturato. Per erogare servizi, ospitare gruppi, trovare un riferimento sul territorio, ospitare la formazione.
-  </p>
-</details>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-centri">
+  Scopri di più
+</button>
 <ul class="space-y-3 mb-8">
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Riferimento per i pazienti</li>
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Continuità nel percorso</li>
 </ul>
 <span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
-</a>
+</div>
 <!-- Card 4: Scuola e Metodica -->
-<a href="#progetto" class="group block bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl">
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-scuole">
 <div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
 <span class="material-symbols-outlined text-3xl">school</span>
 </div>
@@ -754,20 +796,89 @@
 <p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
   <strong class="text-slate-700 dark:text-slate-200">Dialogo, integrazione e basi comuni.</strong>
 </p>
-<details class="text-slate-500 dark:text-slate-400 text-sm mb-6 leading-relaxed">
-  <summary class="cursor-pointer font-semibold text-primary">Scopri di più</summary>
-  <p class="mt-2">
-    Esistono molte professioni, metodiche e discipline, ognuna con una propria identità e un proprio ruolo. PosturaCorretta parte da un principio semplice: lo studio della fisiologia dell’uomo è una <strong>base comune</strong>, indipendente dall’approccio o dalla specializzazione. Per questo crea uno spazio di dialogo, integrazione e ricerca, in cui le diverse professioni e scuole possono incontrarsi, farsi conoscere e collaborare, senza perdere la propria identità. L’educazione alla salute permette alle persone e ai professionisti di fare scelte più consapevoli: prima si condividono i principi fondamentali, poi ognuno può scegliere il percorso, la metodologia o il professionista più adatto. Le basi sono comuni. Le strade possono essere diverse.
-  </p>
-</details>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-scuole">
+  Scopri di più
+</button>
 <ul class="space-y-3 mb-8">
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Presenta i tuoi professionisti</li>
 <li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Fai conoscere il tuo percorso </li>
 </ul>
 <span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
-</a>
+</div>
 </div>
 </section>
+<% content_for :modals do %>
+  <div class="fixed inset-0 z-[1000] hidden items-center justify-center bg-black/60 p-4" data-modal="protagonista-persone">
+    <div class="w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-900">
+      <div class="flex items-start justify-between gap-4">
+        <h4 class="text-lg font-bold">Persone</h4>
+        <button type="button" class="text-slate-500 hover:text-slate-800" data-modal-close>✕</button>
+      </div>
+      <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">
+        Le persone non cercano solo soluzioni rapide, ma vogliono capire cosa sta succedendo al loro corpo e come costruire un percorso che duri nel tempo. Con l’educazione alla salute imparano a <strong>leggere i segnali</strong>, a conoscere la fisiologia e a <strong>partecipare attivamente</strong> al proprio percorso.
+      </p>
+      <div class="mt-5">
+        <a href="#progetto" class="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-primary/90">
+          Vai al progetto
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="fixed inset-0 z-[1000] hidden items-center justify-center bg-black/60 p-4" data-modal="protagonista-professionista">
+    <div class="w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-900">
+      <div class="flex items-start justify-between gap-4">
+        <h4 class="text-lg font-bold">Professionisti</h4>
+        <button type="button" class="text-slate-500 hover:text-slate-800" data-modal-close>✕</button>
+      </div>
+      <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">
+        I professionisti restano specialisti nel proprio ambito, ma acquisiscono una visione più ampia del percorso della persona. L’Accademia PosturaCorretta offre un <strong>linguaggio comune</strong> e linee guida per integrare cura delle patologie, con la cura della salute, e l'educazione pratica su come funziona il corpo.
+      </p>
+      <div class="mt-5">
+        <a href="#progetto" class="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-primary/90">
+          Vai al progetto
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="fixed inset-0 z-[1000] hidden items-center justify-center bg-black/60 p-4" data-modal="protagonista-centri">
+    <div class="w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-900">
+      <div class="flex items-start justify-between gap-4">
+        <h4 class="text-lg font-bold">Centri</h4>
+        <button type="button" class="text-slate-500 hover:text-slate-800" data-modal-close>✕</button>
+      </div>
+      <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">
+        I centri diventano spazi dove i percorsi prendono forma: servizi, educazione, incontri ed eventi. <strong>Luoghi di riferimento</strong> sul territorio, dove persone, professionisti e scuole possono collaborare in modo strutturato. Per erogare servizi, ospitare gruppi, trovare un riferimento sul territorio, ospitare la formazione.
+      </p>
+      <div class="mt-5">
+        <a href="#progetto" class="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-primary/90">
+          Vai al progetto
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="fixed inset-0 z-[1000] hidden items-center justify-center bg-black/60 p-4" data-modal="protagonista-scuole">
+    <div class="w-full max-w-xl rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-900">
+      <div class="flex items-start justify-between gap-4">
+        <h4 class="text-lg font-bold">Professioni e Scuole</h4>
+        <button type="button" class="text-slate-500 hover:text-slate-800" data-modal-close>✕</button>
+      </div>
+      <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">
+        Esistono molte professioni, metodiche e discipline, ognuna con una propria identità e un proprio ruolo. PosturaCorretta parte da un principio semplice: lo studio della fisiologia dell’uomo è una <strong>base comune</strong>, indipendente dall’approccio o dalla specializzazione. Per questo crea uno spazio di dialogo, integrazione e ricerca, in cui le diverse professioni e scuole possono incontrarsi, farsi conoscere e collaborare, senza perdere la propria identità. L’educazione alla salute permette alle persone e ai professionisti di fare scelte più consapevoli: prima si condividono i principi fondamentali, poi ognuno può scegliere il percorso, la metodologia o il professionista più adatto. Le basi sono comuni. Le strade possono essere diverse.
+      </p>
+      <div class="mt-5">
+        <a href="#progetto" class="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-primary/90">
+          Vai al progetto
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+<% end %>
             <!--section class="space-y-12 pt-16" id="accademia">
               <div class="rounded-[2.5rem] border border-slate-100 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900 overflow-hidden">
                 <div class="p-8">
@@ -1312,7 +1423,7 @@ SEI UN PROFESSIONISTA?</h4>
 </div>
               
             </section-->
-            <section
+<section
               class="flex flex-col lg:flex-row gap-20 py-12 border-t border-[#e7edf3] dark:border-slate-800 pt-24" id="progetto"
             >
               <div class="flex-1 space-y-10">
