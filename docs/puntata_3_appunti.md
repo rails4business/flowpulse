@@ -1,3 +1,14 @@
+Affiancare l’educazione alla salute al farmaco
+
+La cura delle patologie e gli interventi in fase acuta sono fondamentali.
+Ma quando alla cura si affianca l’educazione alla salute,
+il percorso diventa più efficace, più consapevole e più duraturo.
+
+Per questo nasce l’Accademia PosturaCorretta:
+uno spazio di educazione e orientamento
+che integra cura ed educazione alla salute
+attraverso la conoscenza del funzionamento dell’uomo.
+
 # In questa puntata deve essere pronto:
 
 - Avanzamenti piattaforma

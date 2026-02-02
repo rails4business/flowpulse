@@ -68,12 +68,28 @@ ma un **percorso educativo progressivo**.
 
 ---
 
-### 3️⃣ Puntata 3 — Dal farmaco all’educazione
+### 3️⃣ Puntata 3 — Affiancare l'educazione alla salute al farmaco per integrare cura ed educazione una missione possibile grazie a 4 protagonisti!
 
 **L’Accademia PosturaCorretta e i quattro protagonisti dell’evoluzione della salute**
 
-- Il limite del solo farmaco
-- La necessità dell’educazione alla salute
+Obiettivo della puntata:
+
+far capire a chi parla il progetto
+
+legittimare tutti i ruoli
+
+dire: “se ti riconosci, sei nel posto giusto”
+
+👉 Qui:
+
+presenti i 4 protagonisti
+
+introduci Percorso PosturaCorretta e Linee guida
+
+non entri ancora nei dettagli operativi
+
+> Funzione: dare struttura e possibilità di azione
+
 - Persone
 - Professionisti
 - Centri
@@ -90,6 +106,9 @@ ma un **percorso educativo progressivo**.
 
 ### 4️⃣ Puntata 4 — Una guida al percorso, il libro il corpo un mondo da scoprire
 
+Il limite del solo farmaco
+La necessità dell’educazione alla salute
+
 - Guida del percorso
 - Il libro come mappa del progetto
 - Educazione alla salute
@@ -100,43 +119,22 @@ ma un **percorso educativo progressivo**.
 
 ---
 
-## 🟨 FASE 3 — STRUTTURA (5–6)
+## 🟨 FASE 3 — STRUTTURA (5– 8 )
 
 **Mostrare come il progetto prende forma**
 
-### 5️⃣ Puntata 5 — Accademia educazione e linee guida
+### 5️⃣ Puntata 5 — L'accademia con il percorso e le linee guida
 
 - Cos’è l’Accademia PosturaCorretta
-- Percorsi standard
-- Percorso personalizzato
-- Eventi
-- Contenuti informativi Servizi e orientamento
-
-> Funzione: dare struttura e possibilità di azione
+  Accademia è:
+  1 - percorso postura
+  2 - linee guida
 
 ---
 
-### 6️⃣ Puntata 6 — Prenota e inizia
-
-Calendario Servizi ed Eventi per i pazienti e professionisti
-
-- Incontri pubblici presentazione
-- Appuntamenti percorso
-- Incontri dal vivo percorso pazienti
-- Formazione professionisti
-- Ruolo dei centri
-- Comunità e relazione
-- Salute come esperienza condivisa
-
-> Funzione: portare il progetto nel mondo reale
-
 ---
 
-## 🟥 FASE 4 — EDUCAZIONE (7–9)
-
-**Entrare nel cuore del metodo**
-
-### 7️⃣ Puntata 7 — Il percorso educativo
+### 7️⃣ Puntata 6 — Il percorso educativo
 
 - Educazione alla salute
 - Postura e fisiologia
@@ -148,7 +146,7 @@ Calendario Servizi ed Eventi per i pazienti e professionisti
 
 ---
 
-### 8️⃣ Puntata 8 — Igiene Posturale
+### 8️⃣ Puntata 7 — Igiene Posturale
 
 - Primo corso operativo
 - Educazione alla fisiologia
@@ -159,7 +157,7 @@ Calendario Servizi ed Eventi per i pazienti e professionisti
 
 ---
 
-### 9️⃣ Puntata 9 — Linee guida del percorso della salute
+### 9️⃣ Puntata 8 — Linee guida del percorso della salute
 
 - Dal dolore al benessere
 - Educazione, clinica, benessere
@@ -169,6 +167,29 @@ Calendario Servizi ed Eventi per i pazienti e professionisti
 > Funzione: insegnare a orientarsi nel percorso
 
 ---
+
+## 🟥 FASE 4 —(6 - 9)
+
+**Come iniziare**
+
+### 6️⃣ Puntata 9 — Come si può iniziare il calendario eventi e percorsi singoli in gruppo
+
+Calendario come si Servizi ed Eventi per i pazienti e professionisti
+
+- Percorsi standard
+- Percorso personalizzato
+- Eventi
+- Contenuti informativi Servizi e orientamento
+
+- Incontri pubblici presentazione
+- Appuntamenti percorso
+- Incontri dal vivo percorso pazienti
+- Formazione professionisti
+- Ruolo dei centri
+- Comunità e relazione
+- Salute come esperienza condivisa
+
+> Funzione: portare il progetto nel mondo reale
 
 ## 🟪 FASE 5 — COLLABORAZIONE (10)
 
