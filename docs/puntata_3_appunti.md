@@ -9,6 +9,17 @@ uno spazio di educazione e orientamento
 che integra cura ed educazione alla salute
 attraverso la conoscenza del funzionamento dell’uomo.
 
+L’Accademia mette a disposizione:
+
+il Percorso PosturaCorretta (postura, fisiologia, 5 aree della salute, oltre la salute)
+
+le Linee guida del percorso della salute,
+strumenti comuni utilizzabili da persone, professionisti, centri e scuole.
+
+Questa è la nostra missione:
+migliorare l’efficacia dei percorsi della salute
+grazie alla collaborazione di quattro protagonisti.
+
 # In questa puntata deve essere pronto:
 
 - Avanzamenti piattaforma
@@ -513,3 +524,17 @@ Puoi usarla sotto il titolo o nel video:
 
 Il farmaco cura quando serve.
 L’educazione alla salute costruisce il percorso.
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+# VIDEO 3
