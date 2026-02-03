@@ -2,7 +2,9 @@
 
 ## Puntata 11 — La mappa del percorso (1–10)
 
-### e cosa si apre da qui in avanti
+### Cosa abbiamo costruito e cosa si apre da qui in avanti
+
+---
 
 ## Descrizione
 
@@ -13,7 +15,7 @@ Non per ripetere i contenuti,
 ma per **mostrare la mappa completa del percorso**:
 
 - da dove siamo partiti
-- quali domande abbiamo affrontato
+- quali domande abbiamo attraversato
 - come i diversi temi si collegano tra loro
 
 Questa puntata è pensata per:
@@ -22,29 +24,36 @@ Questa puntata è pensata per:
 - chi è arrivato a metà e vuole capire il senso del percorso
 - chi scopre ora il progetto PosturaCorretta
 
-Mostriamo come **libro, Accademia, servizi ed eventi**
-fanno parte di un unico sistema educativo,
-pensato per accompagnare **persone, professionisti, centri e scuole**
+Mostriamo come **libro, Accademia, contenuti, servizi ed eventi**
+fanno parte di **un unico sistema educativo**,
+pensato per accompagnare:
+
+- persone
+- professionisti
+- centri
+- scuole
+
 nel percorso della salute.
 
-👉 Questa puntata è una bussola:  
+👉 Questa puntata è una **bussola**:  
 serve per orientarsi e scegliere il proprio prossimo passo.
 
 ---
 
-## Mappa visuale dei contenuti (Puntate 1–10)
+## Una rubrica che è un percorso
 
-Questa rubrica accompagna il pubblico
-dalla **confusione** alla **mappa**,
-dalla **domanda** al **percorso**,
-dalla **teoria** alla **collaborazione**.
+Questa rubrica accompagna il pubblico:
+
+dalla **confusione** → alla **mappa**  
+dalla **domanda** → al **percorso**  
+dalla **teoria** → alla **collaborazione**
 
 Non è una serie di video indipendenti,
 ma un **percorso educativo progressivo**.
 
 ---
 
-## 🟦 FASE 1 — ORIENTAMENTO (1–3)
+## 🟦 FASE 1 — ORIENTAMENTO (Puntate 1–3)
 
 **Capire il problema e chi è coinvolto**
 
@@ -68,50 +77,37 @@ ma un **percorso educativo progressivo**.
 
 ---
 
-### 3️⃣ Puntata 3 — Affiancare l'educazione alla salute al farmaco per integrare cura ed educazione una missione possibile grazie a 4 protagonisti!
+### 3️⃣ Puntata 3 — Affiancare l’educazione alla salute al farmaco
 
-**L’Accademia PosturaCorretta e i quattro protagonisti dell’evoluzione della salute**
+**L’Accademia PosturaCorretta e i quattro protagonisti del percorso della salute**
 
 Obiettivo della puntata:
 
-far capire a chi parla il progetto
-
-legittimare tutti i ruoli
-
-dire: “se ti riconosci, sei nel posto giusto”
+- far capire a chi parla il progetto
+- legittimare tutti i ruoli
+- dire: _“se ti riconosci, sei nel posto giusto”_
 
 👉 Qui:
 
-presenti i 4 protagonisti
-
-introduci Percorso PosturaCorretta e Linee guida
-
-non entri ancora nei dettagli operativi
+- presenti i 4 protagonisti
+- introduci **Percorso PosturaCorretta** e **Linee guida**
+- non entri ancora nei dettagli operativi
 
 > Funzione: dare struttura e possibilità di azione
 
-- Persone
-- Professionisti
-- Centri
-- Scuole ed enti formativi
-- Un linguaggio comune come passaggio inevitabile
-
-> Funzione: legittimare i ruoli e introdurre l’Accademia come evoluzione naturale
-
 ---
 
-## 🟩 FASE 2 — STRUMENTO (4)
+## 🟩 FASE 2 — STRUMENTO (Puntata 4)
 
 **Dare una mappa condivisa**
 
-### 4️⃣ Puntata 4 — Una guida al percorso, il libro il corpo un mondo da scoprire
+### 4️⃣ Puntata 4 — Una guida al percorso
 
-Il limite del solo farmaco
-La necessità dell’educazione alla salute
+### Il libro _Il Corpo, un mondo da scoprire_
 
-- Guida del percorso
+- Il limite del solo farmaco
+- La necessità dell’educazione alla salute
 - Il libro come mappa del progetto
-- Educazione alla salute
 - Postura e fisiologia
 - Prevendita partecipata
 
@@ -119,85 +115,76 @@ La necessità dell’educazione alla salute
 
 ---
 
-## 🟨 FASE 3 — STRUTTURA (5– 8 )
+## 🟨 FASE 3 — STRUTTURA (Puntate 5–8)
 
 **Mostrare come il progetto prende forma**
 
-### 5️⃣ Puntata 5 — L'accademia con il percorso e le linee guida
+### 5️⃣ Puntata 5 — L’Accademia PosturaCorretta
 
-- Cos’è l’Accademia PosturaCorretta
-  Accademia è:
-  1 - percorso postura
-  2 - linee guida
+- Cos’è l’Accademia
+- I due strumenti comuni:
+  - Percorso PosturaCorretta
+  - Linee guida del percorso della salute
+
+> Funzione: chiarire la struttura
 
 ---
 
----
-
-### 7️⃣ Puntata 6 — Il percorso educativo
+### 6️⃣ Puntata 6 — Il percorso educativo
 
 - Educazione alla salute
 - Postura e fisiologia
 - Percorso progressivo
 - Chi impara, chi accompagna, chi insegna
-- Una struttura collaborativa
 
 > Funzione: chiarire il senso profondo dell’Accademia
 
 ---
 
-### 8️⃣ Puntata 7 — Igiene Posturale
+### 7️⃣ Puntata 7 — Igiene Posturale
 
 - Primo corso operativo
 - Educazione alla fisiologia
 - Perché si parte da qui
-- Ruolo di tutor e insegnanti nella pratica
+- Ruolo di tutor e insegnanti
 
 > Funzione: mostrare il primo passo concreto
 
 ---
 
-### 9️⃣ Puntata 8 — Linee guida del percorso della salute
+### 8️⃣ Puntata 8 — Linee guida del percorso della salute
 
 - Dal dolore al benessere
 - Educazione, clinica, benessere
 - Percorsi personalizzati
 - Integrazione dei professionisti
 
-> Funzione: insegnare a orientarsi nel percorso
+> Funzione: insegnare a orientarsi
 
 ---
 
-## 🟥 FASE 4 —(6 - 9)
+## 🟥 FASE 4 — ATTIVAZIONE (Puntata 9)
 
-**Come iniziare**
+**Portare il progetto nel mondo reale**
 
-### 6️⃣ Puntata 9 — Come si può iniziare il calendario eventi e percorsi singoli in gruppo
-
-Calendario come si Servizi ed Eventi per i pazienti e professionisti
+### 9️⃣ Puntata 9 — Come iniziare: eventi e percorsi
 
 - Percorsi standard
-- Percorso personalizzato
+- Percorsi personalizzati
 - Eventi
-- Contenuti informativi Servizi e orientamento
-
-- Incontri pubblici presentazione
-- Appuntamenti percorso
-- Incontri dal vivo percorso pazienti
-- Formazione professionisti
+- Incontri pubblici
 - Ruolo dei centri
-- Comunità e relazione
 - Salute come esperienza condivisa
 
-> Funzione: portare il progetto nel mondo reale
+> Funzione: passare dalla teoria alla pratica
 
-## 🟪 FASE 5 — COLLABORAZIONE (10)
+---
 
-**Mettere ordine nel mondo reale**
+## 🟪 FASE 5 — COLLABORAZIONE (Puntata 10)
 
-### 🔟 Puntata 10 — I 3 mondi
+**Mettere ordine nel lavoro reale**
 
-collaborazioni tra i professionisti per creare un percorso della salute
+### 🔟 Puntata 10 — Professionisti, ruoli e collaborazione
 
 - Rosso / Verde / Blu
 - Competenze e responsabilità
@@ -210,7 +197,7 @@ collaborazioni tra i professionisti per creare un percorso della salute
 
 ## 🎯 Asse centrale della rubrica
 
-- Il **libro** è il filo conduttore (dal 4 in poi)
+- Il **libro** è il filo conduttore
 - L’**Accademia** è la struttura portante
 - I **contenuti** educano
 - Gli **eventi** connettono
@@ -218,7 +205,7 @@ collaborazioni tra i professionisti per creare un percorso della salute
 
 ---
 
-## 🧭 Sintesi visiva (mentale)
+## 🧭 Sintesi visiva del percorso
 
 Confusione  
 → Domanda  
@@ -233,56 +220,60 @@ Confusione
 
 ---
 
-# Cosa deve essere pronto sulla piattaforma (al lancio)
+## Cosa deve essere pronto sulla piattaforma
 
-## 1. Libro — Prevendita / Early bird
+### 1) Libro — Prevendita
 
-- Pagina dedicata al libro
-- Spiegazione della prevendita partecipata
-- Early bird (prime copie)
-- Stato avanzamento verso la stampa
-- Registrazione utenti / interesse
+- Pagina dedicata
+- Prevendita partecipata
+- Early bird
+- Stato avanzamento stampa
 
 ---
 
-## 2. Accademia in Home
+### 2) Accademia in home
 
 - Sezione Accademia visibile
 - Percorso **Igiene Posturale** attivo
-- Elenco dei **professionisti già formati**
-- Distinzione chiara dei 4 target:
-  - persone / pazienti
-  - professionisti
-  - centri
-  - scuole
+- Distinzione chiara dei 4 target
 
 ---
 
-## 3. Appuntamenti individuali
+### 3) Appuntamenti e orientamento
 
-- Possibilità di richiesta / prenotazione
-- Percorsi diversi per i 4 target
-- Sessione conoscitiva / orientamento
+- Richiesta percorsi
+- Sessione conoscitiva
+- Orientamento personalizzato
 
 ---
 
-## 4. Eventi
+### 4) Eventi
 
 - Pagina eventi
-- Iscrizione agli eventi collettivi
+- Iscrizione
 - Ruolo dei centri ospitanti
 
 ---
 
-# Obiettivi del primo ciclo (1–11)
+## Obiettivi del primo ciclo (1–11)
 
-- Rendere **comprensibile** il progetto
+- Rendere il progetto **comprensibile**
 - Creare **fiducia e orientamento**
 - Attivare libro e Accademia
-- Iniziare a costruire la comunità
-- Preparare il terreno alla piattaforma completa
+- Iniziare la comunità
+- Preparare la piattaforma completa
 
 ---
+
+## Chiusura
+
+Questa mappa non è definitiva.
+
+È una struttura viva,
+che cresce con le persone che la attraversano.
+
+**Un passo alla volta.  
+Con ordine.**
 
 # Sezioni future e puntate successive (12+)
 
