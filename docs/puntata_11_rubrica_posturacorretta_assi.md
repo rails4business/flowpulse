@@ -77,7 +77,7 @@ ma un **percorso educativo progressivo**.
 
 ---
 
-### 3️⃣ Puntata 3 — Affiancare l’educazione alla salute al farmaco
+### 3️⃣ Puntata 3 — I 4 protagonisti del percorso della salute
 
 **L’Accademia PosturaCorretta e i quattro protagonisti del percorso della salute**
 
@@ -119,7 +119,9 @@ Obiettivo della puntata:
 
 **Mostrare come il progetto prende forma**
 
-### 5️⃣ Puntata 5 — L’Accademia PosturaCorretta
+### 5️⃣ Puntata 5 — Affiancare l’educazione alla salute al farmaco
+
+L’Accademia PosturaCorretta
 
 - Cos’è l’Accademia
 - I due strumenti comuni:

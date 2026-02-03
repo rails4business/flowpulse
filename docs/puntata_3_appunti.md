@@ -538,3 +538,203 @@ L’educazione alla salute costruisce il percorso.
 ---
 
 # VIDEO 3
+
+# Rubrica PosturaCorretta — Puntata 3
+
+## I 4 protagonisti del percorso della salute
+
+---
+
+## 🎬 Apertura — Perché siamo arrivati qui
+
+Nelle puntate precedenti abbiamo chiarito due cose fondamentali.
+
+La prima:  
+il problema non è il sintomo.
+
+La seconda:  
+serve un altro punto di vista da cui osservare la salute.
+
+Oggi facciamo un passo in più.
+
+Iniziamo a parlare dell’Accademia,  
+ma non parliamo ancora di strumenti e soluzioni.
+
+Oggi parliamo dei **4 protagonisti** che, insieme a PosturaCorretta,  
+rendono possibile un percorso della salute **più efficace**.
+
+---
+
+## 🧠 Il nodo centrale — La salute è un lavoro di squadra
+
+C’è un equivoco molto diffuso.
+
+Un metodo,  
+un corso,  
+o un professionista possono aiutare moltissimo.
+
+Ma da soli non bastano.
+
+La salute cambia quando segui un percorso integrato:  
+un percorso che lavora su ciò di cui hai bisogno,  
+rispettando le priorità e le risorse che puoi davvero impegnare.
+
+E soprattutto cambia quando:
+
+- i professionisti che ti seguono **lavorano insieme**
+- tu inizi a prenderti **una parte di responsabilità**
+- tutti si muovono nella **stessa direzione**
+
+Oggi il problema non è la mancanza di competenze.  
+Il problema è che spesso manca una visione condivisa:  
+principi comuni, linguaggio comune, continuità.
+
+Ed è da qui che nasce PosturaCorretta.
+
+---
+
+## 🧭 Introduzione — I 4 protagonisti del percorso
+
+Per questo oggi voglio presentarti  
+**i quattro protagonisti del percorso della salute**.
+
+Queste figure esistono già.
+
+Quello che spesso manca è farle lavorare bene insieme:  
+creare collegamenti, ruoli chiari, una direzione comune.
+
+---
+
+## 👤 Protagonista 1 — Le persone
+
+Il paziente, il cliente, forse proprio tu che ascolti,  
+non cercano solo di “stare meglio”.
+
+Cercano di capire cosa sta succedendo al loro corpo.
+
+Perché certi problemi tornano.  
+Perché alcuni sintomi cambiano forma.  
+Come orientarsi tra cura, benessere e prevenzione.
+
+Il punto è che spesso le persone non hanno a disposizione  
+un vero percorso di educazione alla salute.
+
+Si prova a muoversi, allenarsi, mangiare meglio…  
+ma senza una mappa rischi di lavorare solo “in superficie”.
+
+Con l’educazione alla salute, invece,  
+la persona diventa **parte attiva del proprio percorso**.
+
+E questo cambia tutto.
+
+---
+
+## 🧑‍⚕️ Protagonista 2 — I professionisti
+
+I professionisti hanno competenze diverse.  
+Tutte fondamentali.
+
+Il problema non è la specializzazione.
+
+Il problema nasce quando ognuno lavora bene…  
+ma da solo.
+
+Senza una visione d’insieme,  
+il sintomo viene trattato,  
+ma la persona non viene seguita nel tempo.
+
+Qui entrano in gioco percorso educativo e linee guida:  
+per chiarire i ruoli e le competenze,
+così da rendere più facile la collaborazione tra professionisti
+diversi per creare un percorso integrato.
+
+Ecco perchè posturacorretta mette a disposizione:
+
+- un linguaggio comune
+- una base condivisa
+- linee guida per collaborare
+
+---
+
+## 🏠 Protagonista 3 — I centri
+
+I centri non sono solo luoghi di prestazione.
+
+Sono punti di riferimento sul territorio.  
+Luoghi dove il percorso diventa concreto.
+
+Luoghi dove:
+
+- le persone trovano continuità
+- si possono proporre oltre ai servizi, anche eventi per diffondere la cultura della salute
+- si possono praticare: lezioni, corsi, percorsi
+- i professionisti possono trovare lo spazio per collaborare, confrontarsi formarsi
+
+Senza centri che fanno da riferimento,  
+si rischia di non avere continuità e punti di riferimento sul territorio.
+
+---
+
+## 🧘 Protagonista 4 — Scuole, metodiche, e enti formatori.
+
+Esistono molte discipline.  
+Molti approcci.  
+Molte scuole valide.  
+Molte professioni.
+
+PosturaCorretta parte da un principio semplice:
+
+**la fisiologia dell’essere umano è una base comune.**
+
+Prima si condividono i fondamenti.  
+Poi ogni scuola può esprimere la propria visione.
+
+Le basi sono comuni.  
+Le strade possono essere diverse.
+
+Questa chiarezza aiuta persone e professionisti a orientarsi:  
+capire cosa scegliere, quando e perché.
+
+Nel percorso educativo si utilizzano per ogni corso
+le **basi delle principali metodiche**.
+Per imparare a **riattivare la fisiologia** grazie a semplici esercizi.
+
+È come una degustazione.
+
+Assaggi.  
+Ascolti.  
+Senti cosa ti risuona.
+
+Poi ogni persona può scegliere il professionista,  
+la metodica o la disciplina  
+con cui si trova davvero bene.
+
+---
+
+## 🎓 Chiusura concettuale — Perché nasce l’Accademia
+
+Questi quattro protagonisti esistono già.
+
+Il problema è che spesso  
+non parlano la stessa lingua.
+
+L’Accademia PosturaCorretta nasce per creare uno spazio comune:  
+di educazione, orientamento e integrazione.
+
+Non per sostituire la cura.  
+Ma per renderla **più efficace nel tempo**.
+
+---
+
+## ⏭️ Nel prossimo episodio
+
+Nel prossimo video faremo un passo in più.
+
+Parleremo del libro  
+**“Il Corpo, un mondo da scoprire”**.
+
+Una mappa del progetto  
+e una guda per l’Accademia PosturaCorretta.
+
+Un passo alla volta.  
+Con ordine.
