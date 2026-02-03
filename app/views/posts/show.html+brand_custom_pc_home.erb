@@ -1294,8 +1294,12 @@ SEI UN PROFESSIONISTA?</h4>
                        t.post&.title.present?
                      } %>
                   <% items = [] %>
-                  <% items << upcoming if upcoming.present? %>
-                  <% items.concat(published.reject { |t| t == upcoming }.first(2)) %>
+                  <% if upcoming.present? %>
+                    <% items << upcoming %>
+                    <% items.concat(published.reject { |t| t == upcoming }.first(2)) %>
+                  <% else %>
+                    <% items.concat(published.first(3)) %>
+                  <% end %>
 
                   <% items.each_with_index do |tax, idx| %>
                     <% post = tax.post %>
@@ -1347,7 +1351,7 @@ SEI UN PROFESSIONISTA?</h4>
                   <% end %>
 
                 </div>
-                <% if published.size >= 2 && upcoming.present? %>
+                <% if (upcoming.present? && published.size >= 2) || (upcoming.blank? && published.size >= 3) %>
                   <%= link_to "Vedi tutte",
                               post_path(Taxbranch.find_by(slug: "playlist/progetto")&.post || @post),
                               class: "inline-flex items-center rounded-xl bg-slate-900 px-6 py-3 text-white font-bold hover:opacity-90 transition-opacity" %>
