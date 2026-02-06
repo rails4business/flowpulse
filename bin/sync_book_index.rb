@@ -84,6 +84,8 @@ end
 def normalize_entry_hash(h, forced_header: nil)
   {
     "header" => forced_header.nil? ? (h["header"] == true) : forced_header,
+    "number" => (h["number"] || "").to_s.strip,
+    "type" => (h["type"] || "").to_s.strip,
     "title" => (h["title"] || "").to_s.strip,
     "description" => (h["description"] || "").to_s.strip,
     "slug" => (h["slug"] || "").to_s.strip,
@@ -107,6 +109,8 @@ def extract_entries_from_md(dir)
 
     forced_header = header_from_filename(file)
     e = normalize_entry_hash(fm, forced_header: forced_header)
+    e["number"] = number_from_filename(file)
+    e["type"] = type_from_entry(e)
 
     req = %w[title slug]
     bad = req.select { |k| e[k].nil? || e[k].empty? }
@@ -138,12 +142,28 @@ def yaml_for_entries(entries)
   out = +""
   entries.each do |e|
     out << "- header: #{e["header"] ? "true" : "false"}\n"
+    out << "  number: #{e["number"].inspect}\n" if e["number"].to_s.strip != ""
+    out << "  type: #{e["type"].inspect}\n" if e["type"].to_s.strip != ""
     out << "  title: #{e["title"].inspect}\n"
     out << "  description: #{e["description"].inspect}\n"
     out << "  slug: #{e["slug"].inspect}\n"
     out << "  color: #{e["color"].inspect}\n\n"
   end
   out.rstrip + "\n"
+end
+
+def number_from_filename(path)
+  base = File.basename(path)
+  if base =~ /\A(\d+)[-_]/
+    Regexp.last_match(1).rjust(3, "0")
+  else
+    ""
+  end
+end
+
+def type_from_entry(entry)
+  return entry["type"] if entry["type"].to_s.strip != ""
+  entry["header"] ? "section header" : "chapter"
 end
 
 def slug_dupes(entries)

@@ -162,7 +162,7 @@
         </aside>
       <% end %>
 
-      <div class="flex-1 <%= @parent_taxbranch&.slug_category == 'playlist' ? '' : 'mx-auto max-w-3xl' %>">
+      <div class="flex-1 mx-auto max-w-3xl items-center w-full">
         <% if @parent_taxbranch&.slug_category == "playlist" %>
           <% is_upcoming = @post.taxbranch.published_at.blank? || @post.taxbranch.published_at > Time.current %>
           <% episode_date = @post.taxbranch.published_at %>

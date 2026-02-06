@@ -118,7 +118,7 @@ module Superadmin
 
 def update
   if @taxbranch.update(taxbranch_params)
-    redirect_to superadmin_taxbranch_path(@taxbranch, edit_tax: true, anchor: "tax-edit-form"),
+    redirect_to superadmin_taxbranch_path(@taxbranch),
                 notice: "Taxbranch aggiornata.", status: :see_other # 303
   else
     render :edit, status: :unprocessable_entity
@@ -585,10 +585,16 @@ end
     end
     taxbranch.post&.destroy
     if taxbranch.journeys.exists?
-      blockers << view_context.link_to("Journeys (#{taxbranch.journeys.count})", journeys_path(taxbranch_id: taxbranch.id))
+      blockers << view_context.link_to(
+        "Journeys (#{taxbranch.journeys.count})",
+        journeys_superadmin_taxbranch_path(taxbranch)
+      )
     end
     if taxbranch.incoming_journeys.exists?
-      blockers << view_context.link_to("Journeys in arrivo (#{taxbranch.incoming_journeys.count})", journeys_path(end_taxbranch_id: taxbranch.id))
+      blockers << view_context.link_to(
+        "Journeys in arrivo (#{taxbranch.incoming_journeys.count})",
+        journeys_path(end_taxbranch_id: taxbranch.id)
+      )
     end
     domain = taxbranch.domains.first
     if domain.present?

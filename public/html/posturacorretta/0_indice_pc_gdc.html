@@ -1,160 +1,163 @@
 <!doctype html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Indice – PosturaCorretta</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8" />
+  <title>Indice – PosturaCorretta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <style>
-      /* migliora la stampa */
-      @media print {
-        .no-print {
-          display: none !important;
-        }
-        body {
-          background: white;
-        }
-      }
-    </style>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              pcBlue: "#1287E6",
-              pcOrange: "#F39A2E",
-              pcPurple: "#B56BFF",
-              pcRed: "#E53935",
-              pcGreen: "#2EAD4A",
-              ink: "#111827",
-            },
-            borderRadius: {
-              xl2: "26px",
-              xl4: "44px",
-            },
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pcBlue: "#1287E6",
+            pcOrange: "#F39A2E",
+            pcPurple: "#B56BFF",
+            pcRed: "#E53935",
+            pcGreen: "#2EAD4A",
+            ink: "#111827",
+            "warm-gold": "#c9a227",
+            "accent-blue": "#2b6cb0",
+            "editorial-text": "#1a202c",
+          },
+          borderRadius: {
+            xl2: "26px",
+            xl4: "44px",
           },
         },
-      };
-    </script>
+      },
+    };
+  </script>
 
-    <style>
-      @media print {
-        .print-pagebreak {
-          page-break-after: always;
-        }
-        .print-shadow-none {
-          box-shadow: none !important;
-        }
-        body {
-          background: white !important;
-        }
+  <style>
+    @media print {
+      .no-print {
+        display: none !important;
       }
-    </style>
-  </head>
 
-  <body class="bg-slate-50 text-slate-800">
-    <!-- HEADER -->
-    <header class="mx-auto max-w-4xl px-4 py-8 space-y-4">
-      <div class="space-y-2">
-        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">
-          Libro · Indice ragionato
-        </p>
-        <h1 id="book-title" class="text-3xl font-bold text-slate-900">
-          Il corpo, un mondo da scoprire
+      .print-pagebreak {
+        page-break-after: always;
+      }
+
+      .print-shadow-none {
+        box-shadow: none !important;
+      }
+
+      body {
+        background: white !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[#1a1a1a] text-slate-800 h-screen w-screen overflow-hidden flex items-center justify-center p-4">
+
+  <!-- Book Container -->
+  <div
+    class="relative max-h-[90vh] h-full w-auto aspect-[2/3] bg-[#f8f5f2] rounded-r-3xl rounded-l-md shadow-[20px_25px_50px_-12px_rgba(0,0,0,0.5),inset_-10px_0_20px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden transform transition-transform hover:scale-[1.01] duration-500">
+
+    <!-- Spine Effect (Left) -->
+    <div class="absolute top-0 bottom-0 left-0 w-4 bg-gradient-to-r from-warm-gold/40 to-transparent z-20"></div>
+    <div class="absolute top-0 bottom-0 left-0 w-1 bg-black/20 z-30"></div>
+
+    <!-- Cover Design -->
+    <div class="flex-1 p-8 md:p-10 flex flex-col relative z-10">
+
+      <!-- Top Ornament -->
+      <div class="w-full flex justify-center mb-6 md:mb-10 opacity-80">
+        <span class="material-symbols-outlined text-warm-gold text-4xl md:text-5xl">auto_stories</span>
+      </div>
+
+      <!-- Title Section -->
+      <div class="text-center mb-auto">
+        <p class="font-sans text-xs font-bold tracking-[0.4em] uppercase text-slate-500 mb-6">Indice dei Contenuti</p>
+        <h1 class="font-serif text-5xl md:text-7xl italic leading-[0.9] text-ink mb-6">
+          Il Corpo,<br>
+          <span class="text-3xl md:text-4xl not-italic block mt-2 text-slate-600 font-normal">un mondo da
+            scoprire</span>
         </h1>
-        <p id="book-baseline" class="text-base text-slate-600 leading-relaxed">
-          La salute dalla postura al corpo e al territorio. Con L'Accademia
-          PosturaCorretta e il giardino del corpo, la scuola per l'evoluzione
-          armonica dell'essere umano.
-        </p>
+        <div class="h-1 w-24 bg-warm-gold mx-auto mb-6"></div>
       </div>
 
-      <div class="mt-4 no-print">
-        <a
-          href="posturacorretta_book"
-          class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-        >
-          Intro postura corretta
-        </a>
+      <!-- Index/Content Preview (Scrollable Area mimicking inner text) -->
+      <div class="relative flex-1 min-h-[200px] mb-12">
+        <div class="absolute inset-x-0 top-0 bottom-0 overflow-y-auto pr-2 scrollbar-hide mask-fade-bottom">
+          <div id="indice" class="space-y-4 text-left">
+            <!-- Content injected by JS -->
+          </div>
+        </div>
+        <!-- Fade out at bottom -->
+        <div
+          class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#f8f5f2] to-transparent pointer-events-none">
+        </div>
       </div>
-    </header>
-    <section class="mx-auto max-w-4xl px-4 pb-4">
-      <div
-        id="book-summary"
-        class="prose prose-slate max-w-none text-sm leading-relaxed space-y-3"
-      >
-        <!-- Popolato via JS -->
+
+
+      <!-- Bottom/Author Section -->
+      <div class="text-center mt-auto border-t border-slate-200 pt-6">
+        <p class="font-sans text-xs uppercase tracking-widest text-[#B56BFF] font-bold">Postura Corretta</p>
+        <div class="flex justify-center gap-4 mt-4">
+          <span class="inline-block w-2 h-2 bg-pcBlue rounded-full"></span>
+          <span class="inline-block w-2 h-2 bg-pcOrange rounded-full"></span>
+          <span class="inline-block w-2 h-2 bg-pcGreen rounded-full"></span>
+        </div>
       </div>
-    </section>
 
-    <!-- CONTENUTO -->
-    <main class="mx-auto max-w-4xl px-4 pb-16">
-      <div id="indice" class="space-y-6"></div>
-    </main>
+    </div>
 
-    <script>
-      const bookIntro = {
-        title: "Il corpo, un mondo da scoprire",
-        baseline:
-          "Dall'Accademia PosturaCorretta a una scuola per l'evoluzione armonica dell'essere umano.",
-        paragraphs: [
-          "Una raccolta di parti e capitoli che guidano dalla cura del dolore alla costruzione di una cultura della salute condivisa.",
-          "Ogni sezione introduce gli strumenti, i professionisti e i principi che hanno dato vita all'ecosistema PosturaCorretta e al progetto Il Giardino del Corpo.",
-          "Questo indice è pensato per essere stampato o consultato durante i lavori redazionali: evidenzia le parti, descrive i capitoli e rimanda alle pagine di approfondimento online.",
-        ],
-      };
+    <!-- Paper Texture Overlay -->
+    <div
+      class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] opacity-40 pointer-events-none mix-blend-multiply z-0">
+    </div>
 
-      const titleEl = document.getElementById("book-title");
-      const baselineEl = document.getElementById("book-baseline");
+  </div>
 
-      const summaryEl = document.getElementById("book-summary");
+  <!-- Background Elements for Atmosphere -->
+  <div class="fixed inset-0 -z-10 bg-[#2d2d2d]">
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-warm-gold/5 blur-[120px] rounded-full">
+    </div>
+  </div>
 
-      if (titleEl) titleEl.textContent = bookIntro.title;
-      if (baselineEl) baselineEl.textContent = bookIntro.baseline;
+  <!-- Original Scripts -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script>
+    const container = document.getElementById("indice");
 
-      if (summaryEl) {
-        summaryEl.innerHTML = bookIntro.paragraphs
-          .map((paragraph) => `<p>${paragraph}</p>`)
-          .join("");
+    const renderItem = (item) => {
+      if (item.header) {
+        const section = document.createElement("div");
+        section.className = "mt-6 mb-3 pt-4 border-t border-slate-300 first:border-0 first:pt-0";
+        section.innerHTML = `
+            <h2 class="font-serif text-xl italic text-ink">${item.title}</h2>
+          `;
+        container.appendChild(section);
+      } else {
+        const row = document.createElement("div");
+        row.className = "flex justify-between items-baseline py-1 group cursor-pointer hover:bg-slate-100/50 transition-colors rounded px-1";
+        row.innerHTML = `
+            <span class="font-sans text-sm text-slate-700 font-medium truncate pr-4 group-hover:text-pcBlue transition-colors">${item.title}</span>
+            ${item.page ? `<span class="font-mono text-xs text-slate-400 shrink-0">${item.page}</span>` : ""}
+          `;
+        container.appendChild(row);
       }
-    </script>
+    };
 
-    <!-- JSON via endpoint -->
-    <script>
-      const container = document.getElementById("indice");
+    fetch("/book_index.json")
+      .then((response) => response.json())
+      .then((data) => {
+        // Limit items if too many for the cover feel? Or let them scroll.
+        // For now, let's show all.
+        data.forEach(renderItem);
+      })
+      .catch(() => {
+        container.innerHTML =
+          "<p class='text-xs text-red-600 text-center'>Indice non disponibile</p>";
+      });
+  </script>
+</body>
 
-      const renderItem = (item) => {
-        if (item.header) {
-          const section = document.createElement("section");
-          section.className = "pt-8 border-t border-slate-200";
-          section.innerHTML = `
-          <h2 class="text-xl font-bold text-slate-900">${item.title}</h2>
-          ${item.description ? `<p class="mt-1 text-slate-600 italic">${item.description}</p>` : ""}
-        `;
-          container.appendChild(section);
-        } else {
-          const card = document.createElement("article");
-          card.className =
-            "rounded-xl border border-slate-200 bg-white p-4 shadow-sm";
-          card.innerHTML = `
-          <h3 class="text-sm font-semibold text-slate-900">${item.title}</h3>
-          ${item.description ? `<p class="mt-1 text-sm text-slate-600">${item.description}</p>` : ""}
-        `;
-          container.appendChild(card);
-        }
-      };
-
-      fetch("/book_index.json")
-        .then((response) => response.json())
-        .then((data) => data.forEach(renderItem))
-        .catch(() => {
-          container.innerHTML =
-            "<p class='text-sm text-red-600'>Impossibile caricare l'indice.</p>";
-        });
-    </script>
-  </body>
 </html>

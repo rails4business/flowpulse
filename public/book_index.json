@@ -1,0 +1,51 @@
+[
+  {
+    "header": true,
+    "title": "Prefazione"
+  },
+  {
+    "title": "Benvenuto",
+    "page": "1",
+    "description": "L'inizio del viaggio",
+    "source": "/books/content/preface.md"
+  },
+  {
+    "header": true,
+    "title": "Parte 1: Le Fondamenta"
+  },
+  {
+    "title": "La gravità",
+    "page": "5",
+    "description": "La forza che ci plasma",
+    "source": "/books/content/gravity.md"
+  },
+  {
+    "title": "L'equilibrio",
+    "page": "12",
+    "source": "/books/content/gravity.md"
+  },
+  {
+    "title": "Il respiro",
+    "page": "18"
+  },
+  {
+    "header": true,
+    "title": "Parte 2: La Pratica"
+  },
+  {
+    "title": "Esercizi base",
+    "page": "25"
+  },
+  {
+    "title": "Esercizi avanzati",
+    "page": "40"
+  },
+  {
+    "header": true,
+    "title": "Conclusioni"
+  },
+  {
+    "title": "Il futuro",
+    "page": "55"
+  }
+]

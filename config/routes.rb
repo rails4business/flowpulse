@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get 'book/prevendita', to: 'books#presale', as: :book_presale
+  get 'book', to: 'books#index', as: :book_index
+  get 'book/:id', to: 'books#show', as: :book_chapter, constraints: { id: /[^\/]+/ }
+
+
   resources :slot_instances
   resources :slot_templates
   resources :certificates

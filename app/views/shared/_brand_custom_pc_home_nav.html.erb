@@ -1,0 +1,84 @@
+<header
+  class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-solid border-[#e7edf3] dark:border-slate-800"
+>
+  <div
+    class="max-w-[1200px] mx-auto px-6 h-12 flex items-center justify-between gap-4"
+  >
+    <div class="flex items-center gap-4">
+      <a href="#home">
+        <img
+          src="https://ik.imagekit.io/posturacorretta/logo_pc_scontornato.png?updatedAt=1747975596766"
+          alt="PosturaCorretta"
+          class="h-6 lg:h-8 w-auto"
+        />
+      </a>
+    </div>
+    <div class="hidden md:flex flex-1 justify-center gap-8">
+      <a
+        class="text-sm font-medium hover:text-primary transition-colors"
+        href="#progetto"
+        >Accademia</a
+      >
+
+      <a
+        class="text-sm font-medium hover:text-primary transition-colors"
+        href="#progetto"
+        >Eventi</a
+      >
+      <a
+        class="text-sm font-medium hover:text-primary transition-colors"
+        href="#progetto"
+        >Progetto</a
+      >
+      <!--a
+        class="text-sm font-medium hover:text-primary transition-colors"
+        href="#progetto"
+        >🔎 &nbsp; Professionisti e centri</a
+      -->
+    </div>
+    <div class="hidden md:flex items-center gap-3">
+      <% if Current.user.present? %>
+        <%= link_to dashboard_home_path do %>
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-7 border border-[#e7edf3]"
+            style="
+              background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2LXURXbE3_UxsTFxRYAnn3JHwvdxCjtrsE9cnM4fOM7RYPSwxJmYQdF4JdCKHFk7yEaaZaEZ-zhrko0djKgMKoRE5_hyLTKjX9wMnfXf2oI6J3pHtPS9cHds-5cRTCM7qxcz7nvr3Gg_InsulvJloG1sn7u9p9TOx8XoC7rC1vm5w7yLPTGoLLEKHsQzOmphuw2jxiis1kyB19G-7veU7KBNLToUtKcj0D_euTGmHqDyYrDfvtbxIZVJWCcqt-s0A3sGfl0v1ZGA');
+            "
+          ></div>
+        <% end %>
+      <% else %>
+        <%= link_to "Accedi",
+                    new_session_path,
+                    class: "text-sm font-semibold text-[#0d151c] dark:text-gray-300 hover:text-primary transition-colors" %>
+        <%= link_to "Registrati",
+                    new_registration_path,
+                    class: "inline-flex items-center rounded-full border border-primary/40 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors" %>
+      <% end %>
+    </div>
+    <div class="md:hidden flex items-center">
+      <details class="relative">
+        <summary
+          class="list-none flex items-center justify-center size-9 rounded-full border border-slate-200 bg-white/90 dark:bg-slate-900/80 dark:border-slate-700 text-slate-700 dark:text-slate-200"
+          aria-label="Apri menu"
+        >
+          <span class="material-symbols-outlined text-lg">menu</span>
+        </summary>
+        <div
+          class="absolute right-0 mt-3 w-64 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-3 z-50"
+        >
+          <a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#accademia">Accademia</a>
+          <a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#eventi">Eventi</a>
+          <a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#progetto">Progetto</a>
+          <!--a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#">🔎 Professionisti e centri</a-->
+          <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
+          <% if Current.user.present? %>
+            <%= link_to "Profilo", dashboard_home_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <% else %>
+            <%= link_to "Accedi", new_session_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+            <%= link_to "Registrati", new_registration_path, class: "block px-3 py-2 text-sm font-semibold text-primary" %>
+          <% end %>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
