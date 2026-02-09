@@ -1,10 +1,8 @@
-# PosturaCorretta
-
-## Accademia per l’Educazione alla Salute e il Percorso dell’Uomo
+## PosturaCorretta Accademia per l’Educazione alla Salute e il Percorso dell’Uomo
 
 ---
 
-## Chi può cambiare il mondo della salute?
+### Chi può cambiare il mondo della salute?
 
 - Pazienti
 - Professionisti

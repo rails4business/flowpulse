@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mappa PosturaCorretta</title>
+
+    <style>
+      :root {
+        --bg: #0b1e2d;
+
+        --blue: #2563eb;
+        --orange: #f59e0b;
+        --neutral: #475569;
+        --red: #ef4444;
+        --green: #22c55e;
+
+        --line: rgba(255, 255, 255, 0.55);
+        --text: rgba(255, 255, 255, 0.95);
+        --text-soft: rgba(255, 255, 255, 0.75);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial;
+        cursor: pointer;
+      }
+
+      svg {
+        width: min(980px, 96vw);
+        height: auto;
+        display: block;
+      }
+
+      .academy {
+        fill: var(--text-soft);
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        font-size: 16px;
+      }
+
+      .t-center {
+        fill: var(--text);
+        font-weight: 800;
+        font-size: 22px;
+      }
+      .t-center-sub {
+        fill: var(--text-soft);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .t-node {
+        fill: var(--text);
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .t-node-sub {
+        fill: var(--text-soft);
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      .link {
+        stroke: var(--line);
+        stroke-width: 4;
+        stroke-linecap: round;
+        fill: none;
+      }
+
+      .ring {
+        stroke: rgba(255, 255, 255, 0.9);
+        stroke-width: 6;
+      }
+
+      @media (max-width: 520px) {
+        .academy {
+          font-size: 13px;
+        }
+        .t-center {
+          font-size: 18px;
+        }
+        .t-node {
+          font-size: 14px;
+        }
+        .t-center-sub,
+        .t-node-sub {
+          font-size: 12px;
+        }
+        .link {
+          stroke-width: 3;
+        }
+        .ring {
+          stroke-width: 5;
+        }
+      }
+
+      .close {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button class="close" type="button" aria-label="Chiudi e torna alla home">
+      Chiudi
+    </button>
+    <svg viewBox="0 0 900 520" role="img" aria-label="Mappa PosturaCorretta">
+      <text x="450" y="52" text-anchor="middle" class="academy">ACCADEMIA</text>
+
+      <!--
+    Layout con più respiro sui rami:
+    Centro: (450, 230)
+    Stile:  (340, 360)
+    Salute: (560, 360)
+
+    Rosso:  (700, 285)  <-- più su e più a dx
+    Verde:  (720, 450)  <-- più giù e più a dx
+  -->
+
+      <!-- LINEE -->
+      <!-- Centro -> Stile -->
+      <path class="link" d="M 415 285 C 395 315, 370 340, 352 352" />
+      <!-- Centro -> Salute -->
+      <path class="link" d="M 485 285 C 510 315, 535 340, 548 352" />
+
+      <!-- Salute -> Rosso (più su) -->
+      <path class="link" d="M 610 345 C 640 325, 665 305, 680 295" />
+      <!-- Salute -> Verde (più giù) -->
+      <path class="link" d="M 610 395 C 645 420, 680 438, 700 444" />
+
+      <!-- CENTRO -->
+      <circle cx="450" cy="230" r="90" fill="var(--blue)" />
+      <circle cx="450" cy="230" r="90" fill="transparent" class="ring" />
+      <text x="450" y="220" text-anchor="middle" class="t-center">Postura</text>
+      <text x="450" y="240" text-anchor="middle" class="t-center">
+        Corretta
+      </text>
+      <text x="450" y="268" text-anchor="middle" class="t-center-sub">
+        Percorso educativo
+      </text>
+
+      <!-- STILE DI VITA -->
+      <circle cx="340" cy="360" r="60" fill="var(--orange)" />
+      <circle cx="340" cy="360" r="60" fill="transparent" class="ring" />
+      <text x="340" y="366" text-anchor="middle" class="t-node">
+        Stile di vita
+      </text>
+
+      <!-- SALUTE -->
+      <circle cx="560" cy="360" r="66" fill="var(--neutral)" />
+      <circle cx="560" cy="360" r="66" fill="transparent" class="ring" />
+      <text x="560" y="352" text-anchor="middle" class="t-node">Salute</text>
+      <text x="560" y="374" text-anchor="middle" class="t-node-sub">
+        Linee guida
+      </text>
+
+      <!-- CURA PATOLOGIA -->
+      <circle cx="700" cy="285" r="52" fill="var(--red)" />
+      <circle cx="700" cy="285" r="52" fill="transparent" class="ring" />
+      <text x="700" y="279" text-anchor="middle" class="t-node">Cura</text>
+      <text x="700" y="299" text-anchor="middle" class="t-node-sub">
+        Patologia
+      </text>
+
+      <!-- CURA DELLA SALUTE -->
+      <circle cx="720" cy="450" r="52" fill="var(--green)" />
+      <circle cx="720" cy="450" r="52" fill="transparent" class="ring" />
+      <text x="720" y="444" text-anchor="middle" class="t-node">Cura</text>
+
+      <text x="720" y="464" text-anchor="middle" class="t-node-sub">
+        del benessere
+      </text>
+    </svg>
+    <script>
+      (() => {
+        const goHome = () => {
+          window.location.href = "/";
+        };
+
+        const closeBtn = document.querySelector(".close");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            goHome();
+          });
+        }
+
+        document.body.addEventListener("click", goHome);
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") goHome();
+        });
+      })();
+    </script>
+  </body>
+</html>

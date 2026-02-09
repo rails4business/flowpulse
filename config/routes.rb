@@ -172,6 +172,19 @@ resources :posts do
   get "/service-worker.js", to: "pwa#service_worker", as: :pwa_service_worker
   get "up" => "rails/health#show", as: :rails_health_check
 
+  scope :posturacorretta do
+    get "contenuti", to: "posturacorretta#contenuti", as: :posturacorretta_contenuti
+    get "corsi-online", to: "posturacorretta#corsi_online", as: :posturacorretta_corsi_online
+    get "manifesto", to: "posturacorretta#manifesto", as: :posturacorretta_manifesto
+    get "eventi", to: "posturacorretta#eventi", as: :posturacorretta_eventi
+    get "rete", to: "posturacorretta#rete", as: :posturacorretta_rete
+    get "persone", to: "posturacorretta#persone", as: :posturacorretta_persone
+    get "rete-professionale", to: "posturacorretta#rete_professionale", as: :posturacorretta_rete_professionale
+    get "professionisti", to: redirect("/posturacorretta/rete-professionale")
+    get "centri", to: "posturacorretta#centri", as: :posturacorretta_centri
+    get "metodiche", to: "posturacorretta#metodiche", as: :posturacorretta_metodiche
+  end
+
 
   # Root pubblica
   #  root "pages#home", as: :unauthenticated_root

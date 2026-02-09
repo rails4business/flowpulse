@@ -7,7 +7,9 @@ color: "neutro"
 access: "draft"
 ---
 
-Questo libro è rivolto a persone e professionisti che vogliono vedere la salute e la postura da un nuovo punto di vista.
+Questo libro è rivolto a persone che vogliono sapere di più del proprio corpo, partiamo però dalla salute e perciò i primi capitoli sono generali poi ci sarà la sezione dedicata alla salute e dopo quello vedremo cosa c'è oltre la salute.
+
+Sei pronto a cambiare il tuo punto di vista sulla salute, e su come prenderti cura di te, e se sei un professionista, cambiare il tuo modo di lavorare, e di vedere i tuoi pazienti?
 
 **Questo libro vuole essere un punto di partenza. Sarebbe bello se potesse essere un punto di riferimento per tanti. Perché la salute è un bene prezioso, e merita di essere curata con attenzione, e se possiamo fare qualcosa per migliorare la qualità della vita delle persone, allora vale la pena provarci, sopratutto in un momento storico come questo, dove la salute sembra essere diventata un bene sempre più difficile da raggiungere.**
 

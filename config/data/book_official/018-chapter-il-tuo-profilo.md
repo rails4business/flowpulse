@@ -6,3 +6,5 @@ slug: "iniziare-un-percorso-di-cura"
 color: "rosso"
 access: "draft"
 ---
+
+Sei un utente un professionista, un centro, una scuola.

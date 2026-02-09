@@ -1,12 +1,11 @@
 ---
 type: "chapter"
-title: "Il diario della salute"
+title: "Il tuo diario 1impegno"
 description: "Tracciare il percorso, mantenere una continuità e creare il tuo gruppo"
 slug: "diario-della-salute"
 color: "verde"
 access: "draft"
 ---
-
 
 # Il diario della salute
 
@@ -19,6 +18,7 @@ Un corso aggiunge comprensione.
 Un percorso integra tutto questo nel tempo.
 
 Questa progressione permette:
+
 - alla persona di orientarsi,
 - al professionista di osservare,
 - al sistema di migliorare.
@@ -48,6 +48,7 @@ Il diario non serve a giudicare.
 Serve a **tenere il filo**.
 
 È lo strumento che trasforma:
+
 - l’intenzione in azione,
 - l’azione in abitudine,
 - l’abitudine in cambiamento reale.
@@ -58,6 +59,7 @@ Serve a **tenere il filo**.
 
 Un diario non è solo memoria.  
 È anche:
+
 - misura delle risorse investite,
 - spazio di riflessione,
 - momento di consapevolezza.
@@ -79,13 +81,13 @@ Il diario deve essere **semplice**, altrimenti non dura.
 
 Ogni giorno bastano tre righe:
 
-1) **Cosa hai fatto**  
+1. **Cosa hai fatto**  
    Anche poco. Anche solo cinque minuti.
 
-2) **Cosa hai sentito**  
+2. **Cosa hai sentito**  
    Una frase. Una sensazione. Un cambiamento.
 
-3) **Qual è il prossimo passo**  
+3. **Qual è il prossimo passo**  
    Una sola cosa semplice e realistica.
 
 Non serve scrivere bene.  
@@ -95,7 +97,7 @@ Serve scrivere **vero**.
 
 ## Eventi come “commit”
 
-Pensa a ogni azione come a un *commit*.
+Pensa a ogni azione come a un _commit_.
 
 - piccoli cambiamenti,
 - tracciati,
@@ -112,6 +114,7 @@ quello che fai oggi modifica il corpo di domani.
 ## Dal diario individuale al percorso condiviso
 
 Quando il diario è usato:
+
 - da una persona → crea consapevolezza,
 - con un professionista → migliora l’osservazione,
 - in un gruppo → crea confronto e supporto,
@@ -129,6 +132,7 @@ Il diario della salute non è un sistema di controllo.
 È una **traccia**.
 
 Serve a:
+
 - non perdersi,
 - capire cosa funziona,
 - riconoscere i segnali del corpo,
@@ -145,22 +149,21 @@ Molti percorsi falliscono non perché “non funzionano”, ma perché si interr
 Il diario serve a una cosa: **mantenere continuità**.
 
 ## La regola delle 3 righe
+
 Ogni giorno scrivi:
 
-1) cosa hai fatto (anche poco)  
-2) cosa hai sentito (1 frase)  
-3) qual è il prossimo passo (1 cosa semplice)
+1. cosa hai fatto (anche poco)
+2. cosa hai sentito (1 frase)
+3. qual è il prossimo passo (1 cosa semplice)
 
 ## Eventi come “commit”
+
 Pensa a ogni azione come un commit:
+
 - piccoli cambiamenti,
 - tracciati,
 - che sommati cambiano il progetto.
 
 La salute è un repository vivo: quello che fai oggi modifica il corpo di domani.
 
-
-
-
-
-Perchè avere un diario della salute se si vuole iniziare un percorso è indispensabile avere con 1 impegno vedremo che il diario della salute è indispensabile per ogni risultato nella salute nella formazione nel lavoro, un diario oltre ad essere un mezzo per misurare le risorse investite e per tenerne traccia è anche un momento per fare un esame di coscienza! 
+Perchè avere un diario della salute se si vuole iniziare un percorso è indispensabile avere con 1 impegno vedremo che il diario della salute è indispensabile per ogni risultato nella salute nella formazione nel lavoro, un diario oltre ad essere un mezzo per misurare le risorse investite e per tenerne traccia è anche un momento per fare un esame di coscienza!

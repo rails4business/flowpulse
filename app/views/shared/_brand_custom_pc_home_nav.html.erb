@@ -1,35 +1,55 @@
 <header
-  class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-solid border-[#e7edf3] dark:border-slate-800"
+  class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-solid border-[#f2f0f4] dark:border-slate-800"
 >
   <div
-    class="max-w-[1200px] mx-auto px-6 h-12 flex items-center justify-between gap-4"
+    class="max-w-[1200px] mx-auto px-10 py-4 flex items-center justify-between gap-6"
   >
-    <div class="flex items-center gap-4">
-      <a href="#home">
+    <div class="flex items-center gap-8">
+    <%= link_to root_path do %>
         <img
           src="https://ik.imagekit.io/posturacorretta/logo_pc_scontornato.png?updatedAt=1747975596766"
           alt="PosturaCorretta"
-          class="h-6 lg:h-8 w-auto"
+          class="h-8 w-auto"
         />
-      </a>
+      <% end %>
     </div>
-    <div class="hidden md:flex flex-1 justify-center gap-8">
-      <a
-        class="text-sm font-medium hover:text-primary transition-colors"
-        href="#progetto"
-        >Accademia</a
-      >
-
-      <a
-        class="text-sm font-medium hover:text-primary transition-colors"
-        href="#progetto"
-        >Eventi</a
-      >
-      <a
-        class="text-sm font-medium hover:text-primary transition-colors"
-        href="#progetto"
-        >Progetto</a
-      >
+    <div class="hidden md:flex flex-1 justify-center items-center gap-8">
+      <%= link_to "Percorso", root_path(anchor: "percorso"), class: "inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors" %>
+      <details class="relative inline-flex items-center justify-center" data-nav-dropdown>
+        <summary
+          class="list-none inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors cursor-pointer"
+          aria-label="Apri menu risorse"
+        >
+          Risorse
+          <span class="material-symbols-outlined text-[18px] leading-none">expand_more</span>
+        </summary>
+        <div class="absolute z-50 mt-2 w-52 rounded-xl border border-[#f2f0f4] bg-white shadow-lg p-2"
+             style="top: 100%; left: 50%; transform: translateX(-50%);">
+          <%= link_to "Contenuti", posturacorretta_contenuti_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Corsi online", posturacorretta_corsi_online_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Eventi", posturacorretta_eventi_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+        </div>
+      </details>
+      <details class="relative inline-flex items-center justify-center" data-nav-dropdown>
+        <summary
+          class="list-none inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors cursor-pointer"
+          aria-label="Apri menu rete"
+        >
+          Rete
+          <span class="material-symbols-outlined text-[18px] leading-none">expand_more</span>
+        </summary>
+        <div class="absolute z-50 mt-2 w-52 rounded-xl border border-[#f2f0f4] bg-white shadow-lg p-2"
+             style="top: 100%; left: 50%; transform: translateX(-50%);">
+          <%= link_to "Persone", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Rete professionale", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Centri", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Metodiche e professioni", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+        </div>
+      </details>
+      <%= link_to "Progetto",
+                  root_path(anchor: "progetto"),
+                  class: "inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors" %>
       <!--a
         class="text-sm font-medium hover:text-primary transition-colors"
         href="#progetto"
@@ -58,17 +78,28 @@
     <div class="md:hidden flex items-center">
       <details class="relative">
         <summary
-          class="list-none flex items-center justify-center size-9 rounded-full border border-slate-200 bg-white/90 dark:bg-slate-900/80 dark:border-slate-700 text-slate-700 dark:text-slate-200"
+          class="list-none flex items-center justify-center size-9 rounded-full border border-[#f2f0f4] bg-white/90 dark:bg-slate-900/80 dark:border-slate-700 text-slate-700 dark:text-slate-200"
           aria-label="Apri menu"
         >
           <span class="material-symbols-outlined text-lg">menu</span>
         </summary>
         <div
-          class="absolute right-0 mt-3 w-64 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-3 z-50"
+          class="absolute right-0 mt-3 w-64 rounded-2xl border border-[#f2f0f4] dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-3 z-50"
         >
-          <a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#accademia">Accademia</a>
-          <a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#eventi">Eventi</a>
-          <a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#progetto">Progetto</a>
+          <%= link_to "Percorso", root_path(anchor: "percorso"), class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
+          <div class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Risorse</div>
+          <%= link_to "Contenuti", posturacorretta_contenuti_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Corsi online", posturacorretta_corsi_online_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Eventi", posturacorretta_eventi_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
+          <div class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Rete</div>
+          <%= link_to "Persone", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Rete professionale", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Centri", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Metodiche e professioni", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Progetto", root_path(anchor: "progetto"), class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
           <!--a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#">🔎 Professionisti e centri</a-->
           <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
           <% if Current.user.present? %>
@@ -82,3 +113,38 @@
     </div>
   </div>
 </header>
+<script>
+  (function () {
+    const nav = document.querySelector("header");
+    if (!nav) return;
+
+    const dropdowns = nav.querySelectorAll("details[data-nav-dropdown]");
+    if (!dropdowns.length) return;
+
+    // Keep only one desktop dropdown open at a time.
+    dropdowns.forEach((dropdown) => {
+      dropdown.addEventListener("toggle", () => {
+        if (!dropdown.open) return;
+        dropdowns.forEach((other) => {
+          if (other !== dropdown) other.open = false;
+        });
+      });
+    });
+
+    // Close dropdowns on outside click.
+    document.addEventListener("click", (event) => {
+      dropdowns.forEach((dropdown) => {
+        if (!dropdown.open) return;
+        if (!dropdown.contains(event.target)) dropdown.open = false;
+      });
+    });
+
+    // Close dropdowns on Escape.
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      dropdowns.forEach((dropdown) => {
+        dropdown.open = false;
+      });
+    });
+  })();
+</script>
