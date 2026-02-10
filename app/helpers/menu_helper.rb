@@ -36,6 +36,12 @@ module MenuHelper
         label: "Superadmin",
         path: dashboard_superadmin_path,
         if: -> { Current.user&.superadmin? }
+      },
+      {
+        icon: "💾",
+        label: "Backup (Hatchbox)",
+        path: superadmin_backups_path,
+        if: -> { Current.user&.superadmin? }
       }
     ]
   end

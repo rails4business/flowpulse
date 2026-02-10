@@ -71,6 +71,7 @@ Rails.application.routes.draw do
 
   # --- Admin ---
   namespace :superadmin do
+    resources :backups, only: [ :index ]
     resources :services do
       member do
         get :rails4b
@@ -177,6 +178,7 @@ resources :posts do
     get "corsi-online", to: "posturacorretta#corsi_online", as: :posturacorretta_corsi_online
     get "manifesto", to: "posturacorretta#manifesto", as: :posturacorretta_manifesto
     get "eventi", to: "posturacorretta#eventi", as: :posturacorretta_eventi
+    get "servizi", to: "posturacorretta#servizi", as: :posturacorretta_servizi
     get "rete", to: "posturacorretta#rete", as: :posturacorretta_rete
     get "persone", to: "posturacorretta#persone", as: :posturacorretta_persone
     get "rete-professionale", to: "posturacorretta#rete_professionale", as: :posturacorretta_rete_professionale

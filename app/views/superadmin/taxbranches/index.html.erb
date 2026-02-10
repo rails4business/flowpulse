@@ -35,7 +35,7 @@
             <span class="text-xs text-slate-400">(#<%= branch.id %>)</span>
           </div>
           <div class="text-xs text-slate-500">
-            tx_id: <%= branch.id %> · <%= branch.slug_category %> / <%= branch.slug %>
+            tx_id_<%= branch.id %> · <%= branch.slug_category %> / <%= branch.slug %>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
     <div class="border p-3 rounded hover:bg-slate-50 flex justify-between items-center">
       <div class="flex flex-col">
         <%= link_to branch.slug, superadmin_taxbranch_path(branch), class: "text-blue-600 font-medium" %>
-        <span class="text-xs text-slate-500">tx_id: <%= branch.id %></span>
+        <span class="text-xs text-slate-500">t_id: <%= branch.id %></span>
       </div>
       <div class="flex gap-2 text-sm text-gray-500">
         

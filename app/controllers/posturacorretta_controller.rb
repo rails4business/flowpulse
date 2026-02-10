@@ -22,6 +22,11 @@ class PosturacorrettaController < ApplicationController
       title: "Eventi",
       description: "Incontri e appuntamenti dedicati a educazione, salute e stile di vita."
     },
+    "servizi" => {
+      group: "Risorse",
+      title: "Servizi",
+      description: "Servizi e percorsi pratici per applicare nella vita quotidiana i principi di PosturaCorretta."
+    },
     "rete" => {
       group: "Rete",
       title: "Rete",
@@ -62,6 +67,10 @@ class PosturacorrettaController < ApplicationController
   end
 
   def eventi
+    set_page_meta
+  end
+
+  def servizi
     set_page_meta
   end
 
