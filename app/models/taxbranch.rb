@@ -1,7 +1,7 @@
 class Taxbranch < ApplicationRecord
   belongs_to :scheduled_eventdate, class_name: "Eventdate", optional: true
   has_ancestry
-  acts_as_list scope: [ :ancestry ]
+  acts_as_list scope: :parent_id
 
 
   belongs_to :lead, optional: true

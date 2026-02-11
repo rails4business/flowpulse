@@ -11,6 +11,7 @@
 
         --blue: #2563eb;
         --orange: #f59e0b;
+        --violet: #7c3aed;
         --neutral: #3f8fd1;
         --red: #ef4444;
         --green: #22c55e;
@@ -156,7 +157,7 @@
     <button class="close" type="button" aria-label="Chiudi e torna alla home">
       Chiudi
     </button>
-    <svg viewBox="0 0 900 520" role="img" aria-label="Mappa PosturaCorretta">
+    <svg viewBox="0 0 900 600" role="img" aria-label="Mappa PosturaCorretta">
       <defs>
         <clipPath id="logoRounded">
           <rect x="560" y="230" width="150" height="56" rx="8" ry="8" />
@@ -194,13 +195,15 @@
       <!-- LINEE -->
       <!-- Centro -> Stile -->
       <path class="link" d="M 396 302 L 377 327" />
+      <!-- Centro -> Salute -->
+      <path class="link" d="M 473 317 L 483 354" />
       <!-- Stile -> Salute -->
       <path class="link" d="M 405 401 L 433 406" />
 
-      <!-- Salute -> Rosso (più su) -->
-      <path class="link" d="M 558 385 L 596 362" />
-      <!-- Salute -> Verde (più giù) -->
-      <path class="link" d="M 567 433 L 599 440" />
+      <!-- Salute -> satelliti -->
+      <path class="link" d="M 500 420 L 602 334" />
+      <path class="link" d="M 500 420 L 635 420" />
+      <path class="link" d="M 500 420 L 602 506" />
 
       <!-- CENTRO -->
       <circle cx="450" cy="230" r="90" fill="var(--blue)" />
@@ -223,7 +226,7 @@
       </text>
 
       <!-- STILE DI VITA -->
-      <circle cx="332" cy="386" r="74" fill="var(--orange)" />
+      <circle cx="332" cy="386" r="74" fill="var(--violet)" />
       <circle cx="332" cy="386" r="74" fill="transparent" class="ring" />
       <text x="332" y="372" text-anchor="middle" class="t-style">
         Stile di vita
@@ -242,32 +245,40 @@
       <!-- SALUTE -->
       <circle cx="500" cy="420" r="68" fill="var(--neutral)" />
       <circle cx="500" cy="420" r="68" fill="transparent" class="ring" />
-      <text x="500" y="412" text-anchor="middle" class="t-salute">Salute</text>
-      <text x="500" y="434" text-anchor="middle" class="t-salute-sub">
-        Come gestirla?
+      <text x="500" y="396" text-anchor="middle" class="t-salute">
+        Percorso
+      </text>
+      <text x="500" y="418" text-anchor="middle" class="t-salute">Salute</text>
+      <text x="500" y="435" text-anchor="middle" class="t-salute-sub">
+        Gestisci
+      </text>
+      <text x="500" y="450" text-anchor="middle" class="t-salute-sub">
+        la tua salute
       </text>
 
       <!-- CURA PATOLOGIA -->
-      <circle cx="640" cy="335" r="52" fill="var(--red)" />
-      <circle cx="640" cy="335" r="52" fill="transparent" class="ring" />
-      <text x="640" y="319" text-anchor="middle" class="t-cura">Cura</text>
-      <text x="640" y="339" text-anchor="middle" class="t-cura-sub">
+      <circle cx="602" cy="334" r="42" fill="var(--red)" />
+      <circle cx="602" cy="334" r="42" fill="transparent" class="ring" />
+      <text x="602" y="322" text-anchor="middle" class="t-cura">Cura</text>
+      <text x="602" y="348" text-anchor="middle" class="t-cura-sub">
         Patologia
       </text>
-      <text x="640" y="354" text-anchor="middle" class="t-cura-sub">
-        Linee guida
+
+      <!-- PREVENZIONE -->
+      <circle cx="635" cy="420" r="42" fill="var(--orange)" />
+      <circle cx="635" cy="420" r="42" fill="transparent" class="ring" />
+      <text x="635" y="425" text-anchor="middle" class="t-cura-sub">
+        Prevenzione
       </text>
 
       <!-- CURA DELLA SALUTE -->
-      <circle cx="650" cy="450" r="52" fill="var(--green)" />
-      <circle cx="650" cy="450" r="52" fill="transparent" class="ring" />
-      <text x="650" y="434" text-anchor="middle" class="t-cura">Cura</text>
+      <circle cx="602" cy="506" r="42" fill="var(--green)" />
+      <circle cx="602" cy="506" r="42" fill="transparent" class="ring" />
+      <text x="602" y="494" text-anchor="middle" class="t-cura">Cura</text>
 
-      <text x="650" y="454" text-anchor="middle" class="t-cura-sub">
-        del benessere
-      </text>
-      <text x="650" y="469" text-anchor="middle" class="t-cura-sub">
-        Linee guida
+      <text x="602" y="510" text-anchor="middle" class="t-cura-sub">del</text>
+      <text x="602" y="525" text-anchor="middle" class="t-cura-sub">
+        benessere
       </text>
     </svg>
     <script>

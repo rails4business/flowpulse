@@ -230,6 +230,11 @@
       <!-- Azioni -->
       <% prev      = node.higher_item %>
       <% next_node = node.lower_item  %>
+      <% siblings_desc = node.parent&.order_des? || false %>
+      <% up_enabled = siblings_desc ? next_node.present? : prev.present? %>
+      <% down_enabled = siblings_desc ? prev.present? : next_node.present? %>
+      <% up_path = siblings_desc ? move_down_superadmin_taxbranch_path(node) : move_up_superadmin_taxbranch_path(node) %>
+      <% down_path = siblings_desc ? move_up_superadmin_taxbranch_path(node) : move_down_superadmin_taxbranch_path(node) %>
 
       <div class="flex items-center gap-2 text-xs text-slate-500 shrink-0">
         <%= link_to "＋ Figlio",
@@ -247,16 +252,16 @@
 
         <span class="text-slate-300">|</span>
 
-        <% if prev.present? %>
-          <%= link_to "⬆", move_up_superadmin_taxbranch_path(node),
+        <% if up_enabled %>
+          <%= link_to "⬆", up_path,
                 data: { turbo_method: :patch },
                 class: "text-slate-500 hover:text-slate-800", title: "Sposta su" %>
         <% else %>
           <span class="opacity-30 text-slate-500" title="Già in cima">⬆</span>
         <% end %>
 
-        <% if next_node.present? %>
-          <%= link_to "⬇", move_down_superadmin_taxbranch_path(node),
+        <% if down_enabled %>
+          <%= link_to "⬇", down_path,
                 data: { turbo_method: :patch },
                 class: "text-slate-500 hover:text-slate-800", title: "Sposta giù" %>
         <% else %>
