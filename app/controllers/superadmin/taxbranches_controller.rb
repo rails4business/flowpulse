@@ -312,7 +312,8 @@ end
     raw = file.read
     raw = raw.force_encoding("UTF-8")
     raw = raw.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") if raw.respond_to?(:encode)
-    rows = CSV.parse(raw, headers: true, encoding: "UTF-8")
+    col_sep = detect_csv_separator(raw)
+    rows = CSV.parse(raw, headers: true, encoding: "bom|utf-8", col_sep: col_sep)
     results = { created: 0, updated: 0, skipped: 0, errors: [] }
     post_results = { created: 0, updated: 0, skipped: 0 }
     imported = []
@@ -320,7 +321,8 @@ end
 
     Taxbranch.transaction do
       rows.each_with_index do |row, idx|
-        row = row.to_h.transform_values do |val|
+        row = row.to_h.transform_keys { |key| normalize_csv_header_key(key) }
+                 .transform_values do |val|
           val.is_a?(String) ? val.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") : val
         end
         row = row.with_indifferent_access
@@ -571,6 +573,20 @@ end
     return parsed if parsed.is_a?(Array)
     return nil if value.blank?
     value.to_s.split(/[\n,;]/).map(&:strip).reject(&:blank?)
+  end
+
+  def detect_csv_separator(raw)
+    header_line = raw.to_s.lines.first.to_s
+    semicolons = header_line.count(";")
+    commas = header_line.count(",")
+    semicolons > commas ? ";" : ","
+  end
+
+  def normalize_csv_header_key(key)
+    key.to_s
+       .encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
+       .sub(/\A\uFEFF/, "")
+       .strip
   end
 
   def handle_taxbranch_destroy_blockers(taxbranch)
