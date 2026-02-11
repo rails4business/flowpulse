@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_11_114908) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -82,6 +82,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
   create_table "certificates", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "datacontact_id", null: false
+    t.bigint "domain_id"
+    t.bigint "domain_membership_id", null: false
     t.bigint "enrollment_id", null: false
     t.datetime "expires_at"
     t.datetime "issued_at"
@@ -95,6 +97,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
     t.bigint "taxbranch_id", null: false
     t.datetime "updated_at", null: false
     t.index ["datacontact_id"], name: "index_certificates_on_datacontact_id"
+    t.index ["domain_id"], name: "index_certificates_on_domain_id"
+    t.index ["domain_membership_id", "role_name"], name: "index_certificates_on_domain_membership_id_and_role_name"
+    t.index ["domain_membership_id"], name: "index_certificates_on_domain_membership_id"
     t.index ["enrollment_id"], name: "index_certificates_on_enrollment_id"
     t.index ["journey_id"], name: "index_certificates_on_journey_id"
     t.index ["lead_id"], name: "index_certificates_on_lead_id"
@@ -148,6 +153,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
     t.index ["lead_id"], name: "index_datacontacts_on_lead_id"
   end
 
+  create_table "domain_memberships", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "domain_active_role", default: "member", null: false
+    t.bigint "domain_id", null: false
+    t.bigint "lead_id", null: false
+    t.boolean "primary", default: false, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain_id"], name: "index_domain_memberships_on_domain_id"
+    t.index ["lead_id", "domain_id"], name: "idx_domain_memberships_lead_domain_unique", unique: true
+    t.index ["lead_id"], name: "idx_domain_memberships_primary_per_lead", unique: true, where: "(\"primary\" = true)"
+    t.index ["lead_id"], name: "index_domain_memberships_on_lead_id"
+  end
+
   create_table "domains", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -155,8 +174,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
     t.string "horizontal_logo_url"
     t.string "host"
     t.string "language"
+    t.jsonb "operative_roles", default: []
     t.string "provider"
-    t.jsonb "role_areas", default: []
     t.string "square_logo_url"
     t.bigint "taxbranch_id", null: false
     t.string "title"
@@ -505,6 +524,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
   add_foreign_key "bookings", "leads", column: "requested_by_lead_id"
   add_foreign_key "bookings", "services"
   add_foreign_key "certificates", "datacontacts"
+  add_foreign_key "certificates", "domain_memberships"
+  add_foreign_key "certificates", "domains"
   add_foreign_key "certificates", "enrollments"
   add_foreign_key "certificates", "enrollments", column: "issued_by_enrollment_id"
   add_foreign_key "certificates", "journeys"
@@ -514,6 +535,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_31_044100) do
   add_foreign_key "commitments", "commitments", column: "template_commitment_id"
   add_foreign_key "commitments", "eventdates"
   add_foreign_key "datacontacts", "leads"
+  add_foreign_key "domain_memberships", "domains"
+  add_foreign_key "domain_memberships", "leads"
   add_foreign_key "domains", "taxbranches"
   add_foreign_key "enrollments", "datacontacts", column: "mycontact_id"
   add_foreign_key "enrollments", "journeys"

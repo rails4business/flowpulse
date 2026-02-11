@@ -34,6 +34,7 @@ class RegistrationsController < ApplicationController
 
     # collega il referrer (se usi questo campo su users)
     flow.user.update!(referrer_id: referrer.id) if referrer && flow.user.respond_to?(:referrer_id)
+    ensure_default_domain_membership!(flow.lead)
 
     start_new_session_for(flow.user)
     referrer&.count_successful_invite!
@@ -128,5 +129,19 @@ class RegistrationsController < ApplicationController
       break if i > 1000
     end
     uname
+  end
+
+  def ensure_default_domain_membership!(lead)
+    domain = Current.domain
+    return if domain.blank? || lead.blank?
+
+    membership = lead.domain_memberships.find_or_initialize_by(domain: domain)
+    membership.status = :active
+    membership.domain_active_role = membership.domain_active_role.presence || "member"
+
+    has_primary = lead.domain_memberships.where(primary: true).where.not(id: membership.id).exists?
+    membership.primary = !has_primary if membership.primary.nil?
+
+    membership.save!
   end
 end

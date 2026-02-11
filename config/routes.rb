@@ -71,7 +71,11 @@ Rails.application.routes.draw do
 
   # --- Admin ---
   namespace :superadmin do
-    resources :backups, only: [ :index ]
+    resources :backups, only: [ :index ] do
+      collection do
+        post :analyze
+      end
+    end
     resources :services do
       member do
         get :rails4b

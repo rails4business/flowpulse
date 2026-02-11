@@ -293,7 +293,7 @@
         <div>
           <%= f.label :permission_access_roles, "Ruoli che hanno il permesso di accedere", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%
-            available_roles = header_domain&.role_areas.presence
+            available_roles = header_domain&.operative_roles.presence
             error_classes = "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:permission_access_roles].any?}"
           %>
           <% if available_roles.present? %>

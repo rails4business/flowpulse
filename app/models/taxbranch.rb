@@ -1,7 +1,7 @@
 class Taxbranch < ApplicationRecord
   belongs_to :scheduled_eventdate, class_name: "Eventdate", optional: true
   has_ancestry
-  acts_as_list scope: :parent_id
+  acts_as_list scope: [ :ancestry ]
 
 
   belongs_to :lead, optional: true
@@ -107,7 +107,7 @@ class Taxbranch < ApplicationRecord
   end
 
   def available_permission_roles
-    Array(header_domain&.role_areas).filter_map { |role| role.to_s.strip.presence }.uniq
+    Array(header_domain&.operative_roles).filter_map { |role| role.to_s.strip.presence }.uniq
   end
 
   def header_domain_taxbranch

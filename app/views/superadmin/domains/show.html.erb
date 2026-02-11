@@ -34,15 +34,15 @@
       </div>
       
       <div class="rounded-xl border border-[#283039] bg-[#0f172a] p-4">
-        <p class="text-xs uppercase tracking-wide text-[#9dabb9]">Aree / ruoli</p>
-        <% if @domain.role_areas.present? %>
+        <p class="text-xs uppercase tracking-wide text-[#9dabb9]">Ruoli operativi</p>
+        <% if @domain.operative_roles.present? %>
           <ul class="mt-2 text-sm text-[#e2e8f0] space-y-1">
-            <% @domain.role_areas.each do |area| %>
+            <% @domain.operative_roles.each do |area| %>
               <li>• <%= area %></li>
             <% end %>
           </ul>
         <% else %>
-          <p class="mt-2 text-sm text-[#9dabb9]">Nessuna area definita.</p>
+          <p class="mt-2 text-sm text-[#9dabb9]">Nessun ruolo definito.</p>
         <% end %>
       </div>
     </div>

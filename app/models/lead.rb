@@ -9,6 +9,8 @@ class Lead < ApplicationRecord
   has_many :mycontacts, dependent: :destroy
   has_many :tag_positionings, dependent: :destroy
   has_many :certificates, dependent: :destroy
+  has_many :domain_memberships, dependent: :destroy
+  has_many :domains, through: :domain_memberships
 
 
   belongs_to :parent,        class_name: "Lead", optional: true
@@ -38,6 +40,8 @@ class Lead < ApplicationRecord
   end
 
   def active_domains
-    enrollments.includes(service: { taxbranch: :domains }).map(&:domain).compact.uniq
+    explicit_domains = domain_memberships.active.includes(:domain).map(&:domain).compact
+    enrolled_domains = enrollments.includes(service: { taxbranch: :domains }).map(&:domain).compact
+    (explicit_domains + enrolled_domains).uniq
   end
 end

@@ -45,6 +45,8 @@ class DashboardController < ApplicationController
       .count
 
     @tab = params[:tab].presence_in(%w[bookings enrollments]) || "bookings"
+    @current_domain = Current.domain
+    @lead_domains = @lead.active_domains
     mycontact_ids = @lead.mycontacts.select(:id)
     @bookings = Booking.includes(:eventdate, :service, :commitment, :enrollment)
                        .where(mycontact_id: mycontact_ids)

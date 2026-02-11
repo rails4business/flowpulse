@@ -5,6 +5,8 @@ class Certificate < ApplicationRecord
   belongs_to :service
   belongs_to :journey
   belongs_to :taxbranch
+  belongs_to :domain_membership, optional: true
+  belongs_to :domain, optional: true
 
   belongs_to :issued_by_enrollment,
              class_name: "Enrollment",
@@ -19,4 +21,8 @@ class Certificate < ApplicationRecord
   store_accessor :meta
 
   validates :role_name, presence: true
+
+  def inferred_domain
+    domain || domain_membership&.domain
+  end
 end

@@ -60,11 +60,22 @@ class CertificatesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_certificate
-      @certificate = Certificate.find(params.expect(:id))
+      @certificate = Certificate.includes(:domain_membership, :domain, :lead).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def certificate_params
-      params.expect(certificate: [ :lead_id, :datacontact_id, :enrollment_id, :service_id, :journey_id, :taxbranch_id, :role_name, :status, :issued_at, :expires_at, :issued_by_enrollment_id, :meta ])
+      params.expect(certificate: certificate_permitted_attributes)
+    end
+
+    def certificate_permitted_attributes
+      attrs = [
+        :lead_id, :datacontact_id, :enrollment_id, :service_id, :journey_id,
+        :taxbranch_id, :role_name, :status, :issued_at, :expires_at,
+        :issued_by_enrollment_id, :meta
+      ]
+      attrs << :domain_membership_id if Certificate.column_names.include?("domain_membership_id")
+      attrs << :domain_id if Certificate.column_names.include?("domain_id")
+      attrs
     end
 end

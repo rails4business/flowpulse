@@ -234,7 +234,8 @@ module Superadmin
 
   # GET /domains/new
   def new
-   @domain = Domain.new
+   prefilled_taxbranch_id = params[:taxbranch_id].presence || params[:parent_id].presence
+   @domain = Domain.new(taxbranch_id: prefilled_taxbranch_id)
    @taxbranches = Current.user&.lead&.taxbranches&.ordered || Taxbranch.none
   end
 
@@ -300,7 +301,7 @@ module Superadmin
 
     # Only allow a list of trusted parameters through.
     def domain_params
-      params.expect(domain: [ :host, :language, :title, :description, :favicon_url, :square_logo_url, :horizontal_logo_url, :provider, :taxbranch_id, :role_areas ])
+      params.expect(domain: [ :host, :language, :title, :description, :favicon_url, :square_logo_url, :horizontal_logo_url, :provider, :taxbranch_id, :operative_roles ])
     end
 
     def parse_route_items(route_param)

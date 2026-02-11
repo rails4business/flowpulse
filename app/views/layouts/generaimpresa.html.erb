@@ -55,6 +55,7 @@
     <div class="flex min-h-screen w-full">
       <aside class="w-64 border-r border-[#283039] flex flex-col bg-background-light dark:bg-background-dark p-4 shrink-0">
         <div class="mb-4 flex items-center gap-2">
+          <% domain_persisted = @domain&.persisted? %>
           <%= link_to superadmin_taxbranch_path(15),
                       class: "flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold #{current_page?(superadmin_taxbranch_path(15)) ? 'bg-primary text-white' : 'bg-white/10 text-slate-200 hover:bg-white/20'}" do %>
             <span class="material-symbols-outlined text-[16px]">dashboard</span>
@@ -66,8 +67,9 @@
             <span class="material-symbols-outlined text-[16px]">account_tree</span>
             Impresa
           <% end %>
-          <%= link_to (@domain.present? ? superadmin_domain_path(@domain) : superadmin_domains_path),
-                      class: "flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold #{@domain.present? && current_page?(superadmin_domain_path(@domain)) ? 'bg-primary text-white' : 'bg-white/10 text-slate-200 hover:bg-white/20'}" do %>
+          <% domain_target = domain_persisted ? superadmin_domain_path(@domain) : superadmin_domains_path %>
+          <%= link_to domain_target,
+                      class: "flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold #{domain_persisted && current_page?(domain_target) ? 'bg-primary text-white' : 'bg-white/10 text-slate-200 hover:bg-white/20'}" do %>
             <span class="material-symbols-outlined text-[16px]">inventory_2</span>
             Domain
           <% end %>

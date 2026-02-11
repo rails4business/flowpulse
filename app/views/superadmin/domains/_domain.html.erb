@@ -32,15 +32,15 @@
     <%= domain.provider %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Aree / ruoli:</strong>
-    <% if domain.role_areas.present? %>
+    <strong class="block font-medium mb-1">Ruoli operativi:</strong>
+    <% if domain.operative_roles.present? %>
       <ul class="list-disc ml-5 text-sm text-slate-700 space-y-0.5">
-        <% domain.role_areas.each do |area| %>
+        <% domain.operative_roles.each do |area| %>
           <li><%= area %></li>
         <% end %>
       </ul>
     <% else %>
-      <p class="text-sm text-slate-500">Nessuna area impostata.</p>
+      <p class="text-sm text-slate-500">Nessun ruolo impostato.</p>
     <% end %>
   </div>
   <div>

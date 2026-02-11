@@ -27,6 +27,12 @@
 <div class="md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">Editing taxbranch</h1>
 
+  <div class="mt-3 mb-4">
+    <%= link_to "➕ New domain (precompilato)",
+                new_superadmin_domain_path(taxbranch_id: @taxbranch.id),
+                class: "inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500" %>
+  </div>
+
   <%= render "form", taxbranch: @taxbranch %>
 
   <%= link_to "Show this taxbranch",[:superadmin, @taxbranch], class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>

@@ -1,7 +1,8 @@
 <aside class="w-64 border-r border-[#283039] flex flex-col bg-background-light dark:bg-background-dark p-4 shrink-0">
+  <% domain_persisted = @domain&.persisted? %>
   <div class="flex flex-col gap-6 h-full">
     <div>
-      <% if @domain.present? %>
+      <% if domain_persisted %>
         <%= link_to superadmin_domain_path(@domain),
                     class: "flex items-start gap-3 px-3 py-3 rounded-lg transition-colors #{current_page?(superadmin_domain_path(@domain)) ? "bg-primary/20 border border-primary/30" : "hover:bg-[#283039]"}" do %>
           <span class="material-symbols-outlined #{current_page?(superadmin_domain_path(@domain)) ? "text-primary" : "text-white"}">inventory_2</span>
@@ -27,7 +28,7 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <% if @domain.present? %>
+      <% if domain_persisted %>
         <%= link_to mapservice_superadmin_domain_path(@domain),
                     class: "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors #{current_page?(mapservice_superadmin_domain_path(@domain)) ? "bg-primary/20 border border-primary/30" : "hover:bg-[#283039]"}" do %>
           <span class="material-symbols-outlined #{current_page?(mapservice_superadmin_domain_path(@domain)) ? "text-primary" : "text-white"}">map</span>

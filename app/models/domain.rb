@@ -1,6 +1,9 @@
 class Domain < ApplicationRecord
   store_accessor :aree_ruoli
   belongs_to :taxbranch
+  has_many :domain_memberships, dependent: :destroy
+  has_many :leads, through: :domain_memberships
+  has_many :certificates, dependent: :nullify
   #  belongs_to :owner, class_name: "Lead", optional: true
 
   validates :host, presence: true, uniqueness: true
@@ -14,7 +17,7 @@ class Domain < ApplicationRecord
   before_validation :normalize_host!
   after_commit :clear_cache
 
-  def role_areas=(value)
+  def operative_roles=(value)
     parsed =
       case value
       when String
@@ -28,8 +31,17 @@ class Domain < ApplicationRecord
     super(parsed)
   end
 
+  def operative_roles_text
+    Array(operative_roles).join("\n")
+  end
+
+  # Backward compatibility for old calls still using role_areas naming.
+  def role_areas=(value)
+    self.operative_roles = value
+  end
+
   def role_areas_text
-    Array(role_areas).join("\n")
+    operative_roles_text
   end
 
   private
