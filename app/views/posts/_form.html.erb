@@ -1,4 +1,6 @@
 <%= form_with(model: post, class: "space-y-4") do |form| %>
+  <% tb = local_assigns[:taxbranch] || post.taxbranch %>
+
   <% if post.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-600 px-3 py-2 rounded-md">
       <h2><%= pluralize(post.errors.count, "errore") %> impediscono il salvataggio:</h2>
@@ -12,9 +14,8 @@
 
   <%# ——— hidden di contesto ——— %>
   <%= form.hidden_field :lead_id,      value: (post.lead_id || Current.user&.lead&.id) %>
-  <%= form.hidden_field :taxbranch_id, value: (taxbranch || post.taxbranch)&.id %>
+  <%= form.hidden_field :taxbranch_id, value: tb&.id %>
 
-  <% tb = (taxbranch || post.taxbranch) %>
   <% if tb %>
     <div class="rounded-md bg-slate-50 border border-slate-200 px-3 py-2 text-xs text-slate-600 mb-2">
       <p>
@@ -169,7 +170,7 @@
         class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium" %>
 
     <%= link_to "Annulla",
-        [:superadmin, (taxbranch || post.taxbranch)],
+        (tb.present? ? [ :superadmin, tb ] : posts_path),
         class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 font-medium" %>
   </div>
 <% end %>
