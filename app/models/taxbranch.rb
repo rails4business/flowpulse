@@ -191,6 +191,19 @@ end
     target.children.to_a.map { |child| NavNode.new(child) }
   end
 
+  # Rebuilds a contiguous sequence (1..n) for siblings in the same ancestry scope.
+  def self.normalize_positions_for_ancestry!(ancestry_value)
+    where(ancestry: ancestry_value).order(:position, :id).each_with_index do |row, idx|
+      next if row.position == idx + 1
+
+      row.update_column(:position, idx + 1)
+    end
+  end
+
+  def normalize_siblings_positions!
+    self.class.normalize_positions_for_ancestry!(ancestry)
+  end
+
   private
 
   def cannot_have_children_if_link_node

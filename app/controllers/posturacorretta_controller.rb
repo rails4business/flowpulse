@@ -1,5 +1,6 @@
 class PosturacorrettaController < ApplicationController
   layout "posts"
+  layout false, only: [ :mappa, :aree, :ambiti, :medicina, :oriente_occidente ]
   before_action :set_post_context, only: :manifesto
   PAGE_META = {
     "contenuti" => {
@@ -92,6 +93,21 @@ class PosturacorrettaController < ApplicationController
 
   def metodiche
     set_page_meta
+  end
+
+  def mappa
+  end
+
+  def aree
+  end
+
+  def ambiti
+  end
+
+  def medicina
+  end
+
+  def oriente_occidente
   end
 
   private

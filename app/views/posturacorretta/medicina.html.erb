@@ -21,7 +21,7 @@
   --cross: 10px;
 
   --node: 145px;
-  --center: 132px;
+  --center: 168px;
 }
 
 *{box-sizing:border-box}
@@ -38,9 +38,9 @@ body{
 .top-nav{
   position:fixed;
   top:14px;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(920px,92vw);
+  left:20px;
+  right:20px;
+  width:auto;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -92,23 +92,26 @@ body{
 /* Titoli */
 .title{
   position:absolute;
-  top:2%;
+  top:5%;
   left:50%;
   transform:translateX(-50%);
   text-align:center;
   font-weight:900;
   letter-spacing:.6px;
+  padding:0;
 }
 
 .title h1{
   margin:0;
   font-size:clamp(16px,2.4vw,22px);
+  color:#fff;
 }
 
 .title p{
   margin:4px 0 0;
   font-size:clamp(11px,2vw,13px);
-  opacity:.7;
+  opacity:.95;
+  color:#f8fafc;
 }
 
 /* Testo curvo interno sul bordo inferiore (circa ore 8 -> ore 4) */
@@ -146,12 +149,12 @@ body{
 
 .cross.v{
   width:var(--cross);
-  height:78%;
+  height:64%;
 }
 
 .cross.h{
   height:var(--cross);
-  width:78%;
+  width:64%;
 }
 
 /* Nodi */
@@ -177,10 +180,10 @@ body{
 }
 
 /* Posizioni */
-.top{top:5%;left:50%;transform:translateX(-50%)}
-.right{right:5%;top:50%;transform:translateY(-50%)}
-.bottom{bottom:5%;left:50%;transform:translateX(-50%)}
-.left{left:5%;top:50%;transform:translateY(-50%)}
+.top{top:14%;left:50%;transform:translateX(-50%)}
+.right{right:14%;top:50%;transform:translateY(-50%)}
+.bottom{bottom:14%;left:50%;transform:translateX(-50%)}
+.left{left:14%;top:50%;transform:translateY(-50%)}
 
 /* Colori */
 .vitali{background:linear-gradient(135deg,#43e97b,#1e824c)}
@@ -202,11 +205,11 @@ body{
 
 <body>
 <div class="top-nav">
-  <a class="back-link" href="/html/posturacorretta/mappa_posturacorretta.html" aria-label="Torna alla mappa">← Mappa</a>
+  <a class="back-link" href="<%= posturacorretta_mappa_path %>" aria-label="Torna alla mappa">← Mappa</a>
   <div class="tabs" aria-label="Navigazione Aree Ambiti Medicina dei semplici">
-    <a class="tab-link" href="/html/posturacorretta/pentagono_5_aree_salute.html">Aree</a>
-    <a class="tab-link" href="/html/posturacorretta/spirale-ambiti-finale.html">Ambiti</a>
-    <a class="tab-link active" href="/html/posturacorretta/medicina_dei_semplici.html">Medicina dei semplici</a>
+    <a class="tab-link" href="<%= posturacorretta_aree_path %>">Aree</a>
+    <a class="tab-link" href="<%= posturacorretta_ambiti_path %>">Ambiti</a>
+    <a class="tab-link active" href="<%= posturacorretta_medicina_path %>">Medicina dei semplici</a>
   </div>
 </div>
 
@@ -248,14 +251,11 @@ body{
 
 <script>
 (() => {
-  const resolveFromCurrentDir = (target) =>
-    new URL(target, `${window.location.href.split("?")[0].split("#")[0].replace(/[^/]*$/, "")}`).toString();
-
   const nodeAspettiVitali = document.getElementById("nodeAspettiVitali");
   nodeAspettiVitali?.addEventListener("click", (event) => {
     event.preventDefault();
     event.stopPropagation();
-    window.location.href = resolveFromCurrentDir("oriente_occidente.html");
+    window.location.href = "<%= posturacorretta_oriente_occidente_path %>";
   });
 })();
 </script>

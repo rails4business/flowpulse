@@ -479,11 +479,11 @@
           </div>
           <div class="media-panels">
             <figure id="panelScala" class="media-card media-panel active">
-              <img src="./scala.png" alt="Scala Stile di vita" loading="lazy" />
+              <img src="/html/posturacorretta/scala.png" alt="Scala Stile di vita" loading="lazy" />
               <figcaption class="media-cap">Scala</figcaption>
             </figure>
             <figure id="panelFlowpulse" class="media-card media-panel">
-              <img src="./flowpulse.png" alt="FlowPulse" loading="lazy" />
+              <img src="/html/posturacorretta/flowpulse.png" alt="FlowPulse" loading="lazy" />
               <figcaption class="media-cap">FlowPulse</figcaption>
             </figure>
           </div>
@@ -493,9 +493,6 @@
 
     <script>
       (() => {
-        const resolveFromCurrentDir = (target) =>
-          new URL(target, `${window.location.href.split("?")[0].split("#")[0].replace(/[^/]*$/, "")}`).toString();
-
         const goHome = () => {
           window.location.href = "/";
         };
@@ -503,13 +500,13 @@
           window.location.href = `${window.location.origin}/#percorso`;
         };
         const goAree = () => {
-          window.location.href = resolveFromCurrentDir("pentagono_5_aree_salute.html");
+          window.location.href = "<%= posturacorretta_aree_path %>";
         };
         const goAmbiti = () => {
-          window.location.href = resolveFromCurrentDir("spirale-ambiti-finale.html");
+          window.location.href = "<%= posturacorretta_ambiti_path %>";
         };
         const goMedicina = () => {
-          window.location.href = resolveFromCurrentDir("medicina_dei_semplici.html");
+          window.location.href = "<%= posturacorretta_medicina_path %>";
         };
         const closeBtn = document.querySelector(".close");
         if (closeBtn) {

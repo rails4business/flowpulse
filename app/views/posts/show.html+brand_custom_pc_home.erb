@@ -129,30 +129,28 @@
                         L'Accademia PosturaCorretta
                     </div>
 <h2 class="text-4xl md:text-5xl font-black leading-[1.1] tracking-[-0.033em] text-[#111518] dark:text-white">
-                     <!--  Prima della salute, prima del lavoro, prima della formazione,-->        Con la postura  <span class="text-primary">riattiva la tua fisiologia</span> 
-              
+  Con la postura <span class="text-primary">riattiva la tua fisiologia</span>
 </h2>
 
- <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
-Grazie alla postura, impara a riattivare i tuoi sistemi fisiologici.  PosturaCorretta nasce come educazione esperienziale. 
+<p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">
+Non esistono solo muscoli e articolazioni. 
+Con il percorso <b>Postura e Fisiologia</b> impari a conoscere e riattivare i tuoi sistemi fisiologici attraverso un’esperienza pratica e progressiva.
 </p>
 
 <p class="text-slate-600 dark:text-slate-400">
- Un percorso esperienziale è un ottimo modo di fare <b>educazione alla salute</b> e per migliorare lo stile di vita.
+È un percorso di <b>educazione alla salute</b> che ti aiuta a comprendere il tuo corpo e migliorare lo stile di vita.  
+Puoi seguirlo come cammino autonomo oppure integrarlo con altri percorsi della salute (cura, prevenzione, benessere).
 </p>
 
-<p class="text-slate-700 font-medium">Qui a fianco la mappa dell'Accademia.</p>
-<ul class="mt-2 list-disc pl-5 text-slate-600 dark:text-slate-400 space-y-1">
-  <li>Risorse: contenuti, corsi online, eventi.</li>
-  <li>Rete: persone, professionisti, centri, metodiche.</li>
-</ul>
-
+<p class="text-slate-700 font-medium">
+Qui a fianco trovi la mappa dell’Accademia.
+</p>
 
 
 
 <div class="flex flex-wrap gap-4 pt-4">
 <a href="#percorso" class="bg-primary text-white px-8 py-4 rounded-full font-bold text-lg flex items-center gap-2 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all transform hover:-translate-y-0.5 hover:bg-primary/90">
-                           Inizia il percorso <span class="material-symbols-outlined">arrow_forward</span>
+                           Scopri il percorso <span class="material-symbols-outlined">arrow_forward</span>
 </a>
 <!--button class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-xl font-bold text-lg">
                             Vai all'accademia
@@ -161,7 +159,7 @@ Grazie alla postura, impara a riattivare i tuoi sistemi fisiologici.  PosturaCor
 </div>
 <div class="relative">
 <div class="absolute -top-10 -left-10  w-72 h-72 bg-primary/20 rounded-full blur-3xl"></div>
-<a href="/html/posturacorretta/mappa_posturacorretta.html" class="block">
+<a href="<%= posturacorretta_mappa_path %>" class="block">
   <div class="relative bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-hidden aspect-[5/5] shadow-2xl border-4 border-white dark:border-slate-900">
     <%= image_tag "posturacorretta/mappa_posturacorretta.png", alt: "Mappa posturacorretta", class: "w-full h-full object-cover" %>
   </div>
@@ -255,30 +253,9 @@ Grazie alla postura, impara a riattivare i tuoi sistemi fisiologici.  PosturaCor
 </div>
 </div>
           --->
+<%= render "percorso_educativo" %>
+<%#= render "percorso_educativo_completo" %>
 
-<main class="flex-1 max-w-[1200px] mx-auto w-full py-24 px-4 md:px-12 lg:px-16" id="percorso">
-<div class="rounded-3xl border border-slate-200 bg-white shadow-none p-2 md:p-16">
-<div class="mb-16">
-<div class="flex items-center justify-between mb-4">
-<h1 class="text-4xl font-light tracking-tight text-slate-900">Percorso <span class="font-bold">Educativo </span></h1>
-<span class="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400">Accademia</span>
-</div>
-<p class="text-slate-500 max-w-2xl leading-relaxed text-sm">
-  Comprendere come funziona il corpo è il punto di partenza dell’Accademia PosturaCorretta.
-  Non solo per stare in salute, ma per costruire uno stile di vita più adatto a te.
-  <br><br>
-  Il Percorso PosturaCorretta è un ottimo percorso di <strong>educazione alla salute</strong>, più precisamente è un percorso esperienziale che ti 
-   aiuta ad imparare a leggere i segnali del corpo e a riattivare la tua fisiologia
-  attraverso le basi delle principali metodiche posturali.
-</p>
-</div>
-<div class="space-y-2">
-<%= render "igiene_posturale" %>
-</div>
-</div>
-</main>
-          
-  
   <main class="bg-background-light">
    <div class=" max-w-[1200px] mx-auto px-6 space-y-24 py-12" id="home">
 <section class="my-24 pt-20" id="4-protagonisti">
@@ -845,7 +822,7 @@ L’educazione alla salute rende il percorso più efficace nel tempo.
 </div>
 <div class="relative">
 <div class="absolute -top-10 -left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl"></div>
-<a href="/html/posturacorretta/mappa_posturacorretta.html" class="block">
+<a href="<%= posturacorretta_mappa_path %>" class="block">
   <div class="relative bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-hidden aspect-[5/5] shadow-2xl border-4 border-white dark:border-slate-900">
     <img src="<%= image_path('posturacorretta/pentagono_5_aree.png') %>" alt="Pentagono 5 aree della salute" class="w-full h-full object-cover">
   </div>

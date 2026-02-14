@@ -106,6 +106,7 @@ module Superadmin
 
     Taxbranch.transaction do
       @taxbranch.save!
+      @taxbranch.normalize_siblings_positions!
     end
 
     redirect_to superadmin_taxbranch_path(@taxbranch),
@@ -118,6 +119,7 @@ module Superadmin
 
 def update
   if @taxbranch.update(taxbranch_params)
+    @taxbranch.normalize_siblings_positions!
     redirect_to superadmin_taxbranch_path(@taxbranch),
                 notice: "Taxbranch aggiornata.", status: :see_other # 303
   else
@@ -170,30 +172,40 @@ end
     redirect_to(redirect_target, notice: "Taxbranch eliminato, figli spostati.", status: :see_other)
   end
   def move_up
+    @taxbranch.normalize_siblings_positions!
     @taxbranch.move_higher
+    @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
 
   def move_down
+    @taxbranch.normalize_siblings_positions!
     @taxbranch.move_lower
+    @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
 
   def move_left
+    old_ancestry = @taxbranch.ancestry
     parent = @taxbranch.parent
     if parent&.parent.present?
       @taxbranch.update(parent: parent.parent)
     else
       @taxbranch.update(parent: nil)
     end
+    Taxbranch.normalize_positions_for_ancestry!(old_ancestry)
+    @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
 
   def move_right
+    old_ancestry = @taxbranch.ancestry
     previous = @taxbranch.higher_item
     if previous.present?
       @taxbranch.update(parent: previous)
     end
+    Taxbranch.normalize_positions_for_ancestry!(old_ancestry)
+    @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
 
@@ -312,8 +324,9 @@ end
     raw = file.read
     raw = raw.force_encoding("UTF-8")
     raw = raw.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") if raw.respond_to?(:encode)
+    raw = strip_utf8_bom(raw)
     col_sep = detect_csv_separator(raw)
-    rows = CSV.parse(raw, headers: true, encoding: "bom|utf-8", col_sep: col_sep)
+    rows = CSV.parse(raw, headers: true, col_sep: col_sep)
     results = { created: 0, updated: 0, skipped: 0, errors: [] }
     post_results = { created: 0, updated: 0, skipped: 0 }
     imported = []
@@ -587,6 +600,10 @@ end
        .encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
        .sub(/\A\uFEFF/, "")
        .strip
+  end
+
+  def strip_utf8_bom(value)
+    value.to_s.sub(/\A\uFEFF/, "")
   end
 
   def handle_taxbranch_destroy_blockers(taxbranch)

@@ -178,6 +178,11 @@ resources :posts do
   get "up" => "rails/health#show", as: :rails_health_check
 
   scope :posturacorretta do
+    get "mappa", to: "posturacorretta#mappa", as: :posturacorretta_mappa
+    get "aree", to: "posturacorretta#aree", as: :posturacorretta_aree
+    get "ambiti", to: "posturacorretta#ambiti", as: :posturacorretta_ambiti
+    get "medicina-semplici", to: "posturacorretta#medicina", as: :posturacorretta_medicina
+    get "oriente-occidente", to: "posturacorretta#oriente_occidente", as: :posturacorretta_oriente_occidente
     get "contenuti", to: "posturacorretta#contenuti", as: :posturacorretta_contenuti
     get "corsi-online", to: "posturacorretta#corsi_online", as: :posturacorretta_corsi_online
     get "manifesto", to: "posturacorretta#manifesto", as: :posturacorretta_manifesto
