@@ -431,6 +431,7 @@
     // Drag + salva posizione in localStorage
     const pieces = document.querySelectorAll(".piece");
     const ambitiBars = document.querySelectorAll("#areas .bar");
+    const claimsBars = document.querySelectorAll("#claims .bar");
     const ambitiOverlay = document.getElementById("ambitiOverlay");
     const ambitiTitle = document.getElementById("ambitiTitle");
     const ambitiText = document.getElementById("ambitiText");
@@ -448,6 +449,13 @@
         ev.stopPropagation();
         // Use the full text from the bar
         openAmbitiModal(`Ambito ${idx + 1}`, bar.textContent.trim());
+      });
+    });
+
+    claimsBars.forEach((bar, idx) => {
+      bar.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        openAmbitiModal(`Affermazione ${idx + 1}`, bar.textContent.trim());
       });
     });
 
