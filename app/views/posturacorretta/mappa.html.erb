@@ -177,8 +177,16 @@
       .overlay.open {
         display: flex;
       }
-      .modal {
-        width: min(520px, 100%);
+      .modal-close {
+        border: 1px solid rgba(15, 23, 42, 0.18);
+        background: #fff;
+        border-radius: 999px;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+      .media-modal {
+        width: min(760px, 100%);
         background: #fff;
         border-radius: 18px;
         border: 1px solid rgba(15, 23, 42, 0.08);
@@ -200,39 +208,6 @@
       }
       .modal-body {
         padding: 16px 18px 18px;
-      }
-      .modal-desc {
-        margin: 0 0 14px;
-        color: #334155;
-        font-size: 14px;
-      }
-      .choice-stack {
-        display: grid;
-        gap: 8px;
-      }
-      .choice-btn {
-        border: 1px solid rgba(15, 23, 42, 0.12);
-        border-radius: 12px;
-        background: #f8fafc;
-        color: #0f172a;
-        font-weight: 700;
-        padding: 12px 10px;
-        cursor: pointer;
-      }
-      .choice-btn:hover {
-        background: #eef2ff;
-        border-color: #6366f1;
-      }
-      .modal-close {
-        border: 1px solid rgba(15, 23, 42, 0.18);
-        background: #fff;
-        border-radius: 999px;
-        padding: 6px 12px;
-        cursor: pointer;
-        font-weight: 700;
-      }
-      .media-modal {
-        width: min(760px, 100%);
       }
       .media-nav {
         display: flex;
@@ -401,7 +376,7 @@
       </g>
 
       <!-- SALUTE -->
-      <g id="nodeSalute" class="node-clickable" aria-label="Apri scelta ambiti o aree">
+      <g id="nodeSalute" class="node-clickable" aria-label="Vai alle 5 aree della salute">
         <circle id="circleSalute" cx="500" cy="420" r="68" fill="var(--neutral)" />
         <circle cx="500" cy="420" r="68" fill="transparent" class="ring" />
         <text x="500" y="396" text-anchor="middle" class="t-salute node-label">
@@ -441,23 +416,6 @@
         benessere
       </text>
     </svg>
-
-    <div id="choiceOverlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="choiceTitle">
-      <div class="modal">
-        <div class="modal-head">
-          <h2 id="choiceTitle" class="modal-title">Percorso Salute</h2>
-          <button id="choiceClose" class="modal-close" type="button">Chiudi</button>
-        </div>
-        <div class="modal-body">
-          <p class="modal-desc">Scegli dove andare nel Percorso Salute:</p>
-          <div class="choice-stack">
-            <button id="goAree" class="choice-btn" type="button">Vai alle 5 Aree</button>
-            <button id="goAmbiti" class="choice-btn" type="button">Vai agli Ambiti</button>
-            <button id="goMedicina" class="choice-btn" type="button">Vai a Medicina dei semplici</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div id="stileOverlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="stileTitle">
       <div class="modal media-modal">
@@ -502,12 +460,6 @@
         const goAree = () => {
           window.location.href = "<%= posturacorretta_aree_path %>";
         };
-        const goAmbiti = () => {
-          window.location.href = "<%= posturacorretta_ambiti_path %>";
-        };
-        const goMedicina = () => {
-          window.location.href = "<%= posturacorretta_medicina_path %>";
-        };
         const closeBtn = document.querySelector(".close");
         if (closeBtn) {
           closeBtn.addEventListener("click", (event) => {
@@ -518,23 +470,15 @@
 
         const circlePostura = document.getElementById("circlePostura");
         const circleStile = document.getElementById("circleStile");
-        const circleSalute = document.getElementById("circleSalute");
+        const nodeSalute = document.getElementById("nodeSalute");
         const mapSvg = document.querySelector("svg");
-        const overlay = document.getElementById("choiceOverlay");
         const stileOverlay = document.getElementById("stileOverlay");
-        const choiceClose = document.getElementById("choiceClose");
         const stileClose = document.getElementById("stileClose");
         const stileBack = document.getElementById("stileBack");
         const tabScala = document.getElementById("tabScala");
         const tabFlowpulse = document.getElementById("tabFlowpulse");
         const panelScala = document.getElementById("panelScala");
         const panelFlowpulse = document.getElementById("panelFlowpulse");
-        const goAreeBtn = document.getElementById("goAree");
-        const goAmbitiBtn = document.getElementById("goAmbiti");
-        const goMedicinaBtn = document.getElementById("goMedicina");
-
-        const openChoiceModal = () => overlay?.classList.add("open");
-        const closeChoiceModal = () => overlay?.classList.remove("open");
         const openStileModal = () => {
           setMediaTab("scala");
           stileOverlay?.classList.add("open");
@@ -560,15 +504,15 @@
           openStileModal();
         });
 
-        circleSalute?.addEventListener("click", (event) => {
+        nodeSalute?.addEventListener("click", (event) => {
           event.stopPropagation();
-          openChoiceModal();
+          goAree();
         });
 
         // Fallback robusto: riconosce click dentro i cerchi anche quando il target SVG cambia.
         if (mapSvg) {
           mapSvg.addEventListener("click", (event) => {
-            if (overlay?.classList.contains("open") || stileOverlay?.classList.contains("open")) return;
+            if (stileOverlay?.classList.contains("open")) return;
             const ctm = mapSvg.getScreenCTM();
             if (!ctm) return;
             const pt = mapSvg.createSVGPoint();
@@ -592,19 +536,15 @@
             }
             if (inSalute) {
               event.preventDefault();
-              openChoiceModal();
+              goAree();
             }
           });
         }
 
-        choiceClose?.addEventListener("click", closeChoiceModal);
         stileClose?.addEventListener("click", closeStileModal);
         stileBack?.addEventListener("click", closeStileModal);
         tabScala?.addEventListener("click", () => setMediaTab("scala"));
         tabFlowpulse?.addEventListener("click", () => setMediaTab("flowpulse"));
-        goAreeBtn?.addEventListener("click", goAree);
-        goAmbitiBtn?.addEventListener("click", goAmbiti);
-        goMedicinaBtn?.addEventListener("click", goMedicina);
         setMediaTab("scala");
       })();
     </script>
