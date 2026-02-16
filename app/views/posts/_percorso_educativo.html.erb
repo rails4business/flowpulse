@@ -773,7 +773,6 @@
     if ($("lessonHint")) $("lessonHint").textContent = hint;
 
     const certState = prog.certified ? "completed" : (canCertify(m, prog) ? "available" : "locked");
-    const diplomaState = prog.diplomaApplied ? "completed" : (canDiploma(m, prog) ? "available" : "locked");
 
     const timelineItems = [
       ...m.lessons.map((lsn, i) => ({
@@ -788,17 +787,9 @@
         kind: "cert",
         id: "__cert__",
         idx: m.lessons.length + 1,
-        title: "Step finale: Certificazione utente",
+        title: "Step finale: Certificazione modulo",
         desc: "Modulo completato + almeno 1 lezione con professionista.",
         state: certState
-      },
-      {
-        kind: "diploma",
-        id: "__diploma__",
-        idx: m.lessons.length + 2,
-        title: "Step finale: Diploma insegnante",
-        desc: "Si sblocca dopo certificazione utente e prerequisiti modulo.",
-        state: diplomaState
       }
     ];
 
@@ -811,16 +802,12 @@
       const state = itemData.state;
       const locked = state === "locked";
       const item = document.createElement("div");
-      const st = prog.booking[itemData.id] || "none";
 
-      // Container Layout: Flex Row with Gap
-      item.className = "flex items-stretch gap-2 mb-3 select-none";
+      item.className = "mb-3 select-none";
 
-      // Left Box Styles
       const leftBorder = isActive ? "border-primary bg-primary/5 ring-1 ring-primary/20 shadow-sm" : "border-slate-200 bg-white hover:bg-slate-50";
       const leftOpacity = locked ? "opacity-60 grayscale-[0.5]" : "";
       
-      // Left Icon
       let leftIcon = "radio_button_unchecked";
       let leftColor = "text-slate-300";
       if (state === "completed") { leftIcon = "check_circle"; leftColor = "text-emerald-500"; }
@@ -828,179 +815,25 @@
       if (state === "locked") { leftIcon = "lock"; leftColor = "text-slate-300"; }
       if (state === "available") { leftIcon = "play_circle"; leftColor = "text-primary"; }
 
-      // Right Stub Logic
-      let stubContent = "";
-      let stubClass = "bg-slate-50 border-slate-200 text-slate-400"; 
-      const stubBase = "w-[100px] rounded-2xl border flex flex-col items-center justify-center p-2 text-center transition-all cursor-pointer hover:brightness-95 active:scale-95";
-
-      // MOCK DATA GENERATOR (Complex Variations)
-      const MOCK_TYPES = [
-        { type: 'pro_1on1_center', label: 'In Centro', placeIcon: 'apartment', visualIcon: 'person', useAvatar: true, isGroup: false, day: 'LUN' },
-        { type: 'pro_group_center', label: 'In Centro', placeIcon: 'apartment', visualIcon: 'groups', useAvatar: true, isGroup: true, day: 'MAR' },
-        { type: 'pro_1on1_home',   label: 'Domicilio', placeIcon: 'home_pin', visualIcon: 'directions_car', useAvatar: true, isGroup: false, day: 'MER' },
-        { type: 'auto_online',     label: 'Online',    placeIcon: 'wifi', visualIcon: 'laptop_mac', useAvatar: false, isGroup: false, day: 'GIO' },
-        { type: 'pro_online_group',label: 'Online',    placeIcon: 'wifi', visualIcon: 'groups', useAvatar: true, isGroup: true, day: 'VEN' },
-      ];
-      
-      const typeIndex = (itemData.id.charCodeAt(0) + itemData.id.charCodeAt(itemData.id.length - 1)) % MOCK_TYPES.length;
-      const mockType = MOCK_TYPES[typeIndex];
-
-      // Visuals
-      let modeVisual = "";
-      if (mockType.useAvatar) {
-         // Pro visual
-         modeVisual = `<div class="w-8 h-8 rounded-full bg-slate-200 border border-white shadow-sm overflow-hidden shrink-0"><img src="https://i.pravatar.cc/150?u=${itemData.id}" alt="Pro" class="w-full h-full object-cover"></div>`;
-      } else {
-         // Auto visual
-         modeVisual = `<div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100"><span class="material-symbols-outlined text-[18px]">laptop_mac</span></div>`;
-      }
-
-      // Format Icon (Single vs Group)
-      const formatIcon = mockType.isGroup ? "groups" : "person";
-      const formatLabel = mockType.isGroup ? "Gruppo" : "1:1";
-      const formatColor = mockType.isGroup ? "text-purple-600 bg-purple-50 border-purple-100" : "text-emerald-600 bg-emerald-50 border-emerald-100";
-
-      // Mock Dates
-      const mockDay = "28";
-      const mockMonth = "MAR";
-      const mockWeekday = mockType.day;
-      const mockTime = "10:00 - 11:30";
-      
-      const contentLayout = `
-          <div class="flex items-start justify-between gap-3 px-1 pointer-events-none w-full h-full">
-            <!-- Left: Date (Big) -->
-            <div class="flex flex-col items-center justify-center h-full pr-3 border-r border-slate-100 border-dashed min-w-[50px]">
-               <!-- Weekday Top -->
-               <span class="text-xs font-black uppercase tracking-wider text-slate-400 mb-0.5">${mockWeekday}</span>
-               
-               <!-- Date Big -->
-               <span class="text-3xl font-black tracking-tighter leading-none text-slate-800">${mockDay}</span>
-               
-               <!-- Month Bottom -->
-               <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
-            </div>
-            
-            <!-- Right: Time & Info -->
-            <div class="flex flex-col items-start justify-between h-full flex-1 gap-1 py-1">
-               <!-- Top: Time Range -->
-               <div class="w-full text-center border-b border-slate-100 pb-1 mb-0.5">
-                 <span class="text-[10px] font-bold text-slate-600 tracking-wide">${mockTime}</span>
-               </div>
-
-               <!-- Middle: Who/Format -->
-               <div class="flex items-center gap-2 w-full">
-                  ${modeVisual}
-                  <div class="flex flex-col leading-none">
-                    <span class="text-[10px] font-bold text-slate-700">${mockType.useAvatar ? "Pro" : "Auto"}</span>
-                    <span class="text-[9px] font-medium text-slate-500 flex items-center gap-0.5 mt-0.5">
-                       <span class="material-symbols-outlined text-[12px]">${formatIcon}</span> ${formatLabel}
-                    </span>
-                  </div>
-               </div>
-
-               <!-- Bottom: Location -->
-               <div class="flex items-center gap-1 w-full mt-auto">
-                 <span class="material-symbols-outlined text-[14px] text-slate-400">${mockType.placeIcon}</span>
-                 <span class="text-[9px] font-bold uppercase text-slate-500 tracking-tight truncate">${mockType.label}</span>
-               </div>
-            </div>
-          </div>
-      `;
-      if (state === "completed") {
-        stubClass = "bg-emerald-50 border-emerald-100 text-emerald-700 shadow-sm";
-        stubContent = contentLayout; 
-      } else if (state === "booked") {
-        stubClass = "bg-amber-50 border-amber-100 text-amber-700 shadow-sm";
-        stubContent = contentLayout;
-      } else if (state === "locked") {
-        stubClass = "bg-slate-100 border-slate-200 text-slate-300 cursor-not-allowed";
-        stubContent = `<span class="material-symbols-outlined text-xl opacity-50">lock</span>`;
-      } else {
-        stubClass = "bg-white border-slate-200 text-primary hover:border-primary hover:bg-blue-50/50";
-        stubContent = `<div class="flex flex-col items-center justify-center p-2"><span class="material-symbols-outlined text-3xl mb-1">touch_app</span><span class="text-[9px] font-bold uppercase">Azione</span></div>`;
-      }
-
-      // Cert/Diploma overrides... (keep as is)
-      if (itemData.kind === "cert" || itemData.kind === "diploma") {
-         const isDone = (state === "completed");
-         stubClass = isDone ? (itemData.kind==="cert"?"bg-amber-100 border-amber-200 text-amber-800":"bg-slate-800 border-slate-900 text-white") : "bg-slate-50 border-slate-200 text-slate-300";
-         stubContent = `<span class="material-symbols-outlined text-xl">${itemData.kind === "cert" ? "workspace_premium" : "school"}</span>`;
-      }
+      let stateBadge = badge("Disponibile", "blue");
+      if (state === "completed") stateBadge = badge("Completata", "green");
+      if (state === "booked") stateBadge = badge("Prenotata", "amber");
+      if (state === "locked") stateBadge = badge("Bloccata");
 
       item.innerHTML = `
-        <!-- Left Content Box -->
-        <div id="lessonContentBtn" class="flex-1 text-left rounded-2xl border p-4 flex items-center gap-4 transition-all cursor-pointer ${leftBorder} ${leftOpacity}">
+        <div id="lessonContentBtn" class="w-full text-left rounded-2xl border p-4 flex items-center gap-4 transition-all cursor-pointer ${leftBorder} ${leftOpacity}">
            <span class="material-symbols-outlined text-[22px] shrink-0 ${leftColor}">${leftIcon}</span>
            <div class="min-w-0 flex-1">
              <div class="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-0.5">${itemData.kind === "lesson" ? `Lezione ${itemData.idx}` : `Step finale`}</div>
              <div class="font-bold text-slate-800 text-sm leading-snug line-clamp-2">${itemData.title}</div>
              <div class="text-xs text-slate-500 mt-0.5 line-clamp-1">${itemData.desc}</div>
            </div>
+           <div class="shrink-0">${stateBadge}</div>
         </div>
-        
-        <!-- Right Stub Action -->
-        <button id="lessonActionBtn" class="${stubBase} ${stubClass} w-auto min-w-[160px]">
-           ${stubContent}
-        </button>
       `;
 
-      // Handlers
       const contentBtn = item.querySelector("#lessonContentBtn");
-      const actionBtn = item.querySelector("#lessonActionBtn");
-
       if (contentBtn) contentBtn.onclick = () => selectLesson(itemData.id);
-      
-      if (actionBtn) actionBtn.onclick = (e) => {
-        e.stopPropagation();
-        selectLesson(itemData.id); // ensure active
-        
-        if (state === "locked") return; // no action
-
-        // Cycle Logic: 
-        // Autonomy: Available -> Completed -> Available
-        // Pro: Available -> Booked -> Done -> Available
-        
-        let nextState = "";
-        
-        if (prog.mode === "autonomia") {
-           if (state === "available") nextState = "completed";
-           else if (state === "completed") nextState = "available"; // reset
-        } else {
-           // professionista
-           // current internal status: st (none, booked, done)
-           if (st === "none" || !st) nextState = "booked";
-           else if (st === "booked") nextState = "done";
-           else if (st === "done") nextState = "none"; // reset
-        }
-
-        if (!nextState) return;
-
-        // Apply Change
-        if (prog.mode === "autonomia") {
-           if (nextState === "completed") prog.completed[itemData.id] = true;
-           else delete prog.completed[itemData.id];
-        } else {
-           prog.booking[itemData.id] = nextState;
-           if (nextState === "done") prog.hasProTouch = true;
-        }
-
-        // Special handling for Cert/Diploma buttons (placeholders)
-        if (itemData.kind === "cert" && canCertify(m, prog)) {
-           prog.certified = !prog.certified; 
-        }
-        if (itemData.kind === "diploma" && canDiploma(m, prog)) {
-           prog.diplomaApplied = !prog.diplomaApplied;
-        }
-
-        saveProgress(activeModuleId, prog);
-        
-        // Refresh
-        const mUpdated = MODULES.find(x => x.id === activeModuleId); // re-fetch to be safe
-        const pUpdated = loadProgress(activeModuleId);
-        renderModules();
-        renderProgress(mUpdated, pUpdated);
-        renderStepper(mUpdated, pUpdated);
-      };
 
       stepper.appendChild(item);
     });

@@ -198,6 +198,7 @@
                 <div class="p-2 border-b border-slate-100 bg-white">
                   <div class="flex flex-wrap gap-2">
                     <button id="tabLessonsBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Lezioni</button>
+                    <button id="tabInstructorBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Insegnante</button>
                     <button id="tabReviewsBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Recensioni</button>
                     <button id="tabPricesBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Prezzi</button>
                     <button id="tabInfoBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Info</button>
@@ -216,6 +217,20 @@
                   <div class="p-4 space-y-4">
                     <div id="lessonStepper" class="space-y-1">
                       <!-- lessons injected -->
+                    </div>
+                  </div>
+                </div>
+
+                <div id="tabInstructorPanel" class="hidden p-4">
+                  <h3 class="font-bold text-slate-800">Percorso Insegnante</h3>
+                  <p class="mt-1 text-sm text-slate-500">Lezioni insegnante previste per ogni corso/modulo.</p>
+                  <div class="p-4 mt-3 border border-slate-100 bg-white rounded-xl flex items-center justify-between">
+                    <h4 class="font-bold text-slate-700">Lezioni insegnante</h4>
+                    <div class="text-xs text-slate-400" id="instructorLessonHint">—</div>
+                  </div>
+                  <div class="mt-3 space-y-4">
+                    <div id="instructorLessonStepper" class="space-y-1">
+                      <!-- instructor lessons injected -->
                     </div>
                   </div>
                 </div>
@@ -365,8 +380,8 @@
   const MODULES = [
     {
       id: "igiene_articolare",
-      title: "Igiene articolare",
-      method: "Igiene Posturale",
+      title: "Igiene Posturale",
+      method: "PosturaCorretta",
       image: "https://ik.imagekit.io/posturacorretta/immagini_brand/igiene-posturale.png?updatedAt=1763752348993",
       icon: "accessibility_new",
       gradient: "from-blue-400 to-blue-600",
@@ -505,6 +520,15 @@
     },
   ];
 
+  const INSTRUCTOR_LESSONS = [
+    { id: "ins_profile", title: "Profilazione cliente", desc: "Raccolta dati, bisogni e obiettivi del cliente." },
+    { id: "ins_online", title: "Percorso online", desc: "Gestione lezioni e follow-up a distanza." },
+    { id: "ins_group", title: "Percorso in gruppo", desc: "Conduzione sessioni collettive e dinamiche di gruppo." },
+    { id: "ins_single", title: "Percorso singolo", desc: "Sessione 1:1 con personalizzazione operativa." },
+    { id: "ins_internship", title: "Tirocinio", desc: "Pratica supervisionata con casi guidati." },
+    { id: "ins_cert", title: "Certificazione insegnante", desc: "Valutazione finale competenze insegnante." }
+  ];
+
   const MODULES_DISPLAY_ORDER = [
     "igiene_articolare",
     "principi_fisioterapia",
@@ -562,6 +586,8 @@
     },
     completed: {},                         // autonomy completion
     booking: {},                           // professionista: "none" | "booked" | "done"
+    instructorCompleted: {},               // teacher path (autonomia)
+    instructorBooking: {},                 // teacher path (professionista)
     hasProTouch: false,                    // placeholder for certification requirement
     certified: false,                      // placeholder
     diplomaApplied: false                  // placeholder
@@ -603,6 +629,7 @@
   // --------------------------
   let activeModuleId = null;
   let activeLessonId = null;
+  let activeInstructorLessonId = null;
   let activeContentTab = "lessons";
 
   // --------------------------
@@ -789,6 +816,7 @@
     activeContentTab = tabKey;
     const tabs = [
       { key: "lessons", btn: "tabLessonsBtn", panel: "tabLessonsPanel" },
+      { key: "instructor", btn: "tabInstructorBtn", panel: "tabInstructorPanel" },
       { key: "reviews", btn: "tabReviewsBtn", panel: "tabReviewsPanel" },
       { key: "prices", btn: "tabPricesBtn", panel: "tabPricesPanel" },
       { key: "info", btn: "tabInfoBtn", panel: "tabInfoPanel" },
@@ -918,7 +946,6 @@
     if ($("lessonHint")) $("lessonHint").textContent = hint;
 
     const certState = prog.certified ? "completed" : (canCertify(m, prog) ? "available" : "locked");
-    const diplomaState = prog.diplomaApplied ? "completed" : (canDiploma(m, prog) ? "available" : "locked");
 
     const timelineItems = [
       ...m.lessons.map((lsn, i) => ({
@@ -933,17 +960,9 @@
         kind: "cert",
         id: "__cert__",
         idx: m.lessons.length + 1,
-        title: "Step finale: Certificazione utente",
+        title: "Step finale: Certificazione modulo",
         desc: "Modulo completato + almeno 1 lezione con professionista.",
         state: certState
-      },
-      {
-        kind: "diploma",
-        id: "__diploma__",
-        idx: m.lessons.length + 2,
-        title: "Step finale: Diploma insegnante",
-        desc: "Si sblocca dopo certificazione utente e prerequisiti modulo.",
-        state: diplomaState
       }
     ];
 
@@ -1151,6 +1170,192 @@
     });
   }
 
+  function instructorLessonState(prog, lessonId) {
+    if (prog.mode === "professionista") {
+      const st = prog.instructorBooking?.[lessonId] || "none";
+      if (st === "done") return "completed";
+      if (st === "booked") return "booked";
+      return "available";
+    }
+    return prog.instructorCompleted?.[lessonId] ? "completed" : "available";
+  }
+
+  function renderInstructorStepper(m, prog) {
+    const stepper = $("instructorLessonStepper");
+    if (!stepper) return;
+    stepper.innerHTML = "";
+
+    let hint = "Seleziona una lezione insegnante";
+    if (prog.mode === "professionista") {
+      const next = INSTRUCTOR_LESSONS.find((lsn) => (prog.instructorBooking?.[lsn.id] || "none") !== "done");
+      hint = next ? `Prossima da fare: ${next.title}` : "Percorso insegnante completato";
+    } else {
+      const next = INSTRUCTOR_LESSONS.find((lsn) => !prog.instructorCompleted?.[lsn.id]);
+      hint = next ? `Prossima: ${next.title}` : "Percorso insegnante completato";
+    }
+    if ($("instructorLessonHint")) $("instructorLessonHint").textContent = hint;
+
+    if (!INSTRUCTOR_LESSONS.some((item) => item.id === activeInstructorLessonId)) {
+      activeInstructorLessonId = INSTRUCTOR_LESSONS[0]?.id || null;
+    }
+
+    INSTRUCTOR_LESSONS.forEach((lsn, index) => {
+      const itemData = {
+        kind: "lesson",
+        id: lsn.id,
+        idx: index + 1,
+        title: lsn.title,
+        desc: lsn.desc,
+        state: instructorLessonState(prog, lsn.id)
+      };
+
+      const isActive = itemData.id === activeInstructorLessonId;
+      const state = itemData.state;
+      const locked = state === "locked";
+      const item = document.createElement("div");
+      const st = prog.instructorBooking?.[itemData.id] || "none";
+
+      item.className = "flex items-stretch gap-2 mb-3 select-none";
+
+      const leftBorder = isActive ? "border-primary bg-primary/5 ring-1 ring-primary/20 shadow-sm" : "border-slate-200 bg-white hover:bg-slate-50";
+      const leftOpacity = locked ? "opacity-60 grayscale-[0.5]" : "";
+
+      let leftIcon = "radio_button_unchecked";
+      let leftColor = "text-slate-300";
+      if (state === "completed") { leftIcon = "check_circle"; leftColor = "text-emerald-500"; }
+      if (state === "booked") { leftIcon = "event_available"; leftColor = "text-amber-500"; }
+      if (state === "locked") { leftIcon = "lock"; leftColor = "text-slate-300"; }
+      if (state === "available") { leftIcon = "play_circle"; leftColor = "text-primary"; }
+
+      let stubContent = "";
+      let stubClass = "bg-slate-50 border-slate-200 text-slate-400";
+      const stubBase = "w-[100px] rounded-2xl border flex flex-col items-center justify-center p-2 text-center transition-all cursor-pointer hover:brightness-95 active:scale-95";
+
+      const MOCK_TYPES = [
+        { type: "pro_1on1_center", label: "In Centro", placeIcon: "apartment", useAvatar: true, isGroup: false, day: "LUN" },
+        { type: "pro_group_center", label: "In Centro", placeIcon: "apartment", useAvatar: true, isGroup: true, day: "MAR" },
+        { type: "pro_1on1_home", label: "Domicilio", placeIcon: "home_pin", useAvatar: true, isGroup: false, day: "MER" },
+        { type: "auto_online", label: "Online", placeIcon: "wifi", useAvatar: false, isGroup: false, day: "GIO" },
+        { type: "pro_online_group", label: "Online", placeIcon: "wifi", useAvatar: true, isGroup: true, day: "VEN" }
+      ];
+
+      const typeIndex = (itemData.id.charCodeAt(0) + itemData.id.charCodeAt(itemData.id.length - 1)) % MOCK_TYPES.length;
+      const mockType = MOCK_TYPES[typeIndex];
+
+      let modeVisual = "";
+      if (mockType.useAvatar) {
+        modeVisual = `<div class="w-8 h-8 rounded-full bg-slate-200 border border-white shadow-sm overflow-hidden shrink-0"><img src="https://i.pravatar.cc/150?u=ins_${itemData.id}" alt="Operatore" class="w-full h-full object-cover"></div>`;
+      } else {
+        modeVisual = `<div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100"><span class="material-symbols-outlined text-[18px]">laptop_mac</span></div>`;
+      }
+
+      const formatIcon = mockType.isGroup ? "groups" : "person";
+      const formatLabel = mockType.isGroup ? "Gruppo" : "1:1";
+      const mockDay = "28";
+      const mockMonth = "MAR";
+      const mockWeekday = mockType.day;
+      const mockTime = "10:00 - 11:30";
+
+      const contentLayout = `
+          <div class="flex items-start justify-between gap-3 px-1 pointer-events-none w-full h-full">
+            <div class="flex flex-col items-center justify-center h-full pr-3 border-r border-slate-100 border-dashed min-w-[50px]">
+               <span class="text-xs font-black uppercase tracking-wider text-slate-400 mb-0.5">${mockWeekday}</span>
+               <span class="text-3xl font-black tracking-tighter leading-none text-slate-800">${mockDay}</span>
+               <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
+            </div>
+            <div class="flex flex-col items-start justify-between h-full flex-1 gap-1 py-1">
+               <div class="w-full text-center border-b border-slate-100 pb-1 mb-0.5">
+                 <span class="text-[10px] font-bold text-slate-600 tracking-wide">${mockTime}</span>
+               </div>
+               <div class="flex items-center gap-2 w-full">
+                  ${modeVisual}
+                  <div class="flex flex-col leading-none">
+                    <span class="text-[10px] font-bold text-slate-700">${mockType.useAvatar ? "Pro" : "Auto"}</span>
+                    <span class="text-[9px] font-medium text-slate-500 flex items-center gap-0.5 mt-0.5">
+                       <span class="material-symbols-outlined text-[12px]">${formatIcon}</span> ${formatLabel}
+                    </span>
+                  </div>
+               </div>
+               <div class="flex items-center gap-1 w-full mt-auto">
+                 <span class="material-symbols-outlined text-[14px] text-slate-400">${mockType.placeIcon}</span>
+                 <span class="text-[9px] font-bold uppercase text-slate-500 tracking-tight truncate">${mockType.label}</span>
+               </div>
+            </div>
+          </div>
+      `;
+
+      if (state === "completed") {
+        stubClass = "bg-emerald-50 border-emerald-100 text-emerald-700 shadow-sm";
+        stubContent = contentLayout;
+      } else if (state === "booked") {
+        stubClass = "bg-amber-50 border-amber-100 text-amber-700 shadow-sm";
+        stubContent = contentLayout;
+      } else if (state === "locked") {
+        stubClass = "bg-slate-100 border-slate-200 text-slate-300 cursor-not-allowed";
+        stubContent = `<span class="material-symbols-outlined text-xl opacity-50">lock</span>`;
+      } else {
+        stubClass = "bg-white border-slate-200 text-primary hover:border-primary hover:bg-blue-50/50";
+        stubContent = `<div class="flex flex-col items-center justify-center p-2"><span class="material-symbols-outlined text-3xl mb-1">touch_app</span><span class="text-[9px] font-bold uppercase">Azione</span></div>`;
+      }
+
+      item.innerHTML = `
+        <div id="instructorLessonContentBtn" class="flex-1 text-left rounded-2xl border p-4 flex items-center gap-4 transition-all cursor-pointer ${leftBorder} ${leftOpacity}">
+           <span class="material-symbols-outlined text-[22px] shrink-0 ${leftColor}">${leftIcon}</span>
+           <div class="min-w-0 flex-1">
+             <div class="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-0.5">Lezione ${itemData.idx}</div>
+             <div class="font-bold text-slate-800 text-sm leading-snug line-clamp-2">${itemData.title}</div>
+             <div class="text-xs text-slate-500 mt-0.5 line-clamp-1">${itemData.desc}</div>
+           </div>
+        </div>
+        <button id="instructorLessonActionBtn" class="${stubBase} ${stubClass} w-auto min-w-[160px]">
+           ${stubContent}
+        </button>
+      `;
+
+      const contentBtn = item.querySelector("#instructorLessonContentBtn");
+      const actionBtn = item.querySelector("#instructorLessonActionBtn");
+
+      if (contentBtn) {
+        contentBtn.onclick = () => {
+          activeInstructorLessonId = itemData.id;
+          renderInstructorStepper(m, loadProgress(activeModuleId));
+        };
+      }
+
+      if (actionBtn) {
+        actionBtn.onclick = (e) => {
+          e.stopPropagation();
+          activeInstructorLessonId = itemData.id;
+          if (state === "locked") return;
+
+          let nextState = "";
+          if (prog.mode === "autonomia") {
+            if (state === "available") nextState = "completed";
+            else if (state === "completed") nextState = "available";
+          } else {
+            if (st === "none" || !st) nextState = "booked";
+            else if (st === "booked") nextState = "done";
+            else if (st === "done") nextState = "none";
+          }
+
+          if (!nextState) return;
+
+          if (prog.mode === "autonomia") {
+            if (nextState === "completed") prog.instructorCompleted[itemData.id] = true;
+            else delete prog.instructorCompleted[itemData.id];
+          } else {
+            prog.instructorBooking[itemData.id] = nextState;
+          }
+
+          saveProgress(activeModuleId, prog);
+          renderInstructorStepper(m, loadProgress(activeModuleId));
+        };
+      }
+
+      stepper.appendChild(item);
+    });
+  }
+
 
   function renderReviews(m) {
     const wrap = $("reviewList");
@@ -1194,12 +1399,20 @@
       const next = m.lessons.find(lsn => !prog.completed[lsn.id]);
       activeLessonId = (next ? next.id : m.lessons[0].id);
     }
+    if (prog.mode === "professionista") {
+      const nextInstructor = INSTRUCTOR_LESSONS.find((lsn) => (prog.instructorBooking?.[lsn.id] || "none") !== "done");
+      activeInstructorLessonId = (nextInstructor ? nextInstructor.id : INSTRUCTOR_LESSONS[0].id);
+    } else {
+      const nextInstructor = INSTRUCTOR_LESSONS.find((lsn) => !prog.instructorCompleted?.[lsn.id]);
+      activeInstructorLessonId = (nextInstructor ? nextInstructor.id : INSTRUCTOR_LESSONS[0].id);
+    }
 
     renderModules();
     renderModuleHeader(m);
     renderModuleMode(m, prog);
     renderProgress(m, prog);
     renderStepper(m, prog);
+    renderInstructorStepper(m, prog);
     renderReviews(m);
     setContentTab(activeContentTab);
   }
@@ -1663,6 +1876,7 @@
 
   $("openEnrollModalBtn")?.addEventListener("click", openEnrollModal);
   $("tabLessonsBtn")?.addEventListener("click", () => setContentTab("lessons"));
+  $("tabInstructorBtn")?.addEventListener("click", () => setContentTab("instructor"));
   $("tabReviewsBtn")?.addEventListener("click", () => setContentTab("reviews"));
   $("tabPricesBtn")?.addEventListener("click", () => setContentTab("prices"));
   $("tabInfoBtn")?.addEventListener("click", () => setContentTab("info"));
