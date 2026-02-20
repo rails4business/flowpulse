@@ -39,13 +39,15 @@
                        t.post&.persisted? &&
                        t.post&.title.present?
                      } %>
-                  <% upcoming = scope.find { |t|
+                  <% upcoming_candidates = scope.select { |t|
                        t.public_node? &&
                        t.scheduled_eventdate&.date_start.present? &&
-                       t.published_at.blank? &&
+                       t.scheduled_eventdate.date_start >= Time.current &&
+                       (t.published_at.blank? || t.published_at > Time.current) &&
                        t.post&.persisted? &&
                        t.post&.title.present?
                      } %>
+                  <% upcoming = upcoming_candidates.min_by { |t| t.scheduled_eventdate.date_start } %>
                   <% items = [] %>
                   <% if upcoming.present? %>
                     <% items << upcoming %>
