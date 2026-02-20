@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_11_114908) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_20_071317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_11_114908) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "book_domains", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "domain_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_book_domains_on_book_id"
+    t.index ["domain_id"], name: "index_book_domains_on_domain_id"
+  end
+
   create_table "bookings", force: :cascade do |t|
     t.bigint "commitment_id"
     t.datetime "created_at", null: false
@@ -77,6 +86,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_11_114908) do
     t.index ["mycontact_id"], name: "index_bookings_on_mycontact_id"
     t.index ["requested_by_lead_id"], name: "index_bookings_on_requested_by_lead_id"
     t.index ["service_id"], name: "index_bookings_on_service_id"
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.integer "access_mode"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "folder_md"
+    t.string "index_file"
+    t.decimal "price_dash", precision: 10, scale: 2
+    t.decimal "price_euro", precision: 10, scale: 2
+    t.string "slug"
+    t.string "title"
+    t.datetime "updated_at", null: false
   end
 
   create_table "certificates", force: :cascade do |t|
@@ -516,6 +539,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_11_114908) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "book_domains", "books"
+  add_foreign_key "book_domains", "domains"
   add_foreign_key "bookings", "commitments"
   add_foreign_key "bookings", "datacontacts", column: "mycontact_id"
   add_foreign_key "bookings", "enrollments"

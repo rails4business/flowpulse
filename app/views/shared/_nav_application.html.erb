@@ -616,6 +616,7 @@
               <% if Current.user&.superadmin? %>
                 <li class="px-4 py-2">
                   <%= form_with scope: :user, url: registration_path, method: :patch, class: "flex items-center justify-between gap-3" do |u| %>
+                    <%= u.hidden_field :from_superadmin_toggle, value: "1" %>
                     <span class="text-sm text-gray-600 dark:text-gray-300">Superadmin attivo</span>
                     <label class="inline-flex items-center gap-2">
                       <%= u.check_box :superadmin_mode_active,

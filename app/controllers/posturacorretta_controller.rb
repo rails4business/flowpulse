@@ -40,8 +40,8 @@ class PosturacorrettaController < ApplicationController
     },
     "rete_professionale" => {
       group: "Rete",
-      title: "Rete professionale",
-      description: "Insegnanti, tutor, segreteria operativa e professionisti collaboratori nella rete."
+      title: "Insegnanti",
+      description: "Insegnanti, tutor e segreteria operativa della rete."
     },
     "centri" => {
       group: "Rete",
@@ -50,7 +50,7 @@ class PosturacorrettaController < ApplicationController
     },
     "metodiche" => {
       group: "Rete",
-      title: "Metodiche e professioni",
+      title: "Percorsi formativi",
       description: "Approcci, competenze e linguaggi diversi che dialogano su basi fisiologiche comuni."
     }
   }.freeze

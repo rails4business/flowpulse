@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <header
   class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-solid border-[#f2f0f4] dark:border-slate-800"
 >
@@ -14,12 +15,33 @@
       <% end %>
     </div>
     <div class="hidden md:flex flex-1 justify-center items-center gap-8">
-      <%= link_to "Percorso", root_path(anchor: "percorso"), class: "inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors" %>
+      <%= link_to root_path(anchor: "percorso"), class: "inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors" do %>
+        <span class="material-symbols-outlined text-[18px] leading-none">route</span>
+        Percorso
+      <% end %>
+      <details class="relative inline-flex items-center justify-center" data-nav-dropdown>
+        <summary
+          class="list-none inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors cursor-pointer"
+          aria-label="Apri menu rete"
+        >
+          <span class="material-symbols-outlined text-[18px] leading-none">hub</span>
+          Rete
+          <span class="material-symbols-outlined text-[18px] leading-none">expand_more</span>
+        </summary>
+        <div class="absolute z-50 mt-2 w-52 rounded-xl border border-[#f2f0f4] bg-white shadow-lg p-2"
+             style="top: 100%; left: 50%; transform: translateX(-50%);">
+          <%= link_to "Persone", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Insegnanti", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Centri", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Percorsi formativi", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+        </div>
+      </details>
       <details class="relative inline-flex items-center justify-center" data-nav-dropdown>
         <summary
           class="list-none inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors cursor-pointer"
           aria-label="Apri menu risorse"
         >
+          <span class="material-symbols-outlined text-[18px] leading-none">library_books</span>
           Risorse
           <span class="material-symbols-outlined text-[18px] leading-none">expand_more</span>
         </summary>
@@ -27,30 +49,17 @@
              style="top: 100%; left: 50%; transform: translateX(-50%);">
           <%= link_to "Contenuti", posturacorretta_contenuti_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Corsi online", posturacorretta_corsi_online_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
-          <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Eventi", posturacorretta_eventi_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Servizi", posturacorretta_servizi_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <%= link_to "Libri", books_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
         </div>
       </details>
-      <details class="relative inline-flex items-center justify-center" data-nav-dropdown>
-        <summary
-          class="list-none inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors cursor-pointer"
-          aria-label="Apri menu rete"
-        >
-          Rete
-          <span class="material-symbols-outlined text-[18px] leading-none">expand_more</span>
-        </summary>
-        <div class="absolute z-50 mt-2 w-52 rounded-xl border border-[#f2f0f4] bg-white shadow-lg p-2"
-             style="top: 100%; left: 50%; transform: translateX(-50%);">
-          <%= link_to "Persone", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
-          <%= link_to "Rete professionale", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
-          <%= link_to "Centri", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
-          <%= link_to "Metodiche e professioni", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
-        </div>
-      </details>
-      <%= link_to "Progetto",
-                  root_path(anchor: "progetto"),
-                  class: "inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors" %>
+      <%= link_to root_path(anchor: "progetto"),
+                  class: "inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors" do %>
+        <span class="material-symbols-outlined text-[18px] leading-none">rocket_launch</span>
+        Progetto
+      <% end %>
       <!--a
         class="text-sm font-medium hover:text-primary transition-colors"
         href="#progetto"
@@ -87,20 +96,30 @@
         <div
           class="absolute right-0 mt-3 w-64 rounded-2xl border border-[#f2f0f4] dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-3 z-50"
         >
-          <%= link_to "Percorso", root_path(anchor: "percorso"), class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to root_path(anchor: "percorso"), class: "flex items-center gap-2 px-3 py-2 text-sm font-semibold hover:text-primary" do %>
+            <span class="material-symbols-outlined text-[18px] leading-none">route</span>
+            Percorso
+          <% end %>
           <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
-          <div class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Risorse</div>
+          <div class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px] leading-none">hub</span>
+            Rete
+          </div>
+          <%= link_to "Persone", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Insegnanti", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Centri", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Percorsi formativi", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
+          <div class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px] leading-none">library_books</span>
+            Risorse
+          </div>
           <%= link_to "Contenuti", posturacorretta_contenuti_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
           <%= link_to "Corsi online", posturacorretta_corsi_online_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
-          <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
           <%= link_to "Eventi", posturacorretta_eventi_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
           <%= link_to "Servizi", posturacorretta_servizi_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
-          <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
-          <div class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Rete</div>
-          <%= link_to "Persone", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
-          <%= link_to "Rete professionale", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
-          <%= link_to "Centri", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
-          <%= link_to "Metodiche e professioni", posturacorretta_rete_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+          <%= link_to "Libri", books_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
           <%= link_to "Progetto", root_path(anchor: "progetto"), class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
           <!--a class="block px-3 py-2 text-sm font-semibold hover:text-primary" href="#">🔎 Professionisti e centri</a-->
           <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>

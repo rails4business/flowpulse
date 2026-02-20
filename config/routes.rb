@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
-  get 'book/prevendita', to: 'books#presale', as: :book_presale
-  get 'book', to: 'books#index', as: :book_index
-  get 'book/:id', to: 'books#show', as: :book_chapter, constraints: { id: /[^\/]+/ }
+  get "books", to: "books#library", as: :books
+  get "books/prevendita", to: "books#presale", as: :books_presale
+  get "books/:book_slug/prevendita", to: "books#presale", as: :book_presale, constraints: { book_slug: /[^\/]+/ }
+  get "books/:book_slug", to: "books#index", as: :book, constraints: { book_slug: /[^\/]+/ }
+  get "books/:book_slug/:id", to: "books#show", as: :book_chapter, constraints: { book_slug: /[^\/]+/, id: /[^\/]+/ }
+
+  get "book", to: redirect("/books")
+  get "book/prevendita", to: "books#legacy_presale"
+  get "book/:id", to: "books#legacy_show", constraints: { id: /[^\/]+/ }
 
 
   resources :slot_instances
@@ -71,6 +77,7 @@ Rails.application.routes.draw do
 
   # --- Admin ---
   namespace :superadmin do
+    resources :books
     resources :backups, only: [ :index ] do
       collection do
         post :analyze
@@ -168,7 +175,8 @@ resources :posts do
   get "dashboard/igieneposturale"
   get "dashboard/liste"
   get "dashboard/home"
-    get "dashboard/evento"
+  post "dashboard/domain_membership", to: "dashboard#create_domain_membership", as: :create_dashboard_domain_membership
+  get "dashboard/evento"
   get "dashboard/superadmin"
   get "pages/home"
   get "pages/about"

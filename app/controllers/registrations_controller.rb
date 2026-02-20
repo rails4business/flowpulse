@@ -57,6 +57,7 @@ class RegistrationsController < ApplicationController
     @user = Current.user
     email = @user.try(:email_address) || @user.try(:email)
     @lead = @user.lead || Lead.find_by(email: email) || Lead.new(email: email, username: default_username(@user))
+    superadmin_toggle_request = params.dig(:user, :from_superadmin_toggle).to_s == "1"
 
     ActiveRecord::Base.transaction do
       @user.update!(user_params)
@@ -73,7 +74,8 @@ class RegistrationsController < ApplicationController
       end
     end
 
-    redirect_to after_authentication_url, notice: "Profilo aggiornato!"
+    redirect_target = superadmin_toggle_request ? dashboard_home_path : after_authentication_url
+    redirect_to redirect_target, notice: "Profilo aggiornato!"
   rescue ActiveRecord::RecordInvalid => e
     @lead ||= Lead.new
     flash.now[:alert] = e.record.errors.full_messages.to_sentence

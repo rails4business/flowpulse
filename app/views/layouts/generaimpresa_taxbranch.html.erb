@@ -58,10 +58,15 @@
         <% current_tab = params[:tab].presence || "generaimpresa" %>
         <div class="mb-4 flex items-center gap-2">
           <% domain_persisted = @domain&.persisted? %>
-          <%= link_to superadmin_taxbranch_path(15),
-                      class: "flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold #{current_page?(superadmin_taxbranch_path(15)) ? 'bg-primary text-white' : 'bg-white/10 text-slate-200 hover:bg-white/20'}" do %>
+          <% dashboard_target = Current.domain&.taxbranch.present? ? superadmin_taxbranch_path(Current.domain.taxbranch) : (@taxbranch.present? ? superadmin_taxbranch_path(@taxbranch) : superadmin_taxbranches_path) %>
+          <%= link_to dashboard_target,
+                      title: "Dashboard",
+                      "aria-label": "Dashboard",
+                      class: "group relative flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold #{current_page?(dashboard_target) ? 'bg-primary text-white' : 'bg-white/10 text-slate-200 hover:bg-white/20'}" do %>
             <span class="material-symbols-outlined text-[16px]">dashboard</span>
-            Dash
+            <span class="pointer-events-none absolute -bottom-8 left-1/2 z-20 hidden -translate-x-1/2 rounded bg-[#0f172a] px-2 py-1 text-[10px] font-semibold text-white shadow-lg group-hover:block">
+              Dashboard
+            </span>
           <% end %>
           <%= link_to generaimpresa_superadmin_taxbranch_path(@taxbranch, tab: current_tab),
                       class: "flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold #{current_page?(generaimpresa_superadmin_taxbranch_path(@taxbranch, tab: current_tab)) ? 'bg-primary text-white' : 'bg-white/10 text-slate-200 hover:bg-white/20'}" do %>

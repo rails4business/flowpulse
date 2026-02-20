@@ -83,51 +83,97 @@
     </div>
   </div>
 
+  <div class="my-5 rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
+    <p class="font-semibold text-slate-700">Ruoli del service</p>
+    <p class="mt-1">
+      I ruoli base vivono nel dominio; questi campi definiscono come il service li applica
+      (accesso, esito, produzione, erogazione e verifica).
+    </p>
+  </div>
+  <% roles_domain = service.taxbranch&.header_domain || @taxbranch&.header_domain %>
+  <% domain_roles = Array(roles_domain&.operative_roles).filter_map { |role| role.to_s.strip.presence }.uniq %>
+
   <div class="my-5">
-    <%= form.label :allowed_roles, "Ruoli ammessi (uno per riga)" %>
-    <%= form.text_area :allowed_roles,
-          value: service.allowed_roles_text,
-          rows: 3,
-          placeholder: "Es.\nUtente\nProfessionista",
-          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:allowed_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:allowed_roles].any?}] %>
+    <%= form.label :allowed_roles, "Ruoli ammessi (selezione multipla)" %>
+    <% if domain_roles.present? %>
+      <%= form.select :allowed_roles,
+            options_for_select(domain_roles, Array(service.allowed_roles)),
+            {},
+            multiple: true,
+            size: [domain_roles.size, 8].min,
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full bg-white", {"border-gray-400 focus:outline-blue-600": service.errors[:allowed_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:allowed_roles].any?}] %>
+    <% else %>
+      <%= form.text_area :allowed_roles,
+            value: service.allowed_roles_text,
+            rows: 3,
+            placeholder: "Es.\nUtente\nProfessionista",
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:allowed_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:allowed_roles].any?}] %>
+    <% end %>
     <p class="mt-1 text-xs text-slate-500">
-      I ruoli indicano chi può iscriversi al servizio.
+      Chi puo iscriversi o partecipare al service.
     </p>
   </div>
 
   <div class="my-5">
-    <%= form.label :output_roles, "Ruoli rilasciati (uno per riga)" %>
-    <%= form.text_area :output_roles,
-          value: service.output_roles_text,
-          rows: 3,
-          placeholder: "Es.\nTutor\nInsegnante",
-          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:output_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:output_roles].any?}] %>
+    <%= form.label :output_roles, "Ruoli rilasciati (selezione multipla)" %>
+    <% if domain_roles.present? %>
+      <%= form.select :output_roles,
+            options_for_select(domain_roles, Array(service.output_roles)),
+            {},
+            multiple: true,
+            size: [domain_roles.size, 8].min,
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full bg-white", {"border-gray-400 focus:outline-blue-600": service.errors[:output_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:output_roles].any?}] %>
+    <% else %>
+      <%= form.text_area :output_roles,
+            value: service.output_roles_text,
+            rows: 3,
+            placeholder: "Es.\nTutor\nInsegnante",
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:output_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:output_roles].any?}] %>
+    <% end %>
     <p class="mt-1 text-xs text-slate-500">
-      Specifica il ruolo/titolo che i partecipanti ottengono al completamento.
+      Ruolo/titolo che il service rilascia come esito/certificazione.
     </p>
   </div>
 
   <div class="my-5">
-    <%= form.label :builders_roles, "Ruoli costruttori (uno per riga)" %>
-    <%= form.text_area :builders_roles,
-          value: service.builders_roles_text,
-          rows: 3,
-          placeholder: "Es.\nContent creator\nEditor",
-          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:builders_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:builders_roles].any?}] %>
+    <%= form.label :builders_roles, "Ruoli costruttori (selezione multipla)" %>
+    <% if domain_roles.present? %>
+      <%= form.select :builders_roles,
+            options_for_select(domain_roles, Array(service.builders_roles)),
+            {},
+            multiple: true,
+            size: [domain_roles.size, 8].min,
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full bg-white", {"border-gray-400 focus:outline-blue-600": service.errors[:builders_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:builders_roles].any?}] %>
+    <% else %>
+      <%= form.text_area :builders_roles,
+            value: service.builders_roles_text,
+            rows: 3,
+            placeholder: "Es.\nContent creator\nEditor",
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:builders_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:builders_roles].any?}] %>
+    <% end %>
     <p class="mt-1 text-xs text-slate-500">
-      Ruoli interni che costruiscono e gestiscono i canali.
+      Ruoli che progettano e costruiscono contenuti/processo del service.
     </p>
   </div>
 
   <div class="my-5">
-    <%= form.label :drivers_roles, "Ruoli erogatori (uno per riga)" %>
-    <%= form.text_area :drivers_roles,
-          value: service.drivers_roles_text,
-          rows: 3,
-          placeholder: "Es.\nTutor\nInsegnante",
-          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:drivers_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:drivers_roles].any?}] %>
+    <%= form.label :drivers_roles, "Ruoli erogatori (selezione multipla)" %>
+    <% if domain_roles.present? %>
+      <%= form.select :drivers_roles,
+            options_for_select(domain_roles, Array(service.drivers_roles)),
+            {},
+            multiple: true,
+            size: [domain_roles.size, 8].min,
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full bg-white", {"border-gray-400 focus:outline-blue-600": service.errors[:drivers_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:drivers_roles].any?}] %>
+    <% else %>
+      <%= form.text_area :drivers_roles,
+            value: service.drivers_roles_text,
+            rows: 3,
+            placeholder: "Es.\nTutor\nInsegnante",
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:drivers_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:drivers_roles].any?}] %>
+    <% end %>
     <p class="mt-1 text-xs text-slate-500">
-      Ruoli che erogano e guidano il servizio sul campo.
+      Ruoli che erogano il service sul campo.
     </p>
   </div>
 
@@ -150,14 +196,23 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :verifier_roles, "Ruoli verificatori (uno per riga)" %>
-    <%= form.text_area :verifier_roles,
-          value: service.verifier_roles_text,
-          rows: 3,
-          placeholder: "Es.\nTutor\nInsegnante",
-          class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:verifier_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:verifier_roles].any?}] %>
+    <%= form.label :verifier_roles, "Ruoli verificatori (selezione multipla)" %>
+    <% if domain_roles.present? %>
+      <%= form.select :verifier_roles,
+            options_for_select(domain_roles, Array(service.verifier_roles)),
+            {},
+            multiple: true,
+            size: [domain_roles.size, 8].min,
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full bg-white", {"border-gray-400 focus:outline-blue-600": service.errors[:verifier_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:verifier_roles].any?}] %>
+    <% else %>
+      <%= form.text_area :verifier_roles,
+            value: service.verifier_roles_text,
+            rows: 3,
+            placeholder: "Es.\nTutor\nInsegnante",
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": service.errors[:verifier_roles].none?, "border-red-400 focus:outline-red-600": service.errors[:verifier_roles].any?}] %>
+    <% end %>
     <p class="mt-1 text-xs text-slate-500">
-      Seleziona i ruoli abilitati a verificare booking/certificati quando non sono automatici.
+      Ruoli autorizzati a validare booking/esiti/certificazioni quando non automatici.
     </p>
   </div>
 

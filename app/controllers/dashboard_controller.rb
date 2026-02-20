@@ -47,6 +47,10 @@ class DashboardController < ApplicationController
     @tab = params[:tab].presence_in(%w[bookings enrollments]) || "bookings"
     @current_domain = Current.domain
     @lead_domains = @lead.active_domains
+    @domain_membership =
+      if @current_domain.present?
+        @lead.domain_memberships.find_by(domain_id: @current_domain.id)
+      end
     mycontact_ids = @lead.mycontacts.select(:id)
     @bookings = Booking.includes(:eventdate, :service, :commitment, :enrollment)
                        .where(mycontact_id: mycontact_ids)
@@ -61,5 +65,32 @@ class DashboardController < ApplicationController
   end
 
   def liste
+  end
+
+  def create_domain_membership
+    lead = Current.user&.lead
+    domain = Current.domain
+
+    if lead.blank? || domain.blank?
+      redirect_to dashboard_home_path, alert: "Impossibile creare la membership: lead o dominio non disponibili."
+      return
+    end
+
+    membership = lead.domain_memberships.find_or_initialize_by(domain: domain)
+
+    if membership.new_record?
+      membership.status = :active
+      membership.domain_active_role = membership.domain_active_role.presence || "member"
+      has_primary = lead.domain_memberships.where(primary: true).where.not(id: membership.id).exists?
+      membership.primary = !has_primary if membership.primary.nil?
+      membership.save!
+      notice = "Domain membership creata."
+    else
+      notice = "Domain membership già presente."
+    end
+
+    redirect_to dashboard_home_path, notice: notice
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to dashboard_home_path, alert: e.message
   end
 end

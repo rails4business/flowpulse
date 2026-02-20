@@ -135,6 +135,29 @@
       <% elsif @current_domain.blank? %>
         <p class="mt-2 text-sm text-slate-500">Nessun dominio associato.</p>
       <% end %>
+
+      <% if @current_domain.present? %>
+        <div class="mt-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-900/40 p-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Domain membership</p>
+          <% if @domain_membership.present? %>
+            <p class="mt-2 text-sm text-slate-700 dark:text-slate-300">
+              Ruolo attivo:
+              <span class="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                <%= @domain_membership.domain_active_role.presence || "member" %>
+              </span>
+            </p>
+          <% else %>
+            <% domain_name = @current_domain.title.presence || @current_domain.host %>
+            <p class="mt-2 text-xs text-slate-500">
+              Nessuna membership attiva su <span class="font-semibold"><%= domain_name %></span>.
+            </p>
+            <%= button_to "Inizia con #{domain_name}",
+                          create_dashboard_domain_membership_path,
+                          method: :post,
+                          class: "mt-2 inline-flex items-center rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:brightness-110" %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </section>

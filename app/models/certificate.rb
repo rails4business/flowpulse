@@ -5,7 +5,7 @@ class Certificate < ApplicationRecord
   belongs_to :service
   belongs_to :journey
   belongs_to :taxbranch
-  belongs_to :domain_membership, optional: true
+  belongs_to :domain_membership
   belongs_to :domain, optional: true
 
   belongs_to :issued_by_enrollment,

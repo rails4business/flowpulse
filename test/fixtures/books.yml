@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  slug: MyString
+  title: MyString
+  description: MyText
+  folder_md: MyString
+  index_file: MyString
+  price_euro: 9.99
+  price_dash: 9.99
+  access_mode: 1
+  active: false
+
+two:
+  slug: MyString
+  title: MyString
+  description: MyText
+  folder_md: MyString
+  index_file: MyString
+  price_euro: 9.99
+  price_dash: 9.99
+  access_mode: 1
+  active: false

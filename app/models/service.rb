@@ -24,6 +24,7 @@ class Service < ApplicationRecord
   store_accessor :meta, :tags, :category
 
   validates :slug, presence: true, uniqueness: true
+  validate :role_lists_must_belong_to_domain_roles
 
   before_validation :ensure_slug!
   before_save :ensure_taxbranch_category
@@ -130,5 +131,30 @@ class Service < ApplicationRecord
       end
 
     list.filter_map { |entry| entry.to_s.strip.presence }.uniq
+  end
+
+  def role_lists_must_belong_to_domain_roles
+    lists = {
+      allowed_roles: allowed_roles,
+      output_roles: output_roles,
+      builders_roles: builders_roles,
+      drivers_roles: drivers_roles,
+      verifier_roles: verifier_roles
+    }
+
+    return if lists.values.all?(&:blank?)
+
+    available = Array(taxbranch&.header_domain&.operative_roles).filter_map { |role| role.to_s.strip.presence }.uniq
+    if available.blank?
+      errors.add(:base, "Il dominio del service non ha ruoli operativi disponibili.")
+      return
+    end
+
+    lists.each do |field, values|
+      invalid = Array(values).filter_map { |v| v.to_s.strip.presence }.uniq - available
+      next if invalid.blank?
+
+      errors.add(field, "contiene ruoli non presenti nel dominio: #{invalid.join(', ')}")
+    end
   end
 end

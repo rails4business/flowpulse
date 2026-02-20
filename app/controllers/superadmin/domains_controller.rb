@@ -11,6 +11,15 @@ module Superadmin
 
   # GET /domains/1 or /domains/1.json
   def show
+    @tab = params[:tab].presence_in(%w[overview services]) || "overview"
+    @main_taxbranch = @domain.taxbranch
+    station_ids = @main_taxbranch ? [ @main_taxbranch.id ] + @main_taxbranch.children.pluck(:id) : []
+    @services =
+      if station_ids.any?
+        Service.where(taxbranch_id: station_ids).includes(:taxbranch).order(:name, :id)
+      else
+        Service.none
+      end
   end
 
   def testroute

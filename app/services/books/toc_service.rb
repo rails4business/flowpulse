@@ -1,15 +1,20 @@
 module Books
   class TocService
-    YAML_PATH = Rails.root.join("config", "data", "book_index.yml")
-    MD_DIR = Rails.root.join("config", "data", "book_official")
+    DEFAULT_FOLDER = "posturacorretta_il_corpo_un_mondo_da_scoprire"
+    DEFAULT_INDEX_FILE = "posturacorretta_il_corpo_un_mondo_da_scoprire.yml"
+
+    def initialize(yaml_path: nil, md_dir: nil)
+      @yaml_path = yaml_path || Rails.root.join("config", "data", "books", DEFAULT_FOLDER, DEFAULT_INDEX_FILE)
+      @md_dir = md_dir || Rails.root.join("config", "data", "books", DEFAULT_FOLDER)
+    end
 
     def call
-      return [] unless File.exist?(YAML_PATH)
+      return [] unless File.exist?(@yaml_path)
 
       counter = 0
       access_map = access_by_slug
 
-      YAML.load_file(YAML_PATH).map do |item|
+      YAML.load_file(@yaml_path).map do |item|
         is_header = item["header"]
         chapter_num = nil
         
@@ -34,10 +39,10 @@ module Books
     private
 
     def access_by_slug
-      return {} unless Dir.exist?(MD_DIR)
+      return {} unless Dir.exist?(@md_dir)
 
       map = {}
-      Dir.glob(MD_DIR.join("*.md")).each do |path|
+      Dir.glob(@md_dir.join("*.md")).each do |path|
         text = File.read(path)
         match = text.match(/\A---\n(.*?)\n---\n/m)
         next unless match

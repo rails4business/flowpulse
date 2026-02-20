@@ -17,6 +17,8 @@
       <% end %>
     </nav>
 
+    <% domain = @taxbranch.header_domain || Current.domain %>
+    <% source_taxbranch = @taxbranch.header_domain_taxbranch %>
     <div class="flex items-center gap-2 text-xs text-slate-600 mt-1">
       <%= link_to "⬅️ Torna su",
                   (@taxbranch.parent ? superadmin_taxbranch_path(@taxbranch.parent) : superadmin_taxbranches_path),
@@ -25,6 +27,30 @@
       <span>User: <%= Current.user&.id %></span>
       <span class="text-slate-400">·</span>
       <span>Lead: <%= Current.user&.lead&.id %></span>
+      <% if domain.present? %>
+        <span class="text-slate-400">·</span>
+        <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-700">
+          🌐 Dominio:
+          <%= link_to(domain.host,
+                      superadmin_domain_path(domain),
+                      class: "ml-1 text-primary hover:underline") %>
+        </span>
+        <% if source_taxbranch.present? && source_taxbranch.id != @taxbranch.id %>
+          <span class="text-slate-500">
+            ereditato da
+            <%= link_to source_taxbranch.display_label,
+                        superadmin_taxbranch_path(source_taxbranch),
+                        class: "text-primary hover:underline" %>
+          </span>
+        <% elsif @taxbranch.header_domain.blank? && Current.domain.present? %>
+          <span class="text-slate-500">fallback da host corrente</span>
+        <% end %>
+      <% else %>
+        <span class="text-slate-400">·</span>
+        <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 font-semibold text-amber-800">
+          🌐 Dominio non collegato
+        </span>
+      <% end %>
     </div>
   </div>
   <div class="flex shrink-0 items-center gap-2">

@@ -110,11 +110,13 @@ class ServicesController < ApplicationController
       params.expect(service: [
         :name, :slug, :description, :n_eventdates_planned, :price_enrollment_euro,
         :price_ticket_dash, :min_tickets, :max_tickets, :open_by_journey,
-        :taxbranch_id, :lead_id, :meta, :allowed_roles, :output_roles,
+        :taxbranch_id, :lead_id, :meta,
+        :allowed_roles, :output_roles, :builders_roles, :drivers_roles, :verifier_roles,
         :auto_certificate, :require_booking_verification,
-        :require_enrollment_verification, :verifier_roles, :image_url,
-        :included_in_service_id, :content_md, :builders_roles, :drivers_roles,
-        :enrollable_from_phase, :enrollable_until_phase
+        :require_enrollment_verification, :image_url,
+        :included_in_service_id, :content_md,
+        :enrollable_from_phase, :enrollable_until_phase,
+        { allowed_roles: [], output_roles: [], builders_roles: [], drivers_roles: [], verifier_roles: [] }
       ])
     end
 

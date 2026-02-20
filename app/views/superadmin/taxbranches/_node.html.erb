@@ -231,10 +231,12 @@
       <% prev      = node.higher_item %>
       <% next_node = node.lower_item  %>
       <% siblings_desc = node.parent&.order_des? || false %>
-      <% up_enabled = siblings_desc ? next_node.present? : prev.present? %>
-      <% down_enabled = siblings_desc ? prev.present? : next_node.present? %>
-      <% up_path = siblings_desc ? move_down_superadmin_taxbranch_path(node) : move_up_superadmin_taxbranch_path(node) %>
-      <% down_path = siblings_desc ? move_up_superadmin_taxbranch_path(node) : move_down_superadmin_taxbranch_path(node) %>
+      <% visual_prev = siblings_desc ? next_node : prev %>
+      <% visual_next = siblings_desc ? prev : next_node %>
+      <% up_enabled = visual_prev.present? %>
+      <% down_enabled = visual_next.present? %>
+      <% up_path = move_up_superadmin_taxbranch_path(node) %>
+      <% down_path = move_down_superadmin_taxbranch_path(node) %>
 
       <div class="flex items-center gap-2 text-xs text-slate-500 shrink-0">
         <%= link_to "＋ Figlio",
@@ -276,7 +278,7 @@
           <span class="opacity-40" title="Già a radice">⬅️</span>
         <% end %>
 
-        <% if prev.present? %>
+        <% if visual_prev.present? %>
           <%= link_to "➡️", move_right_superadmin_taxbranch_path(node),
                 data: { turbo_method: :patch },
                 class: "hover:text-slate-700", title: "Sposta a destra (indent)" %>

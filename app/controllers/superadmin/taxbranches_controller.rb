@@ -11,6 +11,13 @@ module Superadmin
     ]
     before_action :load_domains, only: %i[new edit create update]
     before_action :load_services_and_journeys, only: %i[new edit create update]
+    before_action :require_superadmin_mode_active_for_writes!, only: %i[
+      new edit create update destroy
+      set_link_child
+      move_down move_up move_right move_left
+      destroy_with_children reparent_children
+      import export_import
+    ]
 
   # GET /taxbranches or /taxbranches.json
   def index
@@ -106,6 +113,7 @@ module Superadmin
 
     Taxbranch.transaction do
       @taxbranch.save!
+      place_new_taxbranch_for_parent_order!(@taxbranch)
       @taxbranch.normalize_siblings_positions!
     end
 
@@ -173,14 +181,16 @@ end
   end
   def move_up
     @taxbranch.normalize_siblings_positions!
-    @taxbranch.move_higher
+    siblings_desc = @taxbranch.parent&.order_des? || false
+    siblings_desc ? @taxbranch.move_lower : @taxbranch.move_higher
     @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
 
   def move_down
     @taxbranch.normalize_siblings_positions!
-    @taxbranch.move_lower
+    siblings_desc = @taxbranch.parent&.order_des? || false
+    siblings_desc ? @taxbranch.move_higher : @taxbranch.move_lower
     @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
@@ -200,7 +210,8 @@ end
 
   def move_right
     old_ancestry = @taxbranch.ancestry
-    previous = @taxbranch.higher_item
+    siblings_desc = @taxbranch.parent&.order_des? || false
+    previous = siblings_desc ? @taxbranch.lower_item : @taxbranch.higher_item
     if previous.present?
       @taxbranch.update(parent: previous)
     end
@@ -561,6 +572,21 @@ end
   def load_services_and_journeys
     @available_services = Service.order(:name)
     @available_journeys = Journey.order(:title)
+  end
+
+  def require_superadmin_mode_active_for_writes!
+    return if Current.user&.superadmin_mode_active?
+
+    redirect_to superadmin_taxbranches_path, alert: "Attiva la modalita superadmin per modificare i taxbranch."
+  end
+
+  def place_new_taxbranch_for_parent_order!(taxbranch)
+    parent = taxbranch.parent
+    return if parent.blank?
+
+    siblings_count = Taxbranch.where(ancestry: taxbranch.ancestry).count
+    target_position = parent.order_des? ? 1 : siblings_count
+    taxbranch.insert_at(target_position)
   end
 
   def parse_bool(value)

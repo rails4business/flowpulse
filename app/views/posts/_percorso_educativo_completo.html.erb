@@ -108,7 +108,7 @@
                   </div-->
                    <div class="flex-1 min-w-[120px] rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
                     <div class="text-slate-400 font-bold uppercase text-[10px]">Scuole</div>
-                    <div class="text-lg font-bold text-slate-800" id="">1</div>
+                    <div class="text-lg font-bold text-slate-800">-</div>
                   </div>
                 </div>
               </div>
@@ -176,7 +176,7 @@
                           Lezione singola<br><span class="font-bold" id="priceProSingle">—</span>
                         </button>
                         <button id="offerPackBtn" class="text-xs px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 hover:bg-white font-semibold text-slate-700 transition-colors">
-                          Pacchetto modulo<br><span class="font-bold" id="priceProPack">—</span>
+                          Lezione 1:1<br><span class="font-bold" id="priceProPack">—</span>
                         </button>
                         <button id="offerGroupBtn" class="text-xs px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 hover:bg-white font-semibold text-slate-700 transition-colors">
                           Gruppo modulo<br><span class="font-bold" id="priceProGroup">—</span>
@@ -202,10 +202,6 @@
                     <button id="tabReviewsBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Recensioni</button>
                     <button id="tabPricesBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Prezzi</button>
                     <button id="tabInfoBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Info</button>
-                    <button id="tabUsersBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Utenti</button>
-                    <button id="tabTeachersBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Insegnanti</button>
-                    <button id="tabCentersBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Centri</button>
-                    <button id="tabSchoolBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Scuola</button>
                   </div>
                 </div>
 
@@ -217,6 +213,31 @@
                   <div class="p-4 space-y-4">
                     <div id="lessonStepper" class="space-y-1">
                       <!-- lessons injected -->
+                    </div>
+                  </div>
+                </div>
+
+                <div id="lessonProgramModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-900/60 p-4">
+                  <div class="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white shadow-2xl">
+                    <div class="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
+                      <div>
+                        <div class="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Programma lezione</div>
+                        <h4 id="lessonProgramModalTitle" class="mt-1 text-lg font-bold text-slate-900">—</h4>
+                        <p id="lessonProgramModalDesc" class="mt-1 text-sm text-slate-500">—</p>
+                      </div>
+                      <button id="closeLessonProgramModalBtn" type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+                        Chiudi
+                      </button>
+                    </div>
+                    <div class="px-5 py-4">
+                      <ul id="lessonProgramModalList" class="space-y-2 text-sm text-slate-700">
+                        <!-- lesson program injected -->
+                      </ul>
+                    </div>
+                    <div class="border-t border-slate-100 px-5 py-3 flex justify-end">
+                      <button id="lessonProgramModalDoneBtn" type="button" class="rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-primary/90">
+                        Chiudi programma
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -249,60 +270,93 @@
                   <h3 class="font-bold text-slate-800">Prezzi del modulo</h3>
                   <p class="mt-1 text-xs text-slate-500">Confronto diretto tra percorso in autonomia e percorso con professionista.</p>
                   <div class="mt-3 grid grid-cols-1 lg:grid-cols-3 gap-4 text-sm">
-                    <div class="rounded-2xl border border-blue-200 bg-blue-50/40 p-4 lg:col-span-1">
+                    <div class="rounded-2xl border border-blue-200 bg-blue-50/40 p-4 lg:col-span-1 flex flex-col">
                       <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-[18px] text-blue-600">laptop_mac</span>
                         <div class="text-xs font-black uppercase tracking-[0.2em] text-blue-700">Autonomia</div>
                       </div>
-                      <div class="mt-3 rounded-xl border border-blue-100 bg-white p-4">
+                      <div class="mt-3 rounded-xl border border-blue-100 bg-white p-4 flex-1 flex flex-col min-h-[250px]">
                         <div class="text-xs uppercase tracking-wide text-slate-500">Accesso modulo completo</div>
-                        <div class="mt-1 text-3xl leading-none font-black text-slate-900" id="tabPriceAutonomia">—</div>
                         <div class="mt-2 text-xs text-slate-500" id="tabPriceAutonomiaMeta">Accesso al modulo in autonomia.</div>
+                        <div class="mt-auto rounded-lg border border-slate-200 bg-white px-3 py-2 flex items-center justify-between gap-3">
+                          <div class="text-[10px] uppercase tracking-wide text-slate-500">Prezzo</div>
+                          <div class="text-base leading-none font-black text-slate-900" id="tabPriceAutonomia">—</div>
+                        </div>
                       </div>
                     </div>
 
-                    <div class="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4 lg:col-span-2">
+                    <div class="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4 lg:col-span-2 flex flex-col">
                       <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-[18px] text-emerald-700">medical_services</span>
                         <div class="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Professionista</div>
                       </div>
-                      <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="rounded-xl border border-emerald-100 bg-white p-3">
-                          <div class="text-[11px] font-bold uppercase tracking-wide text-emerald-700">Singolo</div>
-                          <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2">
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
-                              <div class="text-[10px] uppercase tracking-wide text-slate-500">1 lezione (1:1)</div>
-                              <div class="mt-1 text-xl leading-none font-black text-slate-900" id="tabPriceSingle">—</div>
+                      <div class="mt-3 flex flex-col md:flex-row gap-3 flex-1">
+                        <div class="rounded-xl border border-emerald-100 bg-white p-3 flex-1 flex flex-col min-h-[250px]">
+                          <div class="text-[11px] font-bold uppercase tracking-wide text-emerald-700">Gruppo</div>
+                        
+                          <div class="mt-2 flex-1 flex flex-col">
+                            <div class="mb-2 grid grid-cols-1 gap-2">
+                              <button id="tabGroupModePackBtn" type="button" class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-bold border border-slate-200 bg-white text-slate-700 text-center">Pacchetto</button>
                             </div>
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
-                              <div class="text-[10px] uppercase tracking-wide text-slate-500">Pacchetto modulo</div>
-                              <div class="mt-1 text-xl leading-none font-black text-slate-900" id="tabPricePack">—</div>
+                            <div id="tabGroupPackPanel" class="rounded-lg border border-slate-200 bg-slate-50 p-3 flex flex-col min-h-[170px]">
+                              <div class="mt-0.5 text-[10px] uppercase tracking-wide text-slate-500">Tariffa per persona</div>
+                              <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-2">Modulo: <span id="tabGroupPackLessons">—</span> lezioni</div>
+                              <label class="block mb-2">
+                                <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-1">Numero persone gruppo</div>
+                                <select id="tabGroupPackSizeSelect" class="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 shadow-sm">
+                                  <option value="2_4">2-4 persone</option>
+                                  <option value="5_8">5-8 persone</option>
+                                  <option value="8_12" selected>8-12 persone</option>
+                                  <option value="12_20">12-20 persone</option>
+                                  <option value="20p">oltre 20 persone</option>
+                                </select>
+                              </label>
+                              <div class="mt-auto rounded-lg border border-slate-200 bg-white px-3 py-2 flex items-center justify-between gap-3">
+                                <div class="text-[10px] uppercase tracking-wide text-slate-500">Prezzo</div>
+                                <div class="text-base leading-none font-black text-slate-900" id="tabGroupPackPriceValue">—</div>
+                              </div>
                             </div>
                           </div>
                         </div>
 
-                        <div class="rounded-xl border border-emerald-100 bg-white p-3">
-                          <div class="text-[11px] font-bold uppercase tracking-wide text-emerald-700">Gruppo (a persona)</div>
-                          <div class="mt-2 grid grid-cols-2 md:grid-cols-3 gap-2">
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
-                              <div class="text-[10px] uppercase tracking-wide text-slate-500">2-4</div>
-                              <div class="mt-1 text-base leading-none font-black text-slate-900" id="tabPriceGroup2_4">—</div>
+                        <div class="rounded-xl border border-emerald-100 bg-white p-3 flex-1 flex flex-col min-h-[250px]">
+                          <div class="text-[11px] font-bold uppercase tracking-wide text-emerald-700">Singolo</div>
+                          <div class="mt-2 flex-1 flex flex-col">
+                            <div class="mb-2 grid grid-cols-2 gap-2">
+                              <button id="tabSingleModePackBtn" type="button" class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-bold border border-slate-200 bg-white text-slate-700 text-center">Pacchetto</button>
+                              <button id="tabSingleModeLessonBtn" type="button" class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-bold border border-slate-200 bg-white text-slate-700 text-center">1 lezione</button>
                             </div>
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
-                              <div class="text-[10px] uppercase tracking-wide text-slate-500">5-8</div>
-                              <div class="mt-1 text-base leading-none font-black text-slate-900" id="tabPriceGroup5_8">—</div>
+                            <div id="tabSingleLessonPanel" class="hidden rounded-lg border border-slate-200 bg-slate-50 p-3 flex flex-col min-h-[170px]">
+                              <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-2">Lezione 1:1</div>
+                              <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-2">Modulo: 1 lezione</div>
+                              <label class="block mb-2">
+                                <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-1">Canale</div>
+                                <select id="tabSingleLessonChannelSelect" class="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 shadow-sm">
+                                  <option value="online" selected>Online</option>
+                                  <option value="center">Presenza in centro</option>
+                                  <option value="home">Presenza a domicilio</option>
+                                </select>
+                              </label>
+                              <div class="mt-auto rounded-lg border border-slate-200 bg-white px-3 py-2 flex items-center justify-between gap-3">
+                                <div class="text-[10px] uppercase tracking-wide text-slate-500">Prezzo</div>
+                                <div class="text-base leading-none font-black text-slate-900" id="tabSingleLessonPriceValue">—</div>
+                              </div>
                             </div>
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
-                              <div class="text-[10px] uppercase tracking-wide text-slate-500">8-12</div>
-                              <div class="mt-1 text-base leading-none font-black text-slate-900" id="tabPriceGroup8_12">—</div>
-                            </div>
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
-                              <div class="text-[10px] uppercase tracking-wide text-slate-500">12-20</div>
-                              <div class="mt-1 text-base leading-none font-black text-slate-900" id="tabPriceGroup12_20">—</div>
-                            </div>
-                            <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
-                              <div class="text-[10px] uppercase tracking-wide text-slate-500">+20</div>
-                              <div class="mt-1 text-base leading-none font-black text-slate-900" id="tabPriceGroup20p">—</div>
+                            <div id="tabSinglePackPanel" class="rounded-lg border border-slate-200 bg-slate-50 p-3 flex flex-col min-h-[170px]">
+                              <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-2">Pacchetto modulo</div>
+                              <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-2">Modulo: <span id="tabPackLessons">—</span> lezioni</div>
+                              <label class="block mb-2">
+                                <div class="text-[10px] uppercase tracking-wide text-slate-500 mb-1">Canale</div>
+                                <select id="tabSinglePackChannelSelect" class="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-slate-700 shadow-sm">
+                                  <option value="online" selected>Online</option>
+                                  <option value="center">Presenza in centro</option>
+                                  <option value="home">Presenza a domicilio</option>
+                                </select>
+                              </label>
+                              <div class="mt-auto rounded-lg border border-slate-200 bg-white px-3 py-2 flex items-center justify-between gap-3">
+                                <div class="text-[10px] uppercase tracking-wide text-slate-500">Prezzo</div>
+                                <div class="text-base leading-none font-black text-slate-900" id="tabSinglePackPriceValue">—</div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -332,37 +386,10 @@
                   </div>
                 </div>
 
-                <div id="tabUsersPanel" class="hidden p-4">
-                  <h3 class="font-bold text-slate-800">Utenti</h3>
-                  <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div class="text-xs uppercase tracking-wide text-slate-400">Iscritti al modulo</div>
-                    <div id="tabUsersValue" class="mt-1 text-2xl font-black text-slate-900">—</div>
-                  </div>
-                </div>
 
-                <div id="tabTeachersPanel" class="hidden p-4">
-                  <h3 class="font-bold text-slate-800">Insegnanti</h3>
-                  <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div class="text-xs uppercase tracking-wide text-slate-400">Professionisti attivi</div>
-                    <div id="tabTeachersValue" class="mt-1 text-2xl font-black text-slate-900">—</div>
-                  </div>
-                </div>
-
-                <div id="tabCentersPanel" class="hidden p-4">
-                  <h3 class="font-bold text-slate-800">Centri</h3>
-                  <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div class="text-xs uppercase tracking-wide text-slate-400">Centri partner</div>
-                    <div id="tabCentersValue" class="mt-1 text-2xl font-black text-slate-900">—</div>
-                  </div>
-                </div>
-
-                <div id="tabSchoolPanel" class="hidden p-4">
-                  <h3 class="font-bold text-slate-800">Scuola</h3>
-                  <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div class="text-xs uppercase tracking-wide text-slate-400">Recensioni e rating</div>
-                    <div id="tabSchoolValue" class="mt-1 text-2xl font-black text-slate-900">—</div>
-                  </div>
-                </div>
+              </div>
+              <div id="finalCheckStandaloneWrapper" class="mt-3 hidden px-4 pb-4">
+                <div id="finalCheckStandalone"></div>
               </div>
 
 	        </section>
@@ -379,6 +406,34 @@
   // --------------------------
   const MODULES = [
     {
+      id: "introduzione_percorso",
+      title: "Introduzione al percorso",
+      method: "Onboarding",
+      image: "https://ik.imagekit.io/posturacorretta/immagini_brand/intro_postura_e_fisiologia.png",
+      icon: "explore",
+      gradient: "from-cyan-400 to-cyan-600",
+      desc: "1 lezione — programma completo: come funziona il percorso, profilazione, stato di salute e diario.",
+      stats: { users: 1520, reviews: 236, teachers: 20, centers: 8, rating: 4.8 },
+      pricing: {
+        autonomia: { early: 19, standard: 49 },
+        pro: { single: 70, pack: 240, group_per_person: 150 },
+        final_check: 90,
+      },
+      lessons: [
+        {
+          id: "intro_programma_completo",
+          title: "Lezione introduttiva — Programma completo",
+          desc: "Come funziona il percorso, profilazione, stato di salute e diario della salute.",
+          program: [
+            "Come funziona il percorso",
+            "Profilazione iniziale",
+            "Il tuo stato di salute",
+            "Il diario della salute"
+          ]
+        },
+      ],
+    },
+    {
       id: "igiene_articolare",
       title: "Igiene Posturale",
       method: "PosturaCorretta",
@@ -390,8 +445,7 @@
       pricing: {
         autonomia: { early: 19, standard: 49 },
         pro: { single: 70, pack: 240, group_per_person: 150 },
-        certification: 150,
-        diploma: 1500
+        final_check: 90,
       },
       lessons: [
         { id: "mob_art", title: "Mobilità articolare", desc: "Sbloccare ROM e ritrovare fluidità." },
@@ -412,8 +466,7 @@
       pricing: {
         autonomia: { standard: 89 },
         pro: { single: 70, pack: 280, group_per_person: 160 },
-        certification: 170,
-        diploma: 1500
+        final_check: 90,
       },
       lessons: [
         { id: "s_resp", title: "Sistema Respiratorio", desc: "Meccanica, ritmo, tolleranza allo sforzo." },
@@ -435,8 +488,7 @@
       pricing: {
         autonomia: { standard: 89 },
         pro: { single: 70, pack: 280, group_per_person: 160 },
-        certification: 170,
-        diploma: 1500
+        final_check: 90,
       },
       lessons: [
         { id: "disfunzioni", title: "Togliere le disfunzioni", desc: "Principi, priorità e logica di intervento." },
@@ -458,8 +510,7 @@
       pricing: {
         autonomia: { standard: 99 },
         pro: { single: 70, pack: 320, group_per_person: 170 },
-        certification: 180,
-        diploma: 1500
+        final_check: 90,
       },
       lessons: [
         { id: "5_dir", title: "5 Direzioni di movimento", desc: "Griglia base per leggere il corpo in azione." },
@@ -482,8 +533,7 @@
       pricing: {
         autonomia: { standard: 99 },
         pro: { single: 70, pack: 290, group_per_person: 165 },
-        certification: 180,
-        diploma: 1500
+        final_check: 90,
       },
       lessons: [
         { id: "kine_setup", title: "Setup posturale", desc: "Preparazione articolare e allineamento iniziale." },
@@ -504,8 +554,7 @@
       pricing: {
         autonomia: { standard: 129 },
         pro: { single: 70, pack: 420, group_per_person: 190 },
-        certification: 200,
-        diploma: 1500
+        final_check: 90,
       },
       lessons: [
         { id: "bio_sensi", title: "Tra biologia e aspetti percettivi sensoriali", desc: "Fenomenologia del corpo vivo." },
@@ -530,6 +579,7 @@
   ];
 
   const MODULES_DISPLAY_ORDER = [
+    "introduzione_percorso",
     "igiene_articolare",
     "principi_fisioterapia",
     "gds_intro",
@@ -588,9 +638,7 @@
     booking: {},                           // professionista: "none" | "booked" | "done"
     instructorCompleted: {},               // teacher path (autonomia)
     instructorBooking: {},                 // teacher path (professionista)
-    hasProTouch: false,                    // placeholder for certification requirement
-    certified: false,                      // placeholder
-    diplomaApplied: false                  // placeholder
+    finalCheckStatus: "none"               // "none" | "booked" | "done"
   });
 
   function loadProgress(moduleId) {
@@ -645,13 +693,63 @@
   function getGroupTierPrices(proPricing = {}) {
     const base = proPricing.group_per_person;
     const tiers = proPricing.group_tiers || {};
-    const pick = (key) => (tiers[key] != null ? tiers[key] : base);
+    const rounded = (value) => Math.round(value / 5) * 5;
+    const defaults = (base == null) ? {} : {
+      "2_4": rounded(base * 1.15),
+      "5_8": rounded(base * 1.05),
+      "8_12": rounded(base),
+      "12_20": rounded(base * 0.9),
+      "20p": rounded(base * 0.8)
+    };
+    const pick = (key) => (tiers[key] != null ? tiers[key] : defaults[key]);
     return {
       "2_4": pick("2_4"),
       "5_8": pick("5_8"),
       "8_12": pick("8_12"),
       "12_20": pick("12_20"),
       "20p": pick("20p")
+    };
+  }
+
+  function getSingleOptionPrices(proPricing = {}) {
+    const base = proPricing.single;
+    return {
+      online: proPricing.online_single ?? base,
+      center: proPricing.center_single ?? base,
+      home: proPricing.home_single ?? base
+    };
+  }
+
+  function getPackOptionPrices(proPricing = {}) {
+    const base = proPricing.pack;
+    return {
+      online: proPricing.online_pack ?? base,
+      center: proPricing.center_pack ?? base,
+      home: proPricing.home_pack ?? base
+    };
+  }
+
+  function getGroupOptionPrices(proPricing = {}, lessonCount = 1) {
+    const tiers = getGroupTierPrices(proPricing);
+    const lessonTiers = proPricing.group_lesson_tiers || {};
+    const lessonBase = proPricing.group_lesson_per_person;
+    const safeLessonCount = Math.max(lessonCount || 1, 1);
+    const pickLesson = (key) => {
+      if (lessonTiers[key] != null) return lessonTiers[key];
+      if (lessonBase != null) return lessonBase;
+      const pack = tiers[key];
+      if (pack == null || pack === "—") return pack;
+      return Math.round((pack / safeLessonCount) / 5) * 5;
+    };
+    return {
+      pack: tiers,
+      lesson: {
+        "2_4": pickLesson("2_4"),
+        "5_8": pickLesson("5_8"),
+        "8_12": pickLesson("8_12"),
+        "12_20": pickLesson("12_20"),
+        "20p": pickLesson("20p")
+      }
     };
   }
 
@@ -664,24 +762,11 @@
     return m.lessons.every(lsn => !!prog.completed[lsn.id]);
   }
 
-  function guidedRequirementMet(m, prog) {
-    // MVP: serve almeno 1 "contatto" con professionista
-    // - se mode professionista e almeno 1 lezione done => ok
-    // - oppure toggle placeholder "hasProTouch"
-    const anyDone = m.lessons.some(lsn => prog.booking[lsn.id] === "done");
-    return prog.hasProTouch || anyDone;
-  }
-
-  function canCertify(m, prog) {
-    return isModuleCompleted(m, prog) && guidedRequirementMet(m, prog);
-  }
-
-  function canDiploma(m, prog) {
-    // MVP: diploma solo se certificato + prerequisiti (es. completati 3 moduli)
-    if (!prog.certified) return false;
-    // placeholder prerequisiti:
-    const completedModules = MODULES.filter(mod => isModuleCompleted(mod, loadProgress(mod.id))).length;
-    return completedModules >= 3;
+  function finalCheckState(m, prog) {
+    if (!isModuleCompleted(m, prog)) return "locked";
+    if (prog.finalCheckStatus === "done") return "completed";
+    if (prog.finalCheckStatus === "booked") return "booked";
+    return "available";
   }
 
   // --------------------------
@@ -768,14 +853,10 @@
     if ($("moduleMethod")) $("moduleMethod").textContent = m.method;
     if ($("moduleDesc")) $("moduleDesc").textContent = m.desc;
 
-    if ($("statUsers")) $("statUsers").textContent = m.stats.users.toLocaleString("it-IT");
-    if ($("statReviews")) $("statReviews").textContent = `${m.stats.reviews} • ${m.stats.rating.toFixed(1)}`;
-    if ($("statTeachers")) $("statTeachers").textContent = m.stats.teachers;
-    if ($("statCenters")) $("statCenters").textContent = m.stats.centers;
-    if ($("tabUsersValue")) $("tabUsersValue").textContent = m.stats.users.toLocaleString("it-IT");
-    if ($("tabTeachersValue")) $("tabTeachersValue").textContent = m.stats.teachers.toLocaleString("it-IT");
-    if ($("tabCentersValue")) $("tabCentersValue").textContent = m.stats.centers.toLocaleString("it-IT");
-    if ($("tabSchoolValue")) $("tabSchoolValue").textContent = `${m.stats.reviews} recensioni • ${m.stats.rating.toFixed(1)}`;
+    if ($("statUsers")) $("statUsers").textContent = "-";
+    if ($("statReviews")) $("statReviews").textContent = "-";
+    if ($("statTeachers")) $("statTeachers").textContent = "-";
+    if ($("statCenters")) $("statCenters").textContent = "-";
 
     if ($("infoMethod")) $("infoMethod").textContent = m.method;
     if ($("infoDesc")) $("infoDesc").textContent = m.desc;
@@ -791,14 +872,28 @@
     if ($("priceProPack")) $("priceProPack").textContent = fmtEUR(p.pro?.pack ?? "—");
     if ($("priceProGroup")) $("priceProGroup").textContent = fmtEUR(p.pro?.group_per_person ?? "—") + " / persona";
     if ($("tabPriceAutonomia")) $("tabPriceAutonomia").textContent = fmtEUR(auto ?? "—");
-    if ($("tabPriceSingle")) $("tabPriceSingle").textContent = fmtEUR(p.pro?.single ?? "—");
-    if ($("tabPricePack")) $("tabPricePack").textContent = fmtEUR(p.pro?.pack ?? "—");
-    const groupTiers = getGroupTierPrices(p.pro || {});
-    if ($("tabPriceGroup2_4")) $("tabPriceGroup2_4").textContent = `${fmtEUR(groupTiers["2_4"] ?? "—")} / persona`;
-    if ($("tabPriceGroup5_8")) $("tabPriceGroup5_8").textContent = `${fmtEUR(groupTiers["5_8"] ?? "—")} / persona`;
-    if ($("tabPriceGroup8_12")) $("tabPriceGroup8_12").textContent = `${fmtEUR(groupTiers["8_12"] ?? "—")} / persona`;
-    if ($("tabPriceGroup12_20")) $("tabPriceGroup12_20").textContent = `${fmtEUR(groupTiers["12_20"] ?? "—")} / persona`;
-    if ($("tabPriceGroup20p")) $("tabPriceGroup20p").textContent = `${fmtEUR(groupTiers["20p"] ?? "—")} / persona`;
+    const singleOptions = getSingleOptionPrices(p.pro || {});
+    const packOptions = getPackOptionPrices(p.pro || {});
+    const lessonCount = (m.lessons || []).length;
+    const groupOptions = getGroupOptionPrices(p.pro || {}, lessonCount);
+    const groupPackSize = $("tabGroupPackSizeSelect")?.value || "8_12";
+    if ($("tabGroupPackPriceValue")) $("tabGroupPackPriceValue").textContent = fmtEUR(groupOptions.pack[groupPackSize] ?? "—");
+    const singleChannel = $("tabSingleLessonChannelSelect")?.value || "online";
+    if ($("tabSingleLessonPriceValue")) {
+      const singlePrice = singleOptions[singleChannel];
+      $("tabSingleLessonPriceValue").textContent = singleChannel === "home" && singlePrice != null
+        ? `${fmtEUR(singlePrice)} + km`
+        : fmtEUR(singlePrice ?? "—");
+    }
+    const packChannel = $("tabSinglePackChannelSelect")?.value || "online";
+    if ($("tabSinglePackPriceValue")) {
+      const packPrice = packOptions[packChannel];
+      $("tabSinglePackPriceValue").textContent = packChannel === "home" && packPrice != null
+        ? `${fmtEUR(packPrice)} + km`
+        : fmtEUR(packPrice ?? "—");
+    }
+    if ($("tabGroupPackLessons")) $("tabGroupPackLessons").textContent = lessonCount;
+    if ($("tabPackLessons")) $("tabPackLessons").textContent = lessonCount;
     if ($("tabPriceAutonomiaMeta")) {
       const autoMeta = (autoEarly != null && autoStandard != null)
         ? `Promo attiva: ${fmtEUR(autoEarly)} (anziche ${fmtEUR(autoStandard)}).`
@@ -808,8 +903,7 @@
     if ($("tabPricesFootnote")) {
       $("tabPricesFootnote").textContent = "In professionista, scegli formato (singolo o gruppo), canale (online/in presenza) e, in presenza, sessione nel centro.";
     }
-    if ($("priceCert")) $("priceCert").textContent = fmtEUR(p.certification ?? "—");
-    if ($("priceDiploma")) $("priceDiploma").textContent = fmtEUR(p.diploma ?? "—");
+    if ($("priceFinalCheck")) $("priceFinalCheck").textContent = fmtEUR(p.final_check ?? "—");
   }
 
   function setContentTab(tabKey) {
@@ -820,10 +914,6 @@
       { key: "reviews", btn: "tabReviewsBtn", panel: "tabReviewsPanel" },
       { key: "prices", btn: "tabPricesBtn", panel: "tabPricesPanel" },
       { key: "info", btn: "tabInfoBtn", panel: "tabInfoPanel" },
-      { key: "users", btn: "tabUsersBtn", panel: "tabUsersPanel" },
-      { key: "teachers", btn: "tabTeachersBtn", panel: "tabTeachersPanel" },
-      { key: "centers", btn: "tabCentersBtn", panel: "tabCentersPanel" },
-      { key: "school", btn: "tabSchoolBtn", panel: "tabSchoolPanel" },
     ];
 
     tabs.forEach(({ key, btn, panel }) => {
@@ -840,6 +930,50 @@
         btnEl.classList.toggle("text-slate-700", !isActive);
       }
     });
+
+    const finalCheckWrapper = $("finalCheckStandaloneWrapper");
+    if (finalCheckWrapper) finalCheckWrapper.classList.toggle("hidden", tabKey !== "lessons");
+  }
+
+  function setSinglePriceTab(mode) {
+    const lessonActive = mode !== "pack";
+    const lessonPanel = $("tabSingleLessonPanel");
+    const packPanel = $("tabSinglePackPanel");
+    const lessonBtn = $("tabSingleModeLessonBtn");
+    const packBtn = $("tabSingleModePackBtn");
+    if (lessonPanel) lessonPanel.classList.toggle("hidden", !lessonActive);
+    if (packPanel) packPanel.classList.toggle("hidden", lessonActive);
+    if (lessonBtn) {
+      lessonBtn.classList.toggle("border-primary", lessonActive);
+      lessonBtn.classList.toggle("bg-blue-50/60", lessonActive);
+      lessonBtn.classList.toggle("text-primary", lessonActive);
+      lessonBtn.classList.toggle("border-slate-200", !lessonActive);
+      lessonBtn.classList.toggle("bg-white", !lessonActive);
+      lessonBtn.classList.toggle("text-slate-700", !lessonActive);
+    }
+    if (packBtn) {
+      packBtn.classList.toggle("border-primary", !lessonActive);
+      packBtn.classList.toggle("bg-blue-50/60", !lessonActive);
+      packBtn.classList.toggle("text-primary", !lessonActive);
+      packBtn.classList.toggle("border-slate-200", lessonActive);
+      packBtn.classList.toggle("bg-white", lessonActive);
+      packBtn.classList.toggle("text-slate-700", lessonActive);
+    }
+  }
+
+  function setGroupPriceTab(_mode) {
+    const packActive = true;
+    const packPanel = $("tabGroupPackPanel");
+    const packBtn = $("tabGroupModePackBtn");
+    if (packPanel) packPanel.classList.toggle("hidden", !packActive);
+    if (packBtn) {
+      packBtn.classList.toggle("border-primary", packActive);
+      packBtn.classList.toggle("bg-blue-50/60", packActive);
+      packBtn.classList.toggle("text-primary", packActive);
+      packBtn.classList.toggle("border-slate-200", !packActive);
+      packBtn.classList.toggle("bg-white", !packActive);
+      packBtn.classList.toggle("text-slate-700", !packActive);
+    }
   }
 
   function renderModuleMode(m, prog) {
@@ -930,6 +1064,38 @@
     return `<span class="${base} bg-slate-100 text-slate-500 border-slate-200">${text}</span>`;
   }
 
+  function openLessonProgramModal(itemData) {
+    if (!itemData || itemData.kind !== "lesson") return;
+    const modal = $("lessonProgramModal");
+    const titleEl = $("lessonProgramModalTitle");
+    const descEl = $("lessonProgramModalDesc");
+    const listEl = $("lessonProgramModalList");
+    if (!modal || !titleEl || !descEl || !listEl) return;
+
+    const items = (Array.isArray(itemData.program) && itemData.program.length > 0)
+      ? itemData.program
+      : [itemData.desc || "Dettagli lezione non disponibili."];
+
+    titleEl.textContent = itemData.title || "Lezione";
+    descEl.textContent = itemData.desc || "";
+    listEl.innerHTML = items.map((row) => `
+      <li class="flex items-start gap-2">
+        <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">check_circle</span>
+        <span>${row}</span>
+      </li>
+    `).join("");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+
+  function closeLessonProgramModal() {
+    const modal = $("lessonProgramModal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+
   function renderStepper(m, prog) {
     const stepper = $("lessonStepper");
     if (!stepper) return;
@@ -944,8 +1110,10 @@
       hint = next ? `Prossima: ${next.title}` : "Modulo completato";
     }
     if ($("lessonHint")) $("lessonHint").textContent = hint;
+    if ($("finalCheckStandalone")) $("finalCheckStandalone").innerHTML = "";
 
-    const certState = prog.certified ? "completed" : (canCertify(m, prog) ? "available" : "locked");
+    const finalStepState = finalCheckState(m, prog);
+    const finalCheckPrice = fmtEUR(m.pricing?.final_check ?? "—");
 
     const timelineItems = [
       ...m.lessons.map((lsn, i) => ({
@@ -954,15 +1122,16 @@
         idx: i + 1,
         title: lsn.title,
         desc: lsn.desc,
+        program: lsn.program || [],
         state: lessonState(m, prog, lsn.id)
       })),
       {
-        kind: "cert",
-        id: "__cert__",
+        kind: "final_check",
+        id: "__final_check__",
         idx: m.lessons.length + 1,
-        title: "Step finale: Certificazione modulo",
-        desc: "Modulo completato + almeno 1 lezione con professionista.",
-        state: certState
+        title: "Valutazione finale con il professionista (facoltativa)",
+        desc: `Facoltativa a pagamento (${finalCheckPrice}): verifica finale del programma svolto.`,
+        state: finalStepState
       }
     ];
 
@@ -978,7 +1147,7 @@
       const st = prog.booking[itemData.id] || "none";
 
       // Container Layout: Flex Row with Gap
-      item.className = "flex items-stretch gap-2 mb-3 select-none";
+      item.className = "mb-3 select-none";
 
       // Left Box Styles
       const leftBorder = isActive ? "border-primary bg-primary/5 ring-1 ring-primary/20 shadow-sm" : "border-slate-200 bg-white hover:bg-slate-50";
@@ -1030,89 +1199,143 @@
       const mockWeekday = mockType.day;
       const mockTime = "10:00 - 11:30";
       
-      const contentLayout = `
-          <div class="flex items-start justify-between gap-3 px-1 pointer-events-none w-full h-full">
-            <!-- Left: Date (Big) -->
-            <div class="flex flex-col items-center justify-center h-full pr-3 border-r border-slate-100 border-dashed min-w-[50px]">
-               <!-- Weekday Top -->
-               <span class="text-xs font-black uppercase tracking-wider text-slate-400 mb-0.5">${mockWeekday}</span>
-               
-               <!-- Date Big -->
-               <span class="text-3xl font-black tracking-tighter leading-none text-slate-800">${mockDay}</span>
-               
-               <!-- Month Bottom -->
-               <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
-            </div>
-            
-            <!-- Right: Time & Info -->
-            <div class="flex flex-col items-start justify-between h-full flex-1 gap-1 py-1">
-               <!-- Top: Time Range -->
-               <div class="w-full text-center border-b border-slate-100 pb-1 mb-0.5">
-                 <span class="text-[10px] font-bold text-slate-600 tracking-wide">${mockTime}</span>
-               </div>
+      // Timeline Style Layout (Option 2)
+      item.className = "group relative pl-4 pb-8 last:pb-0"; 
 
-               <!-- Middle: Who/Format -->
-               <div class="flex items-center gap-2 w-full">
-                  ${modeVisual}
-                  <div class="flex flex-col leading-none">
-                    <span class="text-[10px] font-bold text-slate-700">${mockType.useAvatar ? "Pro" : "Auto"}</span>
-                    <span class="text-[9px] font-medium text-slate-500 flex items-center gap-0.5 mt-0.5">
-                       <span class="material-symbols-outlined text-[12px]">${formatIcon}</span> ${formatLabel}
-                    </span>
-                  </div>
-               </div>
+      const isCompleted = state === "completed";
+      const isBooked = state === "booked";
+      const isLocked = state === "locked";
+      const isAvailable = state === "available";
 
-               <!-- Bottom: Location -->
-               <div class="flex items-center gap-1 w-full mt-auto">
-                 <span class="material-symbols-outlined text-[14px] text-slate-400">${mockType.placeIcon}</span>
-                 <span class="text-[9px] font-bold uppercase text-slate-500 tracking-tight truncate">${mockType.label}</span>
-               </div>
-            </div>
-          </div>
-      `;
-      if (state === "completed") {
-        stubClass = "bg-emerald-50 border-emerald-100 text-emerald-700 shadow-sm";
-        stubContent = contentLayout; 
-      } else if (state === "booked") {
-        stubClass = "bg-amber-50 border-amber-100 text-amber-700 shadow-sm";
-        stubContent = contentLayout;
-      } else if (state === "locked") {
-        stubClass = "bg-slate-100 border-slate-200 text-slate-300 cursor-not-allowed";
-        stubContent = `<span class="material-symbols-outlined text-xl opacity-50">lock</span>`;
+      let statusColor = "slate";
+      let statusIcon = "lock";
+      let statusText = "Bloccato";
+      let actionBtnMarkup = "";
+
+      if (isCompleted) {
+        statusColor = "emerald";
+        statusIcon = "check_circle";
+        statusText = "Completato";
+        actionBtnMarkup = `
+          <div class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">check</span> Fatto
+          </div>`;
+      } else if (isBooked) {
+        statusColor = "amber";
+        statusIcon = "event";
+        statusText = "Prenotato";
+        actionBtnMarkup = `
+          <button id="lessonActionBtn" class="px-3 py-1.5 rounded-lg bg-amber-100/50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5 transition-colors">
+            <span class="material-symbols-outlined text-[16px] filled">cancel</span> Disdici
+          </button>`;
+      } else if (isAvailable) {
+        statusColor = "blue";
+        statusIcon = "play_circle";
+        statusText = "Disponibile";
+        actionBtnMarkup = `
+          <button id="lessonActionBtn" class="px-4 py-1.5 rounded-lg bg-primary text-white hover:bg-primary/90 shadow-sm shadow-blue-200 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5 transition-all transform active:scale-95">
+            <span class="material-symbols-outlined text-[16px]">touch_app</span> Prenota
+          </button>`;
       } else {
-        stubClass = "bg-white border-slate-200 text-primary hover:border-primary hover:bg-blue-50/50";
-        stubContent = `<div class="flex flex-col items-center justify-center p-2"><span class="material-symbols-outlined text-3xl mb-1">touch_app</span><span class="text-[9px] font-bold uppercase">Azione</span></div>`;
+         // Locked
+         actionBtnMarkup = `
+          <div class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-400 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">lock</span>
+          </div>`;
+      }
+      
+      if (itemData.kind === "final_check") {
+         if (isCompleted) {
+            statusColor = "purple"; statusIcon = "fact_check"; statusText = "Valutato";
+            actionBtnMarkup = `<div class="px-3 py-1.5 rounded-lg bg-purple-50 text-purple-700 font-bold text-[10px] uppercase">Superato</div>`;
+         } else if (isAvailable) {
+            statusColor = "blue"; statusIcon = "fact_check"; statusText = "Da fare";
+             actionBtnMarkup = `
+              <button id="lessonActionBtn" class="px-4 py-1.5 rounded-lg bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 shadow-sm text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5 transition-all">
+                Prenota Check
+              </button>`;
+         } else {
+            statusColor = "slate"; statusIcon = "lock"; statusText = "Bloccato";
+             actionBtnMarkup = `<span class="material-symbols-outlined text-slate-300">lock</span>`;
+         }
       }
 
-      // Cert/Diploma overrides... (keep as is)
-      if (itemData.kind === "cert" || itemData.kind === "diploma") {
-         const isDone = (state === "completed");
-         stubClass = isDone ? (itemData.kind==="cert"?"bg-amber-100 border-amber-200 text-amber-800":"bg-slate-800 border-slate-900 text-white") : "bg-slate-50 border-slate-200 text-slate-300";
-         stubContent = `<span class="material-symbols-outlined text-xl">${itemData.kind === "cert" ? "workspace_premium" : "school"}</span>`;
-      }
-
+      // Card Styles based on status
+      const activeClass = isActive ? "ring-2 ring-primary ring-offset-2" : "";
+      const cardBorder = isLocked ? "border-slate-100 bg-slate-50/50" : (isCompleted ? "border-emerald-200 bg-emerald-50/10" : "border-slate-200 bg-white hover:border-blue-300 hover:shadow-md");
+      const titleColor = isLocked ? "text-slate-400" : "text-slate-800";
+      
       item.innerHTML = `
-        <!-- Left Content Box -->
-        <div id="lessonContentBtn" class="flex-1 text-left rounded-2xl border p-4 flex items-center gap-4 transition-all cursor-pointer ${leftBorder} ${leftOpacity}">
-           <span class="material-symbols-outlined text-[22px] shrink-0 ${leftColor}">${leftIcon}</span>
-           <div class="min-w-0 flex-1">
-             <div class="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-0.5">${itemData.kind === "lesson" ? `Lezione ${itemData.idx}` : `Step finale`}</div>
-             <div class="font-bold text-slate-800 text-sm leading-snug line-clamp-2">${itemData.title}</div>
-             <div class="text-xs text-slate-500 mt-0.5 line-clamp-1">${itemData.desc}</div>
+        <!-- Timeline Line (Absolute Left) -->
+        <div class="absolute left-[27px] top-0 bottom-0 w-px bg-slate-200 group-last:bottom-auto group-last:h-[20px]"></div>
+        
+        <div class="flex items-start gap-6 relative">
+           <!-- Left: Date Bubble -->
+           <div class="relative z-10 w-[54px] shrink-0 flex flex-col items-center bg-white py-2 rounded-2xl border border-slate-100 shadow-sm">
+              <span class="text-[9px] font-black uppercase text-slate-400 tracking-wider mb-0.5">${mockWeekday}</span>
+              <span class="text-xl font-black text-slate-700 leading-none">${mockDay}</span>
+              <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
+           </div>
+
+           <!-- Right: Card -->
+           <div class="flex-1 min-w-0">
+      <div class="rounded-2xl border ${cardBorder} ${activeClass} transition-all overflow-hidden flex flex-col ${itemData.kind === "final_check" ? "bg-blue-50/60 border-blue-100" : ""}">
+                 <!-- Main Body -->
+                 <div id="lessonContentBtn" class="p-4 cursor-pointer flex gap-4">
+                    <!-- Icon/Avatar -->
+                    <div class="shrink-0 pt-1">
+                      ${mockType.useAvatar 
+                        ? `<img src="https://i.pravatar.cc/150?u=${itemData.id}" alt="Pro" class="w-10 h-10 rounded-full object-cover border border-white shadow-sm">`
+                        : `<div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100"><span class="material-symbols-outlined">laptop_mac</span></div>`
+                      }
+                    </div>
+                    
+                    <div class="flex-1 min-w-0">
+                       <div class="flex items-center justify-between gap-2 mb-1">
+                          <span class="text-[10px] uppercase tracking-wider font-bold text-${statusColor}-500 flex items-center gap-1">
+                             <span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${itemData.kind === 'lesson' ? `Lezione ${itemData.idx}` : 'Valutazione finale'}
+                          </span>
+                       </div>
+                       <h3 class="text-base font-bold ${titleColor} mb-1 leading-snug">${itemData.title}</h3>
+                       <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${itemData.desc}</p>
+                    </div>
+                 </div>
+
+                 <!-- Footer Info & Action -->
+                 ${!isLocked ? `
+                 <div class="px-4 py-3 bg-slate-50/50 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 text-xs text-slate-500 font-medium">
+                       <div class="flex items-center gap-1.5" title="Orario">
+                          <span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span> ${mockTime}
+                       </div>
+                       <div class="flex items-center gap-1.5" title="Luogo">
+                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span> ${mockType.label}
+                       </div>
+                       <div class="flex items-center gap-1.5 pl-3 border-l border-slate-200">
+                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
+                          ${mockType.isGroup ? 'Gruppo' : 'Singolo'}
+                       </div>
+                    </div>
+                    
+                    <div class="ml-auto">
+                       ${actionBtnMarkup}
+                    </div>
+                 </div>` : ''}
+              </div>
            </div>
         </div>
-        
-        <!-- Right Stub Action -->
-        <button id="lessonActionBtn" class="${stubBase} ${stubClass} w-auto min-w-[160px]">
-           ${stubContent}
-        </button>
       `;
 
       // Handlers
       const contentBtn = item.querySelector("#lessonContentBtn");
       const actionBtn = item.querySelector("#lessonActionBtn");
 
-      if (contentBtn) contentBtn.onclick = () => selectLesson(itemData.id);
+      if (contentBtn) {
+        contentBtn.onclick = () => {
+          selectLesson(itemData.id);
+          openLessonProgramModal(itemData);
+        };
+      }
       
       if (actionBtn) actionBtn.onclick = (e) => {
         e.stopPropagation();
@@ -1139,21 +1362,26 @@
 
         if (!nextState) return;
 
+        if (itemData.kind === "final_check") {
+          if (!isModuleCompleted(m, prog)) return;
+          if (prog.finalCheckStatus === "none") prog.finalCheckStatus = "booked";
+          else if (prog.finalCheckStatus === "booked") prog.finalCheckStatus = "done";
+          else prog.finalCheckStatus = "none";
+          saveProgress(activeModuleId, prog);
+          const mUpdated = MODULES.find(x => x.id === activeModuleId);
+          const pUpdated = loadProgress(activeModuleId);
+          renderModules();
+          renderProgress(mUpdated, pUpdated);
+          renderStepper(mUpdated, pUpdated);
+          return;
+        }
+
         // Apply Change
         if (prog.mode === "autonomia") {
            if (nextState === "completed") prog.completed[itemData.id] = true;
            else delete prog.completed[itemData.id];
         } else {
-           prog.booking[itemData.id] = nextState;
-           if (nextState === "done") prog.hasProTouch = true;
-        }
-
-        // Special handling for Cert/Diploma buttons (placeholders)
-        if (itemData.kind === "cert" && canCertify(m, prog)) {
-           prog.certified = !prog.certified; 
-        }
-        if (itemData.kind === "diploma" && canDiploma(m, prog)) {
-           prog.diplomaApplied = !prog.diplomaApplied;
+          prog.booking[itemData.id] = nextState;
         }
 
         saveProgress(activeModuleId, prog);
@@ -1166,8 +1394,10 @@
         renderStepper(mUpdated, pUpdated);
       };
 
-      stepper.appendChild(item);
+      const targetContainer = itemData.kind === "final_check" ? $("finalCheckStandalone") : stepper;
+      if (targetContainer) targetContainer.appendChild(item);
     });
+
   }
 
   function instructorLessonState(prog, lessonId) {
@@ -1256,60 +1486,115 @@
       const mockWeekday = mockType.day;
       const mockTime = "10:00 - 11:30";
 
-      const contentLayout = `
-          <div class="flex items-start justify-between gap-3 px-1 pointer-events-none w-full h-full">
-            <div class="flex flex-col items-center justify-center h-full pr-3 border-r border-slate-100 border-dashed min-w-[50px]">
-               <span class="text-xs font-black uppercase tracking-wider text-slate-400 mb-0.5">${mockWeekday}</span>
-               <span class="text-3xl font-black tracking-tighter leading-none text-slate-800">${mockDay}</span>
-               <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
-            </div>
-            <div class="flex flex-col items-start justify-between h-full flex-1 gap-1 py-1">
-               <div class="w-full text-center border-b border-slate-100 pb-1 mb-0.5">
-                 <span class="text-[10px] font-bold text-slate-600 tracking-wide">${mockTime}</span>
-               </div>
-               <div class="flex items-center gap-2 w-full">
-                  ${modeVisual}
-                  <div class="flex flex-col leading-none">
-                    <span class="text-[10px] font-bold text-slate-700">${mockType.useAvatar ? "Pro" : "Auto"}</span>
-                    <span class="text-[9px] font-medium text-slate-500 flex items-center gap-0.5 mt-0.5">
-                       <span class="material-symbols-outlined text-[12px]">${formatIcon}</span> ${formatLabel}
-                    </span>
-                  </div>
-               </div>
-               <div class="flex items-center gap-1 w-full mt-auto">
-                 <span class="material-symbols-outlined text-[14px] text-slate-400">${mockType.placeIcon}</span>
-                 <span class="text-[9px] font-bold uppercase text-slate-500 tracking-tight truncate">${mockType.label}</span>
-               </div>
-            </div>
-          </div>
-      `;
+      // Timeline Style Layout (Option 2)
+      item.className = "group relative pl-4 pb-8 last:pb-0"; // Container for timeline item
 
-      if (state === "completed") {
-        stubClass = "bg-emerald-50 border-emerald-100 text-emerald-700 shadow-sm";
-        stubContent = contentLayout;
-      } else if (state === "booked") {
-        stubClass = "bg-amber-50 border-amber-100 text-amber-700 shadow-sm";
-        stubContent = contentLayout;
-      } else if (state === "locked") {
-        stubClass = "bg-slate-100 border-slate-200 text-slate-300 cursor-not-allowed";
-        stubContent = `<span class="material-symbols-outlined text-xl opacity-50">lock</span>`;
+      const isCompleted = state === "completed";
+      const isBooked = state === "booked";
+      const isLocked = state === "locked";
+      const isAvailable = state === "available";
+
+      let statusColor = "slate";
+      let statusIcon = "lock";
+      let statusText = "Bloccato";
+      let actionBtnMarkup = "";
+
+      if (isCompleted) {
+        statusColor = "emerald";
+        statusIcon = "check_circle";
+        statusText = "Completato";
+        actionBtnMarkup = `
+          <div class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">check</span> Fatto
+          </div>`;
+      } else if (isBooked) {
+        statusColor = "amber";
+        statusIcon = "event";
+        statusText = "Prenotato";
+        actionBtnMarkup = `
+          <button id="instructorLessonActionBtn" class="px-3 py-1.5 rounded-lg bg-amber-100/50 hover:bg-amber-100 text-amber-700 border border-amber-200 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5 transition-colors">
+            <span class="material-symbols-outlined text-[16px] filled">cancel</span> Disdici
+          </button>`;
+      } else if (isAvailable) {
+        statusColor = "blue";
+        statusIcon = "play_circle";
+        statusText = "Disponibile";
+        actionBtnMarkup = `
+          <button id="instructorLessonActionBtn" class="px-4 py-1.5 rounded-lg bg-primary text-white hover:bg-primary/90 shadow-sm shadow-blue-200 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5 transition-all transform active:scale-95">
+            <span class="material-symbols-outlined text-[16px]">touch_app</span> Prenota
+          </button>`;
       } else {
-        stubClass = "bg-white border-slate-200 text-primary hover:border-primary hover:bg-blue-50/50";
-        stubContent = `<div class="flex flex-col items-center justify-center p-2"><span class="material-symbols-outlined text-3xl mb-1">touch_app</span><span class="text-[9px] font-bold uppercase">Azione</span></div>`;
+         // Locked
+         actionBtnMarkup = `
+          <div class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-400 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">lock</span>
+          </div>`;
       }
 
+      // Card Styles based on status
+      const activeClass = isActive ? "ring-2 ring-primary ring-offset-2" : "";
+      const cardBorder = isLocked ? "border-slate-100 bg-slate-50/50" : (isCompleted ? "border-emerald-200 bg-emerald-50/10" : "border-slate-200 bg-white hover:border-blue-300 hover:shadow-md");
+      const titleColor = isLocked ? "text-slate-400" : "text-slate-800";
+      
       item.innerHTML = `
-        <div id="instructorLessonContentBtn" class="flex-1 text-left rounded-2xl border p-4 flex items-center gap-4 transition-all cursor-pointer ${leftBorder} ${leftOpacity}">
-           <span class="material-symbols-outlined text-[22px] shrink-0 ${leftColor}">${leftIcon}</span>
-           <div class="min-w-0 flex-1">
-             <div class="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-0.5">Lezione ${itemData.idx}</div>
-             <div class="font-bold text-slate-800 text-sm leading-snug line-clamp-2">${itemData.title}</div>
-             <div class="text-xs text-slate-500 mt-0.5 line-clamp-1">${itemData.desc}</div>
+        <!-- Timeline Line (Absolute Left) -->
+        <div class="absolute left-[27px] top-0 bottom-0 w-px bg-slate-200 group-last:bottom-auto group-last:h-[20px]"></div>
+        
+        <div class="flex items-start gap-6 relative">
+           <!-- Left: Date Bubble -->
+           <div class="relative z-10 w-[54px] shrink-0 flex flex-col items-center bg-white py-2 rounded-2xl border border-slate-100 shadow-sm">
+              <span class="text-[9px] font-black uppercase text-slate-400 tracking-wider mb-0.5">${mockWeekday}</span>
+              <span class="text-xl font-black text-slate-700 leading-none">${mockDay}</span>
+              <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
+           </div>
+
+           <!-- Right: Card -->
+           <div class="flex-1 min-w-0">
+              <div class="rounded-2xl border ${cardBorder} ${activeClass} transition-all overflow-hidden flex flex-col">
+                 <!-- Main Body -->
+                 <div id="instructorLessonContentBtn" class="p-4 cursor-pointer flex gap-4">
+                    <!-- Icon/Avatar -->
+                    <div class="shrink-0 pt-1">
+                      ${mockType.useAvatar 
+                        ? `<img src="https://i.pravatar.cc/150?u=ins_${itemData.id}" alt="Pro" class="w-10 h-10 rounded-full object-cover border border-white shadow-sm">`
+                        : `<div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100"><span class="material-symbols-outlined">laptop_mac</span></div>`
+                      }
+                    </div>
+                    
+                    <div class="flex-1 min-w-0">
+                       <div class="flex items-center justify-between gap-2 mb-1">
+                          <span class="text-[10px] uppercase tracking-wider font-bold text-${statusColor}-500 flex items-center gap-1">
+                             <span class="material-symbols-outlined text-[14px]">${statusIcon}</span> Lezione ${itemData.idx}
+                          </span>
+                       </div>
+                       <h3 class="text-base font-bold ${titleColor} mb-1 leading-snug">${itemData.title}</h3>
+                       <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${itemData.desc}</p>
+                    </div>
+                 </div>
+
+                 <!-- Footer Info & Action -->
+                 ${!isLocked ? `
+                 <div class="px-4 py-3 bg-slate-50/50 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 text-xs text-slate-500 font-medium">
+                       <div class="flex items-center gap-1.5" title="Orario">
+                          <span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span> ${mockTime}
+                       </div>
+                       <div class="flex items-center gap-1.5" title="Luogo">
+                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span> ${mockType.label}
+                       </div>
+                       <div class="flex items-center gap-1.5 pl-3 border-l border-slate-200">
+                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
+                          ${mockType.isGroup ? 'Gruppo' : 'Singolo'}
+                       </div>
+                    </div>
+                    
+                    <div class="ml-auto">
+                       ${actionBtnMarkup}
+                    </div>
+                 </div>` : ''}
+              </div>
            </div>
         </div>
-        <button id="instructorLessonActionBtn" class="${stubBase} ${stubClass} w-auto min-w-[160px]">
-           ${stubContent}
-        </button>
       `;
 
       const contentBtn = item.querySelector("#instructorLessonContentBtn");
@@ -1796,7 +2081,7 @@
   });
 
   document.addEventListener("click", (e) => {
-    const target = e.target.closest("#startBtn, #completeBtn, #bookBtn, #doneProBtn, #resetLessonBtn, #toggleProTouchBtn, #examBtn, #applyDiplomaBtn");
+    const target = e.target.closest("#startBtn, #completeBtn, #bookBtn, #doneProBtn, #resetLessonBtn");
     if (!target) return;
     if (!activeModuleId || !activeLessonId) return;
 
@@ -1810,6 +2095,7 @@
 
     if (target.id === "completeBtn") {
       if (prog.mode !== "autonomia") return;
+      if (activeLessonId === "__final_check__") return;
       prog.completed[activeLessonId] = true;
       saveProgress(activeModuleId, prog);
       const next = m.lessons.find(lsn => !prog.completed[lsn.id]);
@@ -1818,6 +2104,16 @@
     }
 
     if (target.id === "bookBtn") {
+      if (activeLessonId === "__final_check__") {
+        if (!isModuleCompleted(m, prog)) return;
+        prog.finalCheckStatus = prog.finalCheckStatus === "booked" ? "none" : "booked";
+        saveProgress(activeModuleId, prog);
+        flashStatus(prog.finalCheckStatus === "booked" ? "Valutazione finale prenotata" : "Valutazione finale annullata");
+        renderModules();
+        renderProgress(m, prog);
+        renderStepper(m, prog);
+        return;
+      }
       if (prog.mode !== "professionista") return;
       const st = prog.booking[activeLessonId] || "none";
       prog.booking[activeLessonId] = (st === "booked") ? "none" : "booked";
@@ -1826,9 +2122,18 @@
     }
 
     if (target.id === "doneProBtn") {
+      if (activeLessonId === "__final_check__") {
+        if (!isModuleCompleted(m, prog)) return;
+        prog.finalCheckStatus = "done";
+        saveProgress(activeModuleId, prog);
+        flashStatus("Valutazione finale completata ✅");
+        renderModules();
+        renderProgress(m, prog);
+        renderStepper(m, prog);
+        return;
+      }
       if (prog.mode !== "professionista") return;
       prog.booking[activeLessonId] = "done";
-      prog.hasProTouch = true;
       saveProgress(activeModuleId, prog);
       const next = m.lessons.find(lsn => (prog.booking[lsn.id] || "none") !== "done");
       activeLessonId = next ? next.id : m.lessons[m.lessons.length - 1].id;
@@ -1836,30 +2141,13 @@
     }
 
     if (target.id === "resetLessonBtn") {
+      if (activeLessonId === "__final_check__") {
+        prog.finalCheckStatus = "none";
+      }
       delete prog.completed[activeLessonId];
       delete prog.booking[activeLessonId];
       saveProgress(activeModuleId, prog);
       flashStatus("Lezione resettata");
-    }
-
-    if (target.id === "toggleProTouchBtn") {
-      prog.hasProTouch = !prog.hasProTouch;
-      saveProgress(activeModuleId, prog);
-      flashStatus(prog.hasProTouch ? "Requisito pro: OK (placeholder)" : "Requisito pro: OFF");
-    }
-
-    if (target.id === "examBtn") {
-      if (!canCertify(m, prog) || prog.certified) return;
-      prog.certified = true;
-      saveProgress(activeModuleId, prog);
-      flashStatus("Esame prenotato/superato (MVP)");
-    }
-
-    if (target.id === "applyDiplomaBtn") {
-      if (!canDiploma(m, prog) || prog.diplomaApplied) return;
-      prog.diplomaApplied = true;
-      saveProgress(activeModuleId, prog);
-      flashStatus("Candidatura inviata (MVP)");
     }
 
     renderModules();
@@ -1880,10 +2168,21 @@
   $("tabReviewsBtn")?.addEventListener("click", () => setContentTab("reviews"));
   $("tabPricesBtn")?.addEventListener("click", () => setContentTab("prices"));
   $("tabInfoBtn")?.addEventListener("click", () => setContentTab("info"));
-  $("tabUsersBtn")?.addEventListener("click", () => setContentTab("users"));
-  $("tabTeachersBtn")?.addEventListener("click", () => setContentTab("teachers"));
-  $("tabCentersBtn")?.addEventListener("click", () => setContentTab("centers"));
-  $("tabSchoolBtn")?.addEventListener("click", () => setContentTab("school"));
+  $("tabGroupModePackBtn")?.addEventListener("click", () => setGroupPriceTab("pack"));
+  $("tabSingleModeLessonBtn")?.addEventListener("click", () => setSinglePriceTab("lesson"));
+  $("tabSingleModePackBtn")?.addEventListener("click", () => setSinglePriceTab("pack"));
+  ["tabGroupPackSizeSelect", "tabSingleLessonChannelSelect", "tabSinglePackChannelSelect"].forEach((id) => {
+    $(id)?.addEventListener("change", () => {
+      if (!activeModuleId) return;
+      const m = MODULES.find((x) => x.id === activeModuleId);
+      if (m) renderModuleHeader(m);
+    });
+  });
+  $("closeLessonProgramModalBtn")?.addEventListener("click", closeLessonProgramModal);
+  $("lessonProgramModalDoneBtn")?.addEventListener("click", closeLessonProgramModal);
+  $("lessonProgramModal")?.addEventListener("click", (e) => {
+    if (e.target === $("lessonProgramModal")) closeLessonProgramModal();
+  });
   $("closeEnrollModalBtn")?.addEventListener("click", closeEnrollModal);
   $("enrollModeAutoBtn")?.addEventListener("click", () => setEnrollMode("autonomia"));
   $("enrollModeProBtn")?.addEventListener("click", () => setEnrollMode("professionista"));
@@ -1977,12 +2276,16 @@
     if (e.target.id === "enrollModalOverlay") closeEnrollModal();
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeEnrollModal();
+    if (e.key !== "Escape") return;
+    closeLessonProgramModal();
+    closeEnrollModal();
   });
 
   // init
   try {
     setContentTab("lessons");
+    setGroupPriceTab("pack");
+    setSinglePriceTab("pack");
     renderModules();
     if (MODULES.length > 0) selectModule(MODULES[0].id);
   } catch (e) {

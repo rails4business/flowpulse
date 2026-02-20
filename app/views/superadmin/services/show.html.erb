@@ -66,6 +66,9 @@
       </div>
       <div class="rounded-xl border border-slate-100 bg-slate-50 p-4">
         <p class="text-xs uppercase tracking-wide text-slate-500">Ruoli coinvolti</p>
+        <p class="mt-1 text-xs text-slate-500">
+          I ruoli validi nascono dal dominio; qui definisci come il service li usa nelle varie fasi.
+        </p>
         <div class="mt-2 space-y-2 text-sm">
           <div>
             <span class="font-semibold">Ammessi:</span>
@@ -74,6 +77,7 @@
             <% else %>
               <span class="text-slate-500">Accesso aperto</span>
             <% end %>
+            <p class="text-xs text-slate-500">Chi puo iscriversi/entrare nel service.</p>
           </div>
           <div>
             <span class="font-semibold">Rilasciati:</span>
@@ -82,6 +86,7 @@
             <% else %>
               <span class="text-slate-500">Non specificati</span>
             <% end %>
+            <p class="text-xs text-slate-500">Ruoli/certificazioni ottenibili a completamento.</p>
           </div>
           <div>
             <span class="font-semibold">Costruttori:</span>
@@ -90,6 +95,7 @@
             <% else %>
               <span class="text-slate-500">Non specificati</span>
             <% end %>
+            <p class="text-xs text-slate-500">Ruoli che progettano e preparano contenuti/processo.</p>
           </div>
           <div>
             <span class="font-semibold">Erogatori:</span>
@@ -98,6 +104,16 @@
             <% else %>
               <span class="text-slate-500">Non specificati</span>
             <% end %>
+            <p class="text-xs text-slate-500">Ruoli che erogano il service sul campo.</p>
+          </div>
+          <div>
+            <span class="font-semibold">Verificatori:</span>
+            <% if @service.verifier_roles.present? %>
+              <span class="text-slate-700"><%= @service.verifier_roles.join(", ") %></span>
+            <% else %>
+              <span class="text-slate-500">Non specificati</span>
+            <% end %>
+            <p class="text-xs text-slate-500">Ruoli autorizzati a validare booking/esiti/certificazioni.</p>
           </div>
         </div>
       </div>

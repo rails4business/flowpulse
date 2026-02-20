@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Indice – PosturaCorretta</title>
+  <title>Indice – <%= @book&.title || "Libro" %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
@@ -65,7 +65,7 @@
     <div id="index-nav" class="absolute bottom-10 md:bottom-auto md:-top-6 left-0 right-0 text-center text-xs uppercase tracking-[0.4em] text-white mix-blend-exclusion z-50 flex items-center justify-center gap-4"></div>
     
     <div class="absolute top-4 left-4 md:top-0 md:left-16 flex items-center gap-4 text-xs uppercase tracking-[0.3em] text-white mix-blend-exclusion z-50">
-      <a class="hover:text-white/80 transition font-bold" href="/">Esci</a>
+      <a class="hover:text-white/80 transition font-bold" href="/books">Esci</a>
       <% if Current.user&.superadmin? && Current.user.superadmin_mode_active? %>
         <span class="border border-white/40 px-2 py-1 rounded">Admin BSC</span>
       <% end %>
@@ -262,7 +262,7 @@
             }
          } else {
            // CHAPTER: Font display, medium.
-           const href = `/book/${item.slug}`;
+           const href = `/books/${bookSlug}/${item.slug}`;
             contentHtml += `
               <a class="group block cursor-pointer hover:bg-black/5 px-2 py-[1px] -mx-2 rounded transition-colors" href="${href}">
                 <div class="flex items-baseline">
@@ -356,9 +356,9 @@
         history.replaceState(null, '', url);
 
         nav.innerHTML = `
-          <a class="hover:text-white/90 transition text-xl px-2 font-bold" href="/book?page=${prev}">←</a>
+          <a class="hover:text-white/90 transition text-xl px-2 font-bold" href="/books/${bookSlug}?page=${prev}">←</a>
           <span class="text-white/70 font-bold mx-2">INDICE ${visiblePage} / ${totalIndexPages}</span>
-          <a class="hover:text-white/90 transition text-xl px-2 font-bold" href="/book?page=${next}">→</a>
+          <a class="hover:text-white/90 transition text-xl px-2 font-bold" href="/books/${bookSlug}?page=${next}">→</a>
         `;
     };
 
@@ -392,6 +392,7 @@
     };
     // INIT
     const adminMode = <%= (Current.user&.superadmin? && Current.user.superadmin_mode_active?).to_json %>;
+    const bookSlug = <%= @book.slug.to_json.html_safe %>;
     const tocData = <%= @toc.to_json.html_safe %>;
     initBook(tocData);
     
