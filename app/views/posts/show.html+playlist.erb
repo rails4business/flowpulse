@@ -61,13 +61,13 @@
            } %>
         <% upcoming_candidates = children_scope.select { |t|
              t.public_node? &&
-             t.scheduled_eventdate&.date_start.present? &&
-             t.scheduled_eventdate.date_start >= Time.current &&
+             t.scheduled_eventdate&.date_end.present? &&
+             t.scheduled_eventdate.date_end >= Time.current &&
              (t.published_at.blank? || t.published_at > Time.current) &&
              t.post&.persisted? &&
              t.post&.title.present?
            } %>
-        <% upcoming = upcoming_candidates.min_by { |t| t.scheduled_eventdate.date_start } %>
+        <% upcoming = upcoming_candidates.min_by { |t| t.scheduled_eventdate.date_end } %>
         <% items = [] %>
         <% items << upcoming if upcoming.present? %>
         <% items.concat(published.reject { |t| t == upcoming }) %>
