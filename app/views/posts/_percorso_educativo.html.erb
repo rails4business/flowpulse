@@ -14,7 +14,7 @@
     <div class="relative z-10 grid lg:grid-cols-2 gap-8 items-start">
 	      <div class="space-y-6">
 	        <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 shadow-sm">
-	          Accademia PosturaCorretta
+	          Percorso educativo
 	        </div>
 
 	        <h2 class="text-4xl md:text-5xl font-black leading-[1.1] tracking-[-0.033em] text-slate-900">
@@ -196,7 +196,7 @@
                   <div class="flex flex-wrap gap-2">
                     <button id="tabLessonsBtn" type="button" class="px-3 py-2 rounded-lg text-sm font-semibold border border-slate-200 bg-white text-slate-700">Lezioni</button>
                   </div>
-                </div>
+	                </div>
 
                 <div id="tabLessonsPanel">
 		              <div class="p-4 border-b border-slate-100 bg-white flex items-center justify-between">
@@ -208,7 +208,7 @@
                       <!-- lessons injected -->
                     </div>
                   </div>
-                </div>
+		                </div>
 
                 <div id="lessonProgramModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-900/60 p-4">
                   <div class="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white shadow-2xl">
@@ -235,51 +235,6 @@
                   </div>
                 </div>
 
-                <section id="introConsultingSection" class="hidden border-t border-slate-100 bg-slate-50 p-4 md:p-5">
-                  <div class="flex items-start justify-between gap-4 flex-wrap">
-                    <div>
-                      <h3 class="font-bold text-slate-800">Consulenza iniziale</h3>
-                      <p class="mt-1 text-xs text-slate-500">Dopo la lezione "Inizia il percorso" scegli la strada più adatta: educativo, benessere o sanitario/patologia.</p>
-                    </div>
-                  </div>
-
-                  <div class="mt-4 md:hidden">
-                    <label for="pathProfileSelect" class="block text-xs font-semibold text-slate-600 mb-1">Scegli percorso</label>
-                    <select id="pathProfileSelect" name="pathProfile" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800">
-                      <option value="blu">Educativo</option>
-                      <option value="verde">Benessere</option>
-                      <option value="rosso">Sanitario / patologia</option>
-                    </select>
-                  </div>
-
-                  <div id="pathProfileControls" class="mt-4 hidden md:grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <label class="flex items-start gap-3 p-3 rounded-xl border border-blue-200 bg-white cursor-pointer">
-                      <input id="pathBlu" type="radio" name="pathProfile" value="blu" class="mt-1" />
-                      <div>
-                        <div class="font-semibold text-blue-700">Educativo</div>
-                        <div class="text-xs text-slate-500">Parti con presentazione tutor. Approccio educativo guidato.</div>
-                      </div>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl border border-emerald-200 bg-white cursor-pointer">
-                      <input id="pathVerde" type="radio" name="pathProfile" value="verde" class="mt-1" />
-                      <div>
-                        <div class="font-semibold text-emerald-700">Benessere</div>
-                        <div class="text-xs text-slate-500">Parti con presentazione tutor. Valutazione professionista non obbligatoria.</div>
-                      </div>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl border border-red-200 bg-white cursor-pointer">
-                      <input id="pathRosso" type="radio" name="pathProfile" value="rosso" class="mt-1" />
-                      <div>
-                        <div class="font-semibold text-red-700">Sanitario / patologia</div>
-                        <div class="text-xs text-slate-500">Visita con professionista della salute obbligatoria.</div>
-                      </div>
-                    </label>
-                  </div>
-
-                  <div id="pathProfileAlert" class="mt-3 text-xs rounded-lg border px-3 py-2 hidden"></div>
-                  <div id="pathProfileActions" class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2"></div>
-                </section>
-
                 <section id="moduleCertificationSection" class="hidden border-t border-slate-100 bg-slate-50 p-4 md:p-5">
                   <div class="flex items-start justify-between gap-3">
                   <div>
@@ -293,7 +248,7 @@
                     <button id="certDoneBtn" type="button" class="px-3 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700">Segna completata</button>
                     <button id="certResetBtn" type="button" class="px-3 py-2 rounded-lg bg-white border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-100">Reset</button>
                   </div>
-                </section>
+	                </div>
 
               </div>
 
@@ -310,34 +265,6 @@
   // DATA (tuoi moduli)
   // --------------------------
   const MODULES = [
-    {
-      id: "introduzione_percorso",
-      title: "Inizia il percorso",
-      method: "Onboarding",
-      image: "https://ik.imagekit.io/posturacorretta/immagini_brand/intro_postura_e_fisiologia.png",
-      icon: "explore",
-      gradient: "from-cyan-400 to-cyan-600",
-      desc: "1 lezione — come funziona il percorso, profilazione e diario salute.",
-      stats: { users: 1520, reviews: 236, teachers: 20, centers: 8, rating: 4.8 },
-      pricing: {
-        autonomia: { early: 19, standard: 49 },
-        pro: { single: 50, pack: 50, group_per_person: 50 },
-        final_check: 50,
-      },
-      lessons: [
-        {
-          id: "intro_programma_completo",
-          title: "Lezione introduttiva — Programma completo",
-          desc: "Come funziona il percorso, profilazione, stato di salute e diario.",
-          program: [
-            "Come funziona il percorso",
-            "Profilazione iniziale",
-            "Il tuo stato di salute",
-            "Il diario della salute"
-          ]
-        },
-      ],
-    },
     {
       id: "igiene_articolare",
       title: "Igiene Posturale",
@@ -475,7 +402,6 @@
   ];
 
   const MODULES_DISPLAY_ORDER = [
-    "introduzione_percorso",
     "igiene_articolare",
     "principi_fisioterapia",
     "gds_intro",
@@ -527,25 +453,10 @@
     return loadPathProfile() === "rosso";
   }
 
-  function isIntroCompleted() {
-    const intro = loadProgress("introduzione_percorso");
-    return !!(intro.completed?.intro_programma_completo || intro.booking?.intro_programma_completo === "done");
-  }
-
-  function updateIntroConsultingVisibility() {
-    const section = $("introConsultingSection");
-    if (!section) return;
-    const shouldShow = activeModuleId === "introduzione_percorso" && isIntroCompleted();
-    section.classList.toggle("hidden", !shouldShow);
-  }
-
   function renderCertificationSection(m, prog) {
     const section = $("moduleCertificationSection");
     if (!section) return;
-
-    const isIntro = m.id === "introduzione_percorso";
-    section.classList.toggle("hidden", isIntro);
-    if (isIntro) return;
+    section.classList.remove("hidden");
 
     const state = finalCheckState(m, prog);
     const price = fmtEUR(m.pricing?.final_check ?? FINAL_CHECK_DEFAULT_PRICE);
@@ -606,45 +517,34 @@
     if ($("pathBlu")) $("pathBlu").checked = path === "blu";
     if ($("pathProfileSelect")) $("pathProfileSelect").value = path;
 
-    const introDone = isIntroCompleted();
     ["pathRosso", "pathVerde", "pathBlu"].forEach((id) => {
       const input = $(id);
       if (!input) return;
-      input.disabled = !introDone;
-      input.closest("label")?.classList.toggle("opacity-60", !introDone);
+      input.disabled = false;
+      input.closest("label")?.classList.remove("opacity-60");
     });
-    if ($("pathProfileSelect")) $("pathProfileSelect").disabled = !introDone;
+    if ($("pathProfileSelect")) $("pathProfileSelect").disabled = false;
 
     const alert = $("pathProfileAlert");
     if (!alert) return;
 
-    if (!introDone) {
-      renderPathProfileActions(path, introDone);
-      return;
-    }
-
     if (path === "rosso") {
       alert.className = "mt-3 text-xs rounded-lg border px-3 py-2 border-red-200 bg-red-50 text-red-700";
-      alert.textContent = "Profilo Rosso attivo: presentazione del percorso gratis + visita professionista salute obbligatoria (50€ / 30 min).";
+      alert.textContent = "Percorso Sanitario/patologia attivo: presentazione del percorso gratis + visita professionista salute obbligatoria (50€ / 30 min).";
     } else if (path === "verde") {
       alert.className = "mt-3 text-xs rounded-lg border px-3 py-2 border-emerald-200 bg-emerald-50 text-emerald-700";
-      alert.textContent = "Profilo Verde attivo: inizia con presentazione del percorso gratis.";
+      alert.textContent = "Percorso Benessere attivo: inizia con presentazione del percorso gratis.";
     } else {
       alert.className = "mt-3 text-xs rounded-lg border px-3 py-2 border-blue-200 bg-blue-50 text-blue-700";
-      alert.textContent = "Profilo Blu attivo: inizia con presentazione del percorso gratis.";
+      alert.textContent = "Percorso Educativo attivo: inizia con presentazione del percorso gratis.";
     }
 
-    renderPathProfileActions(path, introDone);
+    renderPathProfileActions(path);
   }
 
-  function renderPathProfileActions(path, introDone) {
+  function renderPathProfileActions(path) {
     const box = $("pathProfileActions");
     if (!box) return;
-
-    if (!introDone) {
-      box.innerHTML = "";
-      return;
-    }
 
     const tutorCard = `
       <div class="rounded-xl border border-slate-200 bg-white p-3">
@@ -1056,6 +956,20 @@
     modal.classList.remove("flex");
   }
 
+  function openIntroConsultingModal() {
+    const modal = $("introConsultingModal");
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+
+  function closeIntroConsultingModal() {
+    const modal = $("introConsultingModal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+
   function renderStepper(m, prog) {
     const stepper = $("lessonStepper");
     if (!stepper) return;
@@ -1169,8 +1083,6 @@
     const m = MODULES.find(x => x.id === moduleId);
     if (!m) return;
     const prog = loadProgress(moduleId);
-
-    updateIntroConsultingVisibility();
 
     // default lesson = next logical
     if (prog.mode === "professionista") {
@@ -1530,11 +1442,6 @@
   // --------------------------
   document.addEventListener("change", (e) => {
     if (e.target && e.target.name === "pathProfile") {
-      if (!isIntroCompleted()) {
-        flashStatus("Completa prima la lezione \"Inizia il percorso\"");
-        renderPathProfileUI();
-        return;
-      }
       const path = e.target.value;
       savePathProfile(path);
       enforcePathRulesOnAllModules(path);
@@ -1644,7 +1551,6 @@
     }
 
     if (target.id === "certBookBtn") {
-      if (m.id === "introduzione_percorso") return;
       if (!isModuleCompleted(m, prog)) return;
       prog.finalCheckStatus = prog.finalCheckStatus === "booked" ? "none" : "booked";
       saveProgress(activeModuleId, prog);
@@ -1652,7 +1558,6 @@
     }
 
     if (target.id === "certDoneBtn") {
-      if (m.id === "introduzione_percorso") return;
       if (!isModuleCompleted(m, prog)) return;
       prog.finalCheckStatus = "done";
       saveProgress(activeModuleId, prog);
@@ -1660,7 +1565,6 @@
     }
 
     if (target.id === "certResetBtn") {
-      if (m.id === "introduzione_percorso") return;
       prog.finalCheckStatus = "none";
       saveProgress(activeModuleId, prog);
       flashStatus("Certificazione resettata");
@@ -1670,7 +1574,6 @@
     renderProgress(m, prog);
     renderStepper(m, prog);
     renderCertificationSection(m, prog);
-    updateIntroConsultingVisibility();
     renderPathProfileUI();
   });
 
@@ -1686,6 +1589,12 @@
   $("lessonProgramModalDoneBtn")?.addEventListener("click", closeLessonProgramModal);
   $("lessonProgramModal")?.addEventListener("click", (e) => {
     if (e.target === $("lessonProgramModal")) closeLessonProgramModal();
+  });
+  $("openIntroConsultingModalBtn")?.addEventListener("click", openIntroConsultingModal);
+  $("closeIntroConsultingModalBtn")?.addEventListener("click", closeIntroConsultingModal);
+  $("introConsultingModalDoneBtn")?.addEventListener("click", closeIntroConsultingModal);
+  $("introConsultingModal")?.addEventListener("click", (e) => {
+    if (e.target === $("introConsultingModal")) closeIntroConsultingModal();
   });
   $("closeEnrollModalBtn")?.addEventListener("click", closeEnrollModal);
   $("enrollModeAutoBtn")?.addEventListener("click", () => setEnrollMode("autonomia"));
@@ -1782,6 +1691,7 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeLessonProgramModal();
+      closeIntroConsultingModal();
       closeEnrollModal();
     }
   });
@@ -1797,3 +1707,95 @@
     console.error("Errore init _percorso_educativo:", e);
   }
 </script>
+
+
+<!-- 4 protagonisti --->
+
+<section class="max-w-[1200px] mx-auto px-6 py-12 space-y-8" id="4-protagonisti">
+<div class="text-center mb-12">
+<h3 class="text-3xl md:text-4xl font-black tracking-[-0.033em] leading-[1.1] mb-4 text-[#111518] dark:text-white">I 4 protagonisti</h3>
+<p class="text-slate-500">Con cui PosturaCorretta rende possibile creare un percorso della salute efficace.</p>
+</div>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1: Allievi -->
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-persone">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">patient_list</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Allievi</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Dalla cura della patologia all'educazione alla salute.</strong>
+</p>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-persone">
+  Scopri di più
+</button>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Educazione salute</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Percorso Personalizzato</li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Accedi <span class="material-symbols-outlined">chevron_right</span></span>
+</div>
+<!-- Card 2: Professionista -->
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-professionista">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Insegnanti</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Per guidare le persone nel percorso di autotrattamento.</strong>
+</p>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-professionista">
+  Scopri di più
+</button>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Valorizzare le competenze</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Linee guida per Collaborare</li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
+</div>
+<!-- Card 3: Centro Posturale -->
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-centri">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">corporate_fare</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Centri</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Non solo prestazioni, ma continuità.</strong>
+</p>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-centri">
+  Scopri di più
+</button>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Riferimento per i pazienti</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Continuità nel percorso</li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
+</div>
+<!-- Card 4: Scuola e Metodica -->
+<div class="group block cursor-pointer bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-primary transition-all hover:shadow-xl" data-modal-open="protagonista-scuole">
+<div class="bg-primary/10 text-primary w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">school</span>
+</div>
+<h4 class="text-xl font-bold mb-3">Metodiche</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-3 leading-relaxed">
+  <strong class="text-slate-700 dark:text-slate-200">Dialogo, integrazione e basi comuni.</strong>
+</p>
+<button type="button"
+        class="mt-1 text-left text-sm font-semibold text-primary hover:underline"
+        data-modal-open="protagonista-scuole">
+  Scopri di più
+</button>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Presenta i tuoi professionisti</li>
+<li class="flex items-center gap-2 text-xs font-semibold"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Fai conoscere il tuo percorso </li>
+</ul>
+<span class="text-primary font-bold text-sm inline-flex items-center gap-1 group-hover:gap-3 transition-all">Collabora <span class="material-symbols-outlined">chevron_right</span></span>
+</div>
+</div>
+</section>

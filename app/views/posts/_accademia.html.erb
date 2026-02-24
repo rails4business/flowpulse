@@ -1,229 +1,67 @@
-<section class="space-y-12 pt-16" id="accademia">
+<section class="pt-16" id="accademia">
+  <div class="mx-auto max-w-[1200px] px-6">
+    <div class="mx-auto max-w-2xl text-center space-y-3">
+      <h2 class="text-3xl md:text-4xl font-bold">Accademia</h2>
+      <p class="text-sm md:text-base text-slate-600 dark:text-slate-400">
+        Indice delle aree principali dell'Accademia.
+      </p>
+    </div>
 
-                 <div class="text-center space-y-4 max-w-2xl mx-auto">
-  <h2 class="text-4xl md:text-5xl font-bold">L’Accademia offre</h2>
-  <p class="text-lg text-slate-600 dark:text-slate-400">
-    Strumenti comuni e condivisi da persone, professionisti, centri e scuole
-    per integrare cura, educazione e orientamento
-    in un unico percorso della salute.
-  <br>
-      Il percorso di educazione alla salute che,
-      attraverso le metodiche posturali,
-      aiuta a comprendere e riattivare il funzionamento del corpo.
-    </p>
-</div>
+    <div class="mt-8">
+      <div class="relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-3 md:p-4 shadow-xl shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-900/60">
+        <div class="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-primary"></div>
 
-<div class="mt-8 grid gap-4 sm:grid-cols-2">
-  <!-- CARD 1 -->
-  <div class="bg-white rounded-2xl border border-slate-100 p-5 text-left shadow-sm dark:border-slate-800 dark:bg-slate-800/40">
-    <h3 class="text-sm font-bold uppercase tracking-wider text-primary">
-      Percorso PosturaCorretta
-    </h3>
-   
-    <p class="mt-6 text-center text-sm text-slate-500">
-  Il Percorso PosturaCorretta educa.  
-  Le Linee guida orientano.  
-  Insieme rendono possibile un percorso della salute più efficace.
-</p>
+        <%= link_to root_path(anchor: "orientamento-iscrizione-accademia"), class: "flex items-start justify-between gap-3 rounded-2xl px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" do %>
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Orientamento e iscrizione all'accademia</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Accesso, profilazione e primi passi per iniziare il percorso.</p>
+          </div>
+          <span class="material-symbols-outlined text-[18px] leading-none text-slate-500 mt-0.5">chevron_right</span>
+        <% end %>
 
-    <ul class="mt-3 list-disc pl-5 text-sm text-slate-600 dark:text-slate-400 space-y-1">
-      <li>conoscere come funziona il corpo umano</li>
-      <li>riattivare i principali sistemi fisiologici</li>
-      <li>usare queste competenze nella salute, nel benessere
-          e nello stile di vita quotidiano</li>
-    </ul>
+        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+        <%= link_to root_path(anchor: "percorso"), class: "flex items-start justify-between gap-3 rounded-2xl px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" do %>
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Postura e fisiologia</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Apri il percorso completo.</p>
+          </div>
+          <span class="material-symbols-outlined text-[18px] leading-none text-slate-500 mt-0.5">chevron_right</span>
+        <% end %>
+
+        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+        <%= link_to coming_soon_path(feature: "Linee guida Percorso Salute", source: "Accademia > Linee guida Percorso Salute"),
+                    class: "flex items-start justify-between gap-3 rounded-2xl px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" do %>
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Linee guida Percorso Salute</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Criteri e orientamento per integrare educazione, benessere e salute.</p>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400 mt-1">In arrivo</span>
+        <% end %>
+
+        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+        <%= link_to coming_soon_path(feature: "Le 5 aree con salute e postura", source: "Accademia > Le 5 aree con salute e postura"),
+                    class: "flex items-start justify-between gap-3 rounded-2xl px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" do %>
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Le 5 aree con salute e postura</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Aree tematiche collegate al percorso principale.</p>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400 mt-1">In arrivo</span>
+        <% end %>
+
+        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+
+        <%= link_to coming_soon_path(feature: "Stile di vita", source: "Accademia > Stile di vita"),
+                    class: "flex items-start justify-between gap-3 rounded-2xl px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" do %>
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Stile di vita</h3>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Approfondimenti pratici per applicare il percorso nella quotidianita.</p>
+          </div>
+          <span class="text-[10px] font-bold uppercase tracking-wide text-slate-400 mt-1">In arrivo</span>
+        <% end %>
+      </div>
+    </div>
   </div>
-
-  <!-- CARD 2 -->
-  <div class="bg-white rounded-2xl border border-slate-100 p-5 text-left shadow-sm dark:border-slate-800 dark:bg-slate-800/40">
-    <h3 class="text-sm font-bold uppercase tracking-wider text-primary">
-      Linee guida del percorso della salute
-    </h3>
-    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-      Strumenti di orientamento che aiutano persone e professionisti
-      a costruire percorsi integrati, coerenti e personalizzati.
-    </p>
-    <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">
-      Servono a collegare educazione, cura e benessere,
-      dal dolore all’autonomia,
-      dalla patologia alla prevenzione.
-    </p>
-  </div>
-</div>
-
-
-
-              <div class="rounded-[1.5rem] border border-slate-100 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900 overflow-hidden">
-                <div class="">
-                  
-                    <% active_tab = params[:tab].presence || "postura" %>
-                    <div class="mt-8 flex justify-center border-b border-slate-200 dark:border-slate-800">
-                      <div class="flex flex-wrap gap-6">
-                        <%= link_to "Percorso PosturaCorretta",
-                                    url_for(tab: "postura"),
-                                    class: "pb-4 border-b-2 font-bold text-sm uppercase tracking-widest transition-all #{active_tab == 'postura' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}" %>
-                    
-                        <%= link_to "Linee guida percorso salute",
-                                    url_for(tab: "percorso"),
-                                    class: "pb-4 border-b-2 font-bold text-sm uppercase tracking-widest transition-all #{active_tab == 'percorso' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}" %>
-                                              </div>
-                    </div>
-                </div>
-              <div
-                class="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div
-                  class="lg:col-span-4 bg-slate-50 dark:bg-slate-800/50 p-8 border-r border-slate-100 dark:border-slate-800"
-                >
-                  <h4
-                    class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8"
-                  >
-                    Postura e Fisiologia
-                 
-                 
-                  </h4>
-                  <div class="space-y-6">
-                    <div
-                      class="group cursor-pointer p-4 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border-2 border-primary"
-                    >
-                      <h5 class="font-bold text-primary mb-1">
-                        Igiene Posturale
-                      </h5>
-                      <p class="text-xs text-slate-500">
-                        Le fondamenta per un corpo efficiente.
-                      </p>
-                    </div>
-                    <div
-                      class="group cursor-pointer p-4 rounded-2xl hover:bg-white dark:hover:bg-slate-800 transition-all border-2 border-transparent hover:border-slate-200 dark:hover:border-slate-700"
-                    >
-                      <h5 class="font-bold mb-1">Principi di Fisioterapia</h5>
-                      <p class="text-xs text-slate-500">
-                        Approccio clinico e riabilitativo.
-                      </p>
-                    </div>
-                    <div
-                      class="group cursor-pointer p-4 rounded-2xl hover:bg-white dark:hover:bg-slate-800 transition-all border-2 border-transparent hover:border-slate-200 dark:hover:border-slate-700"
-                    >
-                      <h5 class="font-bold mb-1">Principi di Osteopatia</h5>
-                      <p class="text-xs text-slate-500">
-                        Visione olistica e strutturale.
-                      </p>
-                    </div>
-                    <div
-                      class="group cursor-pointer p-4 rounded-2xl hover:bg-white dark:hover:bg-slate-800 transition-all border-2 border-transparent hover:border-slate-200 dark:hover:border-slate-700"
-                    >
-                      <h5 class="font-bold mb-1">Biomeccanica GDS</h5>
-                      <p class="text-xs text-slate-500">
-                        Studio delle catene muscolari.
-                      </p>
-                    </div>
-                     <h4
-                    class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8"
-                  >
-                    5 aree della salute
-                 
-                 
-                  </h4>
-                    <h4
-                    class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8"
-                  >
-                    Oltre la salute
-                 
-                 
-                  </h4>
-                  </div>
-                </div>
-                <div class="lg:col-span-8 p-8 md:p-12 space-y-10">
-                  <div
-                    class="flex flex-col md:flex-row md:items-center justify-between gap-6"
-                  >
-                    <div>
-                      <div class="flex items-center gap-2 mb-2">
-                        <span class="material-symbols-outlined text-primary"
-                          >accessibility_new</span
-                        >
-                        <span
-                          class="text-xs font-bold uppercase tracking-widest text-primary"
-                          >Corso Attivo</span
-                        >
-                      </div>
-                      <h3 class="text-3xl font-bold">Igiene Posturale</h3>
-                      <p class="text-slate-500 mt-2 max-w-md">
-                        Strategie quotidiane per la prevenzione e il
-                        mantenimento di un allineamento corretto.
-                      </p>
-                    </div>
-                    <button
-                      class="h-12 px-6 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all whitespace-nowrap"
-                    >
-                      Inizia Modulo
-                    </button>
-                  </div>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div
-                      class="p-6 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 hover:border-primary/30 transition-colors group"
-                    >
-                      <div
-                        class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors"
-                      >
-                        <span class="material-symbols-outlined"
-                          >fitness_center</span
-                        >
-                      </div>
-                      <h4 class="font-bold mb-1">Mobilità articolare</h4>
-                      <p class="text-sm text-slate-500">
-                        Esercizi per sbloccare le rigidità strutturali croniche.
-                      </p>
-                    </div>
-                    <div
-                      class="p-6 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 hover:border-primary/30 transition-colors group"
-                    >
-                      <div
-                        class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors"
-                      >
-                        <span class="material-symbols-outlined"
-                          >self_improvement</span
-                        >
-                      </div>
-                      <h4 class="font-bold mb-1">
-                        Togliere tensioni collo e spalle
-                      </h4>
-                      <p class="text-sm text-slate-500">
-                        Rilascio miofasciale per la parte alta del corpo.
-                      </p>
-                    </div>
-                    <div
-                      class="p-6 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 hover:border-primary/30 transition-colors group"
-                    >
-                      <div
-                        class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors"
-                      >
-                        <span class="material-symbols-outlined"
-                          >psychology</span
-                        >
-                      </div>
-                      <h4 class="font-bold mb-1">
-                        Riequilibrare il sistema nervoso
-                      </h4>
-                      <p class="text-sm text-slate-500">
-                        Connessione neuro-posturale per la propriocezione.
-                      </p>
-                    </div>
-                    <div
-                      class="p-6 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 hover:border-primary/30 transition-colors group"
-                    >
-                      <div
-                        class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors"
-                      >
-                        <span class="material-symbols-outlined">bolt</span>
-                      </div>
-                      <h4 class="font-bold mb-1">Riattivare i recettori</h4>
-                      <p class="text-sm text-slate-500">
-                        Stimolazione dei punti di controllo della statica.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+</section>

@@ -47,4 +47,14 @@ class PagesController < ApplicationController
 
   def contact
   end
+
+  def coming_soon
+    @feature = params[:feature].to_s.strip.presence || "Questa sezione"
+    @source = params[:source].to_s.strip.presence
+    source_suffix = @source.present? ? " (da: #{@source})" : ""
+    fallback_message = "Ciao! Sono interessato a #{@feature}#{source_suffix}. Quando sara disponibile?"
+    @wa_message = params[:wa_message].to_s.strip.presence || fallback_message
+    @wa_number = "393290706039"
+    @wa_url = "https://wa.me/#{@wa_number}?text=#{ERB::Util.url_encode(@wa_message)}"
+  end
 end
