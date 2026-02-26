@@ -15,6 +15,10 @@
       <% else %>
         <%= taxbranch_breadcrumb(@taxbranch_node) %>
       <% end %>
+      <div class="mt-1 text-[11px] text-slate-500">
+        slug:
+        <code class="rounded bg-slate-100 px-1.5 py-0.5 text-slate-700"><%= @taxbranch.slug %></code>
+      </div>
     </nav>
 
     <% domain = @taxbranch.header_domain || Current.domain %>

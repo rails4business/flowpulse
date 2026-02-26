@@ -88,7 +88,7 @@
                   </div>
                 </div>
 
-                <div class="flex flex-wrap md:flex-nowrap gap-2 text-xs">
+                <div class="hidden md:flex flex-wrap md:flex-nowrap gap-2 text-xs">
                   <div class="flex-1 min-w-[120px] rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
                     <div class="text-slate-400 font-bold uppercase text-[10px]">Utenti</div>
                     <div class="text-lg font-bold text-slate-800" id="statUsers">—</div>
@@ -384,6 +384,24 @@
                       <div class="mt-1 text-sm text-slate-700" id="infoDesc">—</div>
                     </div>
                   </div>
+                  <div class="mt-3 grid grid-cols-2 gap-3 md:hidden">
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
+                      <div class="text-xs uppercase tracking-wide text-slate-400">Utenti</div>
+                      <div id="infoStatUsers" class="mt-1 text-lg font-black text-slate-900">—</div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
+                      <div class="text-xs uppercase tracking-wide text-slate-400">Insegnanti</div>
+                      <div id="infoStatTeachers" class="mt-1 text-lg font-black text-slate-900">—</div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
+                      <div class="text-xs uppercase tracking-wide text-slate-400">Centri</div>
+                      <div id="infoStatCenters" class="mt-1 text-lg font-black text-slate-900">—</div>
+                    </div>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
+                      <div class="text-xs uppercase tracking-wide text-slate-400">Scuole</div>
+                      <div id="infoStatSchools" class="mt-1 text-lg font-black text-slate-900">—</div>
+                    </div>
+                  </div>
                 </div>
 
 
@@ -521,27 +539,7 @@
         { id: "paap", title: "Rigido e Lasso — Catena PAAP", desc: "Polarità e bilanciamento." },
       ],
     },
-    {
-      id: "kinesiologia_sequenza",
-      title: "Una sequenza tratta dalla kinesiologia",
-      method: "Kinesiologia (sequenza)",
-      image: "https://ik.imagekit.io/posturacorretta/immagini_brand/principi_kinesiologia.png",
-      icon: "monitor_heart",
-      gradient: "from-rose-400 to-rose-600",
-      desc: "4 lezioni — sequenza guidata per postura, coordinazione e integrazione del gesto.",
-      stats: { users: 360, reviews: 39, teachers: 6, centers: 3, rating: 4.6 },
-      pricing: {
-        autonomia: { standard: 99 },
-        pro: { single: 70, pack: 290, group_per_person: 165 },
-        final_check: 90,
-      },
-      lessons: [
-        { id: "kine_setup", title: "Setup posturale", desc: "Preparazione articolare e allineamento iniziale." },
-        { id: "kine_catene", title: "Attivazione catene", desc: "Sequenza progressiva per catene muscolari principali." },
-        { id: "kine_respiro", title: "Respiro e ritmo", desc: "Sincronizzazione gesto-respiro e controllo del carico." },
-        { id: "kine_integrazione", title: "Integrazione finale", desc: "Sequenza completa e consolidamento motorio." },
-      ],
-    },
+   
     {
       id: "corpo_coscienza_intro",
       title: "Bioritmi circadiani — Intro Metodo Corpo e Coscienza",
@@ -567,6 +565,28 @@
         { id: "fisiol_feno", title: "Fisiologia, Fenomenologia e Aspetti Energetici", desc: "Sintesi e mappa operativa." },
       ],
     },
+     {
+      id: "kinesiologia_sequenza",
+      title: "Una sequenza tratta dalla kinesiologia",
+      method: "Kinesiologia (sequenza)",
+      image: "https://ik.imagekit.io/posturacorretta/immagini_brand/principi_kinesiologia.png",
+      icon: "monitor_heart",
+      gradient: "from-rose-400 to-rose-600",
+      desc: "4 lezioni — sequenza guidata per postura, coordinazione e integrazione del gesto.",
+      stats: { users: 360, reviews: 39, teachers: 6, centers: 3, rating: 4.6 },
+      pricing: {
+        autonomia: { standard: 99 },
+        pro: { single: 70, pack: 290, group_per_person: 165 },
+        final_check: 90,
+      },
+      lessons: [
+        { id: "kine_setup", title: "Setup posturale", desc: "Preparazione articolare e allineamento iniziale." },
+        { id: "kine_catene", title: "Attivazione catene", desc: "Sequenza progressiva per catene muscolari principali." },
+        { id: "kine_respiro", title: "Respiro e ritmo", desc: "Sincronizzazione gesto-respiro e controllo del carico." },
+        { id: "kine_integrazione", title: "Integrazione finale", desc: "Sequenza completa e consolidamento motorio." },
+      ],
+    },
+    
   ];
 
   const INSTRUCTOR_LESSONS = [
@@ -857,6 +877,10 @@
     if ($("statReviews")) $("statReviews").textContent = "-";
     if ($("statTeachers")) $("statTeachers").textContent = "-";
     if ($("statCenters")) $("statCenters").textContent = "-";
+    if ($("infoStatUsers")) $("infoStatUsers").textContent = m.stats.users.toLocaleString("it-IT");
+    if ($("infoStatTeachers")) $("infoStatTeachers").textContent = m.stats.teachers.toLocaleString("it-IT");
+    if ($("infoStatCenters")) $("infoStatCenters").textContent = m.stats.centers.toLocaleString("it-IT");
+    if ($("infoStatSchools")) $("infoStatSchools").textContent = "-";
 
     if ($("infoMethod")) $("infoMethod").textContent = m.method;
     if ($("infoDesc")) $("infoDesc").textContent = m.desc;

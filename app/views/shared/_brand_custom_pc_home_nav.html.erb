@@ -16,7 +16,7 @@
   percorso_modules = percorso_children.reject { |child| child == percorso_intro }
 %>
 <header
-  class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-none md:backdrop-blur-md border-b border-solid border-[#f2f0f4] dark:border-slate-800"
+  class="sticky top-0 z-50 bg-white/90 dark:bg-background-dark/90 border-b border-solid border-[#f2f0f4] dark:border-slate-800"
 >
   <div
     class="max-w-[1200px] mx-auto px-10 py-4 flex items-center justify-between gap-6"
@@ -71,23 +71,23 @@
               </section>
               <section class="rounded-lg border border-slate-100 p-2">
                 <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete</p>
-                <%= link_to "Allievi", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
-                <%= link_to "Insegnanti", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
-                <%= link_to "Centri", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
-                <%= link_to "Metodiche", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
+                <%= link_to "Allievi", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to "Insegnanti", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to "Centri", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to "Metodiche", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
               </section>
             </div>
           </details>
-             <%= link_to coming_soon_path(feature: "Linee guida Percorso Salute", source: "Nav desktop > Accademia"),
+         
+
+           <%= link_to coming_soon_path(feature: "Percorso Salute: Linee guida ", source: "Nav desktop > Accademia"),
                          class: "mx-2 mb-3 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
                          data: { close_dropdown: true } do %>
-          Linee guida Percorso Salute
+          Percorso Salute: Linee guida
           <% end %>
-            <%= link_to coming_soon_path(feature: "Le 5 aree con salute e postura", source: "Nav desktop > Accademia"),
-                        class: "mx-2 mb-3 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
-                        data: { close_dropdown: true } do %>
-          Le 5 aree con salute e postura
-          <% end %>
+
+             
+        
            <%= link_to coming_soon_path(feature: "Stile di vita", source: "Nav desktop > Accademia"),
                        class: "mx-2 mb-3 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
                        data: { close_dropdown: true } do %>
@@ -202,23 +202,21 @@
                     </section>
                     <section class="rounded-lg border border-slate-100 p-2">
                       <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete</p>
-                      <%= link_to "Allievi", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
-                      <%= link_to "Insegnanti", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
-                      <%= link_to "Centri", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
-                      <%= link_to "Metodiche", posturacorretta_rete_path, class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary" %>
+                      <%= link_to "Allievi", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to "Insegnanti", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to "Centri", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to "Metodiche", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
                     </section>
                   </div>
                 </details>
-                <%= link_to coming_soon_path(feature: "Linee guida Percorso Salute", source: "Nav mobile > Accademia"),
+           
+                   <%= link_to coming_soon_path(feature: " Percorso Salute: Linee guida", source: "Nav mobile > Accademia"),
                             class: "mb-2 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
                             data: { close_dropdown: true } do %>
-                  Linee guida Percorso Salute
+                  Percorso Salute: Linee guida
                 <% end %>
-                <%= link_to coming_soon_path(feature: "Le 5 aree con salute e postura", source: "Nav mobile > Accademia"),
-                            class: "mb-2 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
-                            data: { close_dropdown: true } do %>
-                  Le 5 aree con salute e postura
-                <% end %>
+                  
+              
                 <%= link_to coming_soon_path(feature: "Stile di vita", source: "Nav mobile > Accademia"),
                             class: "block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
                             data: { close_dropdown: true } do %>
@@ -294,34 +292,23 @@
     });
 
     const mobileMenu = nav.querySelector("details[data-nav-mobile-menu]");
-    let mobileScrollY = 0;
-
     const lockBodyScroll = () => {
-      mobileScrollY = window.scrollY || window.pageYOffset || 0;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${mobileScrollY}px`;
-      document.body.style.left = "0";
-      document.body.style.right = "0";
-      document.body.style.width = "100%";
       document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none";
     };
 
     const unlockBodyScroll = () => {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.width = "";
       document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-      if (mobileScrollY > 0) window.scrollTo(0, mobileScrollY);
     };
 
     if (mobileMenu) {
       mobileMenu.addEventListener("toggle", () => {
         if (mobileMenu.open) {
           lockBodyScroll();
+          const panel = mobileMenu.querySelector("div.fixed.inset-0");
+          if (panel) {
+            panel.style.position = "fixed";
+            panel.style.inset = "0";
+          }
         } else {
           unlockBodyScroll();
         }
@@ -372,5 +359,16 @@
         closeMobileMenuSafely();
       }
     });
+
+    // Turbo/back-forward cache safety: never keep mobile overlay/body-lock between visits.
+    document.addEventListener("turbo:before-cache", closeMobileMenuSafely);
+    window.addEventListener("pageshow", () => {
+      if (window.matchMedia("(min-width: 768px)").matches) closeMobileMenuSafely();
+    });
+
+    // Initial guard on render (desktop should never keep mobile state).
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      closeMobileMenuSafely();
+    }
   })();
 </script>

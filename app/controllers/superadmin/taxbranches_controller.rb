@@ -182,7 +182,23 @@ end
   def move_up
     @taxbranch.normalize_siblings_positions!
     siblings_desc = @taxbranch.parent&.order_des? || false
-    siblings_desc ? @taxbranch.move_lower : @taxbranch.move_higher
+    siblings_scope = Taxbranch.where(ancestry: @taxbranch.ancestry).order(:position, :id)
+    first_sibling = siblings_scope.first
+    last_sibling = siblings_scope.last
+
+    if siblings_desc
+      if last_sibling&.id == @taxbranch.id
+        @taxbranch.insert_at(1)
+      else
+        @taxbranch.move_lower
+      end
+    else
+      if first_sibling&.id == @taxbranch.id
+        @taxbranch.insert_at(siblings_scope.count)
+      else
+        @taxbranch.move_higher
+      end
+    end
     @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
@@ -190,7 +206,23 @@ end
   def move_down
     @taxbranch.normalize_siblings_positions!
     siblings_desc = @taxbranch.parent&.order_des? || false
-    siblings_desc ? @taxbranch.move_higher : @taxbranch.move_lower
+    siblings_scope = Taxbranch.where(ancestry: @taxbranch.ancestry).order(:position, :id)
+    first_sibling = siblings_scope.first
+    last_sibling = siblings_scope.last
+
+    if siblings_desc
+      if first_sibling&.id == @taxbranch.id
+        @taxbranch.insert_at(siblings_scope.count)
+      else
+        @taxbranch.move_higher
+      end
+    else
+      if last_sibling&.id == @taxbranch.id
+        @taxbranch.insert_at(1)
+      else
+        @taxbranch.move_lower
+      end
+    end
     @taxbranch.normalize_siblings_positions!
     redirect_back fallback_location: superadmin_taxbranches_path
   end
@@ -198,26 +230,37 @@ end
   def move_left
     old_ancestry = @taxbranch.ancestry
     parent = @taxbranch.parent
-    if parent&.parent.present?
-      @taxbranch.update(parent: parent.parent)
-    else
-      @taxbranch.update(parent: nil)
+    new_parent = parent&.parent
+
+    Taxbranch.transaction do
+      @taxbranch.update!(parent: new_parent)
+      place_new_taxbranch_for_parent_order!(@taxbranch)
+      Taxbranch.normalize_positions_for_ancestry!(old_ancestry)
+      @taxbranch.normalize_siblings_positions!
     end
-    Taxbranch.normalize_positions_for_ancestry!(old_ancestry)
-    @taxbranch.normalize_siblings_positions!
+
     redirect_back fallback_location: superadmin_taxbranches_path
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_back fallback_location: superadmin_taxbranches_path, alert: e.message
   end
 
   def move_right
     old_ancestry = @taxbranch.ancestry
     siblings_desc = @taxbranch.parent&.order_des? || false
     previous = siblings_desc ? @taxbranch.lower_item : @taxbranch.higher_item
+
     if previous.present?
-      @taxbranch.update(parent: previous)
+      Taxbranch.transaction do
+        @taxbranch.update!(parent: previous)
+        place_new_taxbranch_for_parent_order!(@taxbranch)
+        Taxbranch.normalize_positions_for_ancestry!(old_ancestry)
+        @taxbranch.normalize_siblings_positions!
+      end
     end
-    Taxbranch.normalize_positions_for_ancestry!(old_ancestry)
-    @taxbranch.normalize_siblings_positions!
+
     redirect_back fallback_location: superadmin_taxbranches_path
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_back fallback_location: superadmin_taxbranches_path, alert: e.message
   end
 
   def positioning
