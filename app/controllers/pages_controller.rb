@@ -42,6 +42,9 @@ class PagesController < ApplicationController
   def igiene_posturale
   end
 
+  def insegnanti
+  end
+
   def about
   end
 

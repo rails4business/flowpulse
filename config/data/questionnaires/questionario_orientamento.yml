@@ -1,0 +1,151 @@
+slug: questionario_orientamento
+title: Questionario di Orientamento
+version: v1
+locale: it
+
+intro: |
+  Questionario iniziale per orientare il percorso.
+  Compila tutte le domande in modo sincero.
+
+scoring:
+  enabled: false
+
+questions:
+  - code: q1_diagnosi_attiva
+    position: 1
+    movement: Hai una diagnosi medica attiva?
+    side: none
+    kind: single_choice
+    options:
+      - value: si
+        label: Si
+      - value: no
+        label: No
+      - value: non_lo_so
+        label: Non lo so
+
+  - code: q1b_quale_diagnosi
+    position: 2
+    movement: Se si, quale?
+    side: none
+    kind: open_text
+    show_if:
+      all:
+        - question: q1_diagnosi_attiva
+          operator: eq
+          value: si
+
+  - code: q2_dolore_patologia
+    position: 3
+    movement: Hai attualmente dolore o una patologia?
+    side: none
+    kind: single_choice
+    options:
+      - value: no
+        label: No
+      - value: lieve
+        label: Si, leggero
+      - value: frequente
+        label: Si, frequente
+      - value: intenso
+        label: Si, intenso o invalidante
+
+  - code: q2b_da_quanto_tempo
+    position: 4
+    movement: Da quanto tempo?
+    side: none
+    kind: open_text
+    show_if:
+      all:
+        - question: q2_dolore_patologia
+          operator: in
+          value:
+            - lieve
+            - frequente
+            - intenso
+
+  - code: q3_professionista_riferimento
+    position: 5
+    movement: Hai un professionista sanitario di riferimento (medico, fisioterapista)?
+    side: none
+    kind: single_choice
+    options:
+      - value: no
+        label: No
+      - value: si
+        label: Si
+
+  - code: q4_percorso_salute_attivo
+    position: 6
+    movement: Stai gia seguendo un percorso per la tua salute (palestra, nuoto, sport, ecc.)?
+    side: none
+    kind: single_choice
+    options:
+      - value: no
+        label: No
+      - value: si
+        label: Si
+
+  - code: q5_trattamenti_benessere
+    position: 7
+    movement: Segui trattamenti per il tuo benessere (massaggi, estetista, shiatsu, tuina, altro)?
+    side: none
+    kind: single_choice
+    options:
+      - value: no
+        label: No
+      - value: si
+        label: Si
+
+  - code: q6_discipline_movimento
+    position: 8
+    movement: Segui una disciplina di movimento (yoga, tai chi, arti marziali, Feldenkrais, metodiche posturali)?
+    side: none
+    kind: single_choice
+    options:
+      - value: no
+        label: No
+      - value: si
+        label: Si
+
+  - code: q7_obiettivo_principale
+    position: 9
+    movement: Il tuo obiettivo principale e
+    side: none
+    kind: single_choice
+    options:
+      - value: patologia
+        label: Risolvere un dolore o una patologia
+      - value: performance
+        label: Migliorare i risultati dei miei percorsi (benessere, allenamento, sport)
+      - value: conoscenza
+        label: Conoscere meglio il mio corpo
+
+  - code: q8_controllo_stile_vita
+    position: 10
+    movement: Quanto controllo senti di avere sul tuo stile di vita? (1-10)
+    side: none
+    kind: scale
+    min: 1
+    max: 10
+    options:
+      - value: 1
+        label: 1
+      - value: 2
+        label: 2
+      - value: 3
+        label: 3
+      - value: 4
+        label: 4
+      - value: 5
+        label: 5
+      - value: 6
+        label: 6
+      - value: 7
+        label: 7
+      - value: 8
+        label: 8
+      - value: 9
+        label: 9
+      - value: 10
+        label: 10

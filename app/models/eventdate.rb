@@ -42,6 +42,78 @@ class Eventdate < ApplicationRecord
   end
 
   before_validation :apply_duration_to_end_at
+  before_validation :ensure_meta_hash
+
+  # Questionnaire helpers
+  def questionnaire_submission?
+    questionnaire_taxbranch_id.present?
+  end
+
+  def questionnaire_taxbranch_id
+    raw = (meta || {})["questionnaire_taxbranch_id"]
+    raw.present? ? raw.to_i : nil
+  end
+
+  def questionnaire_taxbranch_id=(value)
+    self.meta = (meta || {}).merge("questionnaire_taxbranch_id" => value.presence)
+  end
+
+  def questionnaire_answers
+    raw = (meta || {})["answers"]
+    raw.is_a?(Array) ? raw : []
+  end
+
+  # Accepts:
+  # - Array: [{ question_taxbranch_id: 1, value: "..." }, ...]
+  # - Hash: { "1" => "value", "2" => { value: "x", kind: "open_text" } }
+  def questionnaire_answers=(value)
+    normalized =
+      case value
+      when Array
+        value.filter_map do |entry|
+          next unless entry.respond_to?(:to_h)
+
+          item = entry.to_h.stringify_keys
+          qid = item["question_taxbranch_id"].presence || item["question_id"].presence
+          next if qid.blank?
+
+          {
+            "question_taxbranch_id" => qid.to_i,
+            "kind" => item["kind"].presence || "open_text",
+            "value" => item["value"]
+          }
+        end
+      when Hash
+        value.filter_map do |question_id, payload|
+          if payload.is_a?(Hash)
+            {
+              "question_taxbranch_id" => question_id.to_i,
+              "kind" => payload[:kind].presence || payload["kind"].presence || "open_text",
+              "value" => payload[:value].presence || payload["value"]
+            }
+          else
+            {
+              "question_taxbranch_id" => question_id.to_i,
+              "kind" => "open_text",
+              "value" => payload
+            }
+          end
+        end
+      else
+        []
+      end
+
+    self.meta = (meta || {}).merge("answers" => normalized)
+  end
+
+  def answer_for(question_taxbranch_id)
+    questionnaire_answers.find { |answer| answer["question_taxbranch_id"].to_i == question_taxbranch_id.to_i }
+  end
+
+  def questionnaire_score_result
+    result = (meta || {})["score_result"]
+    result.is_a?(Hash) ? result : {}
+  end
 
   private
 
@@ -60,5 +132,9 @@ class Eventdate < ApplicationRecord
     return unless multiplier
 
     self.date_end = date_start + time_duration.to_i * multiplier
+  end
+
+  def ensure_meta_hash
+    self.meta = {} unless meta.is_a?(Hash)
   end
 end

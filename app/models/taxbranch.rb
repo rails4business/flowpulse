@@ -1,7 +1,9 @@
 class Taxbranch < ApplicationRecord
+  encrypts :private_address
   belongs_to :scheduled_eventdate, class_name: "Eventdate", optional: true
   has_ancestry
   acts_as_list scope: [ :ancestry ]
+
 
 
   belongs_to :lead, optional: true
@@ -35,6 +37,7 @@ class Taxbranch < ApplicationRecord
 
   validate :cannot_have_children_if_link_node
   validate :permission_roles_must_match_domain
+  validate :questionnaire_source_must_be_valid
   before_validation :normalize_and_build_slugs
   after_commit :bust_categories_cache, if: :saved_change_to_slug_category?
 
@@ -97,6 +100,92 @@ class Taxbranch < ApplicationRecord
   def has_post?        = post.present?
   def has_public_post? = post&.published?
   def display_label    = slug_label.presence || slug.to_s.titleize
+
+  # Questionnaire helpers
+  QUESTIONNAIRE_CATEGORY = "questionnaire".freeze
+  QUESTION_CATEGORY = "question".freeze
+  OPTION_CATEGORY = "option".freeze
+
+  def questionnaire_root?
+    slug_category.to_s == QUESTIONNAIRE_CATEGORY
+  end
+
+  def question_node?
+    slug_category.to_s == QUESTION_CATEGORY
+  end
+
+  def option_node?
+    slug_category.to_s == OPTION_CATEGORY
+  end
+
+  def questionnaire_questions
+    return Taxbranch.none unless questionnaire_root?
+
+    children.where(slug_category: QUESTION_CATEGORY).ordered
+  end
+
+  def question_options
+    return Taxbranch.none unless question_node?
+
+    children.where(slug_category: OPTION_CATEGORY).ordered
+  end
+
+  # Supported: open_text, single_choice, multi_choice, scale
+  def question_kind
+    meta_indifferent[:question_kind].to_s.presence || "open_text"
+  end
+
+  def scoring_config
+    cfg = meta_indifferent[:scoring]
+    cfg.is_a?(Hash) ? cfg : {}
+  end
+
+  def scoring_enabled?
+    scoring_config["enabled"] == true
+  end
+
+  def questionnaire_source
+    meta_indifferent[:questionnaire_source].to_s
+  end
+
+  def questionnaire_source=(value)
+    self.meta = (meta || {}).merge("questionnaire_source" => value.to_s.strip.presence)
+  end
+
+  def questionnaire_version
+    meta_indifferent[:questionnaire_version].to_s
+  end
+
+  def questionnaire_version=(value)
+    self.meta = (meta || {}).merge("questionnaire_version" => value.to_s.strip.presence)
+  end
+
+  def questionnaire_definition
+    path = questionnaire_source_path
+    return {} if path.blank? || !File.exist?(path)
+
+    parsed = YAML.safe_load_file(path, permitted_classes: [], aliases: false) || {}
+    parsed.is_a?(Hash) ? parsed : {}
+  rescue Psych::Exception
+    {}
+  end
+
+  def questionnaire_source_path
+    raw = questionnaire_source.to_s.strip
+    if raw.blank?
+      return nil unless questionnaire_root?
+
+      candidates = Dir.glob(Rails.root.join("config/data/questionnaires/*.{yml,yaml}")).sort
+      return candidates.first if candidates.size == 1
+      return nil
+    end
+
+    normalized = raw.sub(%r{\A/+}, "")
+    return nil unless normalized.start_with?("config/data/questionnaires/")
+    return nil unless normalized.match?(/\.ya?ml\z/i)
+
+    Rails.root.join(normalized).to_s
+  end
 
   def permission_access_roles=(value)
     self[:permission_access_roles] = normalize_role_list(value)
@@ -268,5 +357,38 @@ end
       :permission_access_roles,
       "contiene valori non presenti tra i ruoli disponibili del dominio: #{invalid.join(', ')}"
     )
+  end
+
+  def meta_indifferent
+    value = meta
+    return {}.with_indifferent_access unless value.is_a?(Hash)
+
+    value.with_indifferent_access
+  end
+
+  def questionnaire_source_must_be_valid
+    return unless questionnaire_root?
+
+    resolved = questionnaire_source_path
+    if resolved.blank?
+      if questionnaire_source.blank?
+        errors.add(:meta, "seleziona un questionario YAML per slug_category=questionnaire")
+      else
+        errors.add(:meta, "questionnaire_source deve iniziare con config/data/questionnaires/ e terminare con .yml/.yaml")
+      end
+      return
+    end
+
+    unless File.exist?(resolved)
+      errors.add(:meta, "questionnaire_source non trovato: #{questionnaire_source}")
+      return
+    end
+
+    begin
+      parsed = YAML.safe_load_file(resolved, permitted_classes: [], aliases: false)
+      errors.add(:meta, "questionnaire_source non contiene un Hash YAML valido") unless parsed.is_a?(Hash)
+    rescue Psych::Exception => e
+      errors.add(:meta, "questionnaire_source YAML non valido: #{e.message}")
+    end
   end
 end

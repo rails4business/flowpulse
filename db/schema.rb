@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_20_071317) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,54 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_20_071317) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.bigint "booking_id"
+    t.integer "center_taxbranch_id"
+    t.bigint "certificate_id"
+    t.string "channel"
+    t.datetime "created_at", null: false
+    t.bigint "domain_id"
+    t.bigint "enrollment_id"
+    t.bigint "eventdate_id"
+    t.string "format"
+    t.integer "group_size"
+    t.string "kind", null: false
+    t.bigint "lead_id", null: false
+    t.string "level_code"
+    t.text "location_address"
+    t.string "location_name"
+    t.string "location_type"
+    t.string "mode"
+    t.datetime "occurred_at", null: false
+    t.jsonb "payload", default: {}, null: false
+    t.integer "score_max"
+    t.integer "score_total"
+    t.bigint "service_id"
+    t.string "source"
+    t.string "source_ref"
+    t.string "status", default: "recorded", null: false
+    t.bigint "taxbranch_id"
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_activities_on_booking_id"
+    t.index ["center_taxbranch_id"], name: "index_activities_on_center_taxbranch_id"
+    t.index ["certificate_id"], name: "index_activities_on_certificate_id"
+    t.index ["channel"], name: "index_activities_on_channel"
+    t.index ["domain_id", "occurred_at"], name: "index_activities_on_domain_id_and_occurred_at"
+    t.index ["domain_id"], name: "index_activities_on_domain_id"
+    t.index ["enrollment_id"], name: "index_activities_on_enrollment_id"
+    t.index ["eventdate_id"], name: "index_activities_on_eventdate_id"
+    t.index ["format"], name: "index_activities_on_format"
+    t.index ["kind", "occurred_at"], name: "index_activities_on_kind_and_occurred_at"
+    t.index ["lead_id", "occurred_at"], name: "index_activities_on_lead_id_and_occurred_at"
+    t.index ["lead_id", "taxbranch_id"], name: "index_activities_unique_open_per_lead_taxbranch", unique: true, where: "((status)::text = ANY ((ARRAY['recorded'::character varying, 'reviewed'::character varying])::text[]))"
+    t.index ["lead_id"], name: "index_activities_on_lead_id"
+    t.index ["level_code"], name: "index_activities_on_level_code"
+    t.index ["location_type"], name: "index_activities_on_location_type"
+    t.index ["mode"], name: "index_activities_on_mode"
+    t.index ["service_id"], name: "index_activities_on_service_id"
+    t.index ["taxbranch_id"], name: "index_activities_on_taxbranch_id"
   end
 
   create_table "book_domains", force: :cascade do |t|
@@ -481,6 +529,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_20_071317) do
   end
 
   create_table "taxbranches", force: :cascade do |t|
+    t.string "address_privacy", default: "private", null: false
     t.string "ancestry"
     t.datetime "created_at", null: false
     t.text "generaimpresa_md"
@@ -494,6 +543,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_20_071317) do
     t.integer "phase", default: 0, null: false
     t.integer "position"
     t.boolean "positioning_tag_public", default: false, null: false
+    t.text "private_address"
+    t.text "public_address"
     t.datetime "published_at"
     t.integer "scheduled_eventdate_id"
     t.boolean "service_certificable"
@@ -505,6 +556,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_20_071317) do
     t.integer "visibility", default: 0, null: false
     t.integer "x_coordinated"
     t.integer "y_coordinated"
+    t.index ["address_privacy"], name: "index_taxbranches_on_address_privacy"
     t.index ["lead_id"], name: "index_taxbranches_on_lead_id"
     t.index ["link_child_taxbranch_id"], name: "index_taxbranches_on_link_child_taxbranch_id"
     t.index ["positioning_tag_public"], name: "index_taxbranches_on_positioning_tag_public"
@@ -539,6 +591,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_20_071317) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "activities", "bookings"
+  add_foreign_key "activities", "certificates"
+  add_foreign_key "activities", "domains"
+  add_foreign_key "activities", "enrollments"
+  add_foreign_key "activities", "eventdates"
+  add_foreign_key "activities", "leads"
+  add_foreign_key "activities", "services"
+  add_foreign_key "activities", "taxbranches"
+  add_foreign_key "activities", "taxbranches", column: "center_taxbranch_id"
   add_foreign_key "book_domains", "books"
   add_foreign_key "book_domains", "domains"
   add_foreign_key "bookings", "commitments"

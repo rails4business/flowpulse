@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   allow_unauthenticated_access only: %i[show mark_done pricing]
 
   before_action :set_post,         only: %i[edit update destroy]
-  before_action :set_post_public,  only: %i[show mark_done pricing]
+  before_action :set_post_public,  only: %i[show mark_done pricing submit_questionnaire]
   before_action :set_superadmin,   except: %i[show mark_done pricing]
 
   helper_method :sort_column, :sort_direction
@@ -38,6 +38,21 @@ class PostsController < ApplicationController
     )
 
     if event.save
+      begin
+        lead.activities.create!(
+          domain: Current.domain,
+          taxbranch: taxbranch,
+          eventdate: event,
+          kind: "step_completed",
+          status: "recorded",
+          occurred_at: event.date_start || Time.current,
+          source: "post_mark_done",
+          source_ref: @post&.slug.presence || taxbranch.slug
+        )
+      rescue StandardError => e
+        Rails.logger.warn("Activity non salvata in mark_done: #{e.class} - #{e.message}")
+      end
+
       redirect_back fallback_location: post_path(params[:id]),
                     notice: "🎉 Esercizio “#{taxbranch.post&.title || 'senza titolo'}” completato (ciclo #{new_cycle})."
     else
@@ -116,7 +131,13 @@ class PostsController < ApplicationController
     @nav_items = @taxbranch.children.home_nav
 
     slug = @post.taxbranch&.slug_category&.parameterize&.underscore
-    request.variant = slug.present? ? slug.to_sym : nil
+    request.variant =
+      if @taxbranch&.questionnaire_source_path.present? || @taxbranch&.questionnaire_root?
+        :questionnaire
+      else
+        slug.present? ? slug.to_sym : nil
+      end
+    load_questionnaire_for_show if request.variant == :questionnaire
 
     Rails.logger.info "🧩 Variant attiva: #{request.variant.inspect}"
   end
@@ -135,9 +156,45 @@ class PostsController < ApplicationController
     Rails.logger.info "🧩 Variant attiva (pricing): #{request.variant.inspect}"
   end
 
+  def submit_questionnaire
+    lead = Current.user&.lead
+    unless lead
+      redirect_to login_path, alert: "Devi essere autenticato per inviare il questionario."
+      return
+    end
+
+    questionnaire_taxbranch = @post.taxbranch
+    has_yaml_questionnaire = questionnaire_taxbranch&.questionnaire_source_path.present?
+    unless questionnaire_taxbranch&.questionnaire_root? || has_yaml_questionnaire
+      redirect_to post_path(@post), alert: "Questo post non e un questionario."
+      return
+    end
+
+    answers = submitted_questionnaire_answers
+    if answers.blank?
+      redirect_to post_path(@post, q: params[:q].presence || 1), alert: "Seleziona almeno una risposta prima di inviare."
+      return
+    end
+
+    activity = QuestionnaireSubmission.call(
+      lead: lead,
+      questionnaire_taxbranch: questionnaire_taxbranch,
+      answers: answers,
+      occurred_at: Time.current,
+      description: "Questionario inviato da #{lead.full_name.presence || lead.username.presence || "lead##{lead.id}"}",
+      source_ref: @post.slug
+    )
+
+    redirect_to post_path(@post, q: params[:q].presence || 1), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
+  rescue QuestionnaireSubmission::Error => e
+    redirect_to post_path(@post, q: params[:q].presence || 1), alert: e.message
+  end
+
   # GET /posts/new
   def new
     @post = Current.user.lead.posts.build
+    taxbranch_id = params.dig(:post, :taxbranch_id).presence || params[:taxbranch_id].presence
+    @post.taxbranch_id = taxbranch_id if taxbranch_id.present?
   end
 
   # GET /posts/:id/edit
@@ -151,9 +208,13 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to [ :superadmin, @post.taxbranch ], notice: "Post creato.", status: :see_other
     else
-      @taxbranch = @post.taxbranch
-      @children  = @taxbranch.children.ordered.includes(:domains)
-      render "superadmin/taxbranches/show", status: :unprocessable_entity
+      @taxbranch = @post.taxbranch || Taxbranch.find_by(id: params.dig(:post, :taxbranch_id))
+      if @taxbranch.present?
+        @children  = @taxbranch.children.ordered.includes(:domains)
+        render "superadmin/taxbranches/show", status: :unprocessable_entity
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
@@ -162,9 +223,13 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to [ :superadmin, @post.taxbranch ], notice: "Post aggiornato.", status: :see_other
     else
-      @taxbranch = @post.taxbranch
-      @children  = @taxbranch.children.ordered.includes(:domains)
-      render "superadmin/taxbranches/show", status: :unprocessable_entity
+      @taxbranch = @post.taxbranch || Taxbranch.find_by(id: params.dig(:post, :taxbranch_id))
+      if @taxbranch.present?
+        @children  = @taxbranch.children.ordered.includes(:domains)
+        render "superadmin/taxbranches/show", status: :unprocessable_entity
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 
@@ -256,6 +321,169 @@ end
     return false if tb.published_at.present? && tb.published_at > Time.current
 
     true
+  end
+
+  def load_questionnaire_for_show
+    @questionnaire_source = @taxbranch.questionnaire_source
+    @questionnaire_version = @taxbranch.questionnaire_version
+    @questionnaire_data = @taxbranch.questionnaire_definition
+    fallback = nil
+
+    if extract_questionnaire_questions(@questionnaire_data).blank?
+      fallback = load_questionnaire_fallback_data
+      if fallback.present?
+        @questionnaire_data = fallback[:data]
+        @questionnaire_source = fallback[:source].to_s.presence || @questionnaire_source
+        @questionnaire_version = fallback[:version].to_s.presence || @questionnaire_version
+        sync_questionnaire_meta_from_fallback!(fallback)
+      end
+    end
+
+    raw_questions = extract_questionnaire_questions(@questionnaire_data)
+    @questionnaire_questions = Array(raw_questions).sort_by { |q| q["position"].to_i }
+    raw_scoring = questionnaire_hash_value(@questionnaire_data, "scoring")
+    @questionnaire_scoring = raw_scoring.is_a?(Hash) ? raw_scoring : {}
+    @questionnaire_debug = {
+      source: @questionnaire_source.presence || "(vuoto)",
+      file_exists: questionnaire_source_file_exists?(@questionnaire_source),
+      top_level_keys: @questionnaire_data.is_a?(Hash) ? @questionnaire_data.keys : [],
+      questions_count: @questionnaire_questions.size,
+      fallback_used: fallback.present?
+    }
+  end
+
+  def questionnaire_source_file_exists?(source)
+    normalized = source.to_s.sub(%r{\A/+}, "")
+    return false if normalized.blank?
+    return false unless normalized.start_with?("config/data/questionnaires/")
+    return false unless normalized.match?(/\.ya?ml\z/i)
+
+    File.exist?(Rails.root.join(normalized))
+  end
+
+  def load_questionnaire_fallback_data
+    files = Dir.glob(Rails.root.join("config/data/questionnaires/*.{yml,yaml}")).sort
+    return nil if files.empty?
+
+    candidates = []
+    tokens = [
+      @taxbranch.slug.to_s.split("/").last,
+      @taxbranch.slug_label.to_s,
+      @post.slug.to_s
+    ].map { |v| normalize_questionnaire_token(v) }.reject(&:blank?).uniq
+
+    files.each do |path|
+      begin
+        data = YAML.safe_load_file(path, permitted_classes: [], aliases: false) || {}
+      rescue Psych::Exception
+        next
+      end
+      next unless data.is_a?(Hash)
+
+      questions = Array(data["questions"] || data["domande"])
+      next if questions.blank?
+
+      basename = File.basename(path, ".*")
+      slug_token = normalize_questionnaire_token(data["slug"])
+      title_token = normalize_questionnaire_token(data["title"])
+      file_token = normalize_questionnaire_token(basename)
+      match_score = tokens.sum do |t|
+        [
+          (slug_token == t ? 3 : 0),
+          (file_token == t ? 2 : 0),
+          (title_token == t ? 1 : 0),
+          (slug_token.include?(t) || t.include?(slug_token) ? 1 : 0),
+          (file_token.include?(t) || t.include?(file_token) ? 1 : 0)
+        ].max
+      end
+
+      candidates << { path: path, data: data, score: match_score }
+    end
+
+    chosen =
+      if candidates.size == 1
+        candidates.first
+      else
+        candidates.sort_by { |row| [-row[:score], row[:path]] }.first
+      end
+    return nil if chosen.blank?
+
+    rel = Pathname.new(chosen[:path]).relative_path_from(Rails.root).to_s
+    {
+      source: rel,
+      path: chosen[:path],
+      data: chosen[:data],
+      version: chosen[:data]["version"].to_s.presence
+    }
+  end
+
+  def normalize_questionnaire_token(value)
+    value.to_s.downcase
+      .tr("àèéìíîòóùú", "aeeiiioouu")
+      .gsub(/[^a-z0-9]+/, "_")
+      .gsub(/\A_+|_+\z/, "")
+  end
+
+  def extract_questionnaire_questions(data)
+    return [] unless data.is_a?(Hash)
+
+    value = questionnaire_hash_value(data, "questions")
+    value = questionnaire_hash_value(data, "domande") if value.blank?
+    Array(value)
+  end
+
+  def questionnaire_hash_value(hash, key)
+    return nil unless hash.is_a?(Hash)
+
+    hash[key] || hash[key.to_sym]
+  end
+
+  def submitted_questionnaire_answers
+    raw = params[:answers]
+    parsed = case raw
+    when ActionController::Parameters
+      raw.to_unsafe_h
+    when Hash
+      raw
+    else
+      {}
+    end
+
+    parsed.to_h.each_with_object({}) do |(key, value), memo|
+      next if key.to_s.strip.blank?
+      next if value.to_s.strip.blank?
+
+      memo[key.to_s] = value
+    end
+  end
+
+  def sync_questionnaire_meta_from_fallback!(fallback)
+    return if fallback.blank?
+    return unless @taxbranch&.slug_category.to_s == "questionnaire"
+
+    source = fallback[:source].to_s.strip
+    version = fallback[:version].to_s.strip
+    return if source.blank?
+
+    meta_hash = @taxbranch.meta.is_a?(Hash) ? @taxbranch.meta.deep_dup : {}
+    changed = false
+
+    if meta_hash["questionnaire_source"].to_s != source
+      meta_hash["questionnaire_source"] = source
+      changed = true
+    end
+
+    if version.present? && meta_hash["questionnaire_version"].to_s != version
+      meta_hash["questionnaire_version"] = version
+      changed = true
+    end
+
+    return unless changed
+
+    @taxbranch.update_columns(meta: meta_hash, updated_at: Time.current)
+    @taxbranch.meta = meta_hash
+  rescue StandardError => e
+    Rails.logger.warn("Questionnaire fallback sync skipped for taxbranch ##{@taxbranch&.id}: #{e.class} #{e.message}")
   end
 
   def post_params

@@ -1,0 +1,157 @@
+slug: iscrizione_ai_moduli_percorso_postura_e_fisiologia
+title: Iscrizione ai moduli percorso postura e fisiologia
+version: v1
+locale: it
+
+intro: |
+  Questionario di iscrizione ai moduli del percorso postura e fisiologia.
+  Replica il flusso del modale "Iscriviti al modulo".
+
+scoring:
+  enabled: false
+
+questions:
+  - code: modalita_percorso
+    position: 1
+    movement: Scegli la modalita del modulo
+    side: none
+    kind: single_choice
+    options:
+      - value: autonomia
+        label: Online in autonomia
+      - value: professionista
+        label: Seguito da professionista
+
+  - code: tipo_sessione
+    position: 2
+    movement: Tipo sessione
+    side: none
+    kind: single_choice
+    show_if:
+      all:
+        - question: modalita_percorso
+          operator: eq
+          value: professionista
+    options:
+      - value: singolo
+        label: Singolo
+      - value: gruppo
+        label: In gruppo
+
+  - code: dimensione_gruppo
+    position: 3
+    movement: Dimensione gruppo
+    side: none
+    kind: single_choice
+    show_if:
+      all:
+        - question: modalita_percorso
+          operator: eq
+          value: professionista
+        - question: tipo_sessione
+          operator: eq
+          value: gruppo
+    options:
+      - value: 2-4
+        label: 2 - 4
+      - value: 5-8
+        label: 5 - 8
+      - value: 8-12
+        label: 8 - 12
+      - value: 12-20
+        label: 12 - 20
+      - value: 20_plus
+        label: Piu di 20
+
+  - code: canale_erogazione
+    position: 4
+    movement: Modalita erogazione
+    side: none
+    kind: single_choice
+    show_if:
+      all:
+        - question: modalita_percorso
+          operator: eq
+          value: professionista
+    options:
+      - value: online
+        label: Online
+      - value: presenza
+        label: In presenza
+
+  - code: localita_online_paese
+    position: 5
+    movement: Localita online - Paese
+    side: none
+    kind: open_text
+    show_if:
+      all:
+        - question: modalita_percorso
+          operator: eq
+          value: professionista
+        - question: canale_erogazione
+          operator: eq
+          value: online
+
+  - code: localita_online_provincia
+    position: 6
+    movement: Localita online - Provincia
+    side: none
+    kind: open_text
+    show_if:
+      all:
+        - question: modalita_percorso
+          operator: eq
+          value: professionista
+        - question: canale_erogazione
+          operator: eq
+          value: online
+
+  - code: localita_online_citta
+    position: 7
+    movement: Localita online - Citta
+    side: none
+    kind: open_text
+    show_if:
+      all:
+        - question: modalita_percorso
+          operator: eq
+          value: professionista
+        - question: canale_erogazione
+          operator: eq
+          value: online
+
+  - code: luogo_presenza
+    position: 8
+    movement: Luogo in presenza
+    side: none
+    kind: single_choice
+    show_if:
+      all:
+        - question: modalita_percorso
+          operator: eq
+          value: professionista
+        - question: canale_erogazione
+          operator: eq
+          value: presenza
+    options:
+      - value: centro
+        label: Nel centro
+
+  - code: nome_cognome
+    position: 9
+    movement: Nome e cognome
+    side: none
+    kind: open_text
+
+  - code: email
+    position: 10
+    movement: Email
+    side: none
+    kind: open_text
+
+  - code: telefono
+    position: 11
+    movement: Telefono
+    side: none
+    kind: open_text

@@ -53,6 +53,7 @@ Rails.application.routes.draw do
 
   resources :taxbranches, only: [] do
     resources :eventdates, only: :index
+    resources :activities, only: [ :new, :create ], module: :taxbranches
   end
 
   get "taxbranches/:id/phase/index", to: "phase#index", as: :taxbranch_phase_index
@@ -145,9 +146,15 @@ Rails.application.routes.draw do
 
 
 resources :posts do
+    resources :activities, only: [ :show ], module: :posts do
+      collection do
+        post :ensure
+      end
+    end
     # Aggiunge una rotta POST per un membro specifico (un singolo post)
     # L'URL sarà /posts/:id/mark_done (ad esempio, /posts/6/mark_done)
     post :mark_done, on: :member # <--- QUESTA È LA ROTTA CORRETTA
+    post :submit_questionnaire, on: :member
     get :pricing, on: :member
   end
 
@@ -176,11 +183,13 @@ resources :posts do
   get "dashboard/liste"
   get "dashboard/home"
   post "dashboard/domain_membership", to: "dashboard#create_domain_membership", as: :create_dashboard_domain_membership
+  patch "dashboard/domain_membership/active_role", to: "dashboard#update_domain_active_role", as: :update_dashboard_domain_active_role
   get "dashboard/evento"
   get "dashboard/superadmin"
   get "pages/home"
   get "pages/about"
   get "pages/contact"
+  get "insegnanti", to: "pages#insegnanti", as: :insegnanti
   get "in-costruzione", to: "pages#coming_soon", as: :coming_soon
   get "/manifest.json", to: "pwa#manifest", as: :pwa_manifest
   get "/service-worker.js", to: "pwa#service_worker", as: :pwa_service_worker

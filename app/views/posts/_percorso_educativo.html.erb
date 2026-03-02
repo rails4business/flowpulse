@@ -94,7 +94,7 @@
                     <div class="text-lg font-bold text-slate-800" id="statUsers">—</div>
                   </div>
                 
-                  <div class="flex-1 min-w-[120px] rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
+                  <div id="statTeachersCard" class="flex-1 min-w-[120px] rounded-xl border border-slate-200 bg-slate-50 p-3 text-center cursor-pointer hover:border-primary/40 hover:bg-blue-50/40 transition-colors">
                     <div class="text-slate-400 font-bold uppercase text-[10px]">Insegnanti</div>
                     <div class="text-lg font-bold text-slate-800" id="statTeachers">—</div>
                   </div>
@@ -243,7 +243,7 @@
                       <div class="text-xs uppercase tracking-wide text-slate-400">Utenti</div>
                       <div id="tabUsersValue" class="mt-1 text-lg font-black text-slate-900">—</div>
                     </div>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
+                    <div id="tabTeachersCard" class="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center cursor-pointer hover:border-primary/40 hover:bg-blue-50/40 transition-colors">
                       <div class="text-xs uppercase tracking-wide text-slate-400">Insegnanti</div>
                       <div id="tabTeachersValue" class="mt-1 text-lg font-black text-slate-900">—</div>
                     </div>
@@ -296,7 +296,7 @@
       icon: "accessibility_new",
       gradient: "from-blue-400 to-blue-600",
       desc: "4 lezioni — focus su articolazioni, tensioni, carichi e recettori.",
-      stats: { users: 1280, reviews: 214, teachers: 18, centers: 7, rating: 4.7 },
+      stats: { users: 1280, reviews: 214, teachers: 3, centers: 7, rating: 4.7 },
       pricing: {
         autonomia: { early: 19, standard: 49 },
         pro: { single: 70, pack: 240, group_per_person: 150 },
@@ -784,7 +784,7 @@
 
     if ($("statUsers")) $("statUsers").textContent = "-";
     if ($("statReviews")) $("statReviews").textContent = "-";
-    if ($("statTeachers")) $("statTeachers").textContent = "-";
+    if ($("statTeachers")) $("statTeachers").textContent = m.stats.teachers.toLocaleString("it-IT");
     if ($("statCenters")) $("statCenters").textContent = "-";
     if ($("tabUsersValue")) $("tabUsersValue").textContent = m.stats.users.toLocaleString("it-IT");
     if ($("tabTeachersValue")) $("tabTeachersValue").textContent = m.stats.teachers.toLocaleString("it-IT");
@@ -1144,6 +1144,10 @@
     setTimeout(() => {
       if ($("uiStatus")) $("uiStatus").textContent = "Prototype (localStorage)";
     }, 1200);
+  }
+
+  function goToTeachersPage() {
+    window.location.href = "/insegnanti";
   }
 
   let enrollFlow = ["mode", "data", "price"];
@@ -1610,6 +1614,8 @@
 
   $("tabLessonsBtn")?.addEventListener("click", () => setContentTab("lessons"));
   $("tabInfoBtn")?.addEventListener("click", () => setContentTab("info"));
+  $("statTeachersCard")?.addEventListener("click", goToTeachersPage);
+  $("tabTeachersCard")?.addEventListener("click", goToTeachersPage);
   $("closeLessonProgramModalBtn")?.addEventListener("click", closeLessonProgramModal);
   $("lessonProgramModalDoneBtn")?.addEventListener("click", closeLessonProgramModal);
   $("lessonProgramModal")?.addEventListener("click", (e) => {

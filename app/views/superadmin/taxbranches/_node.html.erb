@@ -125,12 +125,14 @@
              else "info"
              end %>
 
-        <% if node.public_node? && node.post&.persisted? %>
-          <%= link_to post_path(node.post),
-                      title: human_visibility,
+        <% if node.public_node? %>
+          <% post_link_target = node.post&.persisted? ? post_path(node.post) : new_post_path(post: { taxbranch_id: node.id }) %>
+          <% post_link_title = node.post&.persisted? ? human_visibility : "Crea post per questo taxbranch" %>
+          <%= link_to post_link_target,
+                      title: post_link_title,
                       class: "ml-1 inline-flex items-center rounded-full bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100" do %>
             <span class="material-symbols-outlined text-[12px]"><%= visibility_icon %></span>
-            <span class="sr-only"><%= human_visibility %></span>
+            <span class="sr-only"><%= post_link_title %></span>
           <% end %>
         <% else %>
           <span title="<%= human_visibility %>" class="ml-1 inline-flex items-center rounded-full bg-slate-50 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">

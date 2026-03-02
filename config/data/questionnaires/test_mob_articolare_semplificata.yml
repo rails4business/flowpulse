@@ -1,0 +1,185 @@
+slug: test_mob_articolare_semplificata
+title: Test mobilita articolare semplificata
+version: v1
+locale: it
+
+intro: |
+  Autovalutazione rapida della mobilita articolare.
+  Ogni voce va da 0 a 3.
+
+scoring:
+  enabled: true
+  max_total: 27
+  levels:
+    - min: 0
+      max: 9
+      code: rosso
+      label: Mobilita limitata
+      interpretation: Mobilita limitata
+      recommendation: Consigliata valutazione individuale
+    - min: 10
+      max: 18
+      code: giallo
+      label: Mobilita media
+      interpretation: Mobilita media
+      recommendation: Percorso di gruppo consigliato
+    - min: 19
+      max: 27
+      code: verde
+      label: Buona mobilita
+      interpretation: Buona mobilita
+      recommendation: Accesso a percorsi avanzati o mantenimento
+
+questions:
+  - code: q1
+    position: 1
+    movement: Flesso-estensione in avanti (da in piedi)
+    side: none
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Sopra ginocchia
+      - value: 1
+        label: Tibie
+      - value: 2
+        label: Caviglie
+      - value: 3
+        label: Mani a terra
+
+  - code: q2
+    position: 2
+    movement: Braccia sopra la testa (in piedi)
+    side: none
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Non oltre spalle
+      - value: 1
+        label: Con compensi
+      - value: 2
+        label: Vicino orecchie
+      - value: 3
+        label: Allineate senza compensi
+
+  - code: q3a
+    position: 3
+    movement: Rotazione globale del rachide (collo + tronco)
+    side: destra
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Limitata
+      - value: 1
+        label: Ruoto circa 90 gradi
+      - value: 2
+        label: Quasi dietro (circa 135 gradi)
+      - value: 3
+        label: Ruoto completamente dietro (circa 180 gradi)
+
+  - code: q3b
+    position: 4
+    movement: Rotazione globale del rachide (collo + tronco)
+    side: sinistra
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Limitata
+      - value: 1
+        label: Ruoto circa 90 gradi
+      - value: 2
+        label: Quasi dietro (circa 135 gradi)
+      - value: 3
+        label: Ruoto completamente dietro (circa 180 gradi)
+
+  - code: q4
+    position: 5
+    movement: Accovacciata asian squat deep squat (a corpo libero)
+    side: none
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Non scende
+      - value: 1
+        label: Instabile
+      - value: 2
+        label: Quasi fondo
+      - value: 3
+        label: Fondo stabile
+
+  - code: q5a
+    position: 6
+    movement: Mani dietro la schiena (destra sopra)
+    side: destra_sopra
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Distanza superiore a 20 cm
+      - value: 1
+        label: Distanza 10-20 cm
+      - value: 2
+        label: Distanza 5-10 cm
+      - value: 3
+        label: Si toccano
+
+  - code: q5b
+    position: 7
+    movement: Mani dietro la schiena (sinistra sopra)
+    side: sinistra_sopra
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Distanza superiore a 20 cm
+      - value: 1
+        label: Distanza 10-20 cm
+      - value: 2
+        label: Distanza 5-10 cm
+      - value: 3
+        label: Si toccano
+
+  - code: q6a
+    position: 8
+    movement: Sollevamento gamba tesa (supino)
+    side: destra
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Minore di 45 gradi o con dolore rilevante
+      - value: 1
+        label: 45-75 gradi
+      - value: 2
+        label: 75-89 gradi
+      - value: 3
+        label: Maggiore o uguale a 90 gradi senza dolore
+
+  - code: q6b
+    position: 9
+    movement: Sollevamento gamba tesa (supino)
+    side: sinistra
+    kind: single_choice
+    min: 0
+    max: 3
+    options:
+      - value: 0
+        label: Minore di 45 gradi o con dolore rilevante
+      - value: 1
+        label: 45-75 gradi
+      - value: 2
+        label: 75-89 gradi
+      - value: 3
+        label: Maggiore o uguale a 90 gradi senza dolore

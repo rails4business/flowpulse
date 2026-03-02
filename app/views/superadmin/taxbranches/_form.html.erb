@@ -198,6 +198,76 @@
     <% end %>
   </div>
 
+  <!-- Meta JSON -->
+  <div id="metaJsonBlock">
+    <%= label_tag :meta_preview, "Meta (JSON)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= text_area_tag :meta_preview,
+          (taxbranch.meta.present? ? JSON.pretty_generate(taxbranch.meta) : ""),
+          placeholder: '{"scoring":{"enabled":true}}',
+          rows: 8,
+          readonly: true,
+          class: "w-full rounded-md border-gray-300 bg-slate-50 px-3 py-2 font-mono text-xs shadow-sm" %>
+    <p class="mt-1 text-xs text-slate-500">Preview sola lettura. Si aggiorna automaticamente al salvataggio.</p>
+    <div id="questionnaireMetaHint"
+         class="hidden mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+      Esempio meta per questionnaire:
+      <pre class="mt-2 whitespace-pre-wrap rounded border border-emerald-200 bg-white p-2 font-mono text-[11px] text-slate-700">{
+  "scoring": {
+    "enabled": true,
+    "max_total": 27,
+    "levels": [
+      { "min": 0, "max": 9,  "code": "rosso",  "label": "Mobilita limitata" },
+      { "min": 10, "max": 18, "code": "giallo", "label": "Mobilita media" },
+      { "min": 19, "max": 27, "code": "verde",  "label": "Buona mobilita" }
+    ]
+  }
+}</pre>
+    </div>
+    <% taxbranch.errors.full_messages_for(:meta).each do |m| %>
+      <p class="mt-1 text-xs text-red-600"><%= m %></p>
+    <% end %>
+  </div>
+
+  <% questionnaire_files = Dir.glob(Rails.root.join("config/data/questionnaires/*.{yml,yaml}")).sort %>
+  <% questionnaire_options = questionnaire_files.map do |path|
+       rel = Pathname.new(path).relative_path_from(Rails.root).to_s
+       begin
+         data = YAML.safe_load_file(path, permitted_classes: [], aliases: false) || {}
+         title = data["title"].presence || File.basename(path, ".*").humanize
+         version = data["version"].presence || "v1"
+       rescue StandardError
+         title = File.basename(path, ".*").humanize
+         version = "v1"
+       end
+       [title, rel, version]
+     end %>
+
+  <div id="questionnaireSourceBlock"
+       class="<%= taxbranch.slug_category.to_s == 'questionnaire' ? '' : 'hidden' %> grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <%= f.label :questionnaire_source, "Questionario", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.select :questionnaire_source,
+            options_for_select(questionnaire_options.map { |label, rel, _v| [label, rel] }, taxbranch.questionnaire_source.presence),
+            { include_blank: "Seleziona questionario..." },
+            class: "w-full rounded-md border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500",
+            data: { questionnaire_source_select: true } %>
+      <p class="mt-1 text-xs text-slate-500">I file arrivano da <code>config/data/questionnaires/</code>.</p>
+      <div class="hidden" data-questionnaire-version-map>
+        <% questionnaire_options.each do |_label, rel, ver| %>
+          <span data-source="<%= rel %>" data-version="<%= ver %>"></span>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <%= f.label :questionnaire_version, "Questionnaire version", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :questionnaire_version,
+            placeholder: "v1",
+            class: "w-full rounded-md border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500",
+            data: { questionnaire_version_input: true } %>
+      <p class="mt-1 text-xs text-slate-500">Si compila automaticamente dal file YAML (puoi modificarla).</p>
+    </div>
+  </div>
+
   <!-- GeneraImpresa (MD interno) -->
   <div>
     <%= f.label :generaimpresa_md, "GeneraImpresa (MD interno)", class: "block text-sm font-medium text-gray-700 mb-1" %>
@@ -251,6 +321,13 @@
           </datalist>
 
           <p class="text-xs text-slate-500">Scegli una categoria esistente o scrivine una nuova.</p>
+          <div id="questionnaireCategoryHint"
+               class="<%= %w[questionnaire question option].include?(taxbranch.slug_category.to_s) ? '' : 'hidden' %> mt-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-800">
+            Modalita questionario attiva. Usa:
+            <span class="font-semibold">questionnaire</span> (root),
+            <span class="font-semibold">question</span> (domanda),
+            <span class="font-semibold">option</span> (opzione).
+          </div>
         </div>
 
         <div>
@@ -344,3 +421,54 @@
 
 <% end %>
 </div>
+
+<script>
+  (function () {
+    const form = document.querySelector("form[action*='/superadmin/taxbranches']");
+    if (!form) return;
+
+    const slugInput = form.querySelector("[name='taxbranch[slug_category]']");
+    const categoryHint = document.getElementById("questionnaireCategoryHint");
+    const metaHint = document.getElementById("questionnaireMetaHint");
+    const metaJsonBlock = document.getElementById("metaJsonBlock");
+    const sourceBlock = document.getElementById("questionnaireSourceBlock");
+    const sourceSelect = form.querySelector("[data-questionnaire-source-select]");
+    const versionInput = form.querySelector("[data-questionnaire-version-input]");
+    const versionMap = form.querySelector("[data-questionnaire-version-map]");
+    if (!slugInput) return;
+
+    const applyVersionFromSource = () => {
+      if (!sourceSelect || !versionInput || !versionMap) return;
+      const source = sourceSelect.value;
+      if (!source) return;
+      const node = versionMap.querySelector(`[data-source="${source}"]`);
+      if (!node) return;
+      if (!versionInput.value || versionInput.dataset.autofill === "true") {
+        versionInput.value = node.dataset.version || "v1";
+        versionInput.dataset.autofill = "true";
+      }
+    };
+
+    const refreshHints = () => {
+      const value = (slugInput.value || "").trim().toLowerCase();
+      const inFamily = ["questionnaire", "question", "option"].includes(value);
+      const isQuestionnaire = value === "questionnaire";
+      if (categoryHint) categoryHint.classList.toggle("hidden", !inFamily);
+      if (metaHint) metaHint.classList.toggle("hidden", true);
+      if (sourceBlock) sourceBlock.classList.toggle("hidden", !isQuestionnaire);
+      if (metaJsonBlock) metaJsonBlock.classList.remove("hidden");
+      if (isQuestionnaire) applyVersionFromSource();
+    };
+
+    sourceSelect?.addEventListener("change", () => {
+      if (versionInput) versionInput.dataset.autofill = "true";
+      applyVersionFromSource();
+    });
+    versionInput?.addEventListener("input", () => {
+      if (versionInput) versionInput.dataset.autofill = "false";
+    });
+
+    slugInput.addEventListener("input", refreshHints);
+    refreshHints();
+  })();
+</script>

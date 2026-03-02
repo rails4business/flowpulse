@@ -424,34 +424,6 @@
   // --------------------------
   const MODULES = [
     {
-      id: "introduzione_percorso",
-      title: "Introduzione al percorso",
-      method: "Onboarding",
-      image: "https://ik.imagekit.io/posturacorretta/immagini_brand/intro_postura_e_fisiologia.png",
-      icon: "explore",
-      gradient: "from-cyan-400 to-cyan-600",
-      desc: "1 lezione — programma completo: come funziona il percorso, profilazione, stato di salute e diario.",
-      stats: { users: 1520, reviews: 236, teachers: 20, centers: 8, rating: 4.8 },
-      pricing: {
-        autonomia: { early: 19, standard: 49 },
-        pro: { single: 70, pack: 240, group_per_person: 150 },
-        final_check: 90,
-      },
-      lessons: [
-        {
-          id: "intro_programma_completo",
-          title: "Lezione introduttiva — Programma completo",
-          desc: "Come funziona il percorso, profilazione, stato di salute e diario della salute.",
-          program: [
-            "Come funziona il percorso",
-            "Profilazione iniziale",
-            "Il tuo stato di salute",
-            "Il diario della salute"
-          ]
-        },
-      ],
-    },
-    {
       id: "igiene_articolare",
       title: "Igiene Posturale",
       method: "PosturaCorretta",
@@ -599,7 +571,6 @@
   ];
 
   const MODULES_DISPLAY_ORDER = [
-    "introduzione_percorso",
     "igiene_articolare",
     "principi_fisioterapia",
     "gds_intro",
@@ -1192,11 +1163,11 @@
 
       // MOCK DATA GENERATOR (Complex Variations)
       const MOCK_TYPES = [
-        { type: 'pro_1on1_center', label: 'In Centro', placeIcon: 'apartment', visualIcon: 'person', useAvatar: true, isGroup: false, day: 'LUN' },
-        { type: 'pro_group_center', label: 'In Centro', placeIcon: 'apartment', visualIcon: 'groups', useAvatar: true, isGroup: true, day: 'MAR' },
-        { type: 'pro_1on1_home',   label: 'Domicilio', placeIcon: 'home_pin', visualIcon: 'directions_car', useAvatar: true, isGroup: false, day: 'MER' },
-        { type: 'auto_online',     label: 'Online',    placeIcon: 'wifi', visualIcon: 'laptop_mac', useAvatar: false, isGroup: false, day: 'GIO' },
-        { type: 'pro_online_group',label: 'Online',    placeIcon: 'wifi', visualIcon: 'groups', useAvatar: true, isGroup: true, day: 'VEN' },
+        { type: 'pro_1on1_center', label: 'In Centro', placeIcon: 'apartment', visualIcon: 'person', useAvatar: true, isGroup: false, day: "LUNEDI'" },
+        { type: 'pro_group_center', label: 'In Centro', placeIcon: 'apartment', visualIcon: 'groups', useAvatar: true, isGroup: true, day: "MARTEDI'" },
+        { type: 'pro_1on1_home',   label: 'Domicilio', placeIcon: 'home_pin', visualIcon: 'directions_car', useAvatar: true, isGroup: false, day: "MERCOLEDI'" },
+        { type: 'auto_online',     label: 'Online',    placeIcon: 'wifi', visualIcon: 'laptop_mac', useAvatar: false, isGroup: false, day: "GIOVEDI'" },
+        { type: 'pro_online_group',label: 'Online',    placeIcon: 'wifi', visualIcon: 'groups', useAvatar: true, isGroup: true, day: "VENERDI'" },
       ];
       
       const typeIndex = (itemData.id.charCodeAt(0) + itemData.id.charCodeAt(itemData.id.length - 1)) % MOCK_TYPES.length;
@@ -1222,6 +1193,16 @@
       const mockMonth = "MAR";
       const mockWeekday = mockType.day;
       const mockTime = "10:00 - 11:30";
+      const groupSizeValue = prog?.pro?.groupSize || "8-12";
+      const formatText = mockType.isGroup ? `Gruppo ${groupSizeValue}` : "Singolo";
+      const MOCK_TEACHERS = [
+        { fullName: "Marco Bianchi", profession: "Fisioterapista" },
+        { fullName: "Laura Rossi", profession: "Osteopata" },
+        { fullName: "Giulia Verdi", profession: "Chinesiologa" },
+        { fullName: "Davide Neri", profession: "Insegnante posturale" },
+        { fullName: "Sara Galli", profession: "Trainer benessere" }
+      ];
+      const mockTeacher = MOCK_TEACHERS[typeIndex % MOCK_TEACHERS.length];
       
       // Timeline Style Layout (Option 2)
       item.className = "group relative pl-4 pb-8 last:pb-0"; 
@@ -1241,8 +1222,11 @@
         statusIcon = "check_circle";
         statusText = "Completato";
         actionBtnMarkup = `
-          <div class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-[16px]">check</span> Fatto
+          <div class="flex flex-col items-center text-center leading-tight">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">${mockMonth}</span>
+            <span class="text-2xl font-black text-slate-700">${mockDay}</span>
+            <span class="text-[9px] font-medium uppercase text-slate-500">${mockWeekday}</span>
+            <span class="text-[9px] font-semibold text-slate-500 mt-0.5">${mockTime}</span>
           </div>`;
       } else if (isBooked) {
         statusColor = "amber";
@@ -1293,59 +1277,79 @@
         <!-- Timeline Line (Absolute Left) -->
         <div class="absolute left-[27px] top-0 bottom-0 w-px bg-slate-200 group-last:bottom-auto group-last:h-[20px]"></div>
         
-        <div class="flex items-start gap-6 relative">
-           <!-- Left: Date Bubble -->
-           <div class="relative z-10 w-[54px] shrink-0 flex flex-col items-center bg-white py-2 rounded-2xl border border-slate-100 shadow-sm">
-              <span class="text-[9px] font-black uppercase text-slate-400 tracking-wider mb-0.5">${mockWeekday}</span>
-              <span class="text-xl font-black text-slate-700 leading-none">${mockDay}</span>
-              <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
-           </div>
-
-           <!-- Right: Card -->
+        <div class="grid grid-cols-[1fr_82px] gap-6 items-stretch relative">
+           <!-- Main Card -->
            <div class="flex-1 min-w-0">
-      <div class="rounded-2xl border ${cardBorder} ${activeClass} transition-all overflow-hidden flex flex-col ${itemData.kind === "final_check" ? "bg-blue-50/60 border-blue-100" : ""}">
+      <div class="rounded-2xl border ${cardBorder} ${activeClass} transition-all overflow-hidden flex  flex-col md:flex-row  ${itemData.kind === "final_check" ? "bg-blue-50/60 border-blue-100" : ""}">
                  <!-- Main Body -->
-                 <div id="lessonContentBtn" class="p-4 cursor-pointer flex gap-4">
-                    <!-- Icon/Avatar -->
-                    <div class="shrink-0 pt-1">
-                      ${mockType.useAvatar 
-                        ? `<img src="https://i.pravatar.cc/150?u=${itemData.id}" alt="Pro" class="w-10 h-10 rounded-full object-cover border border-white shadow-sm">`
-                        : `<div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100"><span class="material-symbols-outlined">laptop_mac</span></div>`
-                      }
-                    </div>
-                    
+                 <div id="lessonContentBtn" class="p-4 cursor-pointer flex gap-3 md:items-center md:justify-between">
                     <div class="flex-1 min-w-0">
                        <div class="flex items-center justify-between gap-2 mb-1">
                           <span class="text-[10px] uppercase tracking-wider font-bold text-${statusColor}-500 flex items-center gap-1">
-                             <span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${itemData.kind === 'lesson' ? `Lezione ${itemData.idx}` : 'Valutazione finale'}
+                             ${itemData.kind === 'lesson' ? `Lezione ${itemData.idx}` : 'Valutazione finale'}
                           </span>
                        </div>
-                       <h3 class="text-base font-bold ${titleColor} mb-1 leading-snug">${itemData.title}</h3>
+                       <h3 class="text-base font-bold ${titleColor} mb-1 leading-snug flex items-center gap-1">
+                         ${isCompleted
+                           ? `<span class="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span>`
+                           : `<span class="material-symbols-outlined text-[14px] text-slate-300">radio_button_unchecked</span>`}
+                         ${itemData.title}
+                       </h3>
                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${itemData.desc}</p>
                     </div>
+                    ${!isLocked ? `
+                    <div class="hidden md:flex md:shrink-0 md:pl-6 md:ml-6 md:border-l md:border-slate-200 items-center gap-3 text-xs text-slate-500 font-medium">
+                       <div class="flex items-center gap-2 text-[13px] font-semibold text-slate-600" title="Modalita">
+                          ${mockType.useAvatar
+                            ? `<img src="https://i.pravatar.cc/150?u=${itemData.id}" alt="Insegnante" class="w-8 h-8 rounded-full object-cover border border-white shadow-sm">`
+                            : `<span class="material-symbols-outlined text-[18px] text-slate-400">laptop_mac</span>`}
+                          ${mockType.useAvatar
+                            ? `<span class="leading-tight"><span class="block text-[10px] font-bold uppercase text-slate-500">Insegnante</span><span class="block text-[12px] font-semibold text-slate-700">${mockTeacher.fullName}</span><span class="block text-[11px] font-medium text-slate-500">${mockTeacher.profession}</span></span>`
+                            : `<span class="text-[12px] font-semibold text-slate-600">Online in autonomia</span>`}
+                       </div>
+                       <div class="flex flex-col items-start gap-1 pl-3 border-l border-slate-200 min-w-[110px]">
+                          <div class="flex items-center gap-1.5" title="Luogo">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span>
+                            <span>${mockType.label}</span>
+                          </div>
+                          <div class="flex items-center gap-1.5" title="Formato">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
+                            <span>${formatText}</span>
+                          </div>
+                       </div>
+                    </div>` : ''}
                  </div>
 
                  <!-- Footer Info & Action -->
                  ${!isLocked ? `
-                 <div class="px-4 py-3 bg-slate-50/50 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-                    <div class="flex items-center gap-3 text-xs text-slate-500 font-medium">
-                       <div class="flex items-center gap-1.5" title="Orario">
-                          <span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span> ${mockTime}
+                 <div class="px-4 py-3 bg-slate-50/50 border-t border-slate-100 flex items-center md:hidden">
+                    <div class="w-full flex items-center gap-3 text-xs text-slate-500 font-medium">
+                       <div class="flex items-center gap-2 text-[13px] font-semibold text-slate-600" title="Modalita">
+                          ${mockType.useAvatar
+                            ? `<img src="https://i.pravatar.cc/150?u=${itemData.id}" alt="Insegnante" class="w-8 h-8 rounded-full object-cover border border-white shadow-sm">`
+                            : `<span class="material-symbols-outlined text-[18px] text-slate-400">laptop_mac</span>`}
+                          ${mockType.useAvatar
+                            ? `<span class="leading-tight"><span class="block text-[10px] font-bold uppercase text-slate-500">Insegnante</span><span class="block text-[12px] font-semibold text-slate-700">${mockTeacher.fullName}</span><span class="block text-[11px] font-medium text-slate-500">${mockTeacher.profession}</span></span>`
+                            : `<span class="text-[12px] font-semibold text-slate-600">Online in autonomia</span>`}
                        </div>
-                       <div class="flex items-center gap-1.5" title="Luogo">
-                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span> ${mockType.label}
+                       <div class="flex flex-col items-start gap-1 pl-3 border-l border-slate-200 min-w-[110px]">
+                          <div class="flex items-center gap-1.5" title="Luogo">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span>
+                            <span>${mockType.label}</span>
+                          </div>
+                          <div class="flex items-center gap-1.5" title="Formato">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
+                            <span>${formatText}</span>
+                          </div>
                        </div>
-                       <div class="flex items-center gap-1.5 pl-3 border-l border-slate-200">
-                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
-                          ${mockType.isGroup ? 'Gruppo' : 'Singolo'}
-                       </div>
-                    </div>
-                    
-                    <div class="ml-auto">
-                       ${actionBtnMarkup}
                     </div>
                  </div>` : ''}
               </div>
+           </div>
+
+           <!-- Right: Action Bubble -->
+           <div class="relative z-10 h-full flex items-center justify-center bg-white p-2 rounded-2xl border border-slate-100 shadow-sm">
+              ${actionBtnMarkup}
            </div>
         </div>
       `;
@@ -1486,11 +1490,11 @@
       const stubBase = "w-[100px] rounded-2xl border flex flex-col items-center justify-center p-2 text-center transition-all cursor-pointer hover:brightness-95 active:scale-95";
 
       const MOCK_TYPES = [
-        { type: "pro_1on1_center", label: "In Centro", placeIcon: "apartment", useAvatar: true, isGroup: false, day: "LUN" },
-        { type: "pro_group_center", label: "In Centro", placeIcon: "apartment", useAvatar: true, isGroup: true, day: "MAR" },
-        { type: "pro_1on1_home", label: "Domicilio", placeIcon: "home_pin", useAvatar: true, isGroup: false, day: "MER" },
-        { type: "auto_online", label: "Online", placeIcon: "wifi", useAvatar: false, isGroup: false, day: "GIO" },
-        { type: "pro_online_group", label: "Online", placeIcon: "wifi", useAvatar: true, isGroup: true, day: "VEN" }
+        { type: "pro_1on1_center", label: "In Centro", placeIcon: "apartment", useAvatar: true, isGroup: false, day: "LUNEDI'" },
+        { type: "pro_group_center", label: "In Centro", placeIcon: "apartment", useAvatar: true, isGroup: true, day: "MARTEDI'" },
+        { type: "pro_1on1_home", label: "Domicilio", placeIcon: "home_pin", useAvatar: true, isGroup: false, day: "MERCOLEDI'" },
+        { type: "auto_online", label: "Online", placeIcon: "wifi", useAvatar: false, isGroup: false, day: "GIOVEDI'" },
+        { type: "pro_online_group", label: "Online", placeIcon: "wifi", useAvatar: true, isGroup: true, day: "VENERDI'" }
       ];
 
       const typeIndex = (itemData.id.charCodeAt(0) + itemData.id.charCodeAt(itemData.id.length - 1)) % MOCK_TYPES.length;
@@ -1509,6 +1513,16 @@
       const mockMonth = "MAR";
       const mockWeekday = mockType.day;
       const mockTime = "10:00 - 11:30";
+      const groupSizeValue = prog?.pro?.groupSize || "8-12";
+      const formatText = mockType.isGroup ? `Gruppo ${groupSizeValue}` : "Singolo";
+      const MOCK_TEACHERS = [
+        { fullName: "Marco Bianchi", profession: "Fisioterapista" },
+        { fullName: "Laura Rossi", profession: "Osteopata" },
+        { fullName: "Giulia Verdi", profession: "Chinesiologa" },
+        { fullName: "Davide Neri", profession: "Insegnante posturale" },
+        { fullName: "Sara Galli", profession: "Trainer benessere" }
+      ];
+      const mockTeacher = MOCK_TEACHERS[typeIndex % MOCK_TEACHERS.length];
 
       // Timeline Style Layout (Option 2)
       item.className = "group relative pl-4 pb-8 last:pb-0"; // Container for timeline item
@@ -1528,8 +1542,11 @@
         statusIcon = "check_circle";
         statusText = "Completato";
         actionBtnMarkup = `
-          <div class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-[11px] font-bold uppercase tracking-wide flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-[16px]">check</span> Fatto
+          <div class="flex flex-col items-center text-center leading-tight">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">${mockMonth}</span>
+            <span class="text-2xl font-black text-slate-700">${mockDay}</span>
+            <span class="text-[9px] font-medium uppercase text-slate-500">${mockWeekday}</span>
+            <span class="text-[9px] font-semibold text-slate-500 mt-0.5">${mockTime}</span>
           </div>`;
       } else if (isBooked) {
         statusColor = "amber";
@@ -1564,59 +1581,79 @@
         <!-- Timeline Line (Absolute Left) -->
         <div class="absolute left-[27px] top-0 bottom-0 w-px bg-slate-200 group-last:bottom-auto group-last:h-[20px]"></div>
         
-        <div class="flex items-start gap-6 relative">
-           <!-- Left: Date Bubble -->
-           <div class="relative z-10 w-[54px] shrink-0 flex flex-col items-center bg-white py-2 rounded-2xl border border-slate-100 shadow-sm">
-              <span class="text-[9px] font-black uppercase text-slate-400 tracking-wider mb-0.5">${mockWeekday}</span>
-              <span class="text-xl font-black text-slate-700 leading-none">${mockDay}</span>
-              <span class="text-[9px] font-bold uppercase text-slate-400 mt-1">${mockMonth}</span>
-           </div>
-
-           <!-- Right: Card -->
+        <div class="grid grid-cols-[1fr_82px] gap-6 items-stretch relative">
+           <!-- Main Card -->
            <div class="flex-1 min-w-0">
               <div class="rounded-2xl border ${cardBorder} ${activeClass} transition-all overflow-hidden flex flex-col">
                  <!-- Main Body -->
-                 <div id="instructorLessonContentBtn" class="p-4 cursor-pointer flex gap-4">
-                    <!-- Icon/Avatar -->
-                    <div class="shrink-0 pt-1">
-                      ${mockType.useAvatar 
-                        ? `<img src="https://i.pravatar.cc/150?u=ins_${itemData.id}" alt="Pro" class="w-10 h-10 rounded-full object-cover border border-white shadow-sm">`
-                        : `<div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100"><span class="material-symbols-outlined">laptop_mac</span></div>`
-                      }
-                    </div>
-                    
+                 <div id="instructorLessonContentBtn" class="p-4 cursor-pointer flex gap-3 md:items-center md:justify-between">
                     <div class="flex-1 min-w-0">
                        <div class="flex items-center justify-between gap-2 mb-1">
                           <span class="text-[10px] uppercase tracking-wider font-bold text-${statusColor}-500 flex items-center gap-1">
-                             <span class="material-symbols-outlined text-[14px]">${statusIcon}</span> Lezione ${itemData.idx}
+                             Lezione ${itemData.idx}
                           </span>
                        </div>
-                       <h3 class="text-base font-bold ${titleColor} mb-1 leading-snug">${itemData.title}</h3>
+                       <h3 class="text-base font-bold ${titleColor} mb-1 leading-snug flex items-center gap-1">
+                         ${isCompleted
+                           ? `<span class="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span>`
+                           : `<span class="material-symbols-outlined text-[14px] text-slate-300">radio_button_unchecked</span>`}
+                         ${itemData.title}
+                       </h3>
                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${itemData.desc}</p>
                     </div>
+                    ${!isLocked ? `
+                    <div class="hidden md:flex md:shrink-0 md:pl-6 md:ml-6 md:border-l md:border-slate-200 items-center gap-3 text-xs text-slate-500 font-medium">
+                       <div class="flex items-center gap-2 text-[13px] font-semibold text-slate-600" title="Modalita">
+                          ${mockType.useAvatar
+                            ? `<img src="https://i.pravatar.cc/150?u=ins_${itemData.id}" alt="Insegnante" class="w-8 h-8 rounded-full object-cover border border-white shadow-sm">`
+                            : `<span class="material-symbols-outlined text-[18px] text-slate-400">laptop_mac</span>`}
+                          ${mockType.useAvatar
+                            ? `<span class="leading-tight"><span class="block text-[10px] font-bold uppercase text-slate-500">Insegnante</span><span class="block text-[12px] font-semibold text-slate-700">${mockTeacher.fullName}</span><span class="block text-[11px] font-medium text-slate-500">${mockTeacher.profession}</span></span>`
+                            : `<span class="text-[12px] font-semibold text-slate-600">Online in autonomia</span>`}
+                       </div>
+                       <div class="flex flex-col items-start gap-1 pl-3 border-l border-slate-200 min-w-[110px]">
+                          <div class="flex items-center gap-1.5" title="Luogo">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span>
+                            <span>${mockType.label}</span>
+                          </div>
+                          <div class="flex items-center gap-1.5" title="Formato">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
+                            <span>${formatText}</span>
+                          </div>
+                       </div>
+                    </div>` : ''}
                  </div>
 
                  <!-- Footer Info & Action -->
                  ${!isLocked ? `
-                 <div class="px-4 py-3 bg-slate-50/50 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-                    <div class="flex items-center gap-3 text-xs text-slate-500 font-medium">
-                       <div class="flex items-center gap-1.5" title="Orario">
-                          <span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span> ${mockTime}
+                 <div class="px-4 py-3 bg-slate-50/50 border-t border-slate-100 flex items-center md:hidden">
+                    <div class="w-full flex items-center gap-3 text-xs text-slate-500 font-medium">
+                       <div class="flex items-center gap-2 text-[13px] font-semibold text-slate-600" title="Modalita">
+                          ${mockType.useAvatar
+                            ? `<img src="https://i.pravatar.cc/150?u=ins_${itemData.id}" alt="Insegnante" class="w-8 h-8 rounded-full object-cover border border-white shadow-sm">`
+                            : `<span class="material-symbols-outlined text-[18px] text-slate-400">laptop_mac</span>`}
+                          ${mockType.useAvatar
+                            ? `<span class="leading-tight"><span class="block text-[10px] font-bold uppercase text-slate-500">Insegnante</span><span class="block text-[12px] font-semibold text-slate-700">${mockTeacher.fullName}</span><span class="block text-[11px] font-medium text-slate-500">${mockTeacher.profession}</span></span>`
+                            : `<span class="text-[12px] font-semibold text-slate-600">Online in autonomia</span>`}
                        </div>
-                       <div class="flex items-center gap-1.5" title="Luogo">
-                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span> ${mockType.label}
+                       <div class="flex flex-col items-start gap-1 pl-3 border-l border-slate-200 min-w-[110px]">
+                          <div class="flex items-center gap-1.5" title="Luogo">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.placeIcon}</span>
+                            <span>${mockType.label}</span>
+                          </div>
+                          <div class="flex items-center gap-1.5" title="Formato">
+                            <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
+                            <span>${formatText}</span>
+                          </div>
                        </div>
-                       <div class="flex items-center gap-1.5 pl-3 border-l border-slate-200">
-                          <span class="material-symbols-outlined text-[16px] text-slate-400">${mockType.isGroup ? 'groups' : 'person'}</span>
-                          ${mockType.isGroup ? 'Gruppo' : 'Singolo'}
-                       </div>
-                    </div>
-                    
-                    <div class="ml-auto">
-                       ${actionBtnMarkup}
                     </div>
                  </div>` : ''}
               </div>
+           </div>
+
+           <!-- Right: Action Bubble -->
+           <div class="relative z-10 h-full flex items-center justify-center bg-white p-2 rounded-2xl border border-slate-100 shadow-sm">
+              ${actionBtnMarkup}
            </div>
         </div>
       `;

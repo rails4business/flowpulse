@@ -9,6 +9,7 @@ class Lead < ApplicationRecord
   has_many :mycontacts, dependent: :destroy
   has_many :tag_positionings, dependent: :destroy
   has_many :certificates, dependent: :destroy
+  has_many :activities, dependent: :destroy
   has_many :domain_memberships, dependent: :destroy
   has_many :domains, through: :domain_memberships
 
