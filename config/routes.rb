@@ -190,6 +190,7 @@ resources :posts do
   get "pages/about"
   get "pages/contact"
   get "insegnanti", to: "pages#insegnanti", as: :insegnanti
+  get "rete_professionale", to: "pages#insegnanti", as: :rete_professionale
   get "in-costruzione", to: "pages#coming_soon", as: :coming_soon
   get "/manifest.json", to: "pwa#manifest", as: :pwa_manifest
   get "/service-worker.js", to: "pwa#service_worker", as: :pwa_service_worker

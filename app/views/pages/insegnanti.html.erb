@@ -1,13 +1,13 @@
-<% active_tab = params[:tab].to_s.presence_in(%w[insegnanti dolore integrato creator]) || "insegnanti" %>
+<%= render "shared/brand_custom_pc_home_nav" %>
+<% active_tab = params[:tab].to_s.presence_in(%w[insegnanti salute creator]) || "insegnanti" %>
+<% active_section = params[:section].to_s.presence_in(%w[insegnanti centri metodiche dicono]) || "insegnanti" %>
 <%
   page_theme_classes =
     case active_tab
     when "creator"
       { main: "bg-violet-50/40", panel: "border-violet-100 bg-violet-50/60", accent: "text-violet-600" }
-    when "dolore"
-      { main: "bg-rose-50/40", panel: "border-rose-100 bg-rose-50/60", accent: "text-rose-600" }
-    when "integrato"
-      { main: "bg-emerald-50/40", panel: "border-emerald-100 bg-emerald-50/60", accent: "text-emerald-600" }
+    when "salute"
+      { main: "bg-teal-50/40", panel: "border-teal-100 bg-teal-50/60", accent: "text-teal-700" }
     else
       { main: "bg-blue-50/40", panel: "border-blue-100 bg-blue-50/60", accent: "text-blue-600" }
     end
@@ -23,37 +23,27 @@
         "In questa sezione trovi i creator video. Aprendo la card puoi vedere subito il video del canale YouTube.",
         "smart_display",
         "Canale YouTube attivo",
-        "bg-red-50 text-red-700 border-red-200"
+        "bg-violet-50 text-violet-700 border-violet-200"
       ]
-    when "dolore"
+    when "salute"
       [
-        "Professionisti <span class=\"#{page_theme_classes[:accent]}\">Stop al dolore</span>",
-        "Professionisti focalizzati su riduzione del dolore e recupero funzionale.",
-        "Focus attivo: Stop al dolore",
-        "Questa sezione raccoglie i professionisti con approccio prioritario su dolore, recupero e prevenzione ricadute.",
-        "favorite",
-        "Percorso dolore attivo",
-        "bg-rose-50 text-rose-700 border-rose-200"
-      ]
-    when "integrato"
-      [
-        "Professionisti <span class=\"#{page_theme_classes[:accent]}\">Benessere Integrato</span>",
-        "Professionisti disponibili a supportare il percorso integrato.",
-        "Percorso attivo: Benessere integrato",
-        "Questi professionisti supportano il percorso integrato e possono affiancare utenti e insegnanti.",
+        "Professionisti <span class=\"#{page_theme_classes[:accent]}\">Percorso Salute</span>",
+        "Un unico percorso guidato per costruire step by step la strategia migliore: stop al dolore, percorso terapeutico e benessere integrato.",
+        "Percorso attivo: Salute guidata",
+        "Da qui l'utente viene orientato nelle varie tappe con il supporto dei professionisti piu adatti a ogni fase.",
         "conversion_path",
-        "Supporto percorso attivo",
-        "bg-indigo-50 text-indigo-700 border-indigo-200"
+        "Tappe del percorso attive",
+        "bg-teal-50 text-teal-700 border-teal-200"
       ]
     else
       [
-        "Professionisti <span class=\"#{page_theme_classes[:accent]}\">disponibili</span>",
+        "Percorso <span class=\"#{page_theme_classes[:accent]}\">Postura e Fisiologia</span>",
         "In questa fase gli insegnanti sono abilitati solo sul modulo Igiene Posturale.",
         "Modulo attivo: Igiene Posturale",
         "Questi insegnanti sono attivi per il modulo introduttivo. I moduli successivi verranno sbloccati progressivamente in base al percorso.",
         "check_circle",
         "Abilitazione verificata",
-        "bg-emerald-50 text-emerald-700 border-emerald-200"
+        "bg-blue-50 text-blue-700 border-blue-200"
       ]
     end
 %>
@@ -61,46 +51,38 @@
   <section class="max-w-[1200px] mx-auto px-6 py-12 space-y-8">
     <div class="flex flex-wrap gap-2">
       <%= link_to "Accademia", insegnanti_path(tab: "insegnanti"), class: "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors #{active_tab == "insegnanti" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}" %>
-      <%= link_to "Stop al dolore", insegnanti_path(tab: "dolore"), class: "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors #{active_tab == "dolore" ? "border-rose-500 bg-rose-50 text-rose-700" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}" %>
-      <%= link_to "Benessere integrato", insegnanti_path(tab: "integrato"), class: "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors #{active_tab == "integrato" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}" %>
       <%= link_to "Creator YouTube", insegnanti_path(tab: "creator"), class: "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors #{active_tab == "creator" ? "border-violet-500 bg-violet-50 text-violet-700" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}" %>
+      <span class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-slate-400 opacity-80 cursor-not-allowed select-none" aria-disabled="true" title="Attivazione futura">
+        <span class="material-symbols-outlined text-[13px]">lock</span>
+        Percorso salute
+      </span>
     </div>
 
     <div class="grid lg:grid-cols-2 gap-10 items-start">
-      <div class="space-y-5">
+      <div class="space-y-4 pt-2">
+        <% if active_tab == "salute" %>
+          <div class="inline-flex items-center gap-2 rounded-xl border border-teal-100 bg-teal-50/70 p-1.5">
+            <span class="material-symbols-outlined text-[15px] text-teal-700 pl-1">conversion_path</span>
+            <div class="flex items-center gap-1">
+              <button type="button" class="rounded-lg bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-rose-700 border border-rose-200">Stop al dolore</button>
+              <button type="button" class="rounded-lg bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-700 border border-amber-200">Percorso terapeutico</button>
+              <button type="button" class="rounded-lg bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700 border border-emerald-200">Benessere integrato</button>
+            </div>
+          </div>
+        <% end %>
+        <h1 class="text-3xl md:text-4xl font-black text-slate-900 leading-tight"><%= header_title.html_safe %></h1>
+        <p class="text-lg text-slate-600 leading-relaxed"><%= header_desc %></p>
         <% if active_tab == "insegnanti" %>
           <div class="inline-flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50/70 p-1.5">
             <span class="material-symbols-outlined text-[15px] text-blue-600 pl-1">school</span>
             <div class="flex items-center gap-1">
-              <button type="button" class="rounded-lg bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 border border-blue-200">Professionisti</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Centri</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Professioni</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Metodiche</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Recensioni</button>
-            </div>
-          </div>
-        <% elsif active_tab == "dolore" %>
-          <div class="inline-flex items-center gap-2 rounded-xl border border-rose-100 bg-rose-50/70 p-1.5">
-            <span class="material-symbols-outlined text-[15px] text-rose-600 pl-1">school</span>
-            <div class="flex items-center gap-1">
-              <button type="button" class="rounded-lg bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-rose-700 border border-rose-200">Insegnanti</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Centri</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Metodiche</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Recensioni</button>
-            </div>
-          </div>
-        <% elsif active_tab == "integrato" %>
-          <div class="inline-flex items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50/70 p-1.5">
-            <span class="material-symbols-outlined text-[15px] text-emerald-600 pl-1">school</span>
-            <div class="flex items-center gap-1">
-              <button type="button" class="rounded-lg bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700 border border-emerald-200">Professionisti</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Centri</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Professioni</button>
-              <button type="button" class="rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 hover:bg-white/70">Recensioni</button>
+              <%= link_to "Insegnanti", rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "insegnanti" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
+              <%= link_to "Centri", rete_professionale_path(tab: "insegnanti", section: "centri"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "centri" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
+              <%= link_to "Metodiche", rete_professionale_path(tab: "insegnanti", section: "metodiche"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "metodiche" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
+              <%= link_to "Dicono di noi", rete_professionale_path(tab: "insegnanti", section: "dicono"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "dicono" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
             </div>
           </div>
         <% end %>
-        <p class="text-lg text-slate-600 leading-relaxed"><%= header_desc %></p>
       </div>
 
       <div class="rounded-3xl border p-6 md:p-7 shadow-sm <%= page_theme_classes[:panel] %>">
@@ -114,175 +96,111 @@
       </div>
     </div>
 
-    <% if active_tab == "insegnanti" %>
+    <%
+      card_tab_key =
+        case active_tab
+        when "creator" then "creator_youtube"
+        when "salute" then "percorso_salute"
+        else "accademia"
+        end
+      visible_professionisti =
+        if card_tab_key == "accademia" && active_section != "insegnanti"
+          []
+        else
+          @professionisti.select { |prof| prof["tabs"].to_a.include?(card_tab_key) }
+        end
+      link_icon_map = {
+        "instagram" => "photo_camera",
+        "youtube" => "smart_display",
+        "whatsapp" => "chat",
+        "website" => "language",
+        "linkedin" => "work",
+        "facebook" => "thumb_up",
+        "tiktok" => "movie",
+        "email" => "mail",
+        "phone" => "call"
+      }
+    %>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="https://www.youtube.com/embed/FthfIMTv7CQ" data-teacher-name="Davide Cattaneo">
-        <div class="absolute inset-x-0 top-0 h-1 bg-emerald-500"></div>
-        <div class="flex items-start gap-3">
-         
-          <img src="https://ik.imagekit.io/posturacorretta/Professionisti/davide_cattaneo.png" alt="Davide Cattaneo" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
-          <div class="min-w-0">
-            <h3 class="text-lg font-black text-slate-900 leading-tight">Davide Cattaneo</h3>
-            <p class="text-sm text-slate-500 mt-0.5">Tecnico del nuoto · Massaggiatore</p>
-            <span class="block text-[11px] font-semibold text-emerald-600">Professionista benessere</span>
+      <% visible_professionisti.each do |prof| %>
+        <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="<%= prof["video"] %>" data-teacher-name="<%= prof["name"] %>">
+          <div class="absolute inset-x-0 top-0 h-1 <%= prof["top_bar_class"] || "bg-slate-300" %>"></div>
+          <div class="flex items-start gap-3">
+            <img src="<%= prof["avatar"] %>" alt="<%= prof["name"] %>" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
+            <div class="min-w-0">
+              <h3 class="text-lg font-black text-slate-900 leading-tight"><%= prof["name"] %></h3>
+              <p class="text-sm text-slate-500 mt-0.5"><%= prof["subtitle"] %></p>
+              <span class="block text-[11px] font-semibold <%= prof["role_class"] || "text-slate-600" %>"><%= prof["role_label"] %></span>
+            </div>
           </div>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 border border-blue-100">Igiene Posturale</span>
-          <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700 border border-emerald-100">Disponibile</span>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">Lavora sull'allenamento in acqua e sul massaggio, con focus su mobilita articolare e postura quotidiana.</p>
-        <div class="mt-4 flex items-center gap-2">
-          <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
-          <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
-        </div>
-      </article>
-
-      <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="https://www.youtube.com/embed/w1aiyyXwShQ" data-teacher-name="Antonio Ventura">
-        <div class="absolute inset-x-0 top-0 h-1 bg-emerald-500"></div>
-        <div class="flex items-start gap-3">
-        
-          <img src="https://ik.imagekit.io/posturacorretta/Professionisti/antonio_ventura.png" alt="Antonio Ventura" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
-          <div class="min-w-0">
-            <h3 class="text-lg font-black text-slate-900 leading-tight">Antonio Ventura</h3>
-            <p class="text-sm text-slate-500 mt-0.5">Massaggiatore. Esperto nel Massaggio del viso.</p>
-            <span class="block text-[11px] font-semibold text-green-600">Professionista benessere</span>
-            <!--span class="block text-[11px] font-semibold text-rose-600">Professionista sanitario</span-->
+          <% if prof["badges"].present? %>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <% prof["badges"].each do |badge| %>
+                <% if active_tab == "insegnanti" && active_section == "insegnanti" && prof["certificazioni"].present? && badge["label"].to_s.downcase == "igiene posturale" %>
+                  <% next %>
+                <% end %>
+                <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide border <%= badge["classes"] || "bg-slate-100 text-slate-700 border-slate-200" %>">
+                  <% if badge["icon"].present? %>
+                    <span class="material-symbols-outlined text-[12px] mr-1"><%= badge["icon"] %></span>
+                  <% end %>
+                  <%= badge["label"] %>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+          <% if prof["description"].present? %>
+            <p class="mt-3 text-sm text-slate-600"><%= prof["description"] %></p>
+          <% end %>
+          <% if active_tab == "insegnanti" && active_section == "insegnanti" && prof["certificazioni"].present? %>
+            <div class="mt-3 space-y-1.5">
+              <% prof["certificazioni"].each do |cert| %>
+                <% next unless cert["slug"] == "igiene_posturale" %>
+                <div class="flex flex-wrap items-center gap-2 text-[11px]">
+                  <% if cert["attestato_url"].present? %>
+                    <a href="<%= cert["attestato_url"] %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-blue-700 hover:bg-blue-100">
+                      <span class="material-symbols-outlined text-[12px]">workspace_premium</span>
+                      <%= cert["nome"] %>
+                    </a>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          <% if prof["links"].present? %>
+            <div class="mt-3 flex items-center gap-2">
+              <% prof["links"].each do |link| %>
+                <% next unless link["url"].present? %>
+                <%
+                  link_type = link["type"].to_s
+                  raw_url = link["url"].to_s.strip
+                  href =
+                    case link_type
+                    when "email"
+                      raw_url.start_with?("mailto:") ? raw_url : "mailto:#{raw_url}"
+                    when "whatsapp"
+                      if raw_url.start_with?("http://", "https://")
+                        raw_url
+                      else
+                        number = raw_url.gsub(/\D/, "")
+                        "https://wa.me/#{number}"
+                      end
+                    else
+                      raw_url
+                    end
+                %>
+                <a href="<%= href %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-2 py-1 text-slate-600 hover:bg-slate-50" title="<%= link_type.humanize %>">
+                  <span class="material-symbols-outlined text-[16px]"><%= link_icon_map[link["type"]] || "link" %></span>
+                </a>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="mt-4 flex items-center gap-2">
+            <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
+            <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
           </div>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 border border-blue-100">Igiene Posturale</span>
-          <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-700 border border-amber-100">Online</span>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">Esperto nel massaggio, lavora, alle terme di sirmione esperto nel massaggio del viso Kubido, praticante di sport acquatici.</p>
-        <div class="mt-4 flex items-center gap-2">
-          <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
-          <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
-        </div>
-      </article>
-
-      <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="https://www.youtube.com/embed/T89d1FmwiSg" data-teacher-name="Mark Postura">
-        <div class="absolute inset-x-0 top-0 h-1 bg-red-500"></div>
-        <div class="flex items-start gap-3">
-       
-          <img src="https://ik.imagekit.io/posturacorretta/Professionisti/mark_postura.png" alt="Mark Postura" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
-          <div class="min-w-0">
-            <h3 class="text-lg font-black text-slate-900 leading-tight">Mark Postura</h3>
-            <p class="text-sm text-slate-500 ">Fisioterapista - Fondatore</p>
-            <span class="block text-[11px] font-semibold text-rose-600">Professionista sanitario</span>
-            <!--span class="block text-[11px] font-semibold text-blue-600">Educatore</span-->
-          </div>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 border border-blue-100">Igiene Posturale</span>
-          <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-600 border border-slate-200">In centro</span>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">Appassionato di Movimento, Metodiche Posturali, Portare l'educazione alla salute con la postura è la mia missione.</p>
-        <div class="mt-4 flex items-center gap-2">
-          <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
-          <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
-        </div>
-      </article>
+        </article>
+      <% end %>
     </div>
-    <% elsif active_tab == "dolore" %>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="https://www.youtube.com/embed/T89d1FmwiSg" data-teacher-name="Mark Postura">
-        <div class="absolute inset-x-0 top-0 h-1 bg-red-500"></div>
-        <div class="flex items-start gap-3">
-          <img src="https://ik.imagekit.io/posturacorretta/Professionisti/mark_postura.png" alt="Mark Postura" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
-          <div class="min-w-0">
-            <h3 class="text-lg font-black text-slate-900 leading-tight">Mark Postura</h3>
-            <p class="text-sm text-slate-500">Fisioterapista - Fondatore</p>
-            <span class="block text-[11px] font-semibold text-rose-600">Professionista sanitario</span>
-          </div>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-red-700 border border-red-100">
-            <span class="material-symbols-outlined text-[12px] mr-1">favorite</span>Stop al dolore
-          </span>
-          <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 border border-blue-100">Igiene Posturale</span>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">Appassionato di movimento e metodiche posturali, supporta l'integrazione tra educazione alla salute e percorsi professionali.</p>
-        <div class="mt-4 flex items-center gap-2">
-          <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
-          <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
-        </div>
-      </article>
-    </div>
-    <% elsif active_tab == "integrato" %>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="https://www.youtube.com/embed/FthfIMTv7CQ" data-teacher-name="Davide Cattaneo">
-        <div class="absolute inset-x-0 top-0 h-1 bg-emerald-500"></div>
-        <div class="flex items-start gap-3">
-          <img src="https://ik.imagekit.io/posturacorretta/Professionisti/davide_cattaneo.png" alt="Davide Cattaneo" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
-          <div class="min-w-0">
-            <h3 class="text-lg font-black text-slate-900 leading-tight">Davide Cattaneo</h3>
-            <p class="text-sm text-slate-500 mt-0.5">Tecnico del nuoto · Massaggiatore</p>
-            <span class="block text-[11px] font-semibold text-emerald-600">Professionista benessere</span>
-          </div>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700 border border-emerald-100">
-            <span class="material-symbols-outlined text-[12px] mr-1">conversion_path</span>Integrato
-          </span>
-          <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 border border-blue-100">Igiene Posturale</span>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">Lavora sull'allenamento in acqua e sul massaggio, con focus su mobilita articolare e postura quotidiana.</p>
-        <div class="mt-4 flex items-center gap-2">
-          <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
-          <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
-        </div>
-      </article>
-
-      <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="https://www.youtube.com/embed/w1aiyyXwShQ" data-teacher-name="Antonio Ventura">
-        <div class="absolute inset-x-0 top-0 h-1 bg-emerald-500"></div>
-        <div class="flex items-start gap-3">
-          <img src="https://ik.imagekit.io/posturacorretta/Professionisti/antonio_ventura.png" alt="Antonio Ventura" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
-          <div class="min-w-0">
-            <h3 class="text-lg font-black text-slate-900 leading-tight">Antonio Ventura</h3>
-            <p class="text-sm text-slate-500 mt-0.5">Massaggiatore. Esperto nel Massaggio del viso.</p>
-            <span class="block text-[11px] font-semibold text-emerald-600">Professionista benessere</span>
-          </div>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700 border border-emerald-100">
-            <span class="material-symbols-outlined text-[12px] mr-1">conversion_path</span>Integrato
-          </span>
-          <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-700 border border-amber-100">Online</span>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">Esperto nel massaggio, lavora alle terme di Sirmione, praticante di sport acquatici e massaggio viso Kubido.</p>
-        <div class="mt-4 flex items-center gap-2">
-          <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
-          <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
-        </div>
-      </article>
-    </div>
-    <% else %>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <article class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-teacher-video="https://www.youtube.com/embed/T89d1FmwiSg" data-teacher-name="Mark Postura">
-        <div class="absolute inset-x-0 top-0 h-1 bg-red-500"></div>
-        <div class="flex items-start gap-3">
-          <img src="https://ik.imagekit.io/posturacorretta/Professionisti/mark_postura.png" alt="Mark Postura" class="w-14 h-14 rounded-full object-cover border border-white shadow-sm" />
-          <div class="min-w-0">
-            <h3 class="text-lg font-black text-slate-900 leading-tight">Mark Postura</h3>
-            <p class="text-sm text-slate-500 mt-0.5">Fisioterapista - Fondatore</p>
-            <span class="block text-[11px] font-semibold text-rose-600">Professionista sanitario</span>
-          </div>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-red-700 border border-red-100">
-            <span class="material-symbols-outlined text-[12px] mr-1">smart_display</span>YouTube
-          </span>
-          <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 border border-blue-100">Igiene Posturale</span>
-        </div>
-        <p class="mt-3 text-sm text-slate-600">Appassionato di Movimento, Metodiche Posturali, portare l'educazione alla salute con la postura è la sua missione.</p>
-        <div class="mt-4 flex items-center gap-2">
-          <a href="#" class="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white hover:bg-primary/90">Vedi profilo</a>
-          <a href="#" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50">Richiedi contatto</a>
-        </div>
-      </article>
-    </div>
-    <% end %>
 
     <div class="pt-2">
       <%= link_to dashboard_home_path(tab: "academy"), class: "inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" do %>
@@ -324,7 +242,8 @@
     };
 
     document.querySelectorAll("[data-teacher-video]").forEach((card) => {
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (e) => {
+        if (e.target.closest("a, button")) return;
         const src = card.getAttribute("data-teacher-video");
         const teacherName = card.getAttribute("data-teacher-name") || "Insegnante";
         if (!src) return;

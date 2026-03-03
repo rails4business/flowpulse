@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <%
-  percorso_root = Taxbranch.find_by(slug: "percorso/postura-e-fisiologia")
+  percorso_root = Taxbranch.find_by(slug: "academy_path/postura-e-fisiologia")
   percorso_children =
     if percorso_root
       scope = percorso_root.children.ordered
@@ -48,13 +48,13 @@
                      data: { close_dropdown: true } do %>
           Orientamento e iscrizione all'Accademia
          <% end %>
-          <details class="mx-2 mb-3 rounded-lg border border-slate-100" data-nav-accordion>
-            <summary class="list-none cursor-pointer px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 flex items-center justify-between">
+          <details class="mx-2 mb-3 rounded-lg border border-blue-200 bg-blue-50/70" data-nav-accordion open>
+            <summary class="list-none cursor-pointer px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-blue-800 flex items-center justify-between">
              Postura e fisiologia
               <span class="material-symbols-outlined text-[16px] leading-none">expand_more</span>
             </summary>
             <div class="grid grid-cols-2 gap-3 mt-2 px-2 pb-2">
-              <section class="rounded-lg border border-slate-100 p-2">
+              <section class="rounded-lg border border-slate-100 bg-white p-2 shadow-sm">
                 <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Percorso educativo</p>
                 <% if percorso_intro.present? %>
                   <%= link_to "Inizia il percorso", post_path(percorso_intro.post), class: "block px-2 py-2 text-sm font-semibold text-primary hover:text-primary/80" %>
@@ -69,19 +69,21 @@
                   <span class="block px-2 py-2 text-sm text-slate-400">Nessun modulo disponibile</span>
                 <% end %>
               </section>
-              <section class="rounded-lg border border-slate-100 p-2">
-                <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete</p>
-                <%= link_to "Allievi", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                <%= link_to "Insegnanti", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                <%= link_to "Centri", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                <%= link_to "Metodiche", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+              <section class="rounded-lg border border-slate-100 bg-white p-2 shadow-sm">
+                <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete professionale</p>
+                <%= link_to "Insegnanti", rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to "Centri", rete_professionale_path(tab: "insegnanti", section: "centri"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to "Metodiche", rete_professionale_path(tab: "insegnanti", section: "metodiche"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to rete_professionale_path(tab: "insegnanti", section: "dicono"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } do %>
+                  Dicono di noi
+                <% end %>
               </section>
             </div>
           </details>
          
 
            <%= link_to coming_soon_path(feature: "Percorso Salute: Linee guida ", source: "Nav desktop > Accademia"),
-                         class: "mx-2 mb-3 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
+                         class: "mx-2 mb-3 block rounded-lg border border-cyan-200 bg-cyan-50 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-cyan-800 hover:bg-cyan-100 transition-colors",
                          data: { close_dropdown: true } do %>
           Percorso Salute: Linee guida
           <% end %>
@@ -89,17 +91,12 @@
              
         
            <%= link_to coming_soon_path(feature: "Stile di vita", source: "Nav desktop > Accademia"),
-                       class: "mx-2 mb-3 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
+                       class: "mx-2 mb-3 block rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-violet-800 hover:bg-violet-100 transition-colors",
                        data: { close_dropdown: true } do %>
          Stile di vita
           <% end %>
         </div>
       </details>
-      <%= link_to coming_soon_path(feature: "Percorso personalizzato", wa_message: "Ciao! Sono interessato al Percorso personalizzato. Possiamo parlarne?"),
-                  class: "inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors" do %>
-        <span class="material-symbols-outlined text-[18px] leading-none">alt_route</span>
-        Percorso personalizzato
-      <% end %>
       <details class="relative inline-flex items-center justify-center" data-nav-dropdown>
         <summary
           class="list-none inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-primary transition-colors cursor-pointer"
@@ -109,14 +106,26 @@
           Risorse
           <span class="material-symbols-outlined text-[18px] leading-none">expand_more</span>
         </summary>
-        <div class="absolute z-50 mt-2 w-52 rounded-xl border border-[#f2f0f4] bg-white shadow-lg p-2"
+        <div class="absolute z-50 mt-2 w-64 rounded-xl border border-[#f2f0f4] bg-white shadow-lg p-2"
              style="top: 100%; left: 50%; transform: translateX(-50%);">
+          <div class="my-1 rounded-lg border border-slate-100">
+            <%= link_to rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "flex items-center gap-2 px-3 py-2 text-sm font-medium text-left hover:text-primary" do %>
+              <span class="material-symbols-outlined text-[16px] leading-none">groups</span>
+              Rete professionale
+            <% end %>
+          </div>
           <%= link_to "Contenuti", posturacorretta_contenuti_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Corsi online", posturacorretta_corsi_online_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Eventi", posturacorretta_eventi_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Servizi", posturacorretta_servizi_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
           <%= link_to "Libri", books_path, class: "block px-3 py-2 text-sm font-medium text-left hover:text-primary" %>
+          <div class="my-1 h-px bg-slate-100"></div>
+          <%= link_to coming_soon_path(feature: "Percorso salute", wa_message: "Ciao! Sono interessato al Percorso salute. Possiamo parlarne?"),
+                      class: "flex items-center gap-2 px-3 py-2 text-sm font-medium text-left hover:text-primary" do %>
+            <span class="material-symbols-outlined text-[16px] leading-none">monitor_heart</span>
+            Percorso salute
+          <% end %>
         </div>
       </details>
       <%= link_to root_path(anchor: "progetto"),
@@ -179,13 +188,13 @@
                             data: { close_dropdown: true } do %>
                   Orientamento e iscrizione all'Accademia
                 <% end %>
-                <details class="mb-2 rounded-lg border border-slate-100" data-nav-accordion>
-                  <summary class="list-none cursor-pointer px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 flex items-center justify-between">
+                <details class="mb-2 rounded-lg border border-blue-200 bg-blue-50/70" data-nav-accordion>
+                  <summary class="list-none cursor-pointer px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-blue-800 flex items-center justify-between">
                     Postura e fisiologia
                     <span class="material-symbols-outlined text-[16px] leading-none">expand_more</span>
                   </summary>
-                  <div class="px-2 pb-2">
-                    <section class="mb-2 rounded-lg border border-slate-100 p-2">
+                  <div class="grid grid-cols-1 gap-3 px-2 pb-2">
+                    <section class="rounded-lg border border-slate-100 bg-white p-2 shadow-sm">
                       <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Percorso educativo</p>
                       <% if percorso_intro.present? %>
                         <%= link_to "Inizia il percorso", post_path(percorso_intro.post), class: "block px-2 py-2 text-sm font-semibold text-primary hover:text-primary/80" %>
@@ -200,35 +209,32 @@
                         <span class="block px-2 py-2 text-sm text-slate-400">Nessun modulo disponibile</span>
                       <% end %>
                     </section>
-                    <section class="rounded-lg border border-slate-100 p-2">
-                      <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete</p>
-                      <%= link_to "Allievi", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                      <%= link_to "Insegnanti", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                      <%= link_to "Centri", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                      <%= link_to "Metodiche", root_path(anchor: "rete"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                    <section class="rounded-lg border border-slate-100 bg-white p-2 shadow-sm">
+                      <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete professionale</p>
+                      <%= link_to "Insegnanti", rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to "Centri", rete_professionale_path(tab: "insegnanti", section: "centri"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to "Metodiche", rete_professionale_path(tab: "insegnanti", section: "metodiche"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to rete_professionale_path(tab: "insegnanti", section: "dicono"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } do %>
+                        Dicono di noi
+                      <% end %>
                     </section>
                   </div>
                 </details>
            
                    <%= link_to coming_soon_path(feature: " Percorso Salute: Linee guida", source: "Nav mobile > Accademia"),
-                            class: "mb-2 block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
+                            class: "mb-2 block rounded-lg border border-cyan-200 bg-cyan-50 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-cyan-800 hover:bg-cyan-100 transition-colors",
                             data: { close_dropdown: true } do %>
                   Percorso Salute: Linee guida
                 <% end %>
                   
               
                 <%= link_to coming_soon_path(feature: "Stile di vita", source: "Nav mobile > Accademia"),
-                            class: "block rounded-lg border border-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 hover:text-primary transition-colors",
+                            class: "block rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-violet-800 hover:bg-violet-100 transition-colors",
                             data: { close_dropdown: true } do %>
                   Stile di vita
                 <% end %>
               </div>
             </details>
-
-            <%= link_to coming_soon_path(feature: "Percorso personalizzato", wa_message: "Ciao! Sono interessato al Percorso personalizzato. Possiamo parlarne?"), class: "flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-3 text-sm font-semibold text-slate-700 dark:text-slate-100 hover:text-primary" do %>
-              <span class="material-symbols-outlined text-[18px] leading-none">alt_route</span>
-              Percorso personalizzato
-            <% end %>
 
             <details class="rounded-xl border border-slate-200 dark:border-slate-700" data-nav-accordion>
               <summary class="list-none cursor-pointer px-3 py-3 text-sm font-semibold text-slate-700 dark:text-slate-100 flex items-center justify-between">
@@ -239,12 +245,23 @@
                 <span class="material-symbols-outlined text-[18px] leading-none">expand_more</span>
               </summary>
               <div class="px-3 pb-3">
+                <div class="mb-2 rounded-lg border border-slate-100">
+                  <%= link_to rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "flex items-center gap-2 px-2 py-2 text-sm font-medium hover:text-primary" do %>
+                    <span class="material-symbols-outlined text-[16px] leading-none">groups</span>
+                    Rete professionale
+                  <% end %>
+                </div>
                 <%= link_to "Contenuti", posturacorretta_contenuti_path, class: "block px-2 py-2 text-sm font-medium hover:text-primary" %>
                 <%= link_to "Corsi online", posturacorretta_corsi_online_path, class: "block px-2 py-2 text-sm font-medium hover:text-primary" %>
                 <%= link_to "Eventi", posturacorretta_eventi_path, class: "block px-2 py-2 text-sm font-medium hover:text-primary" %>
                 <%= link_to "Servizi", posturacorretta_servizi_path, class: "block px-2 py-2 text-sm font-medium hover:text-primary" %>
                 <%= link_to "Manifesto", posturacorretta_manifesto_path, class: "block px-2 py-2 text-sm font-medium hover:text-primary" %>
                 <%= link_to "Libri", books_path, class: "block px-2 py-2 text-sm font-medium hover:text-primary" %>
+                <div class="my-1 h-px bg-slate-100"></div>
+                <%= link_to coming_soon_path(feature: "Percorso salute", wa_message: "Ciao! Sono interessato al Percorso salute. Possiamo parlarne?"), class: "flex items-center gap-2 px-2 py-2 text-sm font-medium hover:text-primary" do %>
+                  <span class="material-symbols-outlined text-[16px] leading-none">monitor_heart</span>
+                  Percorso salute
+                <% end %>
               </div>
             </details>
 

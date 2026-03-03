@@ -43,6 +43,11 @@ class PagesController < ApplicationController
   end
 
   def insegnanti
+    file_path = Rails.root.join("config/data/professionisti.json")
+    @professionisti = JSON.parse(File.read(file_path))
+  rescue StandardError => e
+    Rails.logger.error("Errore caricamento professionisti.json: #{e.class} - #{e.message}")
+    @professionisti = []
   end
 
   def about

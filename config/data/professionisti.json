@@ -1,0 +1,194 @@
+[
+  {
+    "id": "davide_cattaneo",
+    "name": "Davide Cattaneo",
+    "subtitle": "Tecnico del nuoto · Massaggiatore",
+    "role_label": "Professionista benessere",
+    "role_class": "text-emerald-600",
+    "avatar": "https://ik.imagekit.io/posturacorretta/Professionisti/davide_cattaneo.png",
+    "video": "https://www.youtube.com/embed/FthfIMTv7CQ",
+    "tabs": ["accademia", "percorso_salute"],
+    "top_bar_class": "bg-emerald-500",
+    "description": "Lavora sull'allenamento in acqua e sul massaggio, con focus su mobilita articolare e postura quotidiana.",
+    "badges": [
+      {
+        "label": "Igiene Posturale",
+        "classes": "bg-blue-50 text-blue-700 border-blue-100"
+      },
+      {
+        "label": "Disponibile",
+        "classes": "bg-emerald-50 text-emerald-700 border-emerald-100"
+      }
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/embed/FthfIMTv7CQ"
+      }
+    ],
+    "certificazioni": [
+      {
+        "tipo": "modulo",
+        "slug": "igiene_posturale",
+        "nome": "Igiene Posturale",
+        "numero_insegnante": "01",
+        "id_diploma": "IGP-2025-01",
+        "file_name": "01-davide-cattaneo-cert-igp-2025-08-12.png",
+        "attestato_url": "https://ik.imagekit.io/posturacorretta/corsi/igiene_posturale/attestati_insegnanti_igiene_posturale/01-davide-cattaneo-cert-igp-2025-08-12.png"
+      }
+    ]
+  },
+  {
+    "id": "antonio_ventura",
+    "name": "Antonio Ventura",
+    "subtitle": "Massaggiatore. Esperto M. Kubido.",
+    "role_label": "Professionista benessere",
+    "role_class": "text-emerald-600",
+    "avatar": "https://ik.imagekit.io/posturacorretta/Professionisti/antonio_ventura.png",
+    "video": "https://www.youtube.com/embed/w1aiyyXwShQ",
+    "tabs": ["accademia", "percorso_salute"],
+    "top_bar_class": "bg-emerald-500",
+    "description": "Esperto nel massaggio, lavora, alle terme di sirmione esperto nel massaggio del viso Kubido, praticante di sport acquatici.",
+    "badges": [
+      {
+        "label": "Igiene Posturale",
+        "classes": "bg-blue-50 text-blue-700 border-blue-100"
+      },
+      {
+        "label": "Online",
+        "classes": "bg-amber-50 text-amber-700 border-amber-100"
+      }
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/embed/w1aiyyXwShQ"
+      }
+    ],
+    "certificazioni": [
+      {
+        "tipo": "modulo",
+        "slug": "igiene_posturale",
+        "nome": "Igiene Posturale",
+        "numero_insegnante": "02",
+        "id_diploma": "IGP-2025-02",
+        "file_name": "02-antonio-ventura-cert-igp-2026-02-02.png",
+        "attestato_url": "https://ik.imagekit.io/posturacorretta/corsi/igiene_posturale/attestati_insegnanti_igiene_posturale/02-antonio-ventura-cert-igp-2026-02-02.png"
+      }
+    ]
+  },
+  {
+    "id": "mark_postura",
+    "name": "Mark Postura",
+    "subtitle": "Fisioterapista - Fondatore",
+    "role_label": "Professionista sanitario",
+    "role_class": "text-rose-600",
+    "avatar": "https://ik.imagekit.io/posturacorretta/Professionisti/mark_postura.png",
+    "video": "https://www.youtube.com/embed/T89d1FmwiSg",
+    "tabs": ["accademia", "percorso_salute", "creator_youtube"],
+    "top_bar_class": "bg-red-500",
+    "description": "Appassionato di Movimento, Metodiche Posturali, Portare l'educazione alla salute con la postura e la mia missione.",
+    "badges": [
+      {
+        "label": "Igiene Posturale",
+        "classes": "bg-blue-50 text-blue-700 border-blue-100"
+      },
+      {
+        "label": "Fondatore",
+        "classes": "bg-slate-100 text-slate-600 border-slate-200"
+      }
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/embed/T89d1FmwiSg"
+      }
+    ],
+    "certificazioni": [
+      {
+        "tipo": "modulo",
+        "slug": "igiene_posturale",
+        "nome": "Igiene Posturale",
+        "numero_insegnante": "03",
+        "id_diploma": "IGP-2026-03-03",
+        "file_name": "03-mark-postura-cert-igp-2026-03-03.png",
+        "attestato_url": "https://ik.imagekit.io/posturacorretta/corsi/igiene_posturale/attestati_insegnanti_igiene_posturale/03-mark-postura-cert-igp-2026-03-03.png"
+      }
+    ]
+  },
+  {
+    "id": "giovanni_frapporti",
+    "name": "Giovanni Frapporti",
+    "subtitle": "Kinesiologo - Esperto nel movimento",
+    "role_label": "Professionista benessere",
+    "role_class": "text-emerald-600",
+    "avatar": "https://ik.imagekit.io/posturacorretta/Professionisti/frapporti_giovanni.png",
+    "video": "https://www.youtube.com/embed/FthfIMTv7CQ",
+    "tabs": ["creator_youtube"],
+    "top_bar_class": "bg-red-500",
+    "description": "💭 Navigating the complexity of pain and rehab  Owner MOOVE: Chiropratica e Movimento   Working @magnitudotraining",
+    "badges": [
+      {
+        "label": "YouTube",
+        "icon": "smart_display",
+        "classes": "bg-red-50 text-red-700 border-red-100"
+      }
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/embed/FthfIMTv7CQ"
+      }
+    ]
+  },
+  {
+    "id": "giovanni_damiata",
+    "name": "Giovanni Damiata",
+    "subtitle": "MMG fitoterapia europea",
+    "role_label": "Professionista sanitario",
+    "role_class": "text-rose-600",
+    "avatar": "https://ik.imagekit.io/posturacorretta/Professionisti/damiata_giovanni_medico_m_g_fitoterapia_europea.png?updatedAt=1770815844638",
+    "video": "https://www.youtube.com/embed/T89d1FmwiSg",
+    "tabs": ["creator_youtube"],
+    "top_bar_class": "bg-red-500",
+    "description": "Medico di Medicina Generale, appassionato di fitoterapia europea, con focus su rimedi naturali.",
+    "badges": [
+      {
+        "label": "YouTube",
+        "icon": "smart_display",
+        "classes": "bg-red-50 text-red-700 border-red-100"
+      }
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/embed/T89d1FmwiSg"
+      }
+    ]
+  },
+  {
+    "id": "marco_belleri",
+    "name": "Marco Belleri",
+    "subtitle": "Fisioterapista - Osteopata Bio-olistico",
+    "role_label": "Professionista sanitario",
+    "role_class": "text-rose-600",
+    "avatar": "https://ik.imagekit.io/posturacorretta/Professionisti/marco_belleri_fisioterapista_osteopata.png?updatedAt=1769436591543",
+    "video": "https://www.youtube.com/embed/w1aiyyXwShQ",
+    "tabs": ["creator_youtube"],
+    "top_bar_class": "bg-red-500",
+    "description": "D.O (ISO), Milano, somatoemozionale, cranio sacrale",
+    "badges": [
+      {
+        "label": "YouTube",
+        "icon": "smart_display",
+        "classes": "bg-red-50 text-red-700 border-red-100"
+      }
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/embed/w1aiyyXwShQ"
+      }
+    ]
+  }
+]
