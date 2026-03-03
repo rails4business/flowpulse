@@ -38,23 +38,16 @@
           <%= link_to root_path, class: "flex items-center justify-between mr-4", data: { turbo: false } do %>
 
             
-            <% if Current.domain.horizontal_logo_url %> 
-               <img
-              src="<%= Current.domain.horizontal_logo_url  %>"
-              class="mr-3 h-8"
-              alt="Flowbite Logo"
-            />
-            <% elsif Current.domain.square_logo_url.present?  %>
-            
-            <img
-              src="<%= Current.domain.square_logo_url %>"
-              class="mr-3 h-8"
-              alt="Flowbite Logo"
-            />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><%= request.host %></span>
-           <% else %>
-           Home
-          <% end %>
+            <% logo_url = Current.domain&.horizontal_logo_url.presence || Current.domain&.square_logo_url.presence %>
+            <% if logo_url.present? %>
+              <img
+                src="<%= logo_url %>"
+                class="mr-3 h-8 w-auto"
+                alt="<%= Current.domain&.title.presence || request.host %>"
+              />
+            <% else %>
+              <span class="self-center text-base font-semibold whitespace-nowrap dark:text-white"><%= Current.domain&.title.presence || request.host %></span>
+            <% end %>
           <% end %>
 
         

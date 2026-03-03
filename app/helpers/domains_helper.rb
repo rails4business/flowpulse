@@ -9,7 +9,7 @@ module DomainsHelper
   end
 
   def domain_favicon_url
-    Current.domain&.favicon_url
+    Current.domain&.favicon_url.presence || Current.domain&.square_logo_url.presence || "/favicon.ico"
   end
 
   def domain_logo_square

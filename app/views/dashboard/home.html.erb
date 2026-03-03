@@ -110,6 +110,19 @@
 <div class="grid grid-cols-12 gap-8">
 <!-- Left Section: Persuasive Onboarding -->
 <section id="dashboard-left-panel" class="hidden col-span-12 lg:col-span-3 lg:flex flex-col gap-6 px-4 py-4 bg-white dark:bg-slate-900/40 rounded-xl border border-[#e7edf3] dark:border-slate-800">
+    <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3">
+      <% if @current_domain&.horizontal_logo_url.present? %>
+        <img src="<%= @current_domain.horizontal_logo_url %>"
+             alt="<%= @current_domain.title.presence || @current_domain.host %>"
+             class="h-8 w-auto max-w-full object-contain" />
+      <% elsif @current_domain&.square_logo_url.present? %>
+        <img src="<%= @current_domain.square_logo_url %>"
+             alt="<%= @current_domain.title.presence || @current_domain.host %>"
+             class="h-8 w-8 rounded-md object-cover" />
+      <% else %>
+        <p class="text-sm font-semibold text-slate-700 dark:text-slate-200"><%= @current_domain&.title.presence || @current_domain&.host || "Dashboard" %></p>
+      <% end %>
+    </div>
     <div>
       <% show_dev_domain_switch = Rails.env.development? && request.host.to_s.include?("localhost") %>
       <% if show_dev_domain_switch && domain_switch_items.size > 1 %>
