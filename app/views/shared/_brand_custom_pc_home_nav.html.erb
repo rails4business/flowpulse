@@ -71,10 +71,10 @@
               </section>
               <section class="rounded-lg border border-slate-100 bg-white p-2 shadow-sm">
                 <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete professionale</p>
-                <%= link_to "Insegnanti", rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                <%= link_to "Centri", rete_professionale_path(tab: "insegnanti", section: "centri"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                <%= link_to "Metodiche", rete_professionale_path(tab: "insegnanti", section: "metodiche"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                <%= link_to rete_professionale_path(tab: "insegnanti", section: "dicono"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } do %>
+                <%= link_to "Insegnanti", rete_professionale_path(section: "insegnanti", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to "Centri", rete_professionale_path(section: "centri", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to "Metodiche", rete_professionale_path(section: "metodiche", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                <%= link_to rete_professionale_path(section: "dicono", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } do %>
                   Dicono di noi
                 <% end %>
               </section>
@@ -109,7 +109,7 @@
         <div class="absolute z-50 mt-2 w-64 rounded-xl border border-[#f2f0f4] bg-white shadow-lg p-2"
              style="top: 100%; left: 50%; transform: translateX(-50%);">
           <div class="my-1 rounded-lg border border-slate-100">
-            <%= link_to rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "flex items-center gap-2 px-3 py-2 text-sm font-medium text-left hover:text-primary" do %>
+            <%= link_to rete_professionale_path(section: "insegnanti", tab: "insegnanti"), class: "flex items-center gap-2 px-3 py-2 text-sm font-medium text-left hover:text-primary" do %>
               <span class="material-symbols-outlined text-[16px] leading-none">groups</span>
               Rete professionale
             <% end %>
@@ -211,10 +211,10 @@
                     </section>
                     <section class="rounded-lg border border-slate-100 bg-white p-2 shadow-sm">
                       <p class="px-2 py-1 text-sm font-extrabold uppercase tracking-wide text-slate-700">Rete professionale</p>
-                      <%= link_to "Insegnanti", rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                      <%= link_to "Centri", rete_professionale_path(tab: "insegnanti", section: "centri"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                      <%= link_to "Metodiche", rete_professionale_path(tab: "insegnanti", section: "metodiche"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
-                      <%= link_to rete_professionale_path(tab: "insegnanti", section: "dicono"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } do %>
+                      <%= link_to "Insegnanti", rete_professionale_path(section: "insegnanti", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to "Centri", rete_professionale_path(section: "centri", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to "Metodiche", rete_professionale_path(section: "metodiche", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } %>
+                      <%= link_to rete_professionale_path(section: "dicono", tab: "insegnanti"), class: "block px-2 py-1.5 text-sm font-medium text-left hover:text-primary", data: { close_dropdown: true } do %>
                         Dicono di noi
                       <% end %>
                     </section>
@@ -246,7 +246,7 @@
               </summary>
               <div class="px-3 pb-3">
                 <div class="mb-2 rounded-lg border border-slate-100">
-                  <%= link_to rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "flex items-center gap-2 px-2 py-2 text-sm font-medium hover:text-primary" do %>
+                  <%= link_to rete_professionale_path(section: "insegnanti", tab: "insegnanti"), class: "flex items-center gap-2 px-2 py-2 text-sm font-medium hover:text-primary" do %>
                     <span class="material-symbols-outlined text-[16px] leading-none">groups</span>
                     Rete professionale
                   <% end %>

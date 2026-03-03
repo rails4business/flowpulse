@@ -76,10 +76,10 @@
           <div class="inline-flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50/70 p-1.5">
             <span class="material-symbols-outlined text-[15px] text-blue-600 pl-1">school</span>
             <div class="flex items-center gap-1">
-              <%= link_to "Insegnanti", rete_professionale_path(tab: "insegnanti", section: "insegnanti"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "insegnanti" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
-              <%= link_to "Centri", rete_professionale_path(tab: "insegnanti", section: "centri"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "centri" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
-              <%= link_to "Metodiche", rete_professionale_path(tab: "insegnanti", section: "metodiche"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "metodiche" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
-              <%= link_to "Dicono di noi", rete_professionale_path(tab: "insegnanti", section: "dicono"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "dicono" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
+              <%= link_to "Insegnanti", rete_professionale_path(section: "insegnanti", tab: "insegnanti"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "insegnanti" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
+              <%= link_to "Centri", rete_professionale_path(section: "centri", tab: "insegnanti"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "centri" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
+              <%= link_to "Metodiche", rete_professionale_path(section: "metodiche", tab: "insegnanti"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "metodiche" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
+              <%= link_to "Dicono di noi", rete_professionale_path(section: "dicono", tab: "insegnanti"), class: "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide #{active_section == "dicono" ? "bg-white text-blue-700 border border-blue-200" : "text-slate-500 hover:bg-white/70"}" %>
             </div>
           </div>
         <% end %>
