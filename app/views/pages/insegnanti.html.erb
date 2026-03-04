@@ -51,9 +51,12 @@
   <section class="max-w-[1200px] mx-auto px-6 py-12 space-y-8">
     <div class="flex flex-nowrap gap-2 overflow-x-auto pb-1 whitespace-nowrap">
       <%= link_to "Accademia", insegnanti_path(tab: "insegnanti"), class: "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors #{active_tab == "insegnanti" ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}" %>
-      <%= link_to "Creator YouTube", insegnanti_path(tab: "creator"), class: "inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors #{active_tab == "creator" ? "border-violet-500 bg-violet-50 text-violet-700" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}" %>
-      <span class="inline-flex h-[26px] items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-3 text-[11px] font-bold uppercase tracking-wide leading-none text-slate-400 opacity-80 cursor-not-allowed select-none" aria-disabled="true" title="Attivazione futura">
-        <span class="material-symbols-outlined text-[13px] leading-none">lock</span>
+      <%= link_to insegnanti_path(tab: "creator"), class: "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors #{active_tab == "creator" ? "border-violet-500 bg-violet-50 text-violet-700" : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}" do %>
+        <span class="material-symbols-outlined text-[13px] leading-none">smart_display</span>
+        Creator YouTube
+      <% end %>
+      <span class="inline-flex h-[24px] items-center gap-1 rounded-full border border-slate-200 bg-slate-100 px-3 text-[10px] font-bold uppercase tracking-wide leading-none text-slate-400 opacity-80 cursor-not-allowed select-none" aria-disabled="true" title="Attivazione futura">
+        <span class="material-symbols-outlined text-[11px] leading-none">lock</span>
         Percorso salute
       </span>
     </div>
