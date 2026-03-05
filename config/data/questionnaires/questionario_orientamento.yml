@@ -17,12 +17,9 @@ questions:
     side: none
     kind: single_choice
     options:
-      - value: si
-        label: Si
-      - value: no
-        label: No
-      - value: non_lo_so
-        label: Non lo so
+      - value: "si"
+      - value: "no"
+
 
   - code: q1b_quale_diagnosi
     position: 2
@@ -33,7 +30,7 @@ questions:
       all:
         - question: q1_diagnosi_attiva
           operator: eq
-          value: si
+          value: "si"
 
   - code: q2_dolore_patologia
     position: 3
@@ -41,8 +38,7 @@ questions:
     side: none
     kind: single_choice
     options:
-      - value: no
-        label: No
+      - value: "no"
       - value: lieve
         label: Si, leggero
       - value: frequente
@@ -70,10 +66,8 @@ questions:
     side: none
     kind: single_choice
     options:
-      - value: no
-        label: No
-      - value: si
-        label: Si
+      - value: "no"
+      - value: "si"
 
   - code: q4_percorso_salute_attivo
     position: 6
@@ -81,10 +75,8 @@ questions:
     side: none
     kind: single_choice
     options:
-      - value: no
-        label: No
-      - value: si
-        label: Si
+      - value: "no"
+      - value: "si"
 
   - code: q5_trattamenti_benessere
     position: 7
@@ -92,10 +84,8 @@ questions:
     side: none
     kind: single_choice
     options:
-      - value: no
-        label: No
-      - value: si
-        label: Si
+      - value: "no"
+      - value: "si"
 
   - code: q6_discipline_movimento
     position: 8
@@ -103,10 +93,8 @@ questions:
     side: none
     kind: single_choice
     options:
-      - value: no
-        label: No
-      - value: si
-        label: Si
+      - value: "no"
+      - value: "si"
 
   - code: q7_obiettivo_principale
     position: 9

@@ -1,4 +1,21 @@
-
+<style>
+  html.ms-icons-loading .material-symbols-outlined {
+    visibility: hidden;
+  }
+</style>
+<script>
+  document.documentElement.classList.add("ms-icons-loading");
+  (() => {
+    const unlock = () => document.documentElement.classList.remove("ms-icons-loading");
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(unlock).catch(unlock);
+    } else {
+      window.addEventListener("load", unlock, { once: true });
+    }
+    // Fallback: avoid icons remaining hidden in edge cases.
+    setTimeout(unlock, 800);
+  })();
+</script>
 
 <% if content_for?(:head) %>
       <%= yield :head %>

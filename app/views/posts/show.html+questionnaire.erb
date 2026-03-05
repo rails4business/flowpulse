@@ -158,8 +158,10 @@
             <% if options.any? %>
               <fieldset class="mt-4 space-y-2">
                 <% options.each_with_index do |opt, opt_idx| %>
-                  <% option_value = (opt["value"] || opt[:value]).to_s %>
-                  <% option_label = (opt["label"] || opt[:label]).to_s %>
+                  <% option_value = (opt.is_a?(Hash) && opt.key?("value")) ? opt["value"] : opt[:value] %>
+                  <% option_label = (opt.is_a?(Hash) && opt.key?("label")) ? opt["label"] : opt[:label] %>
+                  <% option_value = option_value.to_s %>
+                  <% option_label = option_label.to_s.presence || option_value %>
                   <% option_id = "q_#{current_step}_opt_#{opt_idx}" %>
                   <label for="<%= option_id %>" class="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:border-blue-300">
                     <%= radio_button_tag "answers[#{current_question_code}]",
@@ -169,7 +171,8 @@
                                          class: "h-4 w-4 border-slate-300 text-blue-600",
                                          data: { auto_advance: "1" },
                                          onchange: "var b=this.form&&this.form.querySelector('[data-next-btn=\"1\"]'); if(!b){return;} if(this.form.requestSubmit){this.form.requestSubmit(b);}else{b.click();}" %>
-                    <span><span class="font-semibold"><%= option_value %></span> · <%= option_label %></span>
+                    <% option_text = option_label == option_value ? option_value : "#{option_value} · #{option_label}" %>
+                    <span><span class="font-semibold"><%= option_text %></span></span>
                   </label>
                 <% end %>
               </fieldset>

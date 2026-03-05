@@ -44,7 +44,8 @@ class DashboardController < ApplicationController
       .group("DATE(date_start)")
       .count
 
-    @tab = params[:tab].presence_in(%w[academy diario_salute corsi bookings enrollments]) || "academy"
+    requested_tab = params[:tab].presence_in(%w[academy activity diario_salute corsi bookings enrollments]) || "academy"
+    @tab = requested_tab
     @current_domain = Current.domain
     @lead_domains = @lead.active_domains
     @domain_membership =
@@ -65,6 +66,15 @@ class DashboardController < ApplicationController
     @latest_questionnaire_activity = questionnaire_scope.recent_first.first
     build_academy_todo_from_taxbranch!
     load_dashboard_activity_modal!
+
+    @dashboard_tab_steps = %w[academy activity diario_salute corsi bookings enrollments]
+    first_step_completed = @academy_first_root_step_completed == true
+    @dashboard_tab_unlocks = @dashboard_tab_steps.index_with { |key| %w[academy activity].include?(key) || first_step_completed }
+
+    if @dashboard_tab_unlocks[@tab] == false
+      redirect_to dashboard_home_path(tab: "academy"), alert: "Completa il primo step Academy prima di proseguire ai tab successivi."
+      return
+    end
   end
 
   def superadmin
@@ -193,6 +203,48 @@ class DashboardController < ApplicationController
       end
     @academy_next_step = @academy_steps.find { |item| item[:status_key] == :todo } || @academy_steps.find { |item| item[:status_key] == :scheduled }
     @academy_todo_enabled = @academy_steps.any?
+    build_academy_dashboard_sections!
+  end
+
+  def build_academy_dashboard_sections!
+    steps = Array(@academy_steps)
+    @academy_first_root_step = steps.first
+    @academy_first_root_step_completed = @academy_first_root_step.present? && @academy_first_root_step[:status_key] == :completed
+    @academy_visible_root_step = steps.find { |step| step[:status_key] != :completed } || @academy_first_root_step
+    @academy_completed_root_steps = steps.select { |step| step[:status_key] == :completed }
+
+    active_root = @academy_visible_root_step
+    active_root_category = active_root&.dig(:taxbranch)&.slug_category.to_s
+    @academy_active_root_category = active_root_category
+
+    @academy_inscription_focus_step = nil
+    @academy_inscription_completed_steps = []
+    @academy_path_modules = []
+    @academy_current_action_step = nil
+
+    if active_root_category == "academy_inscription"
+      inscription_children = Array(active_root[:children])
+      @academy_inscription_focus_step = inscription_children.find { |step| step[:status_key] != :completed } || inscription_children.first
+      @academy_inscription_completed_steps = inscription_children.select { |step| step[:status_key] == :completed }
+      @academy_current_action_step = @academy_inscription_focus_step
+    elsif active_root_category == "academy_path"
+      module_nodes = []
+      collect_module_nodes!(active_root, module_nodes)
+      active_root_id = active_root&.dig(:taxbranch)&.id
+      @academy_path_modules = module_nodes
+        .uniq { |node| node[:taxbranch]&.id || node[:title] }
+        .reject { |node| active_root_id.present? && node[:taxbranch]&.id == active_root_id }
+      @academy_current_action_step = @academy_path_modules.find { |step| step[:status_key] != :completed } || @academy_path_modules.first
+    end
+
+    @academy_next_step = @academy_current_action_step || @academy_visible_root_step || @academy_next_step
+  end
+
+  def collect_module_nodes!(node, acc)
+    return if node.blank?
+
+    acc << node if node[:is_module_academy]
+    Array(node[:children]).each { |child| collect_module_nodes!(child, acc) }
   end
 
   def related_records_for_step(step:, bookings:, enrollments:, certificates:, journeys:, eventdates:, activities:)
@@ -491,6 +543,7 @@ class DashboardController < ApplicationController
 
   def load_dashboard_activity_modal!
     @open_activity_modal = false
+    @modal_questionnaire_mode = false
     return unless params[:open_activity_modal].to_s == "1"
 
     @modal_activity = @lead.activities.find_by(id: params[:activity_id])
@@ -506,6 +559,101 @@ class DashboardController < ApplicationController
 
     tb = @modal_post.taxbranch
     @modal_is_questionnaire = tb&.questionnaire_source_path.present? || tb&.questionnaire_root?
+    build_modal_questionnaire_state!(tb) if @modal_is_questionnaire
     @open_activity_modal = true
+  end
+
+  def build_modal_questionnaire_state!(taxbranch)
+    data = taxbranch.questionnaire_definition
+    raw_questions = questionnaire_hash_value(data, "questions") || questionnaire_hash_value(data, "domande") || []
+    questions = Array(raw_questions).sort_by { |q| questionnaire_hash_value(q, "position").to_i }
+    answers = normalize_modal_answers(params[:answers])
+    visible_questions = questions.select { |q| modal_question_visible?(q, answers) }
+    return if visible_questions.blank?
+
+    step = params[:q].to_i
+    step = 1 if step <= 0
+    step = visible_questions.size if step > visible_questions.size
+    current_question = visible_questions[step - 1]
+    current_code = (questionnaire_hash_value(current_question, "code").presence || "q_#{step}").to_s
+
+    @modal_questionnaire_mode = true
+    @modal_questionnaire_answers = answers
+    @modal_questionnaire_visible_questions = visible_questions
+    @modal_questionnaire_step = step
+    @modal_questionnaire_count = visible_questions.size
+    @modal_questionnaire_current_question = current_question
+    @modal_questionnaire_current_code = current_code
+    @modal_questionnaire_current_answer = answers[current_code].to_s
+    @modal_questionnaire_progress_percent = ((step.to_f / visible_questions.size) * 100).round
+  end
+
+  def normalize_modal_answers(raw_answers)
+    hash =
+      if raw_answers.respond_to?(:to_unsafe_h)
+        raw_answers.to_unsafe_h
+      elsif raw_answers.is_a?(Hash)
+        raw_answers
+      else
+        {}
+      end
+
+    hash.to_h.stringify_keys.transform_values do |value|
+      value.is_a?(Array) ? value.map(&:to_s) : value.to_s
+    end
+  end
+
+  def modal_question_visible?(question, answers)
+    show_if = questionnaire_hash_value(question, "show_if")
+    return true if show_if.blank?
+
+    if show_if.is_a?(Hash)
+      all_rules = questionnaire_hash_value(show_if, "all")
+      any_rules = questionnaire_hash_value(show_if, "any")
+      if all_rules.present?
+        Array(all_rules).all? { |rule| modal_condition_match?(rule, answers) }
+      elsif any_rules.present?
+        Array(any_rules).any? { |rule| modal_condition_match?(rule, answers) }
+      else
+        modal_condition_match?(show_if, answers)
+      end
+    elsif show_if.is_a?(Array)
+      show_if.all? { |rule| modal_condition_match?(rule, answers) }
+    else
+      true
+    end
+  end
+
+  def modal_condition_match?(condition, answers)
+    return true unless condition.is_a?(Hash)
+
+    source_code = questionnaire_hash_value(condition, "question").to_s
+    operator = questionnaire_hash_value(condition, "operator").to_s.presence || "eq"
+    expected = condition.key?("value") ? condition["value"] : condition[:value]
+    actual = answers[source_code]
+    actual = actual.is_a?(Array) ? actual.map(&:to_s) : actual.to_s
+
+    case operator
+    when "eq"
+      actual == expected.to_s
+    when "neq"
+      actual != expected.to_s
+    when "in"
+      Array(expected).map(&:to_s).include?(actual.to_s)
+    when "not_in"
+      !Array(expected).map(&:to_s).include?(actual.to_s)
+    when "present"
+      actual.present?
+    when "blank"
+      actual.blank?
+    else
+      true
+    end
+  end
+
+  def questionnaire_hash_value(data, key)
+    return nil unless data.is_a?(Hash)
+
+    data[key] || data[key.to_s] || data[key.to_sym]
   end
 end

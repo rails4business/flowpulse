@@ -159,20 +159,38 @@ class PostsController < ApplicationController
   def submit_questionnaire
     lead = Current.user&.lead
     unless lead
-      redirect_to login_path, alert: "Devi essere autenticato per inviare il questionario."
+      if params[:in_dashboard].to_s == "1"
+        redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), alert: "Devi essere autenticato per inviare il questionario."
+      else
+        redirect_to login_path, alert: "Devi essere autenticato per inviare il questionario."
+      end
       return
     end
 
     questionnaire_taxbranch = @post.taxbranch
     has_yaml_questionnaire = questionnaire_taxbranch&.questionnaire_source_path.present?
     unless questionnaire_taxbranch&.questionnaire_root? || has_yaml_questionnaire
-      redirect_to post_path(@post), alert: "Questo post non e un questionario."
+      if params[:in_dashboard].to_s == "1"
+        redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), alert: "Questo post non e un questionario."
+      else
+        redirect_to post_path(@post), alert: "Questo post non e un questionario."
+      end
       return
     end
 
     answers = submitted_questionnaire_answers
     if answers.blank?
-      redirect_to post_path(@post, q: params[:q].presence || 1), alert: "Seleziona almeno una risposta prima di inviare."
+      if params[:in_dashboard].to_s == "1"
+        redirect_to dashboard_home_path(
+          tab: params[:tab].presence || "academy",
+          open_activity_modal: 1,
+          activity_id: params[:activity_id],
+          post_id: @post.slug,
+          q: params[:q].presence || 1
+        ), alert: "Seleziona almeno una risposta prima di inviare."
+      else
+        redirect_to post_path(@post, q: params[:q].presence || 1), alert: "Seleziona almeno una risposta prima di inviare."
+      end
       return
     end
 
@@ -185,9 +203,23 @@ class PostsController < ApplicationController
       source_ref: @post.slug
     )
 
-    redirect_to post_path(@post, q: params[:q].presence || 1), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
+    if params[:in_dashboard].to_s == "1"
+      redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
+    else
+      redirect_to post_path(@post, q: params[:q].presence || 1), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
+    end
   rescue QuestionnaireSubmission::Error => e
-    redirect_to post_path(@post, q: params[:q].presence || 1), alert: e.message
+    if params[:in_dashboard].to_s == "1"
+      redirect_to dashboard_home_path(
+        tab: params[:tab].presence || "academy",
+        open_activity_modal: 1,
+        activity_id: params[:activity_id],
+        post_id: @post.slug,
+        q: params[:q].presence || 1
+      ), alert: e.message
+    else
+      redirect_to post_path(@post, q: params[:q].presence || 1), alert: e.message
+    end
   end
 
   # GET /posts/new
