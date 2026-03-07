@@ -64,6 +64,12 @@ class DashboardController < ApplicationController
     questionnaire_scope = Activity.questionnaires.where(lead: @lead)
     questionnaire_scope = questionnaire_scope.where(domain_id: @current_domain.id) if @current_domain.present?
     @latest_questionnaire_activity = questionnaire_scope.recent_first.first
+    activity_feed_scope = Activity.includes(:certificate, :eventdate, :booking, :enrollment, taxbranch: :post).where(lead: @lead)
+    activity_feed_scope = activity_feed_scope.where(domain_id: [@current_domain.id, nil]) if @current_domain.present?
+    @activity_feed_items = activity_feed_scope
+      .order(occurred_at: :desc, id: :desc)
+      .limit(60)
+      .map { |activity| build_activity_feed_item(activity) }
     build_academy_todo_from_taxbranch!
     load_dashboard_activity_modal!
 
@@ -164,8 +170,9 @@ class DashboardController < ApplicationController
     step_scope = @academy_root_taxbranch.children.includes(:post).ordered
     step_scope = step_scope.reorder(position: :desc) if @academy_root_taxbranch.order_des?
     trackable_step_ids = step_scope.flat_map { |step| [ step.id ] + step.descendants.pluck(:id) }.uniq
-    activity_scope = Activity.where(lead: @lead, kind: "step_completed")
-    activity_scope = activity_scope.where(domain_id: @current_domain.id) if @current_domain.present?
+    activity_scope = Activity.where(lead: @lead, kind: %w[step_completed questionnaire_submission])
+    # Include legacy activities with nil domain_id so completion is still detected.
+    activity_scope = activity_scope.where(domain_id: [@current_domain.id, nil]) if @current_domain.present?
     completed_step_ids = if trackable_step_ids.any?
       activity_scope.where(taxbranch_id: trackable_step_ids, status: "archived").distinct.pluck(:taxbranch_id)
     else
@@ -175,7 +182,7 @@ class DashboardController < ApplicationController
       scoped = Activity.includes(:certificate)
                        .where(lead: @lead, taxbranch_id: trackable_step_ids)
                        .order(occurred_at: :desc, id: :desc)
-      @current_domain.present? ? scoped.where(domain_id: @current_domain.id).to_a : scoped.to_a
+      @current_domain.present? ? scoped.where(domain_id: [@current_domain.id, nil]).to_a : scoped.to_a
     else
       []
     end
@@ -304,6 +311,7 @@ class DashboardController < ApplicationController
     )
 
     latest_activity = related[:activities].first
+    latest_completed_activity = related[:activities].find { |activity| activity.status.to_s == "archived" }
     status_key = if completed_step_ids.include?(step.id)
       :completed
     else
@@ -355,7 +363,10 @@ class DashboardController < ApplicationController
       status_label: status_label_for(status_key),
       activity_status: latest_activity&.status,
       activity_status_label: activity_status_label_for(latest_activity),
-      activity_occurred_at: latest_activity&.occurred_at,
+      activity_occurred_at: latest_completed_activity&.occurred_at || latest_activity&.occurred_at,
+      latest_activity_id: latest_activity&.id,
+      completed_activity_id: latest_completed_activity&.id,
+      completed_activity_occurred_at: latest_completed_activity&.occurred_at,
       mode_label: @academy_requires_membership ? "accedi all'accademia" : resolve_mode_label(related),
       delivery_available: delivery[:available],
       delivery_mode: delivery[:mode],
@@ -544,6 +555,7 @@ class DashboardController < ApplicationController
   def load_dashboard_activity_modal!
     @open_activity_modal = false
     @modal_questionnaire_mode = false
+    @modal_read_only = false
     return unless params[:open_activity_modal].to_s == "1"
 
     @modal_activity = @lead.activities.find_by(id: params[:activity_id])
@@ -559,6 +571,7 @@ class DashboardController < ApplicationController
 
     tb = @modal_post.taxbranch
     @modal_is_questionnaire = tb&.questionnaire_source_path.present? || tb&.questionnaire_root?
+    @modal_read_only = params[:readonly].to_s == "1" || @modal_activity.status.to_s == "archived"
     build_modal_questionnaire_state!(tb) if @modal_is_questionnaire
     @open_activity_modal = true
   end
@@ -567,7 +580,11 @@ class DashboardController < ApplicationController
     data = taxbranch.questionnaire_definition
     raw_questions = questionnaire_hash_value(data, "questions") || questionnaire_hash_value(data, "domande") || []
     questions = Array(raw_questions).sort_by { |q| questionnaire_hash_value(q, "position").to_i }
-    answers = normalize_modal_answers(params[:answers])
+    payload_hash = @modal_activity&.payload.is_a?(Hash) ? @modal_activity.payload : {}
+    persisted_answers = normalize_modal_answers(payload_hash["answers"])
+    live_answers = normalize_modal_answers(params[:answers])
+    answers = persisted_answers.merge(live_answers)
+    persist_modal_questionnaire_answers!(answers) if live_answers.present? && !@modal_read_only
     visible_questions = questions.select { |q| modal_question_visible?(q, answers) }
     return if visible_questions.blank?
 
@@ -586,6 +603,19 @@ class DashboardController < ApplicationController
     @modal_questionnaire_current_code = current_code
     @modal_questionnaire_current_answer = answers[current_code].to_s
     @modal_questionnaire_progress_percent = ((step.to_f / visible_questions.size) * 100).round
+  end
+
+  def persist_modal_questionnaire_answers!(answers)
+    return if @modal_activity.blank?
+
+    payload = @modal_activity.payload.is_a?(Hash) ? @modal_activity.payload.deep_dup : {}
+    payload["answers"] = answers
+    payload["questionnaire_post_slug"] = @modal_post&.slug
+    payload["draft_saved_at"] = Time.current.iso8601
+
+    @modal_activity.update(payload: payload)
+  rescue StandardError
+    nil
   end
 
   def normalize_modal_answers(raw_answers)
@@ -655,5 +685,43 @@ class DashboardController < ApplicationController
     return nil unless data.is_a?(Hash)
 
     data[key] || data[key.to_s] || data[key.to_sym]
+  end
+
+  def build_activity_feed_item(activity)
+    taxbranch = activity.taxbranch
+    post = taxbranch&.post
+    related = {
+      bookings: [],
+      enrollments: [],
+      certificates: [],
+      journeys: [],
+      eventdates: activity.eventdate.present? ? [activity.eventdate] : [],
+      activities: [activity]
+    }
+    delivery = resolve_delivery_details(related)
+    subtitle_source = activity.source_ref.presence || taxbranch&.slug
+
+    {
+      activity: activity,
+      taxbranch: taxbranch,
+      post: post,
+      title: post&.title.presence || taxbranch&.slug_label.to_s.presence || "Activity ##{activity.id}",
+      subtitle: subtitle_source.to_s.truncate(120),
+      status_key: activity.status.to_s == "archived" ? :completed : :in_progress,
+      status_label: activity_status_label_for(activity),
+      activity_occurred_at: activity.occurred_at,
+      mode_label: resolve_mode_label(related),
+      delivery_mode: delivery[:mode],
+      delivery_has_professional: delivery[:has_professional],
+      delivery_person_label: delivery[:person_label],
+      delivery_instructor_name: delivery[:instructor_name],
+      delivery_instructor_role: delivery[:instructor_role],
+      delivery_channel: delivery[:channel],
+      delivery_format: delivery[:format],
+      delivery_location: delivery[:location],
+      eventdate: activity.eventdate,
+      booking: activity.booking,
+      enrollment: activity.enrollment
+    }
   end
 end

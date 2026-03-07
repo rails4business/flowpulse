@@ -111,16 +111,18 @@
 <!-- Left Section: Persuasive Onboarding -->
 <section id="dashboard-left-panel" class="hidden col-span-12 lg:col-span-3 lg:flex flex-col gap-6 px-4 py-4 bg-white dark:bg-slate-900/40 rounded-xl border border-[#e7edf3] dark:border-slate-800">
     <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-3">
-      <% if @current_domain&.horizontal_logo_url.present? %>
-        <img src="<%= @current_domain.horizontal_logo_url %>"
-             alt="<%= @current_domain.title.presence || @current_domain.host %>"
-             class="h-8 w-auto max-w-full object-contain" />
-      <% elsif @current_domain&.square_logo_url.present? %>
-        <img src="<%= @current_domain.square_logo_url %>"
-             alt="<%= @current_domain.title.presence || @current_domain.host %>"
-             class="h-8 w-8 rounded-md object-cover" />
+      <% domain_label = @current_domain&.title.presence || @current_domain&.host || "Dashboard" %>
+      <% primary_logo = @current_domain&.horizontal_logo_url.presence || @current_domain&.square_logo_url.presence || @current_domain&.favicon_url.presence %>
+      <% square_logo = @current_domain&.square_logo_url.presence || @current_domain&.favicon_url.presence %>
+      <% if primary_logo.present? %>
+        <img src="<%= primary_logo %>"
+             alt="<%= domain_label %>"
+             class="h-8 w-auto max-w-full object-contain"
+             data-fallback-square="<%= square_logo %>"
+             onerror="if(this.dataset.fallbackUsed==='1'){this.classList.add('hidden'); var t=this.nextElementSibling; if(t){t.classList.remove('hidden');} return;} var fb=this.dataset.fallbackSquare; if(fb&&fb!==this.src){this.dataset.fallbackUsed='1'; this.src=fb;} else {this.classList.add('hidden'); var t=this.nextElementSibling; if(t){t.classList.remove('hidden');}}" />
+        <p class="hidden text-sm font-semibold text-slate-700 dark:text-slate-200"><%= domain_label %></p>
       <% else %>
-        <p class="text-sm font-semibold text-slate-700 dark:text-slate-200"><%= @current_domain&.title.presence || @current_domain&.host || "Dashboard" %></p>
+        <p class="text-sm font-semibold text-slate-700 dark:text-slate-200"><%= domain_label %></p>
       <% end %>
     </div>
     <div>
@@ -213,36 +215,7 @@
       <% end %>
     </div>
 
-    <div class="pt-2">
-      <div class="flex items-center justify-between gap-2">
-        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Prossimo step</p>
-        <span class="material-symbols-outlined text-slate-400">task_alt</span>
-      </div>
-
-      <% if @academy_next_step.present? %>
-        <h4 class="mt-2 text-base font-bold text-slate-900 dark:text-slate-100"><%= @academy_next_step[:title] %></h4>
-        <% if @academy_next_step[:link_post].present? %>
-          <p class="mt-1 text-xs text-slate-500"><%= @academy_next_step[:link_post].slug %></p>
-        <% elsif @academy_next_step[:subtitle].present? %>
-          <p class="mt-1 text-xs text-slate-500"><%= @academy_next_step[:subtitle] %></p>
-        <% end %>
-        <div class="mt-3 flex items-center gap-2">
-          <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold
-            <%= @academy_next_step[:status_key] == :scheduled ? 'bg-blue-100 text-blue-700' : (@academy_next_step[:status_key] == :in_progress ? 'bg-amber-100 text-amber-700' : 'bg-slate-200 text-slate-600') %>">
-            <%= @academy_next_step[:status_label] %>
-          </span>
-          <span class="text-[10px] text-slate-500"><%= @academy_next_step[:mode_label] %></span>
-        </div>
-        <% if @academy_next_step[:link_post].present? %>
-          <%= link_to "Apri prossimo",
-                      post_path(@academy_next_step[:link_post]),
-                      class: "mt-3 inline-flex items-center justify-center w-full h-9 rounded-lg bg-primary text-white text-xs font-bold hover:brightness-110 transition-all" %>
-        <% end %>
-      <% else %>
-        <h4 class="mt-2 text-base font-bold text-slate-900 dark:text-slate-100">Nessun step in coda</h4>
-        <p class="mt-1 text-xs text-slate-500">Completa la membership Academy o aggiungi nuovi step sotto <code>academy/posturacorretta</code>.</p>
-      <% end %>
-    </div>
+    
 </section>
 <!-- Center Section: Timeline/History -->
 <section class="col-span-12 lg:col-span-9 flex flex-col gap-6">
@@ -324,48 +297,7 @@
 
           <% if @academy_current_action_step.present? %>
             <% current_step = @academy_current_action_step %>
-            <% progress_total = 0 %>
-            <% progress_done = 0 %>
-            <% sequence_label = "Lezione" %>
-            <% step_index = 1 %>
-            <% if @academy_active_root_category == "academy_inscription" %>
-              <% progress_children = Array(@academy_visible_root_step&.dig(:children)) %>
-              <% progress_total = progress_children.size %>
-              <% progress_done = progress_children.count { |child| child[:status_key] == :completed } %>
-              <% current_idx = progress_children.index { |child| child[:taxbranch]&.id == current_step[:taxbranch]&.id } %>
-              <% step_index = current_idx.present? ? current_idx + 1 : 1 %>
-              <% sequence_label = "Step" %>
-            <% elsif @academy_active_root_category == "academy_path" %>
-              <% progress_total = @academy_path_modules.size %>
-              <% progress_done = @academy_path_modules.count { |node| node[:status_key] == :completed } %>
-              <% current_idx = @academy_path_modules.index { |node| node[:taxbranch]&.id == current_step[:taxbranch]&.id } %>
-              <% step_index = current_idx.present? ? current_idx + 1 : [progress_done + 1, progress_total].min %>
-              <% sequence_label = "Lezione" %>
-            <% end %>
-            <% progress_total = 1 if progress_total <= 0 %>
-            <% progress_percent = ((progress_done.to_f / progress_total) * 100).round %>
-            <% mode_label = case current_step[:delivery_mode].to_s
-                            when "autonomia" then "In autonomia"
-                            when "professionista" then "Con professionista"
-                            else current_step[:mode_label].to_s.humanize
-                            end %>
-            <% location_label = current_step[:delivery_location].presence || "In Centro" %>
-            <% format_label = current_step[:delivery_format].presence || "Singolo" %>
-            <% location_icon = current_step[:delivery_channel].to_s == "online" ? "wifi" : (location_label.to_s.downcase.include?("domicilio") ? "home_pin" : "apartment") %>
-            <% format_icon = format_label.to_s.downcase.include?("singolo") ? "person" : "groups" %>
-            <% has_professional = current_step[:delivery_has_professional] == true %>
-            <% person_label = current_step[:delivery_person_label].presence || (has_professional ? "Insegnante" : "Modalita") %>
-            <% delivery_name = current_step[:delivery_instructor_name].presence || "Da assegnare" %>
-            <% delivery_role = current_step[:delivery_instructor_role].presence || mode_label %>
             <% activity_date = current_step[:activity_occurred_at].presence || current_step[:next_at] %>
-            <% weekday_it = %w[Domenica Lunedi Martedi Mercoledi Giovedi Venerdi Sabato][activity_date&.wday.to_i] if activity_date.present? %>
-            <% status_border = if current_step[:status_key] == :completed
-                                 "border-emerald-200 bg-emerald-50/10 ring-2 ring-emerald-200/50"
-                               elsif current_step[:status_key] == :in_progress || current_step[:status_key] == :scheduled
-                                 "border-emerald-200 bg-emerald-50/10 ring-2 ring-primary ring-offset-2"
-                               else
-                                 "border-slate-200 bg-white"
-                               end %>
             <% action_url = nil %>
             <% action_method = nil %>
             <% if !@academy_requires_membership && current_step[:link_post].present? %>
@@ -376,111 +308,31 @@
               <% action_method = :post %>
             <% end %>
             <section class="space-y-2">
-              <div class="<%= 'opacity-70' if @academy_requires_membership %>">
-                <% body_inner = capture do %>
-                  <div class="grid grid-cols-[1fr_82px] gap-6 items-stretch relative">
-                    <div class="flex-1 min-w-0">
-                      <div class="rounded-2xl border <%= status_border %> transition-all overflow-hidden flex flex-col md:flex-row">
-                        <div class="p-4 cursor-pointer flex gap-3 md:items-center md:justify-between">
-                          <div class="flex-1 min-w-0">
-                            <h3 class="text-base font-bold text-slate-800 mb-1 leading-snug flex items-center gap-1">
-                              <% if current_step[:status_key] == :completed %>
-                                <span class="material-symbols-outlined text-[14px] text-emerald-600">check_circle</span>
-                              <% else %>
-                                <span class="material-symbols-outlined text-[14px] text-slate-300">radio_button_unchecked</span>
-                              <% end %>
-                              <%= current_step[:title] %>
-                            </h3>
-                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed"><%= current_step[:subtitle] %></p>
-                          </div>
-
-                          <div class="hidden md:flex md:shrink-0 md:pl-6 md:ml-6 md:border-l md:border-slate-200 items-center gap-3 text-xs text-slate-500 font-medium">
-                            <div class="flex items-center gap-2 text-[13px] font-semibold text-slate-600" title="Modalita">
-                              <% if has_professional %>
-                                <img src="https://i.pravatar.cc/150?u=<%= current_step[:taxbranch]&.id || current_step.object_id %>" alt="Insegnante" class="w-8 h-8 rounded-full object-cover border border-white shadow-sm">
-                              <% else %>
-                                <span class="material-symbols-outlined text-[18px] text-slate-400">laptop_mac</span>
-                              <% end %>
-                              <span class="leading-tight">
-                                <span class="block text-[10px] font-bold uppercase text-slate-500"><%= person_label %></span>
-                                <span class="block text-[12px] font-semibold text-slate-700"><%= delivery_name %></span>
-                                <span class="block text-[11px] font-medium text-slate-500"><%= delivery_role %></span>
-                              </span>
-                            </div>
-                            <div class="flex flex-col items-start gap-1 pl-3 border-l border-slate-200 min-w-[110px]">
-                              <div class="flex items-center gap-1.5" title="Luogo">
-                                <span class="material-symbols-outlined text-[16px] text-slate-400"><%= location_icon %></span>
-                                <span><%= location_label %></span>
-                              </div>
-                              <div class="flex items-center gap-1.5" title="Formato">
-                                <span class="material-symbols-outlined text-[16px] text-slate-400"><%= format_icon %></span>
-                                <span><%= format_label %></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="px-4 py-3 bg-slate-50/50 border-t border-slate-100 flex items-center md:hidden">
-                          <div class="w-full flex items-center gap-3 text-xs text-slate-500 font-medium">
-                            <div class="flex items-center gap-2 text-[13px] font-semibold text-slate-600" title="Modalita">
-                              <% if has_professional %>
-                                <img src="https://i.pravatar.cc/150?u=<%= current_step[:taxbranch]&.id || current_step.object_id %>" alt="Insegnante" class="w-8 h-8 rounded-full object-cover border border-white shadow-sm">
-                              <% else %>
-                                <span class="material-symbols-outlined text-[18px] text-slate-400">laptop_mac</span>
-                              <% end %>
-                              <span class="leading-tight">
-                                <span class="block text-[10px] font-bold uppercase text-slate-500"><%= person_label %></span>
-                                <span class="block text-[12px] font-semibold text-slate-700"><%= delivery_name %></span>
-                                <span class="block text-[11px] font-medium text-slate-500"><%= delivery_role %></span>
-                              </span>
-                            </div>
-                            <div class="flex flex-col items-start gap-1 pl-3 border-l border-slate-200 min-w-[110px]">
-                              <div class="flex items-center gap-1.5" title="Luogo">
-                                <span class="material-symbols-outlined text-[16px] text-slate-400"><%= location_icon %></span>
-                                <span><%= location_label %></span>
-                              </div>
-                              <div class="flex items-center gap-1.5" title="Formato">
-                                <span class="material-symbols-outlined text-[16px] text-slate-400"><%= format_icon %></span>
-                                <span><%= format_label %></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+              <div class="flex items-center justify-between gap-3">
+                <p class="text-[11px] font-semibold uppercase tracking-wide text-slate-500">Prossimo taxbranch da attivare</p>
+                <span class="text-xs font-bold text-slate-700"><%= current_step[:taxbranch]&.slug.to_s %></span>
+              </div>
+              <div class="<%= 'opacity-70' if @academy_requires_membership %> rounded-lg border border-slate-200 bg-white px-3 py-2">
+                <% row_content = capture do %>
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                      <p class="text-sm font-semibold text-slate-900 truncate"><%= current_step[:title] %></p>
+                      <p class="text-[11px] text-slate-500 truncate"><%= current_step[:taxbranch]&.slug %></p>
                     </div>
-
-                    <div class="relative z-10 h-full flex items-center justify-center bg-white p-2 rounded-2xl border border-slate-100 shadow-sm">
-                      <% if current_step[:status_key] == :completed && activity_date.present? %>
-                        <div class="flex flex-col items-center text-center leading-tight">
-                          <span class="text-xs font-bold uppercase tracking-wider text-slate-500"><%= I18n.l(activity_date, format: "%b", locale: :it).upcase %></span>
-                          <span class="text-2xl font-black text-slate-700"><%= activity_date.day %></span>
-                          <span class="text-[9px] font-medium uppercase text-slate-500"><%= weekday_it.to_s.upcase %></span>
-                          <span class="text-[9px] font-semibold text-slate-500 mt-0.5"><%= I18n.l(activity_date, format: "%H:%M", locale: :it) %></span>
-                        </div>
-                      <% elsif current_step[:status_key] == :in_progress || current_step[:status_key] == :scheduled %>
-                        <span class="inline-flex items-center rounded-lg bg-amber-100 border border-amber-200 px-2 py-1 text-[10px] font-bold uppercase text-amber-700">
-                          In corso
-                        </span>
-                      <% elsif action_url.present? && !@academy_requires_membership %>
-                        <%= link_to action_url,
-                                    data: { turbo_method: :post },
-                                    class: "px-4 py-1.5 rounded-lg bg-primary text-white hover:bg-primary/90 shadow-sm shadow-blue-200 text-[11px] font-bold uppercase tracking-wide inline-flex items-center gap-1.5 transition-all active:scale-95" do %>
-                          <span class="material-symbols-outlined text-[16px]">play_arrow</span>
-                          Inizia
-                        <% end %>
-                      <% else %>
-                        <span class="material-symbols-outlined text-slate-300">event_busy</span>
+                    <div class="flex items-center gap-3 shrink-0">
+                      <% if activity_date.present? %>
+                        <span class="text-[11px] text-slate-600"><%= I18n.l(activity_date, format: "%d/%m %H:%M", locale: :it) %></span>
                       <% end %>
+                      <span class="text-[11px] text-slate-500"><%= current_step[:status_label] %></span>
                     </div>
                   </div>
                 <% end %>
-                <% card_clickable = action_url.present? && current_step[:status_key] != :todo && !@academy_requires_membership %>
-                <% if card_clickable %>
+                <% if action_url.present? && !@academy_requires_membership %>
                   <%= link_to action_url, data: { turbo_method: action_method }, class: "block" do %>
-                    <%= body_inner %>
+                    <%= row_content %>
                   <% end %>
                 <% else %>
-                  <div><%= body_inner %></div>
+                  <%= row_content %>
                 <% end %>
               </div>
             </section>
@@ -488,14 +340,41 @@
 
           <% if @academy_inscription_completed_steps.present? || @academy_completed_root_steps.present? %>
             <section class="space-y-2">
-              <h3 class="text-sm font-extrabold uppercase tracking-wide text-slate-600">Completati</h3>
-              <div class="divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white <%= 'opacity-70' if @academy_requires_membership %>">
+              
+              <div class="<%= 'opacity-70' if @academy_requires_membership %>">
                 <% @academy_inscription_completed_steps.each do |step| %>
-                  <div class="p-3">
-                    <%= render "dashboard/academy_item",
-                               item: step,
-                               requires_membership: @academy_requires_membership,
-                               depth: 1 %>
+                  <% read_activity_id = step[:completed_activity_id].presence || step[:latest_activity_id] %>
+                  <% show_activity_url = if read_activity_id.present? && step[:link_post].present?
+                                           post_activity_path(step[:link_post], read_activity_id)
+                                         end %>
+                  <% read_url = show_activity_url.presence || (if read_activity_id.present? && step[:link_post].present?
+                                                                dashboard_home_path(tab: @tab, open_activity_modal: 1, activity_id: read_activity_id, post_id: step[:link_post].slug, readonly: 1)
+                                                              end) %>
+                  <% retry_url = if step[:link_post].present? && !@academy_requires_membership
+                                   ensure_post_activities_path(step[:link_post], in_dashboard: 1, tab: "academy")
+                                 end %>
+                  <% completed_at = step[:activity_occurred_at].presence || step[:next_at] %>
+                  <div class="rounded-lg border border-slate-200 bg-white px-3 py-2">
+                    <div class="flex items-center justify-between gap-3">
+                      <div class="min-w-0">
+                        <p class="text-sm font-medium text-slate-800 truncate"><%= step[:title] %></p>
+                        <p class="text-[11px] text-slate-500 truncate"><%= step[:taxbranch]&.slug %></p>
+                      </div>
+                      <div class="flex items-center gap-2 shrink-0">
+                        <% if completed_at.present? %>
+                          <span class="text-[11px] text-slate-600"><%= I18n.l(completed_at, format: "%d/%m %H:%M", locale: :it) %></span>
+                        <% end %>
+                        <% if read_url.present? %>
+                          <%= link_to "Mostra", read_url, class: "text-[11px] font-semibold text-slate-700 hover:underline" %>
+                        <% end %>
+                        <% if show_activity_url.present? && show_activity_url != read_url %>
+                          <%= link_to "Apri activity", show_activity_url, class: "text-[11px] font-semibold text-slate-700 hover:underline" %>
+                        <% end %>
+                        <% if retry_url.present? %>
+                          <%= link_to "Ripeti", retry_url, data: { turbo_method: :post }, class: "text-[11px] font-semibold text-primary hover:underline" %>
+                        <% end %>
+                      </div>
+                    </div>
                   </div>
                 <% end %>
                 <% @academy_completed_root_steps.each do |step| %>
@@ -523,16 +402,36 @@
         <h3 class="text-base font-bold text-[#0e141b] dark:text-white">Activity</h3>
         <span class="text-xs text-slate-500">Timeline personale</span>
       </div>
-      <% if @latest_questionnaire_activity.present? %>
-        <div class="mt-3 rounded-xl border border-emerald-200 bg-emerald-50/60 px-4 py-3">
-          <p class="text-[11px] uppercase tracking-wide text-emerald-700 font-semibold">Ultima activity</p>
-          <p class="mt-1 text-sm font-bold text-emerald-900">
-            <%= @latest_questionnaire_activity.source_ref.presence || @latest_questionnaire_activity.taxbranch&.slug_label || "Questionario" %>
-          </p>
-          <p class="mt-1 text-xs text-emerald-800">
-            Livello: <span class="font-semibold"><%= @latest_questionnaire_activity.level_code.presence || "n/d" %></span>
-            · Punteggio: <span class="font-semibold"><%= @latest_questionnaire_activity.score_total || 0 %>/<%= @latest_questionnaire_activity.score_max || 0 %></span>
-          </p>
+      <% if @activity_feed_items.present? %>
+        <div class="mt-3 space-y-3">
+          <% @activity_feed_items.each do |item| %>
+            <% activity = item[:activity] %>
+            <% post = item[:post] %>
+            <% taxbranch = item[:taxbranch] %>
+            <% booking = item[:booking] %>
+            <% enrollment = item[:enrollment] %>
+            <% eventdate = item[:eventdate] %>
+            <% show_activity_url = post.present? ? post_activity_path(post, activity) : nil %>
+            <% read_url = show_activity_url.presence || (if post.present?
+                                                          dashboard_home_path(tab: "activity", open_activity_modal: 1, activity_id: activity.id, post_id: post.slug, readonly: 1)
+                                                        end) %>
+            <% retry_url = if post.present? && activity.status.to_s == "archived"
+                             ensure_post_activities_path(post, in_dashboard: 1, tab: "activity")
+                           end %>
+            <% related_links = [] %>
+            <% can_open_superadmin = Current.user.respond_to?(:superadmin?) && Current.user.superadmin? %>
+            <% related_links << { label: "Taxbranch", url: superadmin_taxbranch_path(taxbranch) } if taxbranch.present? && can_open_superadmin %>
+            <% related_links << { label: "Post", url: post_path(post) } if post.present? %>
+            <% related_links << { label: "Booking", url: booking_path(booking) } if booking.present? %>
+            <% related_links << { label: "Enrollment", url: enrollment_path(enrollment) } if enrollment.present? %>
+            <% related_links << { label: "Event", url: eventdate_path(eventdate) } if eventdate.present? %>
+            <%= render "dashboard/activity_card",
+                       item: item,
+                       read_url: read_url,
+                       show_activity_url: show_activity_url,
+                       retry_url: retry_url,
+                       related_links: related_links %>
+          <% end %>
         </div>
       <% else %>
         <p class="mt-3 text-sm text-slate-500">Nessuna activity disponibile al momento.</p>
@@ -673,7 +572,7 @@
             <section class="">
               <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                  <h4 class="text-sm md:text-base font-bold text-slate-900">Questionario</h4>
+                  <h4 class="text-sm md:text-base font-bold text-slate-900">Questionario<%= @modal_read_only ? " · sola lettura" : "" %></h4>
                   <span class="text-xs font-semibold text-slate-600">Domanda <%= @modal_questionnaire_step %> di <%= @modal_questionnaire_count %></span>
                 </div>
                 <%= link_to "Chiudi",
@@ -689,6 +588,7 @@
                 <%= hidden_field_tag :open_activity_modal, 1 %>
                 <%= hidden_field_tag :activity_id, @modal_activity.id %>
                 <%= hidden_field_tag :post_id, @modal_post.slug %>
+                <%= hidden_field_tag :q, @modal_questionnaire_step, id: "modal-question-step" %>
                 <% @modal_questionnaire_answers.each do |code, value| %>
                   <% next if code.to_s == question_code.to_s %>
                   <%= hidden_field_tag "answers[#{code}]", value %>
@@ -699,6 +599,7 @@
                   <h5 class="mt-1 text-sm font-semibold text-slate-900"><%= question_title %></h5>
 
                   <% if options.any? %>
+                    <% next_step_number = @modal_questionnaire_step < @modal_questionnaire_count ? (@modal_questionnaire_step + 1) : nil %>
                     <fieldset class="mt-4 space-y-2">
                       <% options.each_with_index do |opt, opt_idx| %>
                         <% option_value = (opt.is_a?(Hash) && opt.key?("value")) ? opt["value"] : opt[:value] %>
@@ -712,7 +613,11 @@
                                                option_value,
                                                current_answer == option_value,
                                                id: option_id,
-                                               class: "h-4 w-4 border-slate-300 text-blue-600" %>
+                                               class: "h-4 w-4 border-slate-300 text-blue-600",
+                                               required: !@modal_read_only,
+                                               disabled: @modal_read_only,
+                                               data: { auto_advance: "1", next_step: next_step_number },
+                                               onchange: (@modal_read_only ? nil : "var f=this.form; if(!f){return;} var s=f.querySelector('#modal-question-step'); var n=this.dataset.nextStep; if(s&&n){s.value=n;} if(f.requestSubmit){f.requestSubmit();}else{f.submit();}") %>
                           <% option_text = option_label == option_value ? option_value : "#{option_value} · #{option_label}" %>
                           <span><span class="font-semibold"><%= option_text %></span></span>
                         </label>
@@ -722,6 +627,8 @@
                     <div class="mt-3">
                       <%= text_field_tag "answers[#{question_code}]",
                                          current_answer,
+                                         required: !@modal_read_only,
+                                         disabled: @modal_read_only,
                                          class: "w-full rounded-md border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
                     </div>
                   <% end %>
@@ -731,18 +638,34 @@
                   <% if @modal_questionnaire_step > 1 %>
                     <%= button_tag "Indietro",
                                    type: :submit,
-                                   formaction: dashboard_home_path(step_params.merge(q: @modal_questionnaire_step - 1)),
-                                   formmethod: :get,
+                                   formnovalidate: true,
+                                   onclick: "var f=this.form; var s=f&&f.querySelector('#modal-question-step'); if(s){s.value='#{@modal_questionnaire_step - 1}';}",
                                    class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
                   <% else %>
                     <span></span>
                   <% end %>
 
-                  <% if @modal_questionnaire_step < @modal_questionnaire_count %>
+                  <% if @modal_read_only %>
+                    <div class="flex items-center gap-2">
+                      <% if @modal_questionnaire_step < @modal_questionnaire_count %>
+                        <%= button_tag "Avanti",
+                                       type: :submit,
+                                       formnovalidate: true,
+                                       onclick: "var f=this.form; var s=f&&f.querySelector('#modal-question-step'); if(s){s.value='#{@modal_questionnaire_step + 1}';}",
+                                       class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
+                      <% end %>
+                      <% if @modal_post.present? %>
+                        <%= link_to "Modifica",
+                                    ensure_post_activities_path(@modal_post, in_dashboard: 1, tab: @tab),
+                                    data: { turbo_method: :post },
+                                    class: "inline-flex items-center rounded-md border border-primary/30 bg-primary/5 px-3 py-2 text-sm font-medium text-primary hover:bg-primary/10" %>
+                      <% end %>
+                    </div>
+                  <% elsif @modal_questionnaire_step < @modal_questionnaire_count %>
                     <%= button_tag "Avanti",
                                    type: :submit,
-                                   formaction: dashboard_home_path(step_params.merge(q: @modal_questionnaire_step + 1)),
-                                   formmethod: :get,
+                                   onclick: "var f=this.form; var s=f&&f.querySelector('#modal-question-step'); if(s){s.value='#{@modal_questionnaire_step + 1}';}",
+                                   data: { next_btn: "1" },
                                    class: "inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:brightness-110" %>
                   <% else %>
                     <%= button_tag "Invia questionario",

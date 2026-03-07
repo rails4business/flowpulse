@@ -38,15 +38,20 @@
           <%= link_to root_path, class: "flex items-center justify-between mr-4", data: { turbo: false } do %>
 
             
-            <% logo_url = Current.domain&.horizontal_logo_url.presence || Current.domain&.square_logo_url.presence %>
+            <% domain_label = Current.domain&.title.presence || request.host %>
+            <% logo_url = Current.domain&.horizontal_logo_url.presence || Current.domain&.square_logo_url.presence || Current.domain&.favicon_url.presence %>
+            <% square_logo = Current.domain&.square_logo_url.presence || Current.domain&.favicon_url.presence %>
             <% if logo_url.present? %>
               <img
                 src="<%= logo_url %>"
                 class="mr-3 h-8 w-auto"
-                alt="<%= Current.domain&.title.presence || request.host %>"
+                alt="<%= domain_label %>"
+                data-fallback-square="<%= square_logo %>"
+                onerror="if(this.dataset.fallbackUsed==='1'){this.classList.add('hidden'); var t=this.nextElementSibling; if(t){t.classList.remove('hidden');} return;} var fb=this.dataset.fallbackSquare; if(fb&&fb!==this.src){this.dataset.fallbackUsed='1'; this.src=fb;} else {this.classList.add('hidden'); var t=this.nextElementSibling; if(t){t.classList.remove('hidden');}}"
               />
+              <span class="hidden self-center text-base font-semibold whitespace-nowrap dark:text-white"><%= domain_label %></span>
             <% else %>
-              <span class="self-center text-base font-semibold whitespace-nowrap dark:text-white"><%= Current.domain&.title.presence || request.host %></span>
+              <span class="self-center text-base font-semibold whitespace-nowrap dark:text-white"><%= domain_label %></span>
             <% end %>
           <% end %>
 

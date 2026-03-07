@@ -1,5 +1,6 @@
 # app/helpers/markdown_helper.rb
 require "redcarpet"
+require "uri"
 
 # Prova a caricare Rouge (per evidenziare il codice). Se manca, fai fallback.
 begin
@@ -16,6 +17,7 @@ module MarkdownHelper
   YOUTUBE_SHORTCODE_RE = /\[youtube\s+([^\]]+)\]/.freeze
   YOUTUBE_TOKEN_ID_RE = /\[\[YOUTUBE_ID:([A-Za-z0-9_-]{6,})\]\]/.freeze
   YOUTUBE_TOKEN_LIST_RE = /\[\[YOUTUBE_LIST:([A-Za-z0-9_-]{6,})\]\]/.freeze
+  YOUTUBE_IFRAME_RE = /<iframe\b[^>]*\bsrc=(["'])([^"']+)\1[^>]*>\s*<\/iframe>/i.freeze
 
   def markdown(text)
     return "".html_safe if text.blank?  # ← niente parentesi extra qui
@@ -41,6 +43,9 @@ module MarkdownHelper
     )
 
     source = text.to_s.gsub(/\r\n?/, "\n")
+    source = source.gsub(YOUTUBE_IFRAME_RE) do
+      youtube_token_from_embed_src(Regexp.last_match(2)) || ""
+    end
     source = source.gsub(YOUTUBE_SHORTCODE_RE) do
       attrs = Regexp.last_match(1)
       youtube_token_for(attrs) || ""
@@ -125,5 +130,36 @@ module MarkdownHelper
     return unless token.match?(/\A[A-Za-z0-9_-]{6,}\z/)
 
     token
+  end
+
+  def youtube_token_from_embed_src(src)
+    return if src.blank?
+
+    uri = URI.parse(src)
+    host = uri.host.to_s.downcase
+    path = uri.path.to_s
+    query = URI.decode_www_form(uri.query.to_s).to_h
+
+    if host.include?("youtu.be")
+      id = sanitize_youtube_token(path.delete_prefix("/"))
+      return "[[YOUTUBE_ID:#{id}]]" if id
+    end
+
+    return unless host.include?("youtube.com") || host.include?("youtube-nocookie.com")
+
+    if path.start_with?("/embed/videoseries")
+      list_id = sanitize_youtube_token(query["list"].to_s)
+      return "[[YOUTUBE_LIST:#{list_id}]]" if list_id
+    elsif path.start_with?("/embed/")
+      id = sanitize_youtube_token(path.delete_prefix("/embed/").to_s.split("/").first)
+      return "[[YOUTUBE_ID:#{id}]]" if id
+    elsif path == "/watch"
+      id = sanitize_youtube_token(query["v"].to_s)
+      return "[[YOUTUBE_ID:#{id}]]" if id
+    end
+
+    nil
+  rescue URI::InvalidURIError
+    nil
   end
 end

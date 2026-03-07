@@ -1,0 +1,110 @@
+slug: questionario_stile_vita
+title: Questionario Stile di Vita
+version: v1
+locale: it
+
+intro: |
+  Questionario dedicato allo stile di vita.
+  Rispondi in modo spontaneo da 1 a 5.
+
+scoring:
+  enabled: false
+
+questions:
+  - code: sv1_vita_soddisfazione
+    position: 1
+    movement: Quanto sei soddisfatto/a della tua vita? (1-5)
+    side: none
+    kind: scale
+    min: 1
+    max: 5
+    options:
+      - value: 1
+      - value: 2
+      - value: 3
+      - value: 4
+      - value: 5
+
+  - code: sv2_lavoro_soddisfazione
+    position: 2
+    movement: Quanto sei soddisfatto/a del tuo lavoro? (1-5)
+    side: none
+    kind: scale
+    min: 1
+    max: 5
+    options:
+      - value: 1
+      - value: 2
+      - value: 3
+      - value: 4
+      - value: 5
+
+  - code: sv3_famiglia_soddisfazione
+    position: 3
+    movement: Quanto sei soddisfatto/a della tua famiglia? (1-5)
+    side: none
+    kind: scale
+    min: 1
+    max: 5
+    options:
+      - value: 1
+      - value: 2
+      - value: 3
+      - value: 4
+      - value: 5
+
+  - code: sv4_amici_soddisfazione
+    position: 4
+    movement: Quanto sei soddisfatto/a dei tuoi amici e relazioni? (1-5)
+    side: none
+    kind: scale
+    min: 1
+    max: 5
+    options:
+      - value: 1
+      - value: 2
+      - value: 3
+      - value: 4
+      - value: 5
+
+  - code: sv5_corpo_soddisfazione
+    position: 5
+    movement: Quanto sei soddisfatto/a dello stato del tuo corpo? (1-5)
+    side: none
+    kind: scale
+    min: 1
+    max: 5
+    options:
+      - value: 1
+      - value: 2
+      - value: 3
+      - value: 4
+      - value: 5
+
+  - code: sv6_ambiente_soddisfazione
+    position: 6
+    movement: Quanto sei soddisfatto/a dell'ambiente in cui vivi? (1-5)
+    side: none
+    kind: scale
+    min: 1
+    max: 5
+    options:
+      - value: 1
+      - value: 2
+      - value: 3
+      - value: 4
+      - value: 5
+
+  - code: sv7_tempo_soddisfazione
+    position: 7
+    movement: Quanto sei soddisfatto/a della gestione del tuo tempo? (1-5)
+    side: none
+    kind: scale
+    min: 1
+    max: 5
+    options:
+      - value: 1
+      - value: 2
+      - value: 3
+      - value: 4
+      - value: 5

@@ -40,6 +40,9 @@ module Posts
     end
 
     def show
+      payload = @activity.payload.is_a?(Hash) ? @activity.payload : {}
+      @questionnaire_snapshot = payload["questionnaire_snapshot"].is_a?(Hash) ? payload["questionnaire_snapshot"] : {}
+      @answers_detailed = build_answers_detailed(payload)
     end
 
     private
@@ -86,6 +89,27 @@ module Posts
         }
       )
       .tap(&:save!)
+    end
+
+    def build_answers_detailed(payload)
+      detailed = Array(payload["answers_detailed"]).select { |entry| entry.is_a?(Hash) }
+      return detailed if detailed.present?
+
+      answers = payload["answers"].is_a?(Hash) ? payload["answers"] : {}
+      return [] if answers.blank?
+
+      question_index = Array(@questionnaire_snapshot["questions"]).select { |q| q.is_a?(Hash) }.index_by { |q| q["code"].to_s }
+      answers.map do |code, raw_value|
+        value = raw_value.is_a?(Array) ? raw_value.map(&:to_s) : raw_value.to_s
+        question = question_index[code.to_s] || {}
+        {
+          "code" => code.to_s,
+          "question" => question["movement"].to_s,
+          "kind" => question["kind"].to_s,
+          "value" => value,
+          "label" => value
+        }
+      end
     end
   end
 end

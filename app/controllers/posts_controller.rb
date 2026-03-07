@@ -179,6 +179,24 @@ class PostsController < ApplicationController
     end
 
     answers = submitted_questionnaire_answers
+    missing = missing_required_questionnaire_answers(questionnaire_taxbranch, answers)
+    if missing.any?
+      first_missing_code = missing.first
+      target_q = questionnaire_question_position(questionnaire_taxbranch, first_missing_code)
+      if params[:in_dashboard].to_s == "1"
+        redirect_to dashboard_home_path(
+          tab: params[:tab].presence || "academy",
+          open_activity_modal: 1,
+          activity_id: params[:activity_id],
+          post_id: @post.slug,
+          q: target_q
+        ), alert: "Completa tutte le domande obbligatorie prima di inviare."
+      else
+        redirect_to post_path(@post, q: target_q), alert: "Completa tutte le domande obbligatorie prima di inviare."
+      end
+      return
+    end
+
     if answers.blank?
       if params[:in_dashboard].to_s == "1"
         redirect_to dashboard_home_path(
@@ -202,6 +220,30 @@ class PostsController < ApplicationController
       description: "Questionario inviato da #{lead.full_name.presence || lead.username.presence || "lead##{lead.id}"}",
       source_ref: @post.slug
     )
+
+    if params[:in_dashboard].to_s == "1" && params[:activity_id].present?
+      dashboard_activity = lead.activities.find_by(id: params[:activity_id], taxbranch_id: questionnaire_taxbranch.id)
+      if dashboard_activity.present?
+        payload = dashboard_activity.payload.is_a?(Hash) ? dashboard_activity.payload.deep_dup : {}
+        payload["answers"] = answers
+        submitted_payload = activity.payload.is_a?(Hash) ? activity.payload : {}
+        payload["answers_detailed"] = submitted_payload["answers_detailed"] if submitted_payload["answers_detailed"].present?
+        payload["questionnaire_snapshot"] = submitted_payload["questionnaire_snapshot"] if submitted_payload["questionnaire_snapshot"].present?
+        payload["questionnaire_version"] = submitted_payload["questionnaire_version"] if submitted_payload["questionnaire_version"].present?
+        payload["questionnaire_post_slug"] = @post.slug
+        payload["submitted_at"] = Time.current.iso8601
+
+        dashboard_activity.update(
+          kind: "step_completed",
+          payload: payload,
+          status: "archived",
+          occurred_at: Time.current,
+          score_total: activity.score_total,
+          score_max: activity.score_max,
+          level_code: activity.level_code
+        )
+      end
+    end
 
     if params[:in_dashboard].to_s == "1"
       redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
@@ -486,6 +528,80 @@ end
       next if value.to_s.strip.blank?
 
       memo[key.to_s] = value
+    end
+  end
+
+  def missing_required_questionnaire_answers(questionnaire_taxbranch, answers)
+    data = questionnaire_taxbranch.questionnaire_definition
+    questions = extract_questionnaire_questions(data).sort_by { |q| questionnaire_hash_value(q, "position").to_i }
+    return [] if questions.blank?
+
+    normalized = answers.to_h.stringify_keys
+    questions.each_with_object([]) do |question, acc|
+      code = questionnaire_hash_value(question, "code").to_s.presence
+      next if code.blank?
+      next unless questionnaire_question_visible?(question, normalized)
+
+      required_flag = questionnaire_hash_value(question, "required")
+      required = required_flag.nil? ? true : required_flag == true
+      next unless required
+
+      value = normalized[code]
+      blank_value =
+        if value.is_a?(Array)
+          value.reject { |v| v.to_s.strip.blank? }.empty?
+        else
+          value.to_s.strip.blank?
+        end
+      acc << code if blank_value
+    end
+  end
+
+  def questionnaire_question_position(questionnaire_taxbranch, code)
+    data = questionnaire_taxbranch.questionnaire_definition
+    questions = extract_questionnaire_questions(data).sort_by { |q| questionnaire_hash_value(q, "position").to_i }
+    idx = questions.index { |q| questionnaire_hash_value(q, "code").to_s == code.to_s }
+    idx.present? ? (idx + 1) : 1
+  end
+
+  def questionnaire_question_visible?(question, answers)
+    show_if = questionnaire_hash_value(question, "show_if")
+    return true if show_if.blank?
+
+    condition_match = lambda do |condition|
+      next true unless condition.is_a?(Hash)
+
+      source_code = questionnaire_hash_value(condition, "question").to_s
+      operator = questionnaire_hash_value(condition, "operator").to_s.presence || "eq"
+      expected = condition.key?("value") ? condition["value"] : condition[:value]
+      actual = answers[source_code]
+      actual = actual.is_a?(Array) ? actual.map(&:to_s) : actual.to_s
+
+      case operator
+      when "eq" then actual == expected.to_s
+      when "neq" then actual != expected.to_s
+      when "in" then Array(expected).map(&:to_s).include?(actual.to_s)
+      when "not_in" then !Array(expected).map(&:to_s).include?(actual.to_s)
+      when "present" then actual.present?
+      when "blank" then actual.blank?
+      else true
+      end
+    end
+
+    if show_if.is_a?(Hash)
+      all_rules = questionnaire_hash_value(show_if, "all")
+      any_rules = questionnaire_hash_value(show_if, "any")
+      if all_rules.present?
+        Array(all_rules).all? { |rule| condition_match.call(rule) }
+      elsif any_rules.present?
+        Array(any_rules).any? { |rule| condition_match.call(rule) }
+      else
+        condition_match.call(show_if)
+      end
+    elsif show_if.is_a?(Array)
+      show_if.all? { |rule| condition_match.call(rule) }
+    else
+      true
     end
   end
 
