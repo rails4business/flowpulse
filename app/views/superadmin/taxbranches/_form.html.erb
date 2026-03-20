@@ -200,17 +200,19 @@
 
   <!-- Meta JSON -->
   <div id="metaJsonBlock">
-    <%= label_tag :meta_preview, "Meta (JSON)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= text_area_tag :meta_preview,
+    <%= f.label :meta, "Meta (JSON)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= text_area_tag "taxbranch[meta]",
           (taxbranch.meta.present? ? JSON.pretty_generate(taxbranch.meta) : ""),
           placeholder: '{"scoring":{"enabled":true}}',
           rows: 8,
-          readonly: true,
-          class: "w-full rounded-md border-gray-300 bg-slate-50 px-3 py-2 font-mono text-xs shadow-sm" %>
-    <p class="mt-1 text-xs text-slate-500">Preview sola lettura. Si aggiorna automaticamente al salvataggio.</p>
+          id: "metaJsonInput",
+          class: "w-full rounded-md border-gray-300 bg-white px-3 py-2 font-mono text-xs shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:meta].any?}" %>
+    <p id="metaJsonHelp" class="mt-1 text-xs text-slate-500">
+      Modificabile. Inserisci un JSON valido (oggetto).
+    </p>
     <div id="questionnaireMetaHint"
          class="hidden mt-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
-      Esempio meta per questionnaire:
+      Esempio questionnaire_config (gestito automaticamente da source/version):
       <pre class="mt-2 whitespace-pre-wrap rounded border border-emerald-200 bg-white p-2 font-mono text-[11px] text-slate-700">{
   "scoring": {
     "enabled": true,
@@ -224,6 +226,9 @@
 }</pre>
     </div>
     <% taxbranch.errors.full_messages_for(:meta).each do |m| %>
+      <p class="mt-1 text-xs text-red-600"><%= m %></p>
+    <% end %>
+    <% taxbranch.errors.full_messages_for(:questionnaire_config).each do |m| %>
       <p class="mt-1 text-xs text-red-600"><%= m %></p>
     <% end %>
   </div>
@@ -241,6 +246,19 @@
        end
        [title, rel, version]
      end %>
+  <% legacy_questionnaire_cfg = {} %>
+  <% if taxbranch.meta.is_a?(Hash) %>
+    <% legacy_questionnaire_cfg["questionnaire_source"] = taxbranch.meta["questionnaire_source"] if taxbranch.meta["questionnaire_source"].present? %>
+    <% legacy_questionnaire_cfg["questionnaire_version"] = taxbranch.meta["questionnaire_version"] if taxbranch.meta["questionnaire_version"].present? %>
+    <% legacy_questionnaire_cfg["question_kind"] = taxbranch.meta["question_kind"] if taxbranch.meta["question_kind"].present? %>
+    <% legacy_questionnaire_cfg["scoring"] = taxbranch.meta["scoring"] if taxbranch.meta["scoring"].is_a?(Hash) %>
+  <% end %>
+  <% questionnaire_config_for_form =
+       if taxbranch.questionnaire_config.is_a?(Hash) && taxbranch.questionnaire_config.present?
+         taxbranch.questionnaire_config
+       else
+         legacy_questionnaire_cfg
+       end %>
 
   <div id="questionnaireSourceBlock"
        class="<%= taxbranch.slug_category.to_s == 'questionnaire' ? '' : 'hidden' %> grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -266,6 +284,20 @@
             data: { questionnaire_version_input: true } %>
       <p class="mt-1 text-xs text-slate-500">Si compila automaticamente dal file YAML (puoi modificarla).</p>
     </div>
+  </div>
+  <div id="questionnaireConfigBlock"
+       class="<%= taxbranch.slug_category.to_s == 'questionnaire' ? '' : 'hidden' %> mt-3">
+    <%= f.label :questionnaire_config, "Questionnaire Config (JSON)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= text_area_tag "taxbranch[questionnaire_config]",
+          (questionnaire_config_for_form.present? ? JSON.pretty_generate(questionnaire_config_for_form) : ""),
+          rows: 8,
+          id: "questionnaireConfigInput",
+          placeholder: '{"questionnaire_source":"config/data/questionnaires/..yml","questionnaire_version":"v1","scoring":{"enabled":true}}',
+          class: "w-full rounded-md border-gray-300 bg-white px-3 py-2 font-mono text-xs shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:questionnaire_config].any?}" %>
+    <p class="mt-1 text-xs text-slate-500">Auto-caricato da `questionnaire_config`; se vuoto usa i dati legacy trovati in `meta`.</p>
+    <% taxbranch.errors.full_messages_for(:questionnaire_config).each do |m| %>
+      <p class="mt-1 text-xs text-red-600"><%= m %></p>
+    <% end %>
   </div>
 
   <!-- GeneraImpresa (MD interno) -->
@@ -406,6 +438,73 @@
           <% end %>
         </div>
 
+        <div class="space-y-4">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Ruolo step (chi fa cosa)</p>
+
+          <div>
+            <%= f.label :execution_mode, "Modalità esecuzione", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.select :execution_mode,
+                  [["Autonomia", "self"], ["Assistita", "assisted"], ["Entrambe", "both"]],
+                  {},
+                  class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:execution_mode].any?}" %>
+            <% taxbranch.errors.full_messages_for(:execution_mode).each do |m| %>
+              <p class="mt-1 text-xs text-red-600"><%= m %></p>
+            <% end %>
+          </div>
+
+          <div>
+            <%= f.label :performed_by_roles, "Ruoli che eseguono lo step", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <% if available_roles.present? %>
+              <div class="rounded-lg border border-slate-200 bg-white p-3">
+                <%= hidden_field_tag "#{f.object_name}[performed_by_roles][]", "", id: nil %>
+                <div class="grid gap-2 sm:grid-cols-2">
+                  <%= f.collection_check_boxes :performed_by_roles, available_roles, :to_s, :to_s do |b| %>
+                    <label class="flex items-center gap-2 rounded-md border border-slate-200 px-2 py-1 text-sm text-slate-700">
+                      <%= b.check_box(class: "h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500") %>
+                      <span><%= b.text %></span>
+                    </label>
+                  <% end %>
+                </div>
+              </div>
+            <% else %>
+              <%= f.text_area :performed_by_roles,
+                    value: taxbranch.performed_by_roles_text,
+                    rows: 2,
+                    placeholder: "Es.\nTutor\nInsegnante\nUtente",
+                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:performed_by_roles].any?}" %>
+            <% end %>
+            <% taxbranch.errors.full_messages_for(:performed_by_roles).each do |m| %>
+              <p class="mt-1 text-xs text-red-600"><%= m %></p>
+            <% end %>
+          </div>
+
+          <div>
+            <%= f.label :target_roles, "Ruoli destinatari dello step", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <% if available_roles.present? %>
+              <div class="rounded-lg border border-slate-200 bg-white p-3">
+                <%= hidden_field_tag "#{f.object_name}[target_roles][]", "", id: nil %>
+                <div class="grid gap-2 sm:grid-cols-2">
+                  <%= f.collection_check_boxes :target_roles, available_roles, :to_s, :to_s do |b| %>
+                    <label class="flex items-center gap-2 rounded-md border border-slate-200 px-2 py-1 text-sm text-slate-700">
+                      <%= b.check_box(class: "h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500") %>
+                      <span><%= b.text %></span>
+                    </label>
+                  <% end %>
+                </div>
+              </div>
+            <% else %>
+              <%= f.text_area :target_roles,
+                    value: taxbranch.target_roles_text,
+                    rows: 2,
+                    placeholder: "Es.\nUtente\nInsegnante",
+                    class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 #{'border-red-300 bg-red-50' if taxbranch.errors[:target_roles].any?}" %>
+            <% end %>
+            <% taxbranch.errors.full_messages_for(:target_roles).each do |m| %>
+              <p class="mt-1 text-xs text-red-600"><%= m %></p>
+            <% end %>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -431,10 +530,14 @@
     const categoryHint = document.getElementById("questionnaireCategoryHint");
     const metaHint = document.getElementById("questionnaireMetaHint");
     const metaJsonBlock = document.getElementById("metaJsonBlock");
+    const metaJsonInput = document.getElementById("metaJsonInput");
+    const metaJsonHelp = document.getElementById("metaJsonHelp");
     const sourceBlock = document.getElementById("questionnaireSourceBlock");
+    const configBlock = document.getElementById("questionnaireConfigBlock");
     const sourceSelect = form.querySelector("[data-questionnaire-source-select]");
     const versionInput = form.querySelector("[data-questionnaire-version-input]");
     const versionMap = form.querySelector("[data-questionnaire-version-map]");
+    const configInput = document.getElementById("questionnaireConfigInput");
     if (!slugInput) return;
 
     const applyVersionFromSource = () => {
@@ -456,7 +559,12 @@
       if (categoryHint) categoryHint.classList.toggle("hidden", !inFamily);
       if (metaHint) metaHint.classList.toggle("hidden", true);
       if (sourceBlock) sourceBlock.classList.toggle("hidden", !isQuestionnaire);
+      if (configBlock) configBlock.classList.toggle("hidden", !isQuestionnaire);
       if (metaJsonBlock) metaJsonBlock.classList.remove("hidden");
+      if (metaJsonInput) metaJsonInput.readOnly = false;
+      if (metaJsonHelp) {
+        metaJsonHelp.textContent = "Modificabile. Inserisci un JSON valido (oggetto).";
+      }
       if (isQuestionnaire) applyVersionFromSource();
     };
 

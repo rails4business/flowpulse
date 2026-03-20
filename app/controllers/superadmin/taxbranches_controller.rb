@@ -599,17 +599,24 @@ end
   def taxbranch_params
     permitted = params.require(:taxbranch).permit(
       :lead_id, :notes, :slug, :slug_category, :slug_label,
-      :ancestry, :position, :meta, :questionnaire_source, :questionnaire_version, :parent_id, :home_nav,
+      :ancestry, :position, :meta, :questionnaire_config, :questionnaire_source, :questionnaire_version, :parent_id, :home_nav,
       :x_coordinated, :y_coordinated,
       :positioning_tag_public, :service_certificable,
       :status, :visibility, :phase, :published_at, :scheduled_eventdate_id, :order_des, :generaimpresa_md,
-      permission_access_roles: []
+      :execution_mode,
+      permission_access_roles: [],
+      performed_by_roles: [],
+      target_roles: []
     )
     attrs = permitted.to_h.symbolize_keys
 
     if attrs[:meta].is_a?(String)
       stripped = attrs[:meta].strip
       attrs[:meta] = stripped.present? ? (parse_json(stripped) || attrs[:meta]) : {}
+    end
+    if attrs[:questionnaire_config].is_a?(String)
+      stripped = attrs[:questionnaire_config].strip
+      attrs[:questionnaire_config] = stripped.present? ? (parse_json(stripped) || attrs[:questionnaire_config]) : {}
     end
 
     merge_questionnaire_meta!(attrs)
@@ -624,29 +631,30 @@ end
 
     incoming_source = attrs.delete(:questionnaire_source).to_s.strip.presence
     version = attrs.delete(:questionnaire_version).to_s.strip.presence
-    existing_meta = @taxbranch&.meta.is_a?(Hash) ? @taxbranch.meta.deep_dup : {}
-    source = incoming_source.presence || existing_meta["questionnaire_source"].to_s.presence
+    existing_config = @taxbranch&.questionnaire_config.is_a?(Hash) ? @taxbranch.questionnaire_config.deep_dup : {}
+    source = incoming_source.presence || existing_config["questionnaire_source"].to_s.presence
 
     if source.blank?
-      # No source provided and none already persisted: leave meta as-is so validation can explain.
-      attrs[:meta] = existing_meta if attrs[:meta].blank?
+      # No source provided and none already persisted: keep config as-is so validation can explain.
+      attrs[:questionnaire_config] = existing_config if attrs[:questionnaire_config].blank?
       return
     end
 
-    attrs[:meta] = { "questionnaire_source" => source }
+    attrs[:questionnaire_config] = (attrs[:questionnaire_config].is_a?(Hash) ? attrs[:questionnaire_config] : {})
+      .merge("questionnaire_source" => source)
 
     path = Rails.root.join(source.to_s.sub(%r{\A/+}, "")).to_s
     if File.exist?(path)
       begin
         yaml = YAML.safe_load_file(path, permitted_classes: [], aliases: false) || {}
         inferred = version.presence || yaml["version"].to_s.strip.presence
-        attrs[:meta]["questionnaire_version"] = inferred if inferred.present?
-        attrs[:meta]["scoring"] = yaml["scoring"] if yaml["scoring"].is_a?(Hash)
+        attrs[:questionnaire_config]["questionnaire_version"] = inferred if inferred.present?
+        attrs[:questionnaire_config]["scoring"] = yaml["scoring"] if yaml["scoring"].is_a?(Hash)
       rescue Psych::Exception
-        attrs[:meta]["questionnaire_version"] = version if version.present?
+        attrs[:questionnaire_config]["questionnaire_version"] = version if version.present?
       end
     elsif version.present?
-      attrs[:meta]["questionnaire_version"] = version
+      attrs[:questionnaire_config]["questionnaire_version"] = version
     end
   end
 

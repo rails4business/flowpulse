@@ -36,6 +36,14 @@ questions:
     movement: Flesso-estensione in avanti (da in piedi)
     side: none
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 94
+    note: Mantieni le ginocchia distese durante l'esecuzione.
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/01-flesso-estensione-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/01-flesso-estensione-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/01-flesso-estensione-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/01-flesso-estensione-score-3.png
     min: 0
     max: 3
     options:
@@ -53,6 +61,13 @@ questions:
     movement: Braccia sopra la testa (in piedi)
     side: none
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 117
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/02-braccia-sopra-la-testa-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/02-braccia-sopra-la-testa-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/02-braccia-sopra-la-testa-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/02-braccia-sopra-la-testa-score-3.png
     min: 0
     max: 3
     options:
@@ -70,6 +85,13 @@ questions:
     movement: Rotazione globale del rachide (collo + tronco)
     side: destra
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 154
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/03-a-rotazione-globale-rachide-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/03-a-rotazione-globale-rachide-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/03-a-rotazione-globale-rachide-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/03-a-rotazione-globale-rachide-score-3.png
     min: 0
     max: 3
     options:
@@ -87,6 +109,13 @@ questions:
     movement: Rotazione globale del rachide (collo + tronco)
     side: sinistra
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 205
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/04-03-b-rotazione-globale-rachide-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/04-03-b-rotazione-globale-rachide-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/04-03-b-rotazione-globale-rachide-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/04-03-b-rotazione-globale-rachide-score-3.png
     min: 0
     max: 3
     options:
@@ -104,6 +133,13 @@ questions:
     movement: Accovacciata asian squat deep squat (a corpo libero)
     side: none
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 219
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/05-04-deep-squat-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/05-04-deep-squat-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/05-04-deep-squat-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/05-04-deep-squat-score-3.png
     min: 0
     max: 3
     options:
@@ -121,6 +157,14 @@ questions:
     movement: Mani dietro la schiena (destra sopra)
     side: destra_sopra
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 255
+    note: Se hai protesi d'anca o di ginocchio, salta questo esercizio.
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/06-05-a-mani-dietro-schiena-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/06-05-a-mani-dietro-schiena-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/06-05-a-mani-dietro-schiena-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/06-05-a-mani-dietro-schiena-score-3.png
     min: 0
     max: 3
     options:
@@ -138,6 +182,14 @@ questions:
     movement: Mani dietro la schiena (sinistra sopra)
     side: sinistra_sopra
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 288
+    note: Se hai protesi d'anca o di ginocchio, salta questo esercizio.
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/07-05-b-mani-dietro-schiena-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/07-05-b-mani-dietro-schiena-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/07-05-b-mani-dietro-schiena-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/07-05-b-mani-dietro-schiena-score-3.png
     min: 0
     max: 3
     options:
@@ -155,6 +207,13 @@ questions:
     movement: Sollevamento gamba tesa (supino)
     side: destra
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 311
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/08-06-a-sollevare-gamba-tesa-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/08-06-a-sollevare-gamba-tesa-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/08-06-a-sollevare-gamba-tesa-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/08-06-a-sollevare-gamba-tesa-score-3.png
     min: 0
     max: 3
     options:
@@ -172,6 +231,13 @@ questions:
     movement: Sollevamento gamba tesa (supino)
     side: sinistra
     kind: single_choice
+    video_url: https://www.youtube.com/watch?v=Dpz17mAM848
+    video_start: 337
+    images:
+      - /img/valutazione_mobilita_articolare_semplificata/09-06-b-sollevare-gamba-tesa-score-0.png
+      - /img/valutazione_mobilita_articolare_semplificata/09-06-b-sollevare-gamba-tesa-score-1.png
+      - /img/valutazione_mobilita_articolare_semplificata/09-06-b-sollevare-gamba-tesa-score-2.png
+      - /img/valutazione_mobilita_articolare_semplificata/09-06-b-sollevare-gamba-tesa-score-3.png
     min: 0
     max: 3
     options:

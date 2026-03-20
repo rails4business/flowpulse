@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_17_144456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -290,6 +290,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
     t.datetime "date_end"
     t.datetime "date_start"
     t.text "description"
+    t.bigint "domain_id", null: false
+    t.bigint "domain_membership_id", null: false
     t.integer "event_type", default: 0, null: false
     t.bigint "journey_id"
     t.string "journey_role"
@@ -307,6 +309,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
     t.integer "unit_duration"
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
+    t.index ["domain_id"], name: "index_eventdates_on_domain_id"
+    t.index ["domain_membership_id"], name: "index_eventdates_on_domain_membership_id"
     t.index ["journey_id"], name: "index_eventdates_on_journey_id"
     t.index ["lead_id"], name: "index_eventdates_on_lead_id"
     t.index ["parent_eventdate_id"], name: "index_eventdates_on_parent_eventdate_id"
@@ -532,6 +536,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
     t.string "address_privacy", default: "private", null: false
     t.string "ancestry"
     t.datetime "created_at", null: false
+    t.string "execution_mode", default: "both", null: false
     t.text "generaimpresa_md"
     t.boolean "home_nav"
     t.bigint "lead_id", null: false
@@ -539,6 +544,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
     t.jsonb "meta"
     t.string "notes"
     t.boolean "order_des", default: false
+    t.jsonb "performed_by_roles", default: [], null: false
     t.jsonb "permission_access_roles", default: [], null: false
     t.integer "phase", default: 0, null: false
     t.integer "position"
@@ -546,23 +552,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
     t.text "private_address"
     t.text "public_address"
     t.datetime "published_at"
+    t.jsonb "questionnaire_config"
     t.integer "scheduled_eventdate_id"
     t.boolean "service_certificable"
     t.string "slug", null: false
     t.string "slug_category"
     t.string "slug_label"
     t.integer "status", default: 0, null: false
+    t.jsonb "target_roles", default: [], null: false
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
     t.integer "x_coordinated"
     t.integer "y_coordinated"
     t.index ["address_privacy"], name: "index_taxbranches_on_address_privacy"
+    t.index ["execution_mode"], name: "index_taxbranches_on_execution_mode"
     t.index ["lead_id"], name: "index_taxbranches_on_lead_id"
     t.index ["link_child_taxbranch_id"], name: "index_taxbranches_on_link_child_taxbranch_id"
+    t.index ["performed_by_roles"], name: "index_taxbranches_on_performed_by_roles", using: :gin
     t.index ["positioning_tag_public"], name: "index_taxbranches_on_positioning_tag_public"
     t.index ["scheduled_eventdate_id"], name: "index_taxbranches_on_scheduled_eventdate_id"
     t.index ["slug"], name: "index_taxbranches_on_slug", unique: true
     t.index ["slug_category", "slug_label", "slug"], name: "index_taxbranches_on_cat_label_slug_unique", unique: true
+    t.index ["target_roles"], name: "index_taxbranches_on_target_roles", using: :gin
   end
 
   create_table "users", force: :cascade do |t|
@@ -629,6 +640,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_112108) do
   add_foreign_key "enrollments", "leads", column: "invited_by_lead_id"
   add_foreign_key "enrollments", "leads", column: "requested_by_lead_id"
   add_foreign_key "enrollments", "services"
+  add_foreign_key "eventdates", "domain_memberships"
+  add_foreign_key "eventdates", "domains"
   add_foreign_key "eventdates", "eventdates", column: "parent_eventdate_id"
   add_foreign_key "eventdates", "journeys"
   add_foreign_key "eventdates", "leads"

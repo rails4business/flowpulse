@@ -1,5 +1,7 @@
 module Taxbranches
   class ActivitiesController < ApplicationController
+    OPEN_STATUSES = %w[recorded reviewed].freeze
+
     before_action :set_taxbranch
     before_action :set_lead
 
@@ -18,13 +20,24 @@ module Taxbranches
     end
 
     def create
-      @activity = build_activity(activity_params)
+      @activity = find_open_activity || build_activity
+      @activity.assign_attributes(activity_params)
       @activity.payload = normalized_payload(@activity.payload)
 
       if @activity.save
         redirect_to dashboard_home_path(tab: "academy"), notice: "Attivita registrata."
       else
         render :new, status: :unprocessable_entity
+      end
+    rescue ActiveRecord::RecordNotUnique
+      @activity = find_open_activity
+      if @activity.present?
+        @activity.assign_attributes(activity_params)
+        @activity.payload = normalized_payload(@activity.payload)
+        @activity.save
+        redirect_to dashboard_home_path(tab: "academy"), notice: "Attivita registrata."
+      else
+        redirect_to dashboard_home_path(tab: "academy"), alert: "Impossibile registrare l'attivita in questo momento."
       end
     end
 
@@ -63,6 +76,13 @@ module Taxbranches
       return {} unless value.is_a?(Hash)
 
       value.compact_blank
+    end
+
+    def find_open_activity
+      @lead.activities
+           .where(taxbranch_id: @taxbranch.id, status: OPEN_STATUSES)
+           .order(occurred_at: :desc, id: :desc)
+           .first
     end
   end
 end

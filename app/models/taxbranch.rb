@@ -37,8 +37,11 @@ class Taxbranch < ApplicationRecord
 
   validate :cannot_have_children_if_link_node
   validate :permission_roles_must_match_domain
+  validate :actor_roles_must_match_domain
+  validate :execution_mode_must_be_valid
   validate :questionnaire_source_must_be_valid
   before_validation :normalize_and_build_slugs
+  before_validation :normalize_actor_fields
   after_commit :bust_categories_cache, if: :saved_change_to_slug_category?
 
   enum :status, {
@@ -105,6 +108,7 @@ class Taxbranch < ApplicationRecord
   QUESTIONNAIRE_CATEGORY = "questionnaire".freeze
   QUESTION_CATEGORY = "question".freeze
   OPTION_CATEGORY = "option".freeze
+  EXECUTION_MODES = %w[self assisted both].freeze
 
   def questionnaire_root?
     slug_category.to_s == QUESTIONNAIRE_CATEGORY
@@ -132,11 +136,14 @@ class Taxbranch < ApplicationRecord
 
   # Supported: open_text, single_choice, multi_choice, scale
   def question_kind
-    meta_indifferent[:question_kind].to_s.presence || "open_text"
+    questionnaire_config_indifferent[:question_kind].to_s.presence ||
+      meta_indifferent[:question_kind].to_s.presence ||
+      "open_text"
   end
 
   def scoring_config
-    cfg = meta_indifferent[:scoring]
+    cfg = questionnaire_config_indifferent[:scoring]
+    cfg = meta_indifferent[:scoring] unless cfg.is_a?(Hash)
     cfg.is_a?(Hash) ? cfg : {}
   end
 
@@ -145,19 +152,23 @@ class Taxbranch < ApplicationRecord
   end
 
   def questionnaire_source
-    meta_indifferent[:questionnaire_source].to_s
+    questionnaire_config_indifferent[:questionnaire_source].to_s.presence ||
+      meta_indifferent[:questionnaire_source].to_s
   end
 
   def questionnaire_source=(value)
-    self.meta = (meta || {}).merge("questionnaire_source" => value.to_s.strip.presence)
+    normalized = value.to_s.strip.presence
+    self.questionnaire_config = (questionnaire_config || {}).merge("questionnaire_source" => normalized)
   end
 
   def questionnaire_version
-    meta_indifferent[:questionnaire_version].to_s
+    questionnaire_config_indifferent[:questionnaire_version].to_s.presence ||
+      meta_indifferent[:questionnaire_version].to_s
   end
 
   def questionnaire_version=(value)
-    self.meta = (meta || {}).merge("questionnaire_version" => value.to_s.strip.presence)
+    normalized = value.to_s.strip.presence
+    self.questionnaire_config = (questionnaire_config || {}).merge("questionnaire_version" => normalized)
   end
 
   def questionnaire_definition
@@ -193,6 +204,22 @@ class Taxbranch < ApplicationRecord
 
   def permission_access_roles_text
     Array(permission_access_roles).join("\n")
+  end
+
+  def performed_by_roles=(value)
+    self[:performed_by_roles] = normalize_role_list(value)
+  end
+
+  def target_roles=(value)
+    self[:target_roles] = normalize_role_list(value)
+  end
+
+  def performed_by_roles_text
+    Array(performed_by_roles).join("\n")
+  end
+
+  def target_roles_text
+    Array(target_roles).join("\n")
   end
 
   def available_permission_roles
@@ -359,8 +386,52 @@ end
     )
   end
 
+  def actor_roles_must_match_domain
+    available = available_permission_roles
+    return if available.blank?
+
+    invalid_performed = Array(performed_by_roles) - available
+    invalid_target = Array(target_roles) - available
+
+    if invalid_performed.any?
+      errors.add(
+        :performed_by_roles,
+        "contiene valori non presenti tra i ruoli disponibili del dominio: #{invalid_performed.join(', ')}"
+      )
+    end
+
+    return if invalid_target.blank?
+
+    errors.add(
+      :target_roles,
+      "contiene valori non presenti tra i ruoli disponibili del dominio: #{invalid_target.join(', ')}"
+    )
+  end
+
+  def execution_mode_must_be_valid
+    mode = execution_mode.to_s.strip
+    return if mode.blank? || EXECUTION_MODES.include?(mode)
+
+    errors.add(:execution_mode, "non valido. Valori ammessi: #{EXECUTION_MODES.join(', ')}")
+  end
+
+  def normalize_actor_fields
+    self[:performed_by_roles] = normalize_role_list(performed_by_roles)
+    self[:target_roles] = normalize_role_list(target_roles)
+
+    mode = execution_mode.to_s.strip
+    self.execution_mode = mode.presence || "both"
+  end
+
   def meta_indifferent
     value = meta
+    return {}.with_indifferent_access unless value.is_a?(Hash)
+
+    value.with_indifferent_access
+  end
+
+  def questionnaire_config_indifferent
+    value = questionnaire_config
     return {}.with_indifferent_access unless value.is_a?(Hash)
 
     value.with_indifferent_access
@@ -372,23 +443,23 @@ end
     resolved = questionnaire_source_path
     if resolved.blank?
       if questionnaire_source.blank?
-        errors.add(:meta, "seleziona un questionario YAML per slug_category=questionnaire")
+        errors.add(:questionnaire_config, "seleziona un questionario YAML per slug_category=questionnaire")
       else
-        errors.add(:meta, "questionnaire_source deve iniziare con config/data/questionnaires/ e terminare con .yml/.yaml")
+        errors.add(:questionnaire_config, "questionnaire_source deve iniziare con config/data/questionnaires/ e terminare con .yml/.yaml")
       end
       return
     end
 
     unless File.exist?(resolved)
-      errors.add(:meta, "questionnaire_source non trovato: #{questionnaire_source}")
+      errors.add(:questionnaire_config, "questionnaire_source non trovato: #{questionnaire_source}")
       return
     end
 
     begin
       parsed = YAML.safe_load_file(resolved, permitted_classes: [], aliases: false)
-      errors.add(:meta, "questionnaire_source non contiene un Hash YAML valido") unless parsed.is_a?(Hash)
+      errors.add(:questionnaire_config, "questionnaire_source non contiene un Hash YAML valido") unless parsed.is_a?(Hash)
     rescue Psych::Exception => e
-      errors.add(:meta, "questionnaire_source YAML non valido: #{e.message}")
+      errors.add(:questionnaire_config, "questionnaire_source YAML non valido: #{e.message}")
     end
   end
 end

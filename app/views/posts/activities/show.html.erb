@@ -19,6 +19,30 @@
       </div>
     </div>
 
+    <% if @activity_level_info.present? %>
+      <div class="mt-5 rounded-xl border p-4 <%= @activity_level_info[:badge_class] %>">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-sm font-bold uppercase tracking-wide">Risultato Test Mobilita</h2>
+          <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold <%= @activity_level_info[:chip_class] %>">
+            <%= (@activity.level_code.presence || @activity_level_info[:code]).to_s.upcase %>
+          </span>
+        </div>
+        <p class="mt-1 text-base font-black"><%= "#{@activity_level_info[:emoji]} #{@activity_level_info[:label]}" %></p>
+        <p class="mt-1 text-sm font-semibold">
+          Punteggio: <%= @activity.score_total || 0 %>/<%= @activity.score_max || 0 %>
+          <% if @activity_level_info[:min].present? && @activity_level_info[:max].present? %>
+            · Range: <%= @activity_level_info[:min] %>-<%= @activity_level_info[:max] %>
+          <% end %>
+        </p>
+        <% if @activity_level_info[:interpretation].present? %>
+          <p class="mt-1 text-sm"><strong>Interpretazione:</strong> <%= @activity_level_info[:interpretation] %></p>
+        <% end %>
+        <% if @activity_level_info[:recommendation].present? %>
+          <p class="mt-1 text-sm"><strong>Consiglio:</strong> <%= @activity_level_info[:recommendation] %></p>
+        <% end %>
+      </div>
+    <% end %>
+
     <% if @answers_detailed.present? %>
       <div class="mt-5 rounded-xl border border-slate-200 bg-slate-50/60 p-4">
         <div class="flex items-center justify-between gap-3">

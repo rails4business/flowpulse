@@ -104,19 +104,52 @@
 
     <% if visible_questions.present? %>
       <% question_count = visible_questions.size %>
+      <% completion_step = question_count + 1 %>
       <% current_step = params[:q].to_i %>
       <% current_step = 1 if current_step <= 0 %>
-      <% current_step = question_count if current_step > question_count %>
-      <% current_question = visible_questions[current_step - 1] %>
-      <% current_question_code = ((current_question["code"] || current_question[:code]).presence || "q_#{current_step}").to_s %>
-      <% current_answer = answers_for_render[current_question_code].to_s.presence %>
-      <% progress_percent = ((current_step.to_f / question_count) * 100).round %>
+      <% current_step = completion_step if current_step > completion_step %>
+      <% on_completion_screen = current_step == completion_step %>
+      <% current_question = on_completion_screen ? visible_questions.last : visible_questions[current_step - 1] %>
+      <% current_question_code = on_completion_screen ? nil : ((current_question["code"] || current_question[:code]).presence || "q_#{current_step}").to_s %>
+      <% current_answer = current_question_code.present? ? answers_for_render[current_question_code].to_s.presence : nil %>
+      <%
+        question_video_url = (current_question["video_url"] || current_question[:video_url]).to_s.strip
+        question_video_url = nil if question_video_url.blank?
+        question_video_start = (current_question["video_start"] || current_question[:video_start]).to_i
+        question_video_start = 0 if question_video_start.negative?
+        question_note = (current_question["note"] || current_question[:note]).to_s.strip
+        question_note = nil if question_note.blank?
+        question_video_link = if question_video_url.present? && question_video_start.positive?
+          separator = question_video_url.include?("?") ? "&" : "?"
+          "#{question_video_url}#{separator}t=#{question_video_start}s"
+        else
+          question_video_url
+        end
+        mm = (question_video_start / 60).to_i
+        ss = (question_video_start % 60).to_i
+        question_video_label = format("%02d:%02d", mm, ss)
+      %>
+      <%
+        question_images = Array(current_question["images"] || current_question[:images]).dup
+        single_image = current_question["image"] || current_question[:image] || current_question["image_url"] || current_question[:image_url]
+        question_images << single_image if single_image.present?
+        question_images = question_images.filter_map do |raw_path|
+          value = raw_path.to_s.strip
+          next if value.blank?
+          if value.start_with?("http://", "https://", "/")
+            value
+          else
+            image_path(value)
+          end
+        end.uniq
+      %>
+      <% progress_percent = on_completion_screen ? 100 : ((current_step.to_f / question_count) * 100).round %>
       <% step_params = request.query_parameters.except("q") %>
 
       <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div class="flex items-center justify-between gap-3">
           <h2 class="text-xl font-bold text-slate-900">Questionario</h2>
-          <span class="text-xs font-semibold text-slate-600">Domanda <%= current_step %> di <%= question_count %></span>
+          <span class="text-xs font-semibold text-slate-600"><%= on_completion_screen ? "Completato" : "Domanda #{current_step} di #{question_count}" %></span>
         </div>
         <div class="mt-3">
           <div class="h-2 w-full rounded-full bg-slate-200">
@@ -131,11 +164,17 @@
             <%= hidden_field_tag key, value %>
           <% end %>
           <% answers_for_render.each do |code, value| %>
-            <% next if code.to_s == current_question_code %>
+            <% next if current_question_code.present? && code.to_s == current_question_code %>
             <%= hidden_field_tag "answers[#{code}]", value %>
           <% end %>
 
           <article class="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+            <% if on_completion_screen %>
+              <div>
+                <p class="text-sm font-bold text-slate-900">Ottimo, hai completato il questionario.</p>
+                <p class="mt-1 text-sm text-slate-600">Per proseguire nel percorso, clicca su <strong>Prosegui</strong>.</p>
+              </div>
+            <% else %>
             <div class="flex items-start justify-between gap-3">
               <div>
                 <p class="text-[11px] uppercase tracking-wide text-slate-500">
@@ -148,6 +187,34 @@
                 <% if side.present? && side != "none" %>
                   <p class="text-xs text-slate-500 mt-1">Lato: <%= side %></p>
                 <% end %>
+                <% if question_note.present? %>
+                  <p class="mt-2 rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-xs font-medium text-amber-800"><%= question_note %></p>
+                <% end %>
+                <% if question_video_link.present? %>
+                  <div class="mt-2">
+                    <%= link_to "Guarda video (da #{question_video_label})",
+                                question_video_link,
+                                target: "_blank",
+                                rel: "noopener",
+                                class: "inline-flex items-center rounded-md border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10" %>
+                  </div>
+                <% end %>
+                <% if question_images.any? && Array(current_question["options"] || current_question[:options]).blank? %>
+                  <div class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <% question_images.each_with_index do |img_src, idx| %>
+                      <% score_from_name = img_src.to_s.match(/score-(\d+)/)&.captures&.first %>
+                      <% score_value = score_from_name.presence || idx.to_s %>
+                      <figure class="rounded-lg border border-slate-300 bg-white p-1">
+                        <%= image_tag img_src,
+                                      alt: "Immagine supporto domanda",
+                                      class: "w-full object-contain max-h-56 grayscale contrast-125" %>
+                        <figcaption class="mt-1 text-center text-[11px] font-semibold text-slate-600">
+                          Score <%= score_value %>
+                        </figcaption>
+                      </figure>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
               <span class="inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-700">
                 <%= current_question["min"] || current_question[:min] || 0 %>-<%= current_question["max"] || current_question[:max] || 3 %>
@@ -156,14 +223,28 @@
 
             <% options = Array(current_question["options"] || current_question[:options]) %>
             <% if options.any? %>
-              <fieldset class="mt-4 space-y-2">
+              <fieldset class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <% options.each_with_index do |opt, opt_idx| %>
                   <% option_value = (opt.is_a?(Hash) && opt.key?("value")) ? opt["value"] : opt[:value] %>
                   <% option_label = (opt.is_a?(Hash) && opt.key?("label")) ? opt["label"] : opt[:label] %>
                   <% option_value = option_value.to_s %>
                   <% option_label = option_label.to_s.presence || option_value %>
+                  <% option_is_score = option_value.match?(/\A\d+(\.\d+)?\z/) %>
+                  <% option_image_raw = (opt.is_a?(Hash) && (opt["image"].presence || opt["image_url"].presence || opt[:image].presence || opt[:image_url].presence)) %>
+                  <% option_image = option_image_raw.to_s.strip.presence %>
+                  <% if option_image.present? %>
+                    <% option_image = option_image.start_with?("http://", "https://", "/") ? option_image : image_path(option_image) %>
+                  <% else %>
+                    <% option_image = question_images.find { |src| src.to_s.match?(/score-#{Regexp.escape(option_value)}(?:[^0-9]|$)/) } %>
+                  <% end %>
                   <% option_id = "q_#{current_step}_opt_#{opt_idx}" %>
-                  <label for="<%= option_id %>" class="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:border-blue-300">
+                  <label for="<%= option_id %>" class="rounded-lg border border-slate-200 bg-white p-2 text-sm text-slate-700 hover:border-blue-300">
+                    <% if option_image.present? %>
+                      <%= image_tag option_image,
+                                    alt: "Score #{option_value}",
+                                    class: "mb-2 w-full rounded-md border border-slate-200 bg-white object-contain max-h-40 grayscale contrast-125" %>
+                    <% end %>
+                    <div class="flex items-center gap-2">
                     <%= radio_button_tag "answers[#{current_question_code}]",
                                          option_value,
                                          current_answer == option_value,
@@ -172,8 +253,13 @@
                                          required: true,
                                          data: { auto_advance: "1" },
                                          onchange: "var b=this.form&&this.form.querySelector('[data-next-btn=\"1\"]'); if(!b){return;} if(this.form.requestSubmit){this.form.requestSubmit(b);}else{b.click();}" %>
-                    <% option_text = option_label == option_value ? option_value : "#{option_value} · #{option_label}" %>
-                    <span><span class="font-semibold"><%= option_text %></span></span>
+                    <span class="leading-tight">
+                      <% if option_is_score %>
+                        <span class="block text-xs font-bold text-slate-500">Score <%= option_value %></span>
+                      <% end %>
+                      <span class="block font-semibold"><%= option_label %></span>
+                    </span>
+                    </div>
                   </label>
                 <% end %>
               </fieldset>
@@ -187,10 +273,18 @@
                                    class: "w-full rounded-md border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
               </div>
             <% end %>
+            <% end %>
           </article>
 
           <div class="mt-4 flex items-center justify-between">
-            <% if current_step > 1 %>
+            <% if on_completion_screen %>
+              <%= button_tag "Torna alle risposte",
+                             type: :submit,
+                             formnovalidate: true,
+                             formaction: post_path(@post, step_params.merge(q: question_count)),
+                             formmethod: :get,
+                             class: "inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50" %>
+            <% elsif current_step > 1 %>
               <%= button_tag "Indietro",
                              type: :submit,
                              formnovalidate: true,
@@ -201,19 +295,18 @@
               <span></span>
             <% end %>
 
-            <% if current_step < question_count %>
+            <% if on_completion_screen %>
+              <%= button_tag "Prosegui",
+                             type: :submit,
+                             onclick: "var f=this.form;if(!f){return false;}f.action='#{submit_questionnaire_post_path(@post, return_to_dashboard: 1)}';f.method='post';if(f.requestSubmit){f.requestSubmit();}else{f.submit();}return false;",
+                             class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700" %>
+            <% else %>
               <%= button_tag "Avanti",
                              type: :submit,
                              formaction: post_path(@post, step_params.merge(q: current_step + 1)),
                              formmethod: :get,
                              data: { next_btn: "1" },
                              class: "inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
-            <% else %>
-              <%= button_tag "Invia questionario",
-                             type: :submit,
-                             formaction: submit_questionnaire_post_path(@post),
-                             formmethod: :post,
-                             class: "inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700" %>
             <% end %>
           </div>
         <% end %>
@@ -236,7 +329,36 @@
       </section>
     <% end %>
 
-    <% show_scoring_summary = visible_questions.present? && current_step == question_count %>
+    <% show_scoring_summary = visible_questions.present? && on_completion_screen %>
+    <% if @questionnaire_result_activity.present? %>
+      <% level_info = questionnaire_level_info(level_code: @questionnaire_result_activity.level_code, score_total: @questionnaire_result_activity.score_total, scoring: scoring_for_render) %>
+      <% if level_info.present? %>
+        <section class="rounded-2xl border p-5 shadow-sm <%= level_info[:badge_class] %>">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-xs uppercase tracking-wide font-semibold">Risultato Test Mobilita</p>
+              <h2 class="mt-1 text-xl font-black"><%= "#{level_info[:emoji]} #{level_info[:label]}" %></h2>
+            </div>
+            <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-bold <%= level_info[:chip_class] %>">
+              <%= (@questionnaire_result_activity.level_code.presence || level_info[:code]).to_s.upcase %>
+            </span>
+          </div>
+          <p class="mt-2 text-sm font-semibold">
+            Punteggio: <%= @questionnaire_result_activity.score_total || 0 %>/<%= @questionnaire_result_activity.score_max || 0 %>
+            <% if level_info[:min].present? && level_info[:max].present? %>
+              · Range: <%= level_info[:min] %>-<%= level_info[:max] %>
+            <% end %>
+          </p>
+          <% if level_info[:interpretation].present? %>
+            <p class="mt-1 text-sm"><strong>Interpretazione:</strong> <%= level_info[:interpretation] %></p>
+          <% end %>
+          <% if level_info[:recommendation].present? %>
+            <p class="mt-1 text-sm"><strong>Consiglio:</strong> <%= level_info[:recommendation] %></p>
+          <% end %>
+        </section>
+      <% end %>
+    <% end %>
+
     <% if scoring_for_render.present? && show_scoring_summary %>
       <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h2 class="text-xl font-bold text-slate-900">Schermata finale</h2>

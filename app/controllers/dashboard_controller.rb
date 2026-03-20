@@ -2,6 +2,10 @@ class DashboardController < ApplicationController
   def home
     @lead = Current.user&.lead
     return redirect_to root_path, alert: "No lead found" unless @lead
+    if superadmin_dashboard_mode_active?
+      redirect_to dashboard_superadmin_path(request.query_parameters.except(:tab))
+      return
+    end
 
     if params[:month].present? && params[:year].present? && params[:date].blank?
       day = params[:day].to_i
@@ -84,6 +88,17 @@ class DashboardController < ApplicationController
   end
 
   def superadmin
+    unless superadmin_dashboard_mode_active?
+      redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), alert: "Attiva la modalità superadmin per accedere a questa dashboard."
+      return
+    end
+  end
+
+  def calendarweekplan
+    unless superadmin_dashboard_mode_active?
+      redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), alert: "Attiva la modalità superadmin per accedere a questa dashboard."
+      return
+    end
   end
 
   def liste
@@ -135,7 +150,19 @@ class DashboardController < ApplicationController
       return
     end
 
-    membership.update!(domain_active_role: requested_role)
+    user_is_superadmin = Current.user.respond_to?(:superadmin?) && Current.user.superadmin?
+    if requested_role.casecmp("superadmin").zero? && !user_is_superadmin
+      redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), alert: "Ruolo superadmin non disponibile per questo utente."
+      return
+    end
+
+    ActiveRecord::Base.transaction do
+      membership.update!(domain_active_role: requested_role)
+      if user_is_superadmin
+        Current.user.update!(superadmin_mode_active: requested_role.casecmp("superadmin").zero?)
+      end
+    end
+
     redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), notice: "Ruolo attivo aggiornato."
   rescue ActiveRecord::RecordInvalid => e
     redirect_to dashboard_home_path, alert: e.message
@@ -143,12 +170,21 @@ class DashboardController < ApplicationController
 
   private
 
+  def superadmin_dashboard_mode_active?
+    Current.user&.superadmin? && Current.user&.superadmin_mode_active?
+  end
+
   def available_domain_role_options(membership)
-    return [ "member" ] if membership.blank?
+    is_user_superadmin = Current.user.respond_to?(:superadmin?) && Current.user.superadmin?
+    return is_user_superadmin ? [ "member", "superadmin" ] : [ "member" ] if membership.blank?
 
     cert_scope = membership.certificates
     roles = cert_scope.pluck(:role_name).filter_map { |r| r.to_s.strip.presence }
-    ([ "member" ] + roles).uniq
+    roles = roles.reject { |role_name| role_name.casecmp("superadmin").zero? } unless is_user_superadmin
+    base_roles = [ "member" ]
+    base_roles << "superadmin" if is_user_superadmin
+    current_active_role = membership.domain_active_role.to_s.strip.presence
+    (base_roles + roles + [ current_active_role ]).compact.uniq
   end
 
   def build_academy_todo_from_taxbranch!
@@ -156,8 +192,7 @@ class DashboardController < ApplicationController
     @academy_requires_membership = true
     @academy_root_taxbranch = Taxbranch.find_by(slug: "academy/posturacorretta")
     return if @academy_root_taxbranch.blank?
-    active_role = @domain_membership&.domain_active_role.presence || "member"
-    @academy_requires_membership = @domain_membership.blank? || active_role != "member"
+    @academy_requires_membership = @domain_membership.blank?
 
     mycontact_ids = @lead.mycontacts.select(:id)
     bookings = Booking.includes(:service, :eventdate, :enrollment, :commitment)
@@ -218,7 +253,7 @@ class DashboardController < ApplicationController
     @academy_first_root_step = steps.first
     @academy_first_root_step_completed = @academy_first_root_step.present? && @academy_first_root_step[:status_key] == :completed
     @academy_visible_root_step = steps.find { |step| step[:status_key] != :completed } || @academy_first_root_step
-    @academy_completed_root_steps = steps.select { |step| step[:status_key] == :completed }
+    @academy_completed_root_steps = sort_completed_steps_desc(steps.select { |step| step[:status_key] == :completed })
 
     active_root = @academy_visible_root_step
     active_root_category = active_root&.dig(:taxbranch)&.slug_category.to_s
@@ -232,7 +267,7 @@ class DashboardController < ApplicationController
     if active_root_category == "academy_inscription"
       inscription_children = Array(active_root[:children])
       @academy_inscription_focus_step = inscription_children.find { |step| step[:status_key] != :completed } || inscription_children.first
-      @academy_inscription_completed_steps = inscription_children.select { |step| step[:status_key] == :completed }
+      @academy_inscription_completed_steps = sort_completed_steps_desc(inscription_children.select { |step| step[:status_key] == :completed })
       @academy_current_action_step = @academy_inscription_focus_step
     elsif active_root_category == "academy_path"
       module_nodes = []
@@ -245,6 +280,13 @@ class DashboardController < ApplicationController
     end
 
     @academy_next_step = @academy_current_action_step || @academy_visible_root_step || @academy_next_step
+  end
+
+  def sort_completed_steps_desc(steps)
+    Array(steps).sort_by do |step|
+      ts = step[:completed_activity_occurred_at].presence || step[:activity_occurred_at].presence || step[:next_at].presence
+      ts || Time.at(0)
+    end.reverse
   end
 
   def collect_module_nodes!(node, acc)
@@ -588,21 +630,24 @@ class DashboardController < ApplicationController
     visible_questions = questions.select { |q| modal_question_visible?(q, answers) }
     return if visible_questions.blank?
 
+    completion_step = visible_questions.size + 1
     step = params[:q].to_i
     step = 1 if step <= 0
-    step = visible_questions.size if step > visible_questions.size
-    current_question = visible_questions[step - 1]
-    current_code = (questionnaire_hash_value(current_question, "code").presence || "q_#{step}").to_s
+    step = completion_step if step > completion_step
+    completion_screen = step == completion_step
+    current_question = completion_screen ? visible_questions.last : visible_questions[step - 1]
+    current_code = completion_screen ? nil : (questionnaire_hash_value(current_question, "code").presence || "q_#{step}").to_s
 
     @modal_questionnaire_mode = true
     @modal_questionnaire_answers = answers
     @modal_questionnaire_visible_questions = visible_questions
     @modal_questionnaire_step = step
     @modal_questionnaire_count = visible_questions.size
+    @modal_questionnaire_completion_screen = completion_screen
     @modal_questionnaire_current_question = current_question
     @modal_questionnaire_current_code = current_code
-    @modal_questionnaire_current_answer = answers[current_code].to_s
-    @modal_questionnaire_progress_percent = ((step.to_f / visible_questions.size) * 100).round
+    @modal_questionnaire_current_answer = current_code.present? ? answers[current_code].to_s : nil
+    @modal_questionnaire_progress_percent = completion_screen ? 100 : ((step.to_f / visible_questions.size) * 100).round
   end
 
   def persist_modal_questionnaire_answers!(answers)

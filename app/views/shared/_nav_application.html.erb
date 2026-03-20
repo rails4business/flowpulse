@@ -611,17 +611,28 @@
                           edit_registration_path,
                           class: "block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white" %>
             </li>
-              <% if Current.user&.superadmin? %>
+              <% nav_domain = Current.domain %>
+              <% nav_lead = Current.user&.lead %>
+              <% nav_membership = if nav_domain.present? && nav_lead.present?
+                                    nav_lead.domain_memberships.find_by(domain_id: nav_domain.id)
+                                  end %>
+              <% if nav_membership.present? %>
+                <% is_user_superadmin = Current.user.respond_to?(:superadmin?) && Current.user.superadmin? %>
+                <% cert_roles = nav_membership.certificates.pluck(:role_name).filter_map { |r| r.to_s.strip.presence } %>
+                <% cert_roles = cert_roles.reject { |r| r.casecmp("superadmin").zero? } unless is_user_superadmin %>
+                <% nav_role_options = ["member"] + cert_roles %>
+                <% nav_role_options << "superadmin" if is_user_superadmin %>
+                <% nav_role_options = nav_role_options.uniq %>
+                <% nav_active_role = nav_membership.domain_active_role.presence || "member" %>
+                <% nav_role_options_for_select = nav_role_options.map { |role| [domain_role_label(role), role] } %>
                 <li class="px-4 py-2">
-                  <%= form_with scope: :user, url: registration_path, method: :patch, class: "flex items-center justify-between gap-3" do |u| %>
-                    <%= u.hidden_field :from_superadmin_toggle, value: "1" %>
-                    <span class="text-sm text-gray-600 dark:text-gray-300">Superadmin attivo</span>
-                    <label class="inline-flex items-center gap-2">
-                      <%= u.check_box :superadmin_mode_active,
-                            { checked: Current.user.superadmin_mode_active,
-                              class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600",
-                              onchange: "this.form.submit()" } %>
-                    </label>
+                  <%= form_with url: update_dashboard_domain_active_role_path, method: :patch, local: true, class: "space-y-1", data: { turbo: false } do %>
+                    <%= hidden_field_tag :tab, params[:tab].presence || "academy" %>
+                    <span class="block text-sm text-gray-600 dark:text-gray-300">Ruolo attivo</span>
+                    <%= select_tag :domain_active_role,
+                                   options_for_select(nav_role_options_for_select, nav_active_role),
+                                   class: "w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-sm text-slate-700",
+                                   onchange: "this.form.submit()" %>
                   <% end %>
                 </li>
               <% end %>

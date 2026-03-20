@@ -43,6 +43,12 @@ module Posts
       payload = @activity.payload.is_a?(Hash) ? @activity.payload : {}
       @questionnaire_snapshot = payload["questionnaire_snapshot"].is_a?(Hash) ? payload["questionnaire_snapshot"] : {}
       @answers_detailed = build_answers_detailed(payload)
+      @questionnaire_scoring = @taxbranch&.scoring_config || {}
+      @activity_level_info = view_context.questionnaire_level_info(
+        level_code: @activity.level_code,
+        score_total: @activity.score_total,
+        scoring: @questionnaire_scoring
+      )
     end
 
     private

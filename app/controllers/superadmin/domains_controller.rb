@@ -11,8 +11,9 @@ module Superadmin
 
   # GET /domains/1 or /domains/1.json
   def show
-    @tab = params[:tab].presence_in(%w[overview services]) || "overview"
+    @tab = params[:tab].presence_in(%w[overview services memberships]) || "overview"
     @main_taxbranch = @domain.taxbranch
+    @domain_memberships = @domain.domain_memberships.includes(:lead, :certificates).order(primary: :desc, created_at: :desc)
     station_ids = @main_taxbranch ? [ @main_taxbranch.id ] + @main_taxbranch.children.pluck(:id) : []
     @services =
       if station_ids.any?

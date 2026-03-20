@@ -270,7 +270,10 @@
 
             <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
             <% if Current.user.present? %>
-              <%= link_to "Profilo", dashboard_home_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
+              <%= link_to dashboard_home_path, class: "flex items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-bold text-white shadow-sm hover:brightness-110" do %>
+                <span class="material-symbols-outlined text-[18px] leading-none">dashboard</span>
+                Dashboard
+              <% end %>
             <% else %>
               <%= link_to "Accedi", new_session_path, class: "block px-3 py-2 text-sm font-semibold hover:text-primary" %>
               <%= link_to "Registrati", new_registration_path, class: "block px-3 py-2 text-sm font-semibold text-primary" %>

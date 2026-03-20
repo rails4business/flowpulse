@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   before_action :set_post,         only: %i[edit update destroy]
   before_action :set_post_public,  only: %i[show mark_done pricing submit_questionnaire]
-  before_action :set_superadmin,   except: %i[show mark_done pricing]
+  before_action :set_superadmin,   except: %i[show mark_done pricing submit_questionnaire]
 
   helper_method :sort_column, :sort_direction
 
@@ -221,6 +221,7 @@ class PostsController < ApplicationController
       source_ref: @post.slug
     )
 
+    result_activity_for_redirect = activity
     if params[:in_dashboard].to_s == "1" && params[:activity_id].present?
       dashboard_activity = lead.activities.find_by(id: params[:activity_id], taxbranch_id: questionnaire_taxbranch.id)
       if dashboard_activity.present?
@@ -242,13 +243,15 @@ class PostsController < ApplicationController
           score_max: activity.score_max,
           level_code: activity.level_code
         )
+        result_activity_for_redirect = dashboard_activity
       end
     end
 
-    if params[:in_dashboard].to_s == "1"
-      redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
+    if params[:in_dashboard].to_s == "1" || params[:return_to_dashboard].to_s == "1"
+      redirect_to dashboard_home_path(tab: params[:tab].presence || "academy"),
+                  notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
     else
-      redirect_to post_path(@post, q: params[:q].presence || 1), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
+      redirect_to post_path(@post, q: params[:q].presence || 1, result_activity_id: activity.id), notice: "Questionario salvato. Risultato: #{activity.level_code.presence || 'n/d'} (#{activity.score_total || 0}/#{activity.score_max || 0})."
     end
   rescue QuestionnaireSubmission::Error => e
     if params[:in_dashboard].to_s == "1"
@@ -325,6 +328,13 @@ class PostsController < ApplicationController
   # 🔓 Scelta del post "pubblico" per show/mark_done
 
   def set_post_public
+  # Flussi interni autenticati (dashboard) non devono passare dai vincoli di pubblicazione.
+  if (params[:in_dashboard].to_s == "1" || params[:return_to_dashboard].to_s == "1") && Current.user.present? && params[:id].present?
+    @post = Post.includes(:taxbranch).friendly.find(params[:id])
+    @taxbranch = @post.taxbranch
+    return
+  end
+
   # 1️⃣ Se c'è un id esplicito → usa solo FriendlyId + controlli editoriali
   if params[:id].present?
     @post = Post.includes(:taxbranch).friendly.find(params[:id])
@@ -424,6 +434,12 @@ end
       questions_count: @questionnaire_questions.size,
       fallback_used: fallback.present?
     }
+
+    @questionnaire_result_activity = nil
+    result_id = params[:result_activity_id].to_i
+    if result_id.positive? && Current.user&.lead.present?
+      @questionnaire_result_activity = Current.user.lead.activities.find_by(id: result_id, taxbranch_id: @taxbranch.id)
+    end
   end
 
   def questionnaire_source_file_exists?(source)

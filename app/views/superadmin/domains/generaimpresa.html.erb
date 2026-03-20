@@ -415,7 +415,7 @@
                 <% x2 = to_pos[0] %>
                 <% y2 = to_pos[1] %>
               <% end %>
-              <a href="<%= testroute_superadmin_domain_path(@domain, tab: "journeys", journey_id: journey.id) %>" xlink:href="<%= testroute_superadmin_domain_path(@domain, tab: "journeys", journey_id: journey.id) %>">
+              <a href="<%= journey_path(journey) %>" xlink:href="<%= journey_path(journey) %>">
                 <title>
                   <%= journey_label %>
                   (<%= from_service&.name || from_service&.slug || "—" %> → <%= to_service&.name || to_service&.slug || "—" %>)
@@ -511,7 +511,7 @@
                 <% x2 = to_pos[0] %>
                 <% y2 = to_pos[1] %>
               <% end %>
-              <a href="<%= testroute_superadmin_domain_path(@domain, tab: "journeys", journey_id: journey.id) %>" xlink:href="<%= testroute_superadmin_domain_path(@domain, tab: "journeys", journey_id: journey.id) %>">
+              <a href="<%= journey_path(journey) %>" xlink:href="<%= journey_path(journey) %>">
                 <foreignObject x="<%= ((x1 + x2) / 2.0 - 90).round(1) %>" y="<%= ((y1 + y2) / 2.0 - 18).round(1) %>" width="180" height="22" class="journey-label" data-journey-id="<%= journey.id %>">
                   <div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center; position: relative; z-index: 3;">
                     <span class="map-pill"><%= journey_label %></span>
@@ -1213,6 +1213,14 @@
       updateLines();
     }
 
+    function openJourneyLinkFromElement(el) {
+      const anchor = el && el.closest ? el.closest("a") : null;
+      const href = anchor && anchor.getAttribute ? anchor.getAttribute("href") : null;
+      if (href) {
+        window.location.href = href;
+      }
+    }
+
     function saveStationPosition(stationId, baseX, baseY) {
       if (!csrfToken) return;
       const relX = Math.round(baseX - centerX);
@@ -1473,19 +1481,10 @@
           }
           return;
         }
-        if (editMap) return;
+        if (editMap && railservicesEnabled) return;
         event.preventDefault();
         event.stopPropagation();
-        clearSelectedStations();
-        clearSelectedRail();
-        frame.classList.add("disable-station-hover");
-        const line = hit.nextElementSibling;
-        if (line && line.classList.contains("journey-line")) {
-          line.classList.add("selected");
-          line.setAttribute("marker-end", "url(#arrowhead-selected)");
-          line.classList.remove("highlight");
-          setJourneyLabelVisible(hit.dataset.journeyId, true);
-        }
+        openJourneyLinkFromElement(hit);
       });
     });
 
@@ -1523,12 +1522,18 @@
         setJourneyLabelVisible(line.dataset.journeyId, false);
       });
       line.addEventListener("click", (event) => {
-        if (!routeSelectEnabled) return;
+        if (routeSelectEnabled) {
+          event.preventDefault();
+          event.stopPropagation();
+          if (handleRouteRailClick(line.dataset.journeyId)) {
+            refreshRouteUI();
+          }
+          return;
+        }
+        if (editMap && railservicesEnabled) return;
         event.preventDefault();
         event.stopPropagation();
-        if (handleRouteRailClick(line.dataset.journeyId)) {
-          refreshRouteUI();
-        }
+        openJourneyLinkFromElement(line);
       });
     });
 

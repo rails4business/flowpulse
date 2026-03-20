@@ -186,6 +186,7 @@ resources :posts do
   patch "dashboard/domain_membership/active_role", to: "dashboard#update_domain_active_role", as: :update_dashboard_domain_active_role
   get "dashboard/evento"
   get "dashboard/superadmin"
+  get "dashboard/calendarweekplan"
   get "pages/home"
   get "pages/about"
   get "pages/contact"

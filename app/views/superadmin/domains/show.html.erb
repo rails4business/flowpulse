@@ -13,6 +13,9 @@
       <%= link_to "Services",
                   superadmin_domain_path(@domain, tab: "services"),
                   class: "inline-flex items-center rounded-md px-3 py-1.5 text-sm font-semibold #{(@tab == 'services') ? 'bg-primary/15 text-primary border border-primary/40' : 'text-[#9dabb9] border border-transparent hover:text-white hover:border-[#3a4652]'}" %>
+      <%= link_to "Memberships",
+                  superadmin_domain_path(@domain, tab: "memberships"),
+                  class: "inline-flex items-center rounded-md px-3 py-1.5 text-sm font-semibold #{(@tab == 'memberships') ? 'bg-primary/15 text-primary border border-primary/40' : 'text-[#9dabb9] border border-transparent hover:text-white hover:border-[#3a4652]'}" %>
     </div>
   </div>
 
@@ -75,6 +78,47 @@
     </div>
 
     <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm text-white">
+      <div class="flex items-center justify-between gap-4">
+        <h2 class="text-lg font-semibold text-white">Domain memberships</h2>
+        <span class="text-xs text-[#9dabb9]"><%= @domain_memberships.size %> totali</span>
+      </div>
+      <% if @domain_memberships.any? %>
+        <ul class="mt-4 space-y-2">
+          <% @domain_memberships.each do |membership| %>
+            <% role_names = membership.certificates.map { |c| c.role_name.to_s.strip.presence }.compact.uniq %>
+            <li class="rounded-lg border border-[#283039] bg-[#0f172a] px-3 py-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <% if membership.lead.present? %>
+                    <%= link_to(membership.lead.name.presence || membership.lead.username.presence || "Lead ##{membership.lead_id}",
+                                superadmin_lead_path(membership.lead),
+                                class: "text-primary hover:underline font-semibold") %>
+                  <% else %>
+                    <span class="font-semibold text-white">Lead #<%= membership.lead_id %></span>
+                  <% end %>
+                  <p class="text-xs text-[#9dabb9]">
+                    Ruolo attivo: <span class="text-[#e2e8f0]"><%= membership.domain_active_role %></span>
+                    · Stato: <span class="text-[#e2e8f0]"><%= membership.status %></span>
+                    <% if membership.primary? %> · <span class="text-emerald-300 font-semibold">Primary</span><% end %>
+                  </p>
+                </div>
+                <% if role_names.any? %>
+                  <div class="flex flex-wrap gap-1">
+                    <% role_names.each do |role_name| %>
+                      <span class="inline-flex items-center rounded-full bg-[#111c28] px-2 py-0.5 text-[11px] font-semibold text-[#c7d2fe] border border-[#334155]"><%= role_name %></span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="mt-3 text-sm text-[#9dabb9]">Nessuna domain membership trovata per questo dominio.</p>
+      <% end %>
+    </div>
+
+    <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm text-white">
       <details class="space-y-3">
         <summary class="cursor-pointer text-sm font-semibold text-white">Dettaglio tecnico</summary>
         <%= render @domain %>
@@ -129,7 +173,48 @@
         <p class="mt-3 text-sm text-[#9dabb9]">Nessun taxbranch collegato al dominio.</p>
       <% end %>
     </div>
-  <% else %>
+  <% elsif @tab == "services" %>
+    <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm text-white">
+      <div class="flex items-center justify-between gap-4">
+        <h2 class="text-lg font-semibold text-white">Domain memberships</h2>
+        <span class="text-xs text-[#9dabb9]"><%= @domain_memberships.size %> totali</span>
+      </div>
+      <% if @domain_memberships.any? %>
+        <ul class="mt-4 space-y-2">
+          <% @domain_memberships.each do |membership| %>
+            <% role_names = membership.certificates.map { |c| c.role_name.to_s.strip.presence }.compact.uniq %>
+            <li class="rounded-lg border border-[#283039] bg-[#0f172a] px-3 py-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <% if membership.lead.present? %>
+                    <%= link_to(membership.lead.name.presence || membership.lead.username.presence || "Lead ##{membership.lead_id}",
+                                superadmin_lead_path(membership.lead),
+                                class: "text-primary hover:underline font-semibold") %>
+                  <% else %>
+                    <span class="font-semibold text-white">Lead #<%= membership.lead_id %></span>
+                  <% end %>
+                  <p class="text-xs text-[#9dabb9]">
+                    Ruolo attivo: <span class="text-[#e2e8f0]"><%= membership.domain_active_role %></span>
+                    · Stato: <span class="text-[#e2e8f0]"><%= membership.status %></span>
+                    <% if membership.primary? %> · <span class="text-emerald-300 font-semibold">Primary</span><% end %>
+                  </p>
+                </div>
+                <% if role_names.any? %>
+                  <div class="flex flex-wrap gap-1">
+                    <% role_names.each do |role_name| %>
+                      <span class="inline-flex items-center rounded-full bg-[#111c28] px-2 py-0.5 text-[11px] font-semibold text-[#c7d2fe] border border-[#334155]"><%= role_name %></span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="mt-3 text-sm text-[#9dabb9]">Nessuna domain membership trovata per questo dominio.</p>
+      <% end %>
+    </div>
+
     <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm text-white">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <h2 class="text-lg font-semibold text-white">Services del dominio</h2>
@@ -168,6 +253,47 @@
         </ul>
       <% else %>
         <p class="mt-3 text-sm text-[#9dabb9]">Nessun service trovato per questo dominio.</p>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="rounded-2xl border border-[#283039] bg-[#101922] p-6 shadow-sm text-white">
+      <div class="flex items-center justify-between gap-4">
+        <h2 class="text-lg font-semibold text-white">Domain memberships</h2>
+        <span class="text-xs text-[#9dabb9]"><%= @domain_memberships.size %> totali</span>
+      </div>
+      <% if @domain_memberships.any? %>
+        <ul class="mt-4 space-y-2">
+          <% @domain_memberships.each do |membership| %>
+            <% role_names = membership.certificates.map { |c| c.role_name.to_s.strip.presence }.compact.uniq %>
+            <li class="rounded-lg border border-[#283039] bg-[#0f172a] px-3 py-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <% if membership.lead.present? %>
+                    <%= link_to(membership.lead.name.presence || membership.lead.username.presence || "Lead ##{membership.lead_id}",
+                                superadmin_lead_path(membership.lead),
+                                class: "text-primary hover:underline font-semibold") %>
+                  <% else %>
+                    <span class="font-semibold text-white">Lead #<%= membership.lead_id %></span>
+                  <% end %>
+                  <p class="text-xs text-[#9dabb9]">
+                    Ruolo attivo: <span class="text-[#e2e8f0]"><%= membership.domain_active_role %></span>
+                    · Stato: <span class="text-[#e2e8f0]"><%= membership.status %></span>
+                    <% if membership.primary? %> · <span class="text-emerald-300 font-semibold">Primary</span><% end %>
+                  </p>
+                </div>
+                <% if role_names.any? %>
+                  <div class="flex flex-wrap gap-1">
+                    <% role_names.each do |role_name| %>
+                      <span class="inline-flex items-center rounded-full bg-[#111c28] px-2 py-0.5 text-[11px] font-semibold text-[#c7d2fe] border border-[#334155]"><%= role_name %></span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="mt-3 text-sm text-[#9dabb9]">Nessuna domain membership trovata per questo dominio.</p>
       <% end %>
     </div>
   <% end %>

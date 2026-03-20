@@ -2,7 +2,14 @@ module MenuHelper
   # unica fonte di verità
   def main_menu_superadmin_items
     [
-
+      # Accesso rapido admin
+      {
+        icon: "🧑‍💼",
+        label: "Dashboard Admin Superuser",
+        path: dashboard_superadmin_path,
+        if: -> { Current.user&.superadmin? }
+      },
+      { icon: "🗓️", label: "Calendar Weekplan", path: dashboard_calendarweekplan_path },
 
       # Dashboard
       { icon: "🏠", label: "Dashboard", path: dashboard_home_path },
@@ -29,14 +36,6 @@ module MenuHelper
       # Progetti interni
       { icon: "🧘", label: "Igiene Posturale", path: dashboard_igieneposturale_path },
       { icon: "📋", label: "Liste", path: dashboard_liste_path },
-
-      # Admin
-      {
-        icon: "🧑‍💼",
-        label: "Superadmin",
-        path: dashboard_superadmin_path,
-        if: -> { Current.user&.superadmin? }
-      },
       {
         icon: "💾",
         label: "Backup (Hatchbox)",
