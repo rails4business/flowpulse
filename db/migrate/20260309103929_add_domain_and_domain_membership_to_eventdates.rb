@@ -20,6 +20,44 @@ class AddDomainAndDomainMembershipToEventdates < ActiveRecord::Migration[8.1]
     SQL
 
     execute <<~SQL
+      INSERT INTO domain_memberships (
+        lead_id,
+        domain_id,
+        domain_active_role,
+        "primary",
+        status,
+        created_at,
+        updated_at
+      )
+      SELECT DISTINCT
+        e.lead_id,
+        e.domain_id,
+        'member',
+        CASE
+          WHEN EXISTS (
+            SELECT 1
+            FROM domain_memberships dm_primary
+            WHERE dm_primary.lead_id = e.lead_id
+              AND dm_primary."primary" = TRUE
+          ) THEN FALSE
+          ELSE TRUE
+        END,
+        0,
+        NOW(),
+        NOW()
+      FROM eventdates e
+      WHERE e.lead_id IS NOT NULL
+        AND e.domain_id IS NOT NULL
+        AND e.domain_membership_id IS NULL
+        AND NOT EXISTS (
+          SELECT 1
+          FROM domain_memberships dm
+          WHERE dm.lead_id = e.lead_id
+            AND dm.domain_id = e.domain_id
+        );
+    SQL
+
+    execute <<~SQL
       UPDATE eventdates
       SET domain_membership_id = (
         SELECT dm.id
@@ -32,7 +70,6 @@ class AddDomainAndDomainMembershipToEventdates < ActiveRecord::Migration[8.1]
     SQL
 
     change_column_null :eventdates, :domain_id, false
-    change_column_null :eventdates, :domain_membership_id, false
   end
 
   def down
