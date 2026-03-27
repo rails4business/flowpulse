@@ -120,7 +120,7 @@
 
           <%= render "shared/brand_custom_pc_home_nav" %>
           <%
-            posture_hub_taxbranch = Taxbranch.includes(children: :post, post: :taxbranch).find_by(id: 127)
+            posture_hub_taxbranch = Taxbranch.includes(:post).find_by(id: 127)
             posture_cards = if posture_hub_taxbranch.present?
               posture_hub_taxbranch.children.includes(:post).ordered.filter_map do |child|
                 child_post = child.post
