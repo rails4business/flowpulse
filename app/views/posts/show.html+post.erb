@@ -240,6 +240,7 @@
           <!-- Cover / Media -->
           <% media_url = post_media_url(@post) %>
           <% image_url = post_image_url(@post) %>
+          <% media_embed_html = media_url.present? ? media_embed(media_url) : nil %>
           <% if post_taxbranch_post_category?(@post) && media_url.present? && (yt = extract_youtube_info(media_url)) %>
             <div class="mb-10 px-2">
               <button
@@ -282,6 +283,12 @@
                     referrerpolicy="strict-origin-when-cross-origin"
                     frameborder="0"></iframe>
                 </div>
+              </div>
+            </div>
+          <% elsif post_taxbranch_post_category?(@post) && media_embed_html.present? %>
+            <div class="mb-10">
+              <div class="overflow-hidden rounded-2xl shadow-sm">
+                <%= media_embed_html %>
               </div>
             </div>
           <% elsif post_taxbranch_post_category?(@post) && image_url.present? %>

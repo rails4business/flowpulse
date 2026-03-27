@@ -23,6 +23,10 @@ module PostsHelper
       post.vertical_cover_url.presence
   end
 
+  def posture_fallback_image_url
+    asset_path("posturacorretta/posturascorretta.png")
+  end
+
   def post_taxbranch_post_category?(post)
     post&.taxbranch&.slug_category.to_s == "post"
   end

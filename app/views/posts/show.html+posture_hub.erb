@@ -104,7 +104,7 @@
             <% child_post = child.post %>
             <% child_media_url = post_media_url(child_post) %>
             <% child_image_url = post_image_url(child_post) %>
-            <% child_preview_url = child_image_url.presence || youtube_thumb(child_media_url) %>
+            <% child_preview_url = child_image_url.presence || youtube_thumb(child_media_url) || posture_fallback_image_url %>
             <% entry_link = post_entry_link(child_post, taxbranch: child) %>
 
             <article class="group overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
@@ -118,9 +118,12 @@
                       loading="lazy"
                     >
                   <% else %>
-                    <div class="flex h-full items-center justify-center bg-sand text-slate-500">
-                      <span class="material-symbols-outlined text-[40px]">spa</span>
-                    </div>
+                    <img
+                      src="<%= posture_fallback_image_url %>"
+                      alt="<%= child_post.title.presence || child.slug_label %>"
+                      class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    >
                   <% end %>
 
                   <% if child_media_url.present? %>
