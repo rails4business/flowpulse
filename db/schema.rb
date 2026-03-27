@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_17_144456) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_25_084030) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -286,6 +286,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_144456) do
   create_table "eventdates", force: :cascade do |t|
     t.boolean "allows_invite"
     t.boolean "allows_request"
+    t.bigint "child_journey_id"
     t.datetime "created_at", null: false
     t.datetime "date_end"
     t.datetime "date_start"
@@ -309,6 +310,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_144456) do
     t.integer "unit_duration"
     t.datetime "updated_at", null: false
     t.integer "visibility", default: 0, null: false
+    t.index ["child_journey_id"], name: "index_eventdates_on_child_journey_id"
     t.index ["domain_id"], name: "index_eventdates_on_domain_id"
     t.index ["domain_membership_id"], name: "index_eventdates_on_domain_membership_id"
     t.index ["journey_id"], name: "index_eventdates_on_journey_id"
@@ -342,7 +344,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_144456) do
     t.integer "kind", default: 0, null: false
     t.bigint "lead_id", null: false
     t.jsonb "meta", default: {}, null: false
+    t.string "mode"
     t.text "notes"
+    t.string "phase"
     t.decimal "price_estimate_dash", precision: 16, scale: 8
     t.decimal "price_estimate_euro", precision: 8, scale: 2
     t.integer "progress"
@@ -644,6 +648,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_144456) do
   add_foreign_key "eventdates", "domains"
   add_foreign_key "eventdates", "eventdates", column: "parent_eventdate_id"
   add_foreign_key "eventdates", "journeys"
+  add_foreign_key "eventdates", "journeys", column: "child_journey_id"
   add_foreign_key "eventdates", "leads"
   add_foreign_key "eventdates", "taxbranches"
   add_foreign_key "journeys", "journeys", column: "template_journey_id"

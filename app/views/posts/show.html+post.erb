@@ -238,8 +238,9 @@
         <% end %>
         <% unless is_upcoming %>
           <!-- Cover / Media -->
-          <% media_url = @post.url_media_content.presence || (@post.respond_to?(:media_url) ? @post.media_url.presence : nil) %>
-          <% if media_url.present? && (yt = extract_youtube_info(media_url)) %>
+          <% media_url = post_media_url(@post) %>
+          <% image_url = post_image_url(@post) %>
+          <% if post_taxbranch_post_category?(@post) && media_url.present? && (yt = extract_youtube_info(media_url)) %>
             <div class="mb-10 px-2">
               <button
                 type="button"
@@ -248,7 +249,7 @@
               >
                 <div class="relative w-full" style="aspect-ratio: 16 / 9;">
                   <img
-                    src="<%= @post.horizontal_cover_url.presence || youtube_thumb(media_url) %>"
+                    src="<%= image_url.presence || youtube_thumb(media_url) %>"
                     alt="<%= @post.title %>"
                     class="absolute inset-0 h-full w-full object-cover"
                   >
@@ -283,9 +284,9 @@
                 </div>
               </div>
             </div>
-          <% elsif @post.horizontal_cover_url.present? %>
+          <% elsif post_taxbranch_post_category?(@post) && image_url.present? %>
             <div class="mb-10">
-              <img src="<%= @post.horizontal_cover_url %>"
+              <img src="<%= image_url %>"
                    alt="<%= @post.title %>"
                    class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-sm">
             </div>

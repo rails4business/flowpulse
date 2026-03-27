@@ -1,4 +1,32 @@
 module PostsHelper
+  def post_media_url(post)
+    return nil unless post
+
+    direct_media =
+      if post.respond_to?(:url_media_content)
+        post.url_media_content.presence
+      end
+    fallback_media =
+      if post.respond_to?(:media_url)
+        post.media_url.presence
+      end
+
+    direct_media || fallback_media
+  end
+
+  def post_image_url(post)
+    return nil unless post
+
+    post.horizontal_cover_url.presence ||
+      post.thumb_url.presence ||
+      post.banner_url.presence ||
+      post.vertical_cover_url.presence
+  end
+
+  def post_taxbranch_post_category?(post)
+    post&.taxbranch&.slug_category.to_s == "post"
+  end
+
   # ---------------------------------------------------------
   # LINK ORDINABILE (colonne)
   # ---------------------------------------------------------

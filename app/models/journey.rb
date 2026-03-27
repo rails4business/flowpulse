@@ -1,4 +1,7 @@
 class Journey < ApplicationRecord
+  PHASES = %w[explorer guide roles mode].freeze
+  MODES = %w[self guided service_based].freeze
+
   enum :journeys_status, {
     problema: 0,
     obiettivo: 1,
@@ -23,6 +26,11 @@ class Journey < ApplicationRecord
            class_name: "Journey",
            foreign_key: :template_journey_id,
            dependent: :nullify
+  has_many :parent_eventdates,
+         class_name: "Eventdate",
+         foreign_key: :child_journey_id,
+         dependent: :nullify
+
 
   # 👇 relazioni corrette
   has_many :eventdates, dependent: :destroy
@@ -33,6 +41,8 @@ class Journey < ApplicationRecord
   has_many :certificates, dependent: :restrict_with_exception
 
   validates :slug, presence: true, uniqueness: true
+  validates :phase, inclusion: { in: PHASES }, allow_blank: true
+  validates :mode, inclusion: { in: MODES }, allow_blank: true
   validate :unique_endpoint_pair, on: :create
 
   before_validation :ensure_slug!
@@ -83,7 +93,7 @@ class Journey < ApplicationRecord
   scope :ordered_by_created, -> { order(created_at: :desc) }
   scope :ordered_by_updated, -> { order(updated_at: :desc) }
   scope :ordered, -> { order(created_at: :desc) }
-  
+
   # 🚄 Service Rails: Journeys connecting two Services (Station -> Station)
   scope :service_rails, -> {
     joins(taxbranch: :service, end_taxbranch: :service)
@@ -152,6 +162,22 @@ class Journey < ApplicationRecord
 
   def journey_function?
     station_service_start.present? && station_service_end.blank?
+  end
+
+  def phase_label
+    phase.to_s.humanize.presence || "Non definita"
+  end
+
+  def mode_label
+    mode.to_s.humanize.presence || "Non definita"
+  end
+
+  def template?
+    cycle_template?
+  end
+
+  def instance?
+    cycle_instance?
   end
 
   private

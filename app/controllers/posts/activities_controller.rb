@@ -11,6 +11,10 @@ module Posts
       @activity = find_open_activity
       @activity ||= create_open_activity!
 
+      if @taxbranch&.datacontact_form_step?
+        redirect_to datacontact_step_path and return
+      end
+
       if params[:in_dashboard].to_s == "1"
         redirect_to dashboard_home_path(
           tab: params[:tab].presence || "academy",
@@ -95,6 +99,22 @@ module Posts
         }
       )
       .tap(&:save!)
+    end
+
+    def datacontact_step_path
+      datacontact = @lead.datacontacts.order(updated_at: :desc, id: :desc).first
+      return_to = dashboard_home_path(tab: params[:tab].presence || "academy")
+      route_params = {
+        step_taxbranch_id: @taxbranch.id,
+        activity_id: @activity.id,
+        return_to: return_to
+      }
+
+      if datacontact.present?
+        edit_datacontact_path(datacontact, route_params)
+      else
+        new_datacontact_path(route_params)
+      end
     end
 
     def build_answers_detailed(payload)

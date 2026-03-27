@@ -198,6 +198,27 @@ class Taxbranch < ApplicationRecord
     Rails.root.join(normalized).to_s
   end
 
+  def step_handler
+    meta_indifferent[:step_handler].to_s.presence
+  end
+
+  def datacontact_form_step?
+    step_handler == "datacontact_form"
+  end
+
+  def completion_rule_config
+    value = meta_indifferent[:completion_rule]
+    value.is_a?(Hash) ? value.with_indifferent_access : {}.with_indifferent_access
+  end
+
+  def completion_rule_type
+    completion_rule_config[:type].to_s.presence
+  end
+
+  def completion_required_fields
+    Array(completion_rule_config[:required_fields]).filter_map { |field| field.to_s.strip.presence }
+  end
+
   def permission_access_roles=(value)
     self[:permission_access_roles] = normalize_role_list(value)
   end

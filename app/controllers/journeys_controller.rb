@@ -1,6 +1,6 @@
 class JourneysController < ApplicationController
   layout -> { turbo_frame_request? ? "modal" : "application" }
-  before_action :set_journey, only: %i[ show edit update destroy carousel start_tracking stop_tracking instance_cycle clone_cycle rails4b generaimpresa impegno ]
+  before_action :set_journey, only: %i[ show edit update destroy train carousel start_tracking stop_tracking instance_cycle clone_cycle rails4b generaimpresa impegno ]
   before_action :load_branch_links, only: %i[ show rails4b generaimpresa ]
   before_action :load_production_stats, only: %i[ show rails4b generaimpresa ]
   before_action :load_public_revenue_stats, only: %i[ show generaimpresa ]
@@ -52,6 +52,10 @@ class JourneysController < ApplicationController
     @eventdates = @journey.eventdates.includes(commitments: [ :taxbranch, :bookings ])
 
     @enrollments = @journey.enrollments.includes(:contact)
+  end
+
+  def train
+    @eventdates = @journey.eventdates.includes(:taxbranch, :child_journey).order(:position, :date_start, :id)
   end
   def instance_cycle
     @instance_cycles = @journey.child_journeys.process_instance_cycle.order(created_at: :desc)
@@ -223,7 +227,7 @@ class JourneysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def journey_params
-      params.expect(journey: [ :title, :slug, :taxbranch_id, :end_taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_at, :end_at, :kind, :journey_type, :journey_roles, :journey_roles_text, :allows_invite, :allows_request, :journeys_status ])
+      params.expect(journey: [ :title, :slug, :taxbranch_id, :end_taxbranch_id, :service_id, :lead_id, :importance, :urgency, :energy, :progress, :notes, :price_estimate_euro, :price_estimate_dash, :meta, :template_journey_id, :start_at, :end_at, :kind, :journey_type, :journey_roles, :journey_roles_text, :allows_invite, :allows_request, :journeys_status, :phase, :mode ])
     end
 
     def load_branch_links

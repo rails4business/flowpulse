@@ -17,6 +17,30 @@ class Datacontact < ApplicationRecord
            class_name: "Enrollment",
            foreign_key: :invited_by_lead_id
 
+  def city
+    self[:billing_city].to_s.presence
+  end
+
+  def city=(value)
+    self[:billing_city] = value.to_s.strip.presence
+  end
+
+  def province
+    datacontact_meta["province"].to_s.presence
+  end
+
+  def province=(value)
+    normalized = value.to_s.strip.presence
+    updated_meta = datacontact_meta
+
+    if normalized.present?
+      updated_meta["province"] = normalized
+    else
+      updated_meta.delete("province")
+    end
+
+    self.meta = updated_meta
+  end
 
   def full_name
     [ first_name, last_name ].compact.join(" ").presence
@@ -32,5 +56,11 @@ class Datacontact < ApplicationRecord
 
   def referent_is?(lead)
     lead.present? && referent_lead_id == lead.id
+  end
+
+  private
+
+  def datacontact_meta
+    meta.is_a?(Hash) ? meta.deep_dup : {}
   end
 end

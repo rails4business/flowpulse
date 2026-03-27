@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get "/book_index.json", to: "book_index#show"
   resources :journeys  do
     member do
+      get "train"
       get "instance_cycle"
       post "clone_cycle"
       post "start_tracking"

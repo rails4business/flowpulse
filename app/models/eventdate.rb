@@ -4,6 +4,8 @@ class Eventdate < ApplicationRecord
   # - log/diario (taxbranch + lead + cycle + status)
 
   # 🔗 Relazioni
+  #
+  belongs_to :child_journey, class_name: "Journey", optional: true
   belongs_to :journey,   optional: true
   belongs_to :taxbranch, optional: true
   belongs_to :lead,      optional: true
@@ -43,6 +45,7 @@ class Eventdate < ApplicationRecord
 
   before_validation :apply_duration_to_end_at
   before_validation :ensure_meta_hash
+  before_validation :apply_defaults
 
   # Questionnaire helpers
   def questionnaire_submission?
@@ -136,5 +139,9 @@ class Eventdate < ApplicationRecord
 
   def ensure_meta_hash
     self.meta = {} unless meta.is_a?(Hash)
+  end
+
+  def apply_defaults
+    self.status ||= "pending"
   end
 end

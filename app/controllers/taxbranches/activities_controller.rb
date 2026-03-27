@@ -25,6 +25,10 @@ module Taxbranches
       @activity.payload = normalized_payload(@activity.payload)
 
       if @activity.save
+        if @taxbranch.datacontact_form_step?
+          redirect_to datacontact_step_path and return
+        end
+
         redirect_to dashboard_home_path(tab: "academy"), notice: "Attivita registrata."
       else
         render :new, status: :unprocessable_entity
@@ -35,6 +39,11 @@ module Taxbranches
         @activity.assign_attributes(activity_params)
         @activity.payload = normalized_payload(@activity.payload)
         @activity.save
+
+        if @taxbranch.datacontact_form_step?
+          redirect_to datacontact_step_path and return
+        end
+
         redirect_to dashboard_home_path(tab: "academy"), notice: "Attivita registrata."
       else
         redirect_to dashboard_home_path(tab: "academy"), alert: "Impossibile registrare l'attivita in questo momento."
@@ -83,6 +92,21 @@ module Taxbranches
            .where(taxbranch_id: @taxbranch.id, status: OPEN_STATUSES)
            .order(occurred_at: :desc, id: :desc)
            .first
+    end
+
+    def datacontact_step_path
+      datacontact = @lead.datacontacts.order(updated_at: :desc, id: :desc).first
+      route_params = {
+        step_taxbranch_id: @taxbranch.id,
+        activity_id: @activity.id,
+        return_to: dashboard_home_path(tab: "academy")
+      }
+
+      if datacontact.present?
+        edit_datacontact_path(datacontact, route_params)
+      else
+        new_datacontact_path(route_params)
+      end
     end
   end
 end
